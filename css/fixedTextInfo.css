@@ -1,0 +1,22 @@
+.fixed-text-info-container {
+  position: fixed;
+  width: 100%;
+  z-index: 10000;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.fixed-text-info-container p {
+  text-align: center;
+  block-size: auto;
+  max-width: 90%;
+  width: 300px;
+  margin-left: 50%;
+  transform: translate(-50%);
+  padding: 20px;
+  border-radius: 10px;
+  overflow-wrap: break-word;
+  background-color: #b8b4b4f7;
+  color: #393939e6;
+}
