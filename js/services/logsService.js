@@ -16,8 +16,8 @@ class LogsService {
     }
 
     downloadLogs() {
-        const data_for_file = this.model.getDataForFile();
-        this.fileManager.downloadFile(data_for_file.content, data_for_file.name, data_for_file.extension);
+        const dataForFile = this.model.getDataForFile();
+        this.fileManager.downloadFile(dataForFile.content, dataForFile.name, dataForFile.extension);
     }
 
     showContainerWithLogs() {
