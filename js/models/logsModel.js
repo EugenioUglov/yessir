@@ -17,29 +17,29 @@ class LogsModel {
     getDataForFile() {
         const logs = this.getLogs();
 
-        const date_text = this.#dateManager.getDateNow() + '-' + this.#dateManager.getTimeNow();
+        const dateAndTime = this.#dateManager.getDateNow() + '-' + this.#dateManager.getTimeNow();
     
         // Set variable for name of the saving file with date and time. 
-        const file_name = 'Logs_Action-Blocks ' + date_text;
+        const fileName = 'Logs_yesSir ' + dateAndTime;
         const extension = '.txt';
 
         let content = '';
 
         for (const i in logs) {
             const log = logs[i];
-            const number_log = parseInt(i) + 1;
+            const numberLog = parseInt(i) + 1;
 
             if (i > 0) content += '\n';
 
-            content += number_log + '. ' + log;
+            content += numberLog + '. ' + log;
         }
 
-        const data_for_file = {
+        const dataForFile = {
             content: content,
-            name: file_name,
+            name: fileName,
             extension: extension
         };
 
-        return data_for_file;
+        return dataForFile;
     }
 }

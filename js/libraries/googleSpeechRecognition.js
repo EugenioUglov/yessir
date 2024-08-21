@@ -66,6 +66,8 @@ class GoogleSpeechRecognition {
 
         console.log(option);
 
+        this.#speechRecognition = new webkitSpeechRecognition();
+
         const callbackStart = option.callbackStart;
         const callbackInterimTranscript = option.callbackInterimTranscript;
         const callbackFinalTranscript = option.callbackFinalTranscript;
@@ -380,6 +382,4 @@ class GoogleSpeechRecognition {
     isBrowserSupportRecognition() {
         return 'webkitSpeechRecognition' in window;
     }
-
-
 }
