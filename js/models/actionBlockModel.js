@@ -341,9 +341,11 @@ class ActionBlockModel {
             let normalizedTitle = ''
 
             const trimmedTitle = initialTitle.trim();
+            normalizedTitle = trimmedTitle;
             // Change title to URI friendly.
-            normalizedTitle = trimmedTitle.replace(/[^a-zA-Z0-9-_ ]/g, '');
-
+            // Problem: not accepting other languages.
+            // normalizedTitle = trimmedTitle.replace(/[^a-zA-Z0-9-_ ]/g, '');
+            
             return normalizedTitle;
         }
 
