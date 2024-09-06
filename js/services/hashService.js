@@ -434,7 +434,7 @@ class HashService {
         request,
         is_execute_actionBlock_by_title
       );
-      this.searchService.setTextToInputField(request);
+      // this.searchService.setTextToInputField(request);
 
       this.scrollService.setPositionTop();
     } else if (
@@ -503,10 +503,6 @@ class HashService {
         yesSir.actionBlockService.getScrollPositionOnExecuteBlock();
       const index_last_showed_actionBlock =
         this.#actionBlockService.getIndexLastShowedActionBlock();
-      console.log(
-        "this.#actionBlockService.getIndexLastShowedActionBlock: " +
-          index_last_showed_actionBlock
-      );
 
       if (index_last_showed_actionBlock === 0) {
         this.openPreviousPage();
