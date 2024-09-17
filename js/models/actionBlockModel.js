@@ -322,9 +322,18 @@ class ActionBlockModel {
     }
 
 
-    add(actionBlock_to_add, is_show_alert_on_error = true) {
+    add(actionBlock_to_add, isShowAlertOnError = true) {
         const that = this;
         const tagsNormalizer = new TagsNormalizer();
+
+        // Add new id.
+        const actionBlocksArray = [ ...this.#actionBlocks_map.values() ];
+        const ids = actionBlocksArray.map(obj => obj.id).filter(item => typeof item === "number");
+        const lastId = Math.max(ids);
+        if (typeof lastId != "number") lastId = 0;
+        actionBlock_to_add.id = lastId + 1;
+        //
+
 
         actionBlock_to_add.title = getNormalizedTitle(actionBlock_to_add.title);
 
@@ -357,7 +366,7 @@ class ActionBlockModel {
             }
     
             if (that.#actionBlocks_map.has(title.toUpperCase())) {
-                if (is_show_alert_on_error) alert('Action-Block with current title already exists. Title: ' + title);
+                if (isShowAlertOnError) alert('Action-Block with current title already exists. Title: ' + title);
                 else {
                     // console.log('Action-Block with current title already exists. Title: ' + title);
                 }

@@ -36,8 +36,8 @@
 	<link rel="stylesheet" type="text/css" media="screen" href="./css/fixedTextInfo.css">
 	<link rel="stylesheet" type="text/css" media="screen" href="./css/grayForeground.css">
 	<link rel="stylesheet" type="text/css" media="screen" href="./css/jquery-ui.css">
-
 	<!-- .END - Load styles. -->
+	<script src="./js/libraries/opensource/includeHTML-master/includeHTML.js"></script>
 </head>
 
 <body>
@@ -65,6 +65,7 @@
 		</div>
 
 		<div class="container">
+			<div id="inputFieldWithSuggestionsModule"></div>
 			
 			<!--Make sure the form has the autocomplete function switched off:-->
 			<!--<form autocomplete="off" action="/action_page.php">	</form>-->
@@ -183,7 +184,7 @@
 				</div>
 				-->
 
-				<!-- <script src="./autocomplete/js/autoComplete.js"></script> -->
+				<!-- <script src="./autocomplete/js/autoComplete.js"></sc> -->
 				<!--<script src="./autocomplete/js/index.js"></script>-->
 				
 
@@ -701,6 +702,10 @@
 	<script src="./js/libraries/unspashImageSearcher.js"></script>
 	
 	<script src="./js/main.js"></script>
+
+	<script>
+		// includeHTML('htmlModules/inputFieldWithSuggestions/index.html', document.getElementById('inputFieldWithSuggestionsModule'));
+	</script>
 
 	<!-- !!! -->
 	<!-- <script src="./js/cacheRegistrator.js"></script> -->
