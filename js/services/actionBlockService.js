@@ -660,13 +660,14 @@ class ActionBlockService {
       return;
     }
 
+    // !!!
     function onNoteOpened() {
-      const inputFieldWithSuggestions = new InputFieldWithSuggestions();
-      const actionBlockNoteCommands = new ActionBlockNoteCommands(inputFieldWithSuggestions);
+    //   const inputFieldWithSuggestions = new InputFieldWithSuggestions();
+    //   const actionBlockNoteCommands = new ActionBlockNoteCommands(inputFieldWithSuggestions);
 
-      inputFieldWithSuggestions.create();
+    //   inputFieldWithSuggestions.create();
 
-      inputFieldWithSuggestions.setOptions({optionObjects: actionBlockNoteCommands.getCurrentCommandObjects()});
+    //   inputFieldWithSuggestions.setOptions({optionObjects: actionBlockNoteCommands.getCurrentCommandObjects()});
     }
   }
 

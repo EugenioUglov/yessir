@@ -1,4 +1,4 @@
-class InputFieldWithSuggestions {
+class InputFieldWithSuggestionsOld {
     #executeHandlerByOptionValue = {};
     #viewElement = {
         inputFieldWithSuggestionsClass: $('.inputFieldWithSuggestions'),

@@ -195,65 +195,6 @@
 }
 
 
-/* Next & previous buttons */
-.prev, .next {
-   cursor: pointer;
-   top: 50%;
-   width: auto;
-   padding: 16px;
-   margin-top: -22px;
-   color: white;
-   font-weight: bold;
-   font-size: 18px;
-   transition: 0.6s ease;
-   border-radius: 0 3px 3px 0;
-   user-select: none;
-}
-/* Position the "next button" to the right */
-.next {
-   right: 0;
-   border-radius: 3px 0 0 3px;
-}
-
-
-/* On hover, add a black background color with a little bit see-through */
-/*
-.prev:hover, .next:hover {
-   background-color: rgba(0,0,0,0.8);
-}
-*/
-.arrows {
-   padding: 10px;
-}
-
-.dots {
-   padding: 20px;
-}
-
-/* The dots/bullets/indicators */
-.dot {
-   display: inline-block;
-   cursor: pointer;
-   height: 25px;
-   width: 25px;
-   margin: 2px 2px;
-   background-color: #bbb;
-   border-radius: 50%;
-   transition: background-color 0.6s ease;
-}
-
-.active, .dot:hover {
-   background-color: #717171;
-}
-
-.count_pages_actionBlocks {
-   display: inline-block; 
-   margin: 18px;
-   top: 0;
-   font-size: 12px;
-   color: #f2f2f2;
-}
-
 
 /*
 @media (max-width: 900px) {
