@@ -44,6 +44,7 @@ class ActionBlockModel {
         const key = 'actionBlocks';
         
         if (localStorage.getItem(key)) {
+            console.log(localStorage.getItem(key));
             actionBlocks_from_localStorage = this.mapDataStructure.getParsed(localStorage.getItem(key));
         }
         
