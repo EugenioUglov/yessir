@@ -330,8 +330,8 @@ class ActionBlockModel {
         // Add new id.
         const actionBlocksArray = [ ...this.#actionBlocks_map.values() ];
         const ids = actionBlocksArray.map(obj => obj.id).filter(item => typeof item === "number");
-        const lastId = Math.max(ids);
-        if (typeof lastId != "number") lastId = 0;
+        let lastId = Math.max(ids);
+        if (typeof lastId !== "number" || typeof lastId === NaN) lastId = 0;
         actionBlock_to_add.id = lastId + 1;
         //
 
