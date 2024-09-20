@@ -44,7 +44,7 @@ class ActionBlockModel {
         const key = 'actionBlocks';
         
         if (localStorage.getItem(key)) {
-            const actionBlocksMapStr = localStorage['actionBlocks'].replaceAll(',"id":null', '');
+            const actionBlocksMapStr = localStorage['actionBlocks'];
            
             actionBlocks_from_localStorage = this.mapDataStructure.getParsed(actionBlocksMapStr);
         }
