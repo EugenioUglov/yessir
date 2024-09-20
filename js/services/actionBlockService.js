@@ -61,7 +61,7 @@ class ActionBlockService {
     this.hashService.setActionBlockService(this);
   }
 
-  async createActionBlockWithAutomation(
+  async createActionBlockWithAutomationAsync(
     title,
     tags,
     action,
@@ -72,6 +72,12 @@ class ActionBlockService {
     const that = this;
     this.loadingService.startLoading();
     const nounNumber = new NounNumber();
+    if (this.model.isActionBlockExist(title)) {
+      alert('Action-Block with current title already exists. Title: ' + title);
+
+      onEnd(false);
+      return false;
+    }
 
     // Cancel buttton in center.
     const cancel_button = document.createElement("button");
@@ -97,7 +103,7 @@ class ActionBlockService {
     $(cancel_button).on("click", () => {
       is_canceled = true;
       hideLoadingElmenets();
-      that.createActionBlock(title, tags, action, content, image_URL, onEnd);
+      const isCreated = that.createActionBlock(title, tags, action, content, image_URL, onEnd);
 
       // if (onEnd != undefined) onEnd();
     });
@@ -180,7 +186,7 @@ class ActionBlockService {
           });
         }
 
-        that.createActionBlock(title, tags, action, content, image_URL);
+        const isCreated = that.createActionBlock(title, tags, action, content, image_URL);
 
         if (onEnd != undefined) onEnd();
       })

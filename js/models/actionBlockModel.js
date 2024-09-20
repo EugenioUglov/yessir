@@ -330,9 +330,9 @@ class ActionBlockModel {
 
         // Add new id.
         const actionBlocksArray = [ ...this.#actionBlocks_map.values() ];
-        const ids = actionBlocksArray.map(obj => obj.id).filter(item => typeof item === "number");
+        const ids = actionBlocksArray.map(obj => obj.id).filter(item => typeof item === "number" && typeof item !== NaN);
         let lastId = Math.max(ids);
-        if (typeof lastId !== "number" || typeof lastId === NaN) lastId = 0;
+        if (lastId === typeof lastId !== "number" || typeof lastId === NaN) lastId = 0;
         actionBlock_to_add.id = lastId + 1;
         //
 
@@ -378,6 +378,14 @@ class ActionBlockModel {
         }
     
         return true;
+    }
+
+    isActionBlockExist(title) {
+        if (this.#actionBlocks_map.has(title.toUpperCase())) {
+            return true;
+        }
+
+        return false;
     }
     
     saveAsync(actionBlocks, callBackSavedSuccessfully, callBackError) {
