@@ -1,2 +1,2 @@
 # YesSir
-Web version of the application for searching your information by tags quickly.
+Search your own information like in Google search. Web app for searching your information quickly by tags assigned to each block of information.
