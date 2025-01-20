@@ -880,7 +880,9 @@ class ActionBlockService {
     // Set variable for name of the saving file with date and time.
     const file_name = "Action-Blocks " + date_text;
     const extension = ".json";
-
+  
+    // !!!
+    this.fileManager.downloadFile('test', 'test', extension);
     this.fileManager.downloadFile(content, file_name, extension);
   };
 

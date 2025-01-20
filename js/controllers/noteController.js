@@ -19,6 +19,8 @@ class NoteController {
         console.log('last scroll pos: ' + yesSir.actionBlockService.getScrollPositionOnExecuteBlock());
         if (window.location.hash.toUpperCase().includes('#editActionBlock'.toUpperCase())) {
             this.actionBlockService.setDefaultValuesForSettingsElementsActionBlock();
+        } else if (window.location.hash.toUpperCase().includes('#createnote'.toUpperCase())) {
+            this.view.clearAllInputElements();
         }
 
         this.hashService.setHashMainPrevious();

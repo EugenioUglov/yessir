@@ -48,7 +48,7 @@ button {
     margin-top: 10px;
     margin-left: 20px;
     display: none;
-    color: #8d8de5;
+    /* color: #8d8de5; */
 }
 
 .fixed_elements .btn_content_speaker {

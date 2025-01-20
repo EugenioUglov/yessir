@@ -100,4 +100,18 @@ class NoteView {
         $('#btn_back').hide();
         $('#showJustContentButton').hide();
     }
+
+    clearAllInputElements() {
+        const inputElements = document.getElementsByTagName("input");
+        const textareaElements = document.getElementsByTagName("textarea");
+        
+        clearInputElements(inputElements);
+        clearInputElements(textareaElements);
+
+        function clearInputElements(inputElements) {
+            for (var i=0; i < inputElements.length; i++) {
+                inputElements[i].value = "";
+            }
+        }
+    }
 }
