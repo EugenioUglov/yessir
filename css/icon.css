@@ -58,10 +58,10 @@
 }
 
 #icon_close {
-  content:url('../icons/x-fat.png');
+  content:url('../icons/close-light.png');
 
-  height: 25px;
-  width: 25px;
+  height: 15px;
+  width: 15px;
   pointer-events: none;
   color: #4285f4;
 }

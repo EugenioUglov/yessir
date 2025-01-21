@@ -192,7 +192,7 @@ div#btn_search_by_tags {
 #btn_close {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     display: relative;
     position: relative;
     /* float: right; */
@@ -201,8 +201,7 @@ div#btn_search_by_tags {
     width: 45px;
     height: 45px;
 
-    background-color: #e6e2e2a3;
-    border-radius: 50px;
+    /* background-color: #1e1e1e03; */
 }
 
 #btn_advanced_settings_for_search {
