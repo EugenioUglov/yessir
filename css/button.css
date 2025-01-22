@@ -5,7 +5,8 @@ button {
 .btn {
     /* width: 120px; */
     margin: 5px;
-    padding: 10px;
+    /* padding: 10px; */
+    padding: 0.8rem 0.9rem;
     /* height: 50px; */
     cursor: pointer;
     border-radius: 8px;
@@ -13,8 +14,8 @@ button {
     background-color: #b5b5b524;
     background-repeat: no-repeat;
     /* color: #d1c4ac; */
+    color: #000000;
     transition: .1s;
-    padding: 0.8rem 0.9rem;
     font-size: 0.9rem;
 }
 
@@ -192,14 +193,14 @@ div#btn_search_by_tags {
 #btn_close {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     display: relative;
     position: relative;
     /* float: right; */
     margin-left: 20px;
-
     width: 45px;
     height: 45px;
+    border-radius: 50px;
     background-color: transparent;
     /* background-color: #1e1e1e03; */
 }

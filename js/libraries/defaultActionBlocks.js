@@ -27,7 +27,15 @@ class DefaultActionBlocks {
             content: getContentActionBlockOpenFileManager(),
             imageURL: 'https://icon-library.com/images/file-download-icon/file-download-icon-19.jpg'
         };
-        
+
+        const actionBlock_save_to_file = {
+            title: 'Save Action-Blocks to file',
+            tags: 'Save Action-Blocks to file, download',
+            action: 'showHTML',
+            content: '<script>yesSir.actionBlockService.downloadFileWithActionBlocks();</script>',
+            imageURL: 'https://www.clipartmax.com/png/full/468-4684948_floppy-disk-comments-floppy-disk-comments.png'
+        };
+    
         const actionBlock_delete_all_actionBlocks = {
           title: "Delete all Action-Blocks",
           tags: "Delete all Action-Blocks, Remove, clear",
@@ -119,6 +127,7 @@ class DefaultActionBlocks {
             actionBlock_facebook_of_developer, 
             actionBlock_email_of_developer,
             actionBlock_open_file_manager,
+            actionBlock_save_to_file,
             actionBlock_delete_all_actionBlocks,
             actionBlock_open_speeh_assistant,
             actionBlock_login,
@@ -128,6 +137,8 @@ class DefaultActionBlocks {
             // actionBlock_logs,
             // actionBlock_voiceRecognitionSettings
         ];
+
+
 
         function getContentActionBlockOpenFileManager() {
             return `

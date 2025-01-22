@@ -880,10 +880,30 @@ class ActionBlockService {
     // Set variable for name of the saving file with date and time.
     const file_name = "Action-Blocks " + date_text;
     const extension = ".json";
+
+    download(content, file_name, extension);
+
+    // Function to download data to a file
+    function download(data, filename, type) {
+      var file = new Blob([data], {type: type});
+      if (window.navigator.msSaveOrOpenBlob) // IE10+
+          window.navigator.msSaveOrOpenBlob(file, filename);
+      else { // Others
+          var a = document.createElement("a"),
+                  url = URL.createObjectURL(file);
+          a.href = url;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(function() {
+              document.body.removeChild(a);
+              window.URL.revokeObjectURL(url);
+          }, 0);
+      }
+    }
   
     // !!!
-    this.fileManager.downloadFile('test', 'test', extension);
-    this.fileManager.downloadFile(content, file_name, extension);
+    // this.fileManager.downloadFile(content, file_name, extension);
   };
 
   uploadFileWithActionBlocks = (content_of_file) => {
