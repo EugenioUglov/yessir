@@ -80,6 +80,8 @@ class NoteView {
         for (const button_close of buttons_close) {
             $(button_close).on('click', () => {
                 that.close();
+                console.log('test');
+                hideCommandInput();
                 $('.btn_open_settings_actionBlock').hide();
                 handler(); 
             });

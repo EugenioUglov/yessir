@@ -69,6 +69,7 @@ class ModalBoxView {
     bindClickBtnClose(handler) {
         // When the user clicks on <span> (x), close the modal
         this.$btn_close.onclick = function() {
+            console.log('close');
             handler();
         }
     }

@@ -278,6 +278,8 @@ class HashService {
 
   handleHash() {
     const that = this;
+    
+    hideCommandInput();
     yesSir.domElementManager.hideShowedElements();
     yesSir.noteService.close();
     yesSir.domElementManager.hideElement(".speech_recognition_container");
