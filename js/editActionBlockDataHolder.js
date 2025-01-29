@@ -45,7 +45,21 @@ class EditActionBlockDataHolder {
         lastSavedInputData['selectValues'] = selectValues;
         lastSavedInputData['textareaValues'] = textareaValues;
 
+        console.log(inputValues);
+
         localStorage.setItem('lastSavedInputData', JSON.stringify(lastSavedInputData));
+
+
+        // !!!
+        let debug = '';
+        debug += 'SAVE';
+        let i = 0;
+        textareaValues.forEach(textareaValue => {
+           debug += i + ': ' + textareaValue + '\n';
+           i++;
+        });
+
+        $('#debugOutput').text(debug);
     }
 
     #restoreLastSavedInputValues() {
@@ -77,6 +91,19 @@ class EditActionBlockDataHolder {
 
             textareas[index].value = lastSavedInputData['textareaValues'][index];
         }
+
+
+        // !!!
+        let debug = '';
+        debug += 'RESTORE\n';
+        let i = 0;
+        for (let index = 0; index < textareas.length; index++) {
+            const element = textareas[index];
+            debug += index + ': ' + element.value  + '\n';
+        }
+        
+
+        $('#debugOutput').text(debug);
     }
 
     #setInputDataHandler() {

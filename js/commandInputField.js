@@ -16,7 +16,7 @@ const someStyle = `
     .fixed-top-centered-horizontally {
         position: fixed;
         max-width: 500px;
-        top: 10px;
+        top: 45px;
         left: 50%;
         transform: translateX(-50%);
         width: 80%; /* Adjust width as needed */
@@ -51,8 +51,8 @@ const someStyle = `
         background-color: #fefefe;
     }
     .command-item {
-        margin-top: 4px;
-        margin-bottom: 4px;
+        // margin-top: 4px;
+        // margin-bottom: 4px;
         padding: 10px;
         border-bottom: 1px solid #ccc; /* Outline for each list item */
         cursor: pointer; /* Make list items clickable */
@@ -172,7 +172,6 @@ function setCommandInputFiled(commandObjects) {
     handleInnerShadowsOfElemOnScroll(list);
     handleInnerShadowsOfElemOnScroll(commandInput, true);
 
-    // !!!
     commandObjects.forEach(commandObject => {
         addCommandObject(commandObject);
     });
@@ -198,8 +197,6 @@ function setCommandInputFiled(commandObjects) {
 
     commandInput.addEventListener('input', () => {
         const commandInputWords = getWordsOfText(getNormalizedTextOfTextarea(commandInput.value));
-
-        console.log('commandInput with scroll', handleInnerShadowsOfElemWithScroll(commandInput));
 
         // If no words in input field then show all commands in list.
         if (commandInputWords.length === 0) {
@@ -324,9 +321,12 @@ function setCommandInputFiled(commandObjects) {
         li.classList.add(commandContainerClassName);
         //
 
+        // !!!
         // Click handler.
         if (commandObject.action != undefined) {
             li.addEventListener('click', () => {
+                commandInput.value = '';
+                hideCommandsList();
                 commandObject.action();
             });
         }
