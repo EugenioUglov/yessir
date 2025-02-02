@@ -21,6 +21,7 @@ class NoteView {
     
         const showContentOnPage = function(content, isHTML = false) {
             $('#btn_close').show();
+            $('.btn_open_command_palette').show();
             $('#content_executed_from_actionBlock').show();
             
             // Hide search area with Action-Blocks.
@@ -64,8 +65,11 @@ class NoteView {
                 $(this).hide();
             });
             $('#btn_close').show();
+            $('.btn_open_command_palette').show();
         });
         $('#showJustContentButton').show();
+
+        $('.btn_open_command_palette').show();
 
 
         return [$('.btn_open_settings_actionBlock'), $('#content_executed_from_actionBlock'),
@@ -83,6 +87,7 @@ class NoteView {
                 console.log('test');
                 hideCommandInput();
                 $('.btn_open_settings_actionBlock').hide();
+                $('.btn_open_command_palette').hide();
                 handler(); 
             });
         }
@@ -99,6 +104,7 @@ class NoteView {
         $('#content_executed_from_actionBlock').hide();
         $('#content_executed_action-block_container').hide();
         $('#btn_close').hide();
+        $('.btn_open_command_palette').hide();
         $('#btn_back').hide();
         $('#showJustContentButton').hide();
     }

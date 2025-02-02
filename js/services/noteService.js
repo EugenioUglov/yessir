@@ -26,7 +26,7 @@ class NoteService {
       this.noteSpeakerService.speak();
     }
 
-    showCommandInput();
+    // showCommandInput();
   }
 
   close = () => {

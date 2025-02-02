@@ -48,7 +48,11 @@ class NoteController {
 
         
 
-        setCommandInputFiled(commandObjects); 
+        setCommandInputFiled(commandObjects);
+
+        $('.btn_open_command_palette').click(()=> {
+            showCommandInput();
+        });
     }
 
 

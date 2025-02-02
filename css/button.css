@@ -143,12 +143,15 @@ li{position:relative;}
 li:not(.sidebar-brand):before{position:absolute; left:-20px;font-family: FontAwesome;color:red;width: 30px;}
 
 div#btn_clear_input_field_request {
+    /* width: 50%; */
     /* margin-top: 1px; */
+    background-color: #6c6c6c87; 
+    /* background-color: #828282;
     background-color: #9e9a9a2b;
-    background-color: #ffffff;
+    background-color: #ffffff; */
     border-radius: 50px;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     align-items: center;
     align-content: center;
     text-align: center;
@@ -156,8 +159,9 @@ div#btn_clear_input_field_request {
     align-items: center;
     justify-content: center;
     /* outline: black solid 1px; */
+    margin-top: 5px;
     margin-left: 5px;
-    margin-right: 5px;
+    margin-right: 10px;
 }
 
 #btn_accept_input_field_request {

@@ -132,6 +132,7 @@ class ActionBlockView {
       action_name_of_actionBlock = this.action_name_enum.openURL;
 
     $("#btn_close").show();
+    $(".btn_open_command_palette").show();
     $("#elements_to_edit_actionBlock").show();
     settings_actionBlock_container.show();
     $("#elements_for_delete_infoBlock").show();
@@ -210,6 +211,7 @@ class ActionBlockView {
     $("#btn_create_default_actionBlocks").hide();
     $("#btn_back").hide();
     $("#btn_close").hide();
+    $(".btn_open_command_palette").hide();
   }
 
   onOpenMainPageWithoutActionBlocks() {
@@ -735,6 +737,7 @@ class ActionBlockView {
     // Also close modal box (by standart logic of API).
 
     $("#btn_close").hide();
+    $(".btn_open_command_palette").hide();
     $("#btn_back").hide();
   }
 

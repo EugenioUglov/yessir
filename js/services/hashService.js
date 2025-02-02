@@ -497,6 +497,7 @@ class HashService {
       $("#content_executed_from_actionBlock").css("display", "none");
       $("#btn_close").css("display", "none");
       $(".btn_open_settings_actionBlock").css("display", "none");
+      $(".btn_open_command_palette").css("display", "none");
       $("#btn_back").css("display", "none");
 
       // $('#actionBlocks_page').css('display', 'block');

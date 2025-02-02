@@ -7,8 +7,10 @@ const someStyle = `
     }
     .form-wrapper {
         resize: vertical;
-        outline: 1px solid gainsboro;
-        width: 100%;
+        // outline: 1px solid gainsboro;
+        outline: none;
+        border: none;
+        width: 90%;
         resize: none;
         border-radius: 10px;
         padding: 5px
@@ -16,7 +18,7 @@ const someStyle = `
     .fixed-top-centered-horizontally {
         position: fixed;
         max-width: 500px;
-        top: 45px;
+        top: 5px;
         left: 50%;
         transform: translateX(-50%);
         width: 80%; /* Adjust width as needed */
@@ -24,18 +26,37 @@ const someStyle = `
     }
     .textarea-list-wrapper {
         width: 100%;
-        height: 60px;
+        height: 50px;
         // background-color: #f5f5f596;
+            position: relative;
+        display: inline-block;
+        outline: 1px solid gainsboro;
+        width: 100%;
+        resize: none;
+        border-radius: 10px;
+        padding: 5px;
+        background-color: white;
     }
 
+    // .toggle-icon {
+    //     position: fixed;
+    //     top: 20px;
+    //     right: 20px;
+    //     cursor: pointer;
+    //     /* Size of icon. */
+    //     font-size: 15px;
+    // }
+
     .toggle-icon {
-        position: fixed;
-        top: 20px;
-        right: 20px;
+      position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: calc(90%); /* positions icon 10px after textarea's right edge */
         cursor: pointer;
-        /* Size of icon. */
         font-size: 15px;
     }
+
+
 
     #commandsList {
         display: none;
@@ -125,7 +146,7 @@ const someStyle = `
 const html = `
     <div class="command-input-container">
         <div class="fixed-top-centered-horizontally">
-            <div class="textarea-list-wrapper">
+            <div class="textarea-list-wrapper" style='position: relative; display: inline-block; /* or width: 90%; if you want container same width as textarea */'>
     <textarea id="${commandInputId}" class="form-wrapper" placeholder="Type command..."></textarea>     <!-- Down arrow icon -->
             <span id="toggleIcon" class="toggle-icon">&#9660;</span> 
                 <ul id="commandsList"></ul>

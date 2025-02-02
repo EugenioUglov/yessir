@@ -304,10 +304,6 @@ div#welcome_page {
     width: 50%;
   }
 
-  div#btn_clear_input_field_request {
-    width: 50%;
-  }
-
   #btn_voice_recognition {
     width: 20%;
   }
@@ -586,10 +582,10 @@ input[type="submit"] {
 #img_clear_input_field_request {
   content: url("../icons/x.png");
 
-  height: 23px;
-  width: 23px;
+  filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(289deg) brightness(1119%) contrast(119%);
+  height: 10px;
+  width: 10px;
   pointer-events: none;
-  color: gray;
 }
 
 #img_voice_recognition {
