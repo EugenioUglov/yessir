@@ -30,11 +30,11 @@ button {
 }
 
 .btn_icon:hover {
-    box-shadow: 0 0 3pt 2pt blueviolet;
+    /* box-shadow: 0 0 3pt 2pt blueviolet; */
 }
 
 .btn:hover {
-    box-shadow: 0 0 3pt 2pt blueviolet;
+    /* box-shadow: 0 0 3pt 2pt blueviolet; */
 }
 
 .btn_right {
