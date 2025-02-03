@@ -143,7 +143,7 @@ const someStyle = `
 </style>
 `;
 
-const html = `
+const commandInputFieldHTML = `
     <div class="command-input-container">
         <div class="fixed-top-centered-horizontally">
             <div class="textarea-list-wrapper" style='position: relative; display: inline-block; /* or width: 90%; if you want container same width as textarea */'>
@@ -156,15 +156,75 @@ const html = `
     </div>
 `;
 
+// const btnOpenCommandInputFieldHTML = `
+//     <div class="btn_open_command_palette" title="Command palette" style="
+//     display: none; 
+//     position: fixed;
+//     left: 50%;
+//     width: 500px;
+//     height: 45px;
+//     border: none;
+//     background-color: transparent;
+//     position: fixed;
+//     width: 500px;
+//     top: 1px;
+//     left: 50%;
+//     margin-left: -250px;
+//         transform: translateX(-50%);
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     /* height: 200px; */
+//     /* margin-top: -100px; */">
+//         <button style="width: 30px; height: 30px; margin-top: 15px; border: none; outline: none; border-radius: 50%; background-color: white; box-shadow: 0px 0px 10px 1px;"><img class="" src="./icons/command-palette.png" style="width: 20px; height: 20px; vertical-align: middle; font-size: 1.5rem; filter: hue-rotate(120deg) brightness(15%) contrast(0%);"></button>
+//     </div>`;
+
+
+const btnOpenCommandInputFieldHTML = 
+`<div class="btn_open_command_palette" style="
+    height: 45px;
+    border: none;
+    background-color: transparent;
+    position: fixed;
+    width: 500px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+">
+    <button style="
+        width: 30px;
+        height: 30px;
+        border: none;
+        outline: none;
+        border-radius: 50%;
+        background-color: white;
+        box-shadow: 0px 0px 10px 1px;
+    ">
+        <img src="./icons/command-palette.png" style="
+            width: 20px; 
+            height: 20px; 
+            vertical-align: middle; 
+            font-size: 1.5rem; 
+            filter: hue-rotate(120deg) brightness(15%) contrast(0%);
+        ">
+    </button>
+</div>`;
+
 
 document.head.insertAdjacentHTML('beforeend', someStyle);
 
-document.body.innerHTML = html + document.body.innerHTML;
+document.body.innerHTML = btnOpenCommandInputFieldHTML + commandInputFieldHTML + document.body.innerHTML;
 const commandInput = document.getElementById(commandInputId);
 const commandInputContainer = document.getElementsByClassName("command-input-container")[0];
 
 hideCommandInput();
 
+$('.btn_open_command_palette').click(()=> {
+    showCommandInput();
+    $('.btn_open_command_palette').hide();
+});
 
 
   /**

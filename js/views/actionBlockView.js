@@ -132,12 +132,12 @@ class ActionBlockView {
       action_name_of_actionBlock = this.action_name_enum.openURL;
 
     $("#btn_close").show();
-    $(".btn_open_command_palette").show();
     $("#elements_to_edit_actionBlock").show();
     settings_actionBlock_container.show();
     $("#elements_for_delete_infoBlock").show();
     settings_actionBlock_container.find(".input_field_title")[0].focus();
 
+    $(".btn_open_command_palette").hide();
     $("#btn_create_actionBlock").hide();
     $("#btn_create_actionBlock_with_automation").hide();
     $(".btn_update_actionBlock").show();
