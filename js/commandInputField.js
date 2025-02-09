@@ -201,6 +201,9 @@ const btnOpenCommandInputFieldHTML =
         border-radius: 50%;
         background-color: white;
         box-shadow: 0px 0px 10px 1px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
     ">
         <img src="./icons/command-palette.png" style="
             width: 20px; 
