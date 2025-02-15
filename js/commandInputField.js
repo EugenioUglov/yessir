@@ -186,12 +186,14 @@ const btnOpenCommandInputFieldHTML =
     border: none;
     background-color: transparent;
     position: fixed;
-    width: 500px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    // width: 500px;
+    // left: 50%;
+    // transform: translateX(-50%);
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    bottom: 25px;
+    right: 25px;
 ">
     <button style="
         width: 30px;

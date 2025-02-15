@@ -18,7 +18,6 @@ class TagsNormalizer {
 
 
     #getNormalizedTags(tags) {
-        console.log(' tags before normal', tags);
         if (Array.isArray(tags)) {
             tags = tags.toString();
         }
@@ -41,14 +40,11 @@ class TagsNormalizer {
     
         // Convertation from Set to Array.
         normalizedTags = Array.from(tags_set);
-
-        console.log('tags normal', normalizedTags);
     
         return normalizedTags;
     }
 
     #getAdditionalTags(tags) {
-        console.log('tags', tags);
          if (Array.isArray(tags) === false) {
             tags = this.#textManager.getArrayByText(tags);
         }
@@ -74,8 +70,6 @@ class TagsNormalizer {
                 additionalTags.push(additionalTag);
             }
         }
-
-        console.log('additionalTags', additionalTags);
 
         return additionalTags;
     }

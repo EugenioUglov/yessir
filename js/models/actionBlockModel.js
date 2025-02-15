@@ -26,6 +26,9 @@ class ActionBlockModel {
 
     #actionBlocks_map;
     #titles_actionBlocksMap_by_tag = {};
+    #title_actionBlock_by_id = {};
+
+
     
     #init() {
         this.#actionBlocks_map = new Map();
@@ -328,6 +331,8 @@ class ActionBlockModel {
         const that = this;
         const tagsNormalizer = new TagsNormalizer();
 
+        console.log('actionBlocks_map', this.#actionBlocks_map);
+
         // Add new id.
         const actionBlocksArray = [ ...this.#actionBlocks_map.values() ];
         const ids = actionBlocksArray.map(obj => obj.id).filter(item => typeof item === "number" && typeof item !== NaN);
@@ -535,6 +540,20 @@ class ActionBlockModel {
         this.#actionBlocks_map = new Map();
 
         this.#onUpdateVarialbeWithActionBlocks();
+    }
+
+    #addActionBlockTitleById(title) {
+        const lastKey = Object.keys(this.#title_actionBlock_by_id).pop();
+    
+        if (lastKey === undefined) {
+            lastKey = 0;
+        }
+        
+        const newActionBlockId = Number(lastKey) + 1;
+    
+        this.#title_actionBlock_by_id[newActionBlockId] = title;
+
+        return newActionBlockId;
     }
 
     #onUpdateVarialbeWithActionBlocks() {
