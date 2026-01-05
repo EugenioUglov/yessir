@@ -6,7 +6,7 @@ class HashService {
     this.noteSpeakerService = noteSpeakerService;
     this.searchService = searchService;
     this.scrollService = scrollService;
-    this.#view = new PageView();
+    this.#view = new PageElementView();
 
     this.#hash_previous;
   }
