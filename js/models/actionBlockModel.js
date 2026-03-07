@@ -331,20 +331,20 @@ class ActionBlockModel {
         const that = this;
         const tagsNormalizer = new TagsNormalizer();
 
+        actionBlock_to_add.title = getNormalizedTitle(actionBlock_to_add.title);
+
+        if (isTitleValid(actionBlock_to_add.title) === false) return false;
+
         console.log('actionBlocks_map', this.#actionBlocks_map);
 
         // Add new id.
         const actionBlocksArray = [ ...this.#actionBlocks_map.values() ];
-        const ids = actionBlocksArray.map(obj => obj.id).filter(item => typeof item === "number" && typeof item !== NaN);
-        let lastId = Math.max(ids);
-        if (lastId === typeof lastId !== "number" || typeof lastId === NaN) lastId = 0;
+        const ids = actionBlocksArray.map(obj => obj.id).filter(item => typeof item === "number" && !isNaN(item));
+        
+        let lastId = ids.length > 0 ? Math.max(...ids) : 0; 
+        
         actionBlock_to_add.id = lastId + 1;
         //
-
-
-        actionBlock_to_add.title = getNormalizedTitle(actionBlock_to_add.title);
-
-        if (isTitleValid(actionBlock_to_add.title) === false) return false;
 
         actionBlock_to_add.tags = tagsNormalizer.getHandledTags(actionBlock_to_add.tags);
 
@@ -491,6 +491,58 @@ class ActionBlockModel {
         }
 
         const is_deleted = this.deleteActionBlockByTitle(original_title);
+
+        if ( ! is_deleted) {
+            alert('ERROR! Action-Block hasn\'t been deleted');
+            return false;
+        }
+        
+        const action_block =
+        {
+            title: title,
+            tags: tags,
+            action: action,
+            content: content,
+            imageURL: image_URL
+        };
+
+        const is_created = this.add(action_block);
+    
+        if ( ! is_created) {
+            alert('ERROR! Action-Bclok hasn\'t been created.');
+            return false;
+        }
+
+        return true;
+        
+
+        function addTitleToTags() {
+            // Add new tag getting text from title.
+    
+            const title_without_symbols = title.replace(/[^a-zа-яё0-9\s]/gi, '');
+            
+            if (tags) tags = tags + ", ";
+            
+            // Add new tag getting text from title.
+            tags += title + ", " + title_without_symbols;
+        }
+    }
+
+    
+    updateActionBlockByTitle(oldTitle, title, tags, action, content, image_URL) {
+        // Check new title validation.
+        if (oldTitle.toLowerCase() != title.toLowerCase()) {
+            const is_actionBlock_exists_by_title = this.getActionBlockByTitle(title);
+            
+            if (is_actionBlock_exists_by_title) {
+                alert('Action-Block with current title already exists. Title: ' + title);
+                return false;
+            }
+
+            addTitleToTags();
+        }
+
+        const is_deleted = this.deleteActionBlockByTitle(oldTitle);
 
         if ( ! is_deleted) {
             alert('ERROR! Action-Block hasn\'t been deleted');

@@ -72,10 +72,11 @@ class ActionBlockService {
     const that = this;
     this.loadingService.startLoading();
     const nounNumber = new NounNumber();
+
     if (this.model.isActionBlockExist(title)) {
       alert('Action-Block with current title already exists. Title: ' + title);
 
-      onEnd(false);
+      if (onEnd) onEnd(false);
       return false;
     }
 
@@ -220,6 +221,109 @@ class ActionBlockService {
     }
   }
 
+  
+  async createActionBlockWithOptimizedAutomationAsync(
+    title,
+    tags,
+    action,
+    content,
+    image_URL,
+    onEnd
+  ) {
+    const that = this;
+    this.loadingService.startLoading();
+    const nounNumber = new NounNumber();
+    
+    if (this.model.isActionBlockExist(title)) {
+      alert('Action-Block with current title already exists. Title: ' + title);
+
+      if (onEnd) onEnd(false);
+      return false;
+    }
+
+    const isCreated = that.createActionBlock(title, tags, action, content, image_URL, onEnd);
+
+    
+    const getSingularizedWordsPromise = new Promise((resolve, reject) => {
+      const title_words = title.split(/[^a-z]+/i).filter(Boolean);
+
+      nounNumber.getSingularizedWords(
+        title_words,
+        (singularized_words) => {
+          resolve({
+            status: "success",
+            singularized_words: singularized_words,
+          });
+        },
+        (error) => {
+          resolve({ status: "error", message: error });
+        }
+      );
+    });
+
+    //  Get image rom unspash IF uer didn't set image.
+    const getImagePromise = new Promise((resolve, reject) => {
+      if (image_URL === undefined || image_URL === "") {
+        const unspash_image_searcher = new UnsplashImageSearcher();
+        unspash_image_searcher.getImageByKeyword(
+          title,
+          1,
+          (image_from_unsplash) => {
+            if (image_from_unsplash != undefined && image_from_unsplash != "") {
+              image_URL = image_from_unsplash;
+            }
+            resolve(image_URL);
+          }
+        );
+      } else {
+        resolve(image_URL);
+      }
+    });
+    
+
+    return await Promise.all([getSingularizedWordsPromise, getImagePromise])
+      .then((values) => {
+        const actionBlock = that.getActionBlockByTitle(title);
+
+        console.log('promise');
+
+        if (!actionBlock) {
+          console.error("Action Block не найден: " + title);
+          return false;
+        }
+
+        const [singularized_words_obj, received_image_URL] = values;
+
+        // Обновляем теги
+        if (singularized_words_obj.status === "success") {
+          const newTags = singularized_words_obj.singularized_words.filter(Boolean);
+          if (newTags.length > 0) {
+            // Добавляем к существующим тегам
+            const existingTags = actionBlock.tags || "";
+            actionBlock.tags = existingTags + (existingTags ? ", " : "") + newTags.join(", ");
+          }
+        }
+
+        // Обновляем изображение
+        if (received_image_URL && actionBlock.image_URL === "") {
+          actionBlock.image_URL = received_image_URL;
+        }
+
+        // Триггерим обновление UI/переменных
+        // this.#onUpdateVarialbeWithActionBlocks();
+        that.model.updateActionBlockByTitle(
+          title,
+          actionBlock.title,
+          actionBlock.tags,
+          actionBlock.selected_action,
+          actionBlock.content,
+          actionBlock.image_URL
+        );
+
+        if (onEnd) onEnd(true);
+      })
+  }
+
   createActionBlock = (title, tags, action, content, image_URL, onEnd) => {
     const actionBlock = {
       title: title,
@@ -233,7 +337,6 @@ class ActionBlockService {
 
 
     if (is_created === false) {
-      console.log('onEnd', onEnd);
       if (onEnd != undefined) onEnd(false);
       return false;
     }
