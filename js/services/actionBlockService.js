@@ -295,6 +295,10 @@ class ActionBlockService {
           //     this.#onUpdateVarialbeWithActionBlocks(); // Обновляем UI сразу
           // }
 
+        const actionBlock = that.getActionBlockByTitle(title);
+
+        if (actionBlock.imageURL != "" || receivedImg === "") return false;
+
         that.model.updateActionBlockByTitle(
           title,
           actionBlock.title,
