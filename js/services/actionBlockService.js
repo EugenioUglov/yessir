@@ -279,8 +279,34 @@ class ActionBlockService {
         resolve(image_URL);
       }
     });
-    
 
+  let imagePromise = Promise.resolve(); // По умолчанию ничего не делаем
+
+  if (!image_URL) {
+      const unspashSearcher = new UnsplashImageSearcher();
+      imagePromise = new Promise((resolve) => {
+          unspashSearcher.getImageByKeyword(title, 1, (img) => resolve(img));
+      }).then(receivedImg => {
+        console.log('ok');
+          // const block = getTargetBlock();
+          // if (block && receivedImg) {
+          //     block.image_URL = receivedImg;
+          //     console.log("Image updated for ID:", targetId);
+          //     this.#onUpdateVarialbeWithActionBlocks(); // Обновляем UI сразу
+          // }
+
+        that.model.updateActionBlockByTitle(
+          title,
+          actionBlock.title,
+          actionBlock.tags,
+          actionBlock.action,
+          actionBlock.content,
+          receivedImg
+        );
+      });
+  }
+    
+/*
     return await Promise.all([getSingularizedWordsPromise, getImagePromise])
       .then((values) => {
         const actionBlock = that.getActionBlockByTitle(title);
@@ -315,13 +341,14 @@ class ActionBlockService {
           title,
           actionBlock.title,
           actionBlock.tags,
-          actionBlock.selected_action,
+          actionBlock.action,
           actionBlock.content,
           actionBlock.image_URL
         );
 
         if (onEnd) onEnd(true);
       })
+*/
   }
 
   createActionBlock = (title, tags, action, content, image_URL, onEnd) => {
