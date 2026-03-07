@@ -287,7 +287,6 @@ class ActionBlockService {
       imagePromise = new Promise((resolve) => {
           unspashSearcher.getImageByKeyword(title, 1, (img) => resolve(img));
       }).then(receivedImg => {
-        console.log('ok');
           // const block = getTargetBlock();
           // if (block && receivedImg) {
           //     block.image_URL = receivedImg;
@@ -298,9 +297,6 @@ class ActionBlockService {
         const actionBlock = that.getActionBlockByTitle(title);
 
         if (actionBlock.imageURL != "" || receivedImg === "") return false;
-        console.log('ok 2');
-        console.log('img', receivedImg);
-
 
         that.model.updateActionBlockByTitle(
           title,
