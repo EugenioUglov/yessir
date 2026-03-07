@@ -298,6 +298,9 @@ class ActionBlockService {
         const actionBlock = that.getActionBlockByTitle(title);
 
         if (actionBlock.imageURL != "" || receivedImg === "") return false;
+        console.log('ok 2');
+        console.log('img', receivedImg);
+
 
         that.model.updateActionBlockByTitle(
           title,
