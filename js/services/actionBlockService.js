@@ -264,7 +264,7 @@ class ActionBlockService {
     let tagsPromise = Promise.resolve();
 
     setTagsForActionBlockAsync();
-    setImageForActionBlockAsync();
+    if (!image_URL) setImageAutomaticallyForActionBlockAsync();
 
     function setTagsForActionBlockAsync() {
       const nounNumber = new NounNumber();
@@ -278,12 +278,14 @@ class ActionBlockService {
           );
       }).then(singularizedWords => {
           const actionBlock = that.getActionBlockByTitle(title);
+
           if (singularizedWords.length > 0) {
             const newTags = singularizedWords.filter(Boolean).join(", ");
+            
             if (newTags) {
               // Добавляем к существующим и нормализуем
               actionBlock.tags = (actionBlock.tags ? actionBlock.tags + ", " : "") + newTags;
-              console.log("Tags updated for ID:", targetId);
+
               that.model.updateActionBlockByTitle(
                 title,
                 actionBlock.title,
@@ -297,26 +299,25 @@ class ActionBlockService {
       });
     }
 
-    function setImageForActionBlockAsync() {
-      if (!image_URL) {
-        const unspashSearcher = new UnsplashImageSearcher();
-        imagePromise = new Promise((resolve) => {
-            unspashSearcher.getImageByKeyword(title, 1, (img) => resolve(img));
-        }).then(receivedImg => {
-          const actionBlock = that.getActionBlockByTitle(title);
+    function setImageAutomaticallyForActionBlockAsync() {
+      const unspashSearcher = new UnsplashImageSearcher();
+      imagePromise = new Promise((resolve) => {
+          unspashSearcher.getImageByKeyword(title, 1, (img) => resolve(img));
+      }).then(receivedImg => {
+        const actionBlock = that.getActionBlockByTitle(title);
 
-          if (actionBlock.imageURL != "" || receivedImg === "") return false;
+        if (actionBlock.imageURL != "" || receivedImg === "") return false;
 
-          that.model.updateActionBlockByTitle(
-            title,
-            actionBlock.title,
-            actionBlock.tags,
-            actionBlock.action,
-            actionBlock.content,
-            receivedImg
-          );
-        });
-      }
+        that.model.updateActionBlockByTitle(
+          title,
+          actionBlock.title,
+          actionBlock.tags,
+          actionBlock.action,
+          actionBlock.content,
+          receivedImg
+        );
+      });
+      
     }
 
     this.handleAutomationEnd([imagePromise, tagsPromise], onEnd);
