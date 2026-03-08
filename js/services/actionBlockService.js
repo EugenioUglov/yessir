@@ -232,7 +232,6 @@ class ActionBlockService {
   ) {
     const that = this;
     this.loadingService.startLoading();
-    const nounNumber = new NounNumber();
     
     if (this.model.isActionBlockExist(title)) {
       alert('Action-Block with current title already exists. Title: ' + title);
@@ -244,72 +243,85 @@ class ActionBlockService {
     const isCreated = that.createActionBlock(title, tags, action, content, image_URL, onEnd);
 
     
-    const getSingularizedWordsPromise = new Promise((resolve, reject) => {
+    // const getSingularizedWordsPromise = new Promise((resolve, reject) => {
+    //   const title_words = title.split(/[^a-z]+/i).filter(Boolean);
+
+    //   nounNumber.getSingularizedWords(
+    //     title_words,
+    //     (singularized_words) => {
+    //       resolve({
+    //         status: "success",
+    //         singularized_words: singularized_words,
+    //       });
+    //     },
+    //     (error) => {
+    //       resolve({ status: "error", message: error });
+    //     }
+    //   );
+    // });
+
+    let imagePromise = Promise.resolve();
+    let tagsPromise = Promise.resolve();
+
+    setTagsForActionBlockAsync();
+    setImageForActionBlockAsync();
+
+    function setTagsForActionBlockAsync() {
+      const nounNumber = new NounNumber();
       const title_words = title.split(/[^a-z]+/i).filter(Boolean);
+      console.log('start tags singls');
 
-      nounNumber.getSingularizedWords(
-        title_words,
-        (singularized_words) => {
-          resolve({
-            status: "success",
-            singularized_words: singularized_words,
-          });
-        },
-        (error) => {
-          resolve({ status: "error", message: error });
-        }
-      );
-    });
-
-    //  Get image rom unspash IF uer didn't set image.
-    const getImagePromise = new Promise((resolve, reject) => {
-      if (image_URL === undefined || image_URL === "") {
-        const unspash_image_searcher = new UnsplashImageSearcher();
-        unspash_image_searcher.getImageByKeyword(
-          title,
-          1,
-          (image_from_unsplash) => {
-            if (image_from_unsplash != undefined && image_from_unsplash != "") {
-              image_URL = image_from_unsplash;
+      tagsPromise = new Promise((resolve) => {
+          nounNumber.getSingularizedWords(title_words, 
+              (words) => resolve(words), 
+              () => resolve([])
+          );
+      }).then(singularizedWords => {
+          const actionBlock = that.getActionBlockByTitle(title);
+          if (singularizedWords.length > 0) {
+            const newTags = singularizedWords.filter(Boolean).join(", ");
+            if (newTags) {
+              // Добавляем к существующим и нормализуем
+              actionBlock.tags = (actionBlock.tags ? actionBlock.tags + ", " : "") + newTags;
+              console.log("Tags updated for ID:", targetId);
+              that.model.updateActionBlockByTitle(
+                title,
+                actionBlock.title,
+                actionBlock.tags,
+                actionBlock.action,
+                actionBlock.content,
+                receivedImg
+              );
             }
-            resolve(image_URL);
           }
-        );
-      } else {
-        resolve(image_URL);
-      }
-    });
-
-  let imagePromise = Promise.resolve(); // По умолчанию ничего не делаем
-
-  if (!image_URL) {
-      const unspashSearcher = new UnsplashImageSearcher();
-      imagePromise = new Promise((resolve) => {
-          unspashSearcher.getImageByKeyword(title, 1, (img) => resolve(img));
-      }).then(receivedImg => {
-          // const block = getTargetBlock();
-          // if (block && receivedImg) {
-          //     block.image_URL = receivedImg;
-          //     console.log("Image updated for ID:", targetId);
-          //     this.#onUpdateVarialbeWithActionBlocks(); // Обновляем UI сразу
-          // }
-
-        const actionBlock = that.getActionBlockByTitle(title);
-
-        if (actionBlock.imageURL != "" || receivedImg === "") return false;
-
-        that.model.updateActionBlockByTitle(
-          title,
-          actionBlock.title,
-          actionBlock.tags,
-          actionBlock.action,
-          actionBlock.content,
-          receivedImg
-        );
       });
-  }
+    }
+
+    function setImageForActionBlockAsync() {
+      if (!image_URL) {
+        const unspashSearcher = new UnsplashImageSearcher();
+        imagePromise = new Promise((resolve) => {
+            unspashSearcher.getImageByKeyword(title, 1, (img) => resolve(img));
+        }).then(receivedImg => {
+          const actionBlock = that.getActionBlockByTitle(title);
+
+          if (actionBlock.imageURL != "" || receivedImg === "") return false;
+
+          that.model.updateActionBlockByTitle(
+            title,
+            actionBlock.title,
+            actionBlock.tags,
+            actionBlock.action,
+            actionBlock.content,
+            receivedImg
+          );
+        });
+      }
+    }
+
+    this.handleAutomationEnd([imagePromise, tagsPromise], onEnd);
     
-/*
+    /*
     return await Promise.all([getSingularizedWordsPromise, getImagePromise])
       .then((values) => {
         const actionBlock = that.getActionBlockByTitle(title);
@@ -351,7 +363,30 @@ class ActionBlockService {
 
         if (onEnd) onEnd(true);
       })
-*/
+    */
+  }
+
+
+  /**
+   * Ждет завершения всех асинхронных задач и вызывает финальный callback
+   * @param {Promise[]} tasks - массив выполняемых задач
+   * @param {Function} onEnd - функция обратного вызова
+   */
+  handleAutomationEnd(tasks, onEnd) {
+    Promise.allSettled(tasks).then((results) => {
+        console.log("Вся автоматизация завершена", results);
+        
+        // Скрываем глобальную индикацию загрузки
+        this.loadingService.stopLoading();
+        if (typeof hideLoadingElements === 'function') {
+            hideLoadingElements(); 
+        }
+
+        // Вызываем onEnd, если он был передан
+        if (onEnd) {
+            onEnd(true);
+        }
+    });
   }
 
   createActionBlock = (title, tags, action, content, image_URL, onEnd) => {
