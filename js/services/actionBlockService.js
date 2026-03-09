@@ -61,7 +61,7 @@ class ActionBlockService {
     this.hashService.setActionBlockService(this);
   }
 
-  async createActionBlockWithAutomationAsync(
+  async createActionBlockWithAutomationAsyncOld(
     title,
     tags,
     action,
@@ -279,7 +279,7 @@ class ActionBlockService {
       }).then(singularizedWords => {
           const actionBlock = that.getActionBlockByTitle(title);
 
-          if (singularizedWords.length > 0) {            
+          if (singularizedWords.length > 0) {
             if (newTags) {
               that.model.updateActionBlockByTitle(
                 title,
