@@ -269,7 +269,7 @@ class ActionBlockService {
     function setTagsForActionBlockAsync() {
       const nounNumber = new NounNumber();
       const title_words = title.split(/[^a-z]+/i).filter(Boolean);
-      console.log('start tags singls');
+
 
       tagsPromise = new Promise((resolve) => {
           nounNumber.getSingularizedWords(title_words, 
@@ -279,17 +279,12 @@ class ActionBlockService {
       }).then(singularizedWords => {
           const actionBlock = that.getActionBlockByTitle(title);
 
-          if (singularizedWords.length > 0) {
-            const newTags = singularizedWords.filter(Boolean).join(", ");
-            
+          if (singularizedWords.length > 0) {            
             if (newTags) {
-              // Добавляем к существующим и нормализуем
-              actionBlock.tags = (actionBlock.tags ? actionBlock.tags + ", " : "") + newTags;
-
               that.model.updateActionBlockByTitle(
                 title,
                 actionBlock.title,
-                actionBlock.tags,
+                [...actionBlock.tags, ...newTags],
                 actionBlock.action,
                 actionBlock.content,
                 receivedImg
