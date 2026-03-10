@@ -263,6 +263,11 @@ class ActionBlockService {
     let imagePromise = Promise.resolve();
     let tagsPromise = Promise.resolve();
 
+    const statusBar = document.getElementById('status-bar');
+  
+    // Показываем: плашка "раздвигает" страницу
+  statusBar.classList.replace('status-bar-hidden', 'status-bar-visible');
+
     setTagsForActionBlockAsync();
     if (!image_URL) setImageAutomaticallyForActionBlockAsync();
 
@@ -312,7 +317,6 @@ class ActionBlockService {
           receivedImg
         );
       });
-      
     }
 
     this.handleAutomationEnd([imagePromise, tagsPromise], onEnd);
@@ -370,6 +374,7 @@ class ActionBlockService {
    */
   handleAutomationEnd(tasks, onEnd) {
     Promise.allSettled(tasks).then((results) => {
+      const statusBar = document.getElementById('status-bar');
         console.log("Вся автоматизация завершена", results);
         
         // Скрываем глобальную индикацию загрузки
@@ -382,6 +387,9 @@ class ActionBlockService {
         if (onEnd) {
             onEnd(true);
         }
+
+        // Скрываем плашку, когда всё готово
+        statusBar.classList.replace('status-bar-visible', 'status-bar-hidden');
     });
   }
 
