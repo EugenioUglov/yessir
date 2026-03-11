@@ -285,16 +285,14 @@ class ActionBlockService {
           const actionBlock = that.getActionBlockByTitle(title);
 
           if (singularizedWords.length > 0) {
-            if (newTags) {
-              that.model.updateActionBlockByTitle(
-                title,
-                actionBlock.title,
-                [...actionBlock.tags, ...newTags],
-                actionBlock.action,
-                actionBlock.content,
-                receivedImg
-              );
-            }
+            that.model.updateActionBlockByTitle(
+              title,
+              actionBlock.title,
+              [...actionBlock.tags, ...singularizedWords],
+              actionBlock.action,
+              actionBlock.content,
+              receivedImg
+            );
           }
       });
     }
