@@ -498,6 +498,17 @@ class ActionBlockService {
     return this.model.getByPhrase(phrase);
   }
 
+  getAllActionBlocksInArray() {
+    const actionBlocks_to_show = [];
+    const actionBlocks_map = this.model.getActionBlocks();
+
+    for (const [key, value] of actionBlocks_map) {
+      actionBlocks_to_show.push(value);
+    }
+  
+    return Array.from(actionBlocks_to_show).reverse();
+  }
+
   showActionBlocks(
     actionBlocks_to_show,
     count_actionBlocks_to_show_at_time = 50
@@ -512,15 +523,7 @@ class ActionBlockService {
     this.#index_last_showed_actionBlock = 0;
 
     if (actionBlocks_to_show === undefined) {
-      actionBlocks_to_show = [];
-      const actionBlocks_to_show_map = this.model.getActionBlocks();
-
-      for (const [key, value] of actionBlocks_to_show_map) {
-        actionBlocks_to_show.push(value);
-      }
-
-      // Reverse array without rewriting variable.
-      actionBlocks_to_show = Array.from(actionBlocks_to_show).reverse();
+      actionBlocks_to_show = this.getAllActionBlocksInArray();
     }
 
     if (!actionBlocks_to_show || actionBlocks_to_show.size === 0) {
@@ -536,7 +539,7 @@ class ActionBlockService {
     this.view.clear();
 
     let i = 0;
-
+    
     for (const [
       key,
       actionBlock,
@@ -544,6 +547,7 @@ class ActionBlockService {
       if (i >= count_actionBlocks_to_show_at_time - 1) {
         break;
       }
+
 
       that.showActionBlock(actionBlock);
 
@@ -649,7 +653,20 @@ class ActionBlockService {
 
     let actionBlocks_to_show;
 
-    if (request === "") {
+    // Convert strings "tag1, tag2" into arrays of lowercase, trimmed strings
+    // Get raw strings and split by spaces OR commas
+    const plusTags = this.searchService.view.getPlusTags()
+        .toLowerCase()
+        .split(/[\s,]+/)
+        .filter(t => t.length > 0); // Remove empty strings from extra spaces
+
+    const minusTags = this.searchService.view.getMinusTags()
+        .toLowerCase()
+        .split(/[\s,]+/)
+        .filter(t => t.length > 0);
+
+
+    if (request === "" && plusTags.length === 0 && minusTags.length === 0) {
       // Show data in images.
       that.showActionBlocks();
 
@@ -658,6 +675,8 @@ class ActionBlockService {
 
     // Get request text from input field and find possible search data.
     actionBlocks_to_show = this.model.getByPhrase(request);
+
+
 
     // Set Action-Block by title at the beginning. And remove this Action-Block from position where it was before.
     const actionBlock_by_title = this.model.getActionBlockByTitle(request);
@@ -671,8 +690,32 @@ class ActionBlockService {
     //
 
     if (!actionBlocks_to_show) {
-      actionBlocks_to_show = [];
+      // actionBlocks_to_show = [];
+      actionBlocks_to_show = that.getAllActionBlocksInArray();
     }
+
+    // Filter the array before rendering
+    if (plusTags.length > 0 || minusTags.length > 0) {
+        actionBlocks_to_show = actionBlocks_to_show.filter(block => {
+            // Flatten block.tags: ["urgent", "work project"] -> ["urgent", "work", "project"]
+            const individualBlockTags = (block.tags || [])
+                .flatMap(tag => tag.toLowerCase().split(/[\s,]+/))
+                .filter(tag => tag.length > 0);
+
+            // Logic: All plusTags must be present in the flattened block tags
+            const matchesPlus = plusTags.every(searchTag => 
+                individualBlockTags.includes(searchTag)
+            );
+
+            // Logic: None of the minusTags should be present in the flattened block tags
+            const matchesMinus = minusTags.some(searchTag => 
+                individualBlockTags.includes(searchTag)
+            );
+
+            return (plusTags.length === 0 || matchesPlus) && !matchesMinus;
+        });
+    }
+
 
     if (is_execute_actionBlock_by_title) {
       let is_actionBlock_exist = false;
@@ -696,6 +739,7 @@ class ActionBlockService {
       // Show Action-Blocks separated by pages.
       this.showActionBlocks(actionBlocks_to_show);
     }
+
 
     // IF has been found just one infoObject THEN execute action.
     /*

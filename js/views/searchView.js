@@ -34,6 +34,10 @@ class SearchView {
         return user_minus_tags;
     }
 
+    getRequest() {
+        return $('#input_field_request')[0].value;
+    }
+
     setTextColorInInputField(new_color) {
         // Set color of text in input field command to black.
         $('#input_field_request')[0].style.color = new_color;

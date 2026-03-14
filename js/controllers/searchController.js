@@ -32,14 +32,20 @@ class SearchController {
 
     #onKeypressInputFieldPlusTags = (event) => {
         window.scrollTo(0, 0);
-        this.actionBlockService.showActionBlocksByTags(this.searchService.view.getPlusTags(), 
-            this.searchService.view.getMinusTags());
+        // this.actionBlockService.showActionBlocksByTags(
+        //     this.searchService.view.getPlusTags(), 
+        //     this.searchService.view.getMinusTags()
+        // );
+
+        this.actionBlockService.showActionBlocksByRequest(this.searchService.view.getRequest(), false);
     }
 
     #onKeypressInputFieldMinusTags = (event) => {
         window.scrollTo(0, 0);
-        this.actionBlockService.showActionBlocksByTags(this.searchService.view.getPlusTags(), 
-            this.searchService.view.getMinusTags());
+        // this.actionBlockService.showActionBlocksByTags(this.searchService.view.getPlusTags(), 
+        //     this.searchService.view.getMinusTags());
+
+        this.actionBlockService.showActionBlocksByRequest(this.searchService.view.getRequest(), false);
     }
 
     #setEventListeners() {
@@ -101,7 +107,7 @@ class SearchController {
         this.searchService.view.bindClickBtnSearchByTags((user_plus_tags, user_minus_tags) => onClickBtnSearchByTags(user_plus_tags, user_minus_tags));
     }
 
-    #searchActionBlocks(request, is_execute_actionBlock_by_title) {
+    #searchActionBlocks(request, is_execute_actionBlock_by_title = false) {
         this.hashService.setHashRequest({
             request_value: request, 
             is_execute_actionBlock_by_title: is_execute_actionBlock_by_title
