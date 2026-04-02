@@ -220,6 +220,183 @@ class ActionBlockService {
     }
   }
 
+
+  
+  async createActionBlockWithOptimizedAutomationAsync(
+    title,
+    tags,
+    action,
+    content,
+    image_URL,
+    onEnd
+  ) {
+    const that = this;
+    this.loadingService.startLoading();
+    
+    if (this.model.isActionBlockExist(title)) {
+      alert('Action-Block with current title already exists. Title: ' + title);
+
+      if (onEnd) onEnd(false);
+      return false;
+    }
+
+    const isCreated = that.createActionBlock(title, tags, action, content, image_URL, onEnd);
+
+    
+    // const getSingularizedWordsPromise = new Promise((resolve, reject) => {
+    //   const title_words = title.split(/[^a-z]+/i).filter(Boolean);
+
+    //   nounNumber.getSingularizedWords(
+    //     title_words,
+    //     (singularized_words) => {
+    //       resolve({
+    //         status: "success",
+    //         singularized_words: singularized_words,
+    //       });
+    //     },
+    //     (error) => {
+    //       resolve({ status: "error", message: error });
+    //     }
+    //   );
+    // });
+
+    let imagePromise = Promise.resolve();
+    let tagsPromise = Promise.resolve();
+
+    const statusBar = document.getElementById('status-bar');
+  
+    // Показываем: плашка "раздвигает" страницу
+    statusBar.classList.replace('status-bar-hidden', 'status-bar-visible');
+
+    setTagsForActionBlockAsync();
+    if (!image_URL) setImageAutomaticallyForActionBlockAsync();
+
+    function setTagsForActionBlockAsync() {
+      const nounNumber = new NounNumber();
+      const title_words = title.split(/[^a-z]+/i).filter(Boolean);
+
+
+      tagsPromise = new Promise((resolve) => {
+          nounNumber.getSingularizedWords(title_words, 
+              (words) => resolve(words), 
+              () => resolve([])
+          );
+      }).then(singularizedWords => {
+          const actionBlock = that.getActionBlockByTitle(title);
+
+          if (singularizedWords.length > 0) {
+            that.model.updateActionBlockByTitle(
+              title,
+              actionBlock.title,
+              [...actionBlock.tags, ...singularizedWords],
+              actionBlock.action,
+              actionBlock.content,
+              receivedImg
+            );
+
+            const infoPanel = new InfoPanel();
+            infoPanel.showPanel('Tags has been set');
+          }
+      });
+    }
+
+    function setImageAutomaticallyForActionBlockAsync() {
+      const unspashSearcher = new UnsplashImageSearcher();
+      imagePromise = new Promise((resolve) => {
+          unspashSearcher.getImageByKeyword(title, 1, (img) => resolve(img));
+      }).then(receivedImg => {
+        const actionBlock = that.getActionBlockByTitle(title);
+
+        if (actionBlock.imageURL != "" || receivedImg === "") return false;
+
+        that.model.updateActionBlockByTitle(
+          title,
+          actionBlock.title,
+          actionBlock.tags,
+          actionBlock.action,
+          actionBlock.content,
+          receivedImg
+        );
+
+        const infoPanel = new InfoPanel();
+        infoPanel.showPanel('Image has been set');
+      });
+    }
+
+    this.handleAutomationEnd([imagePromise, tagsPromise], onEnd);
+    
+    /*
+    return await Promise.all([getSingularizedWordsPromise, getImagePromise])
+      .then((values) => {
+        const actionBlock = that.getActionBlockByTitle(title);
+
+        console.log('promise');
+
+        if (!actionBlock) {
+          console.error("Action Block не найден: " + title);
+          return false;
+        }
+
+        const [singularized_words_obj, received_image_URL] = values;
+
+        // Обновляем теги
+        if (singularized_words_obj.status === "success") {
+          const newTags = singularized_words_obj.singularized_words.filter(Boolean);
+          if (newTags.length > 0) {
+            // Добавляем к существующим тегам
+            const existingTags = actionBlock.tags || "";
+            actionBlock.tags = existingTags + (existingTags ? ", " : "") + newTags.join(", ");
+          }
+        }
+
+        // Обновляем изображение
+        if (received_image_URL && actionBlock.image_URL === "") {
+          actionBlock.image_URL = received_image_URL;
+        }
+
+        // Триггерим обновление UI/переменных
+        // this.#onUpdateVarialbeWithActionBlocks();
+        that.model.updateActionBlockByTitle(
+          title,
+          actionBlock.title,
+          actionBlock.tags,
+          actionBlock.action,
+          actionBlock.content,
+          actionBlock.image_URL
+        );
+
+        if (onEnd) onEnd(true);
+      })
+    */
+  }
+
+
+  /**
+   * Ждет завершения всех асинхронных задач и вызывает финальный callback
+   * @param {Promise[]} tasks - массив выполняемых задач
+   * @param {Function} onEnd - функция обратного вызова
+   */
+  handleAutomationEnd(tasks, onEnd) {
+    Promise.allSettled(tasks).then((results) => {
+      const statusBar = document.getElementById('status-bar');
+        console.log("Вся автоматизация завершена", results);
+        
+        // Скрываем глобальную индикацию загрузки
+        this.loadingService.stopLoading();
+        if (typeof hideLoadingElements === 'function') {
+            hideLoadingElements(); 
+        }
+
+        // Вызываем onEnd, если он был передан
+        if (onEnd) {
+            onEnd(true);
+        }
+
+        // Скрываем плашку, когда всё готово
+        statusBar.classList.replace('status-bar-visible', 'status-bar-hidden');
+    });
+  }
+
   createActionBlock = (title, tags, action, content, image_URL, onEnd) => {
     const actionBlock = {
       title: title,
