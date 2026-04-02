@@ -293,6 +293,9 @@ class ActionBlockService {
               actionBlock.content,
               receivedImg
             );
+
+            const infoPanel = new InfoPanel();
+            infoPanel.showPanel('Tags has been set');
           }
       });
     }
@@ -314,6 +317,9 @@ class ActionBlockService {
           actionBlock.content,
           receivedImg
         );
+
+        const infoPanel = new InfoPanel();
+        infoPanel.showPanel('Image has been set');
       });
     }
 

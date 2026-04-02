@@ -1,0 +1,43 @@
+.info-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  transform: translateY(100%);
+  background-color: #222;
+  color: #fff;
+  transition: transform 0.4s ease;
+  z-index: 9999;
+  max-height: 50vh;
+  box-sizing: border-box;
+  /* Увеличиваем отступ сверху и справа под кнопку */
+  padding: 20px 40px 20px 20px; 
+}
+
+.info-panel.show {
+  transform: translateY(0);
+}
+
+.info-content {
+  overflow-y: auto;
+  max-height: calc(50vh - 40px); /* Высота панели минус паддинги */
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 28px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 5px;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #ff4d4d; /* Подсветка красным при наведении */
+}

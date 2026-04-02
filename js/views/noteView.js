@@ -9,7 +9,9 @@ class NoteView {
         // $('.btn_open_settings_actionBlock').show();
 
         // Title text.
-        const titleHTML = '<div class="center" style="font-size: 30px"><b>' + title + '</div></b><br><br>';
+        // const titleHTML = '<div class="center" style="font-size: 30px"><b>' + title + '</div></b><br><br>';
+        const titleHTML = '<div class="" style="font-size: 30px"><b>' + title + '</div></b><br><br>';
+
         // $('#content_executed_from_actionBlock').find('.title').val(title);
         // content text.
         const contentHTML = '<div class="text_info"></div>';
