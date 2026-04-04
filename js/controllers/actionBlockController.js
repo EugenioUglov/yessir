@@ -70,7 +70,7 @@ class ActionBlockController {
     // Disable all buttons.
     $(":submit, :button").attr("disabled", "disabled");
     yesSir.loadingService.startLoading();
-    this.actionBlockService.createActionBlockWithAutomationAsync(
+    this.actionBlockService.createActionBlockWithOptimizedAutomationAsync(
       title,
       tags_plus_title,
       action,

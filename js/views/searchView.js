@@ -34,6 +34,10 @@ class SearchView {
         return user_minus_tags;
     }
 
+    getRequest() {
+        return $('#input_field_request')[0].value;
+    }
+
     setTextColorInInputField(new_color) {
         // Set color of text in input field command to black.
         $('#input_field_request')[0].style.color = new_color;
@@ -141,13 +145,13 @@ class SearchView {
         });
         
         $('#btn_advanced_settings_for_search').click(function() {
-            if ($('#advanced_settings').is(':visible')) {
+            if ($('#search_by_tags_container').is(':visible')) {
                 // console.log('#advanced_settings hide');
-                $('#advanced_settings').hide();
+                $('#search_by_tags_container').hide();
             }
             else {
                 // console.log('#advanced_settings show');
-                $('#advanced_settings').show();
+                $('#search_by_tags_container').show();
             }
         });
 
@@ -157,7 +161,7 @@ class SearchView {
         });
         
         $("#rb_search_by_tags").on("click", function() {
-            $("#autocomplete").hide();
+            // $("#autocomplete").hide();
             $("#search_by_tags_container").show();
         });
 

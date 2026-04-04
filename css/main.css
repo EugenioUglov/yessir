@@ -42,6 +42,11 @@ body {
     overflow: hidden;*/
 }
 
+div#advancedSearcherByTags,
+div#advanced_settings {
+  color: #999999;
+}
+
 .inputFieldWithSuggestions {
   padding: 10px;
   width: 50%;
@@ -442,7 +447,7 @@ div#welcome_page {
   padding: 10px;
   margin: auto;
   top: 80px;
-  height: 350px;
+  height: 300px;
   max-width: 680px;
 }
 

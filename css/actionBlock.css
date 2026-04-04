@@ -27,14 +27,16 @@
    */
    
    /* background-image: linear-gradient(0deg,#0a1218,#3a2d62); */
-   background-image: linear-gradient(0deg,#45779d,#3a2d62);
+   /* background-image: linear-gradient(0deg,#45779d,#3a2d62); */
+   background-image: linear-gradient(0deg, #ffffff, #e7e3f2);
    /*
    background-image: linear-gradient(0deg,#475b6c,#d37c9d);
    background-color: #1c1c1e;
    */
 
    /* Set outline */
-   box-shadow: 0 0 0.1pt 0.4pt #7364ed4d;
+   /* box-shadow: 0 0 0.1pt 0.4pt #7364ed4d; */
+   box-shadow: 5px 5px 15px rgb(162 130 190);
 
  
    /* Speed of animation on mouse hover and over of element */
@@ -101,7 +103,8 @@
    padding: 15px 15px;
    /* new line for long text */
    word-wrap: break-word;
-   color: #c7c7c7;
+   /* color: #c7c7c7; */
+   color: #6c6c6c;
 }
 
 
@@ -242,7 +245,7 @@
    }
 
    .actionBlocks_container .title {
-      font-size: 12px;
+      font-size: 14px;
       display: inline-block;
       padding: 15px 10px;
    }
