@@ -991,6 +991,11 @@ class ActionBlockService {
             }
         });
     });
+
+    $('.login-panel .close-icon').one('click', () => {
+      $('.login-panel').css('display', 'none');
+      window.location.hash = that.hashService.getPageNameEnum().main;
+    });
   }
 
   getFromDatabase() {
@@ -1038,6 +1043,11 @@ class ActionBlockService {
           alert(error); 
         }
       });
+    });
+
+    $('.login-panel .close-icon').one('click', () => {
+      $('.login-panel').css('display', 'none');
+      window.location.hash = that.hashService.getPageNameEnum().main;
     });
   }
 

@@ -60,7 +60,7 @@ class HashService {
 
   setHashMain() {
     this.#hash_previous = this.getNormalizedCurrentHash();
-    this.#setCurrenPageName(this.getPageNameEnum().name);
+    this.#setCurrentPageName(this.getPageNameEnum().name);
     window.location.hash = this.getPageNameEnum().name;
   }
 
@@ -102,7 +102,7 @@ class HashService {
       this.openMainPage();
     }
 
-    this.#setCurrenPageName(this.getPageNameEnum().request);
+    this.#setCurrentPageName(this.getPageNameEnum().request);
     const new_hash =
       this.getPageNameEnum().request +
       "=" +
@@ -122,49 +122,57 @@ class HashService {
   setHashCreateActionBlock() {
     this.#hash_previous = this.getNormalizedCurrentHash();
 
-    this.#setCurrenPageName(this.getPageNameEnum().createActionBlock);
+    this.#setCurrentPageName(this.getPageNameEnum().createActionBlock);
     window.location.hash = this.getPageNameEnum().createActionBlock;
   }
 
   setHashCreateNote() {
     this.#hash_previous = this.getNormalizedCurrentHash();
 
-    this.#setCurrenPageName(this.getPageNameEnum().createNote);
+    this.#setCurrentPageName(this.getPageNameEnum().createNote);
     window.location.hash = this.getPageNameEnum().createNote;
   }
 
   setHashCreateLink() {
     this.#hash_previous = this.getNormalizedCurrentHash();
 
-    this.#setCurrenPageName(this.getPageNameEnum().createLink);
+    this.#setCurrentPageName(this.getPageNameEnum().createLink);
     window.location.hash = this.getPageNameEnum().createLink;
   }
 
   setHashSpeechAssistant() {
     this.#hash_previous = this.getNormalizedCurrentHash();
 
-    this.#setCurrenPageName(this.getPageNameEnum().speechRecognition);
+    this.#setCurrentPageName(this.getPageNameEnum().speechRecognition);
     window.location.hash = this.getPageNameEnum().speechRecognition;
   }
 
   setHashGetFromDatabase() {
-    this.#hash_previous = this.getNormalizedCurrentHash();
+    const that = this;
 
-    this.#setCurrenPageName(this.getPageNameEnum().getfromdatabase);
-    window.location.hash = this.getPageNameEnum().getfromdatabase;
+    // this.#hash_previous = this.getNormalizedCurrentHash();
+    this.#hash_previous = this.getPageNameEnum().main;
+
+
+    this.#setCurrentPageName(this.getPageNameEnum().getfromdatabase);
+    // window.location.hash = this.getPageNameEnum().getfromdatabase;
+    window.location.replace('#' + this.getPageNameEnum().getfromdatabase);
   }
 
   setHashSaveToDatabase() {
+    const that = this;
     this.#hash_previous = this.getNormalizedCurrentHash();
 
-    this.#setCurrenPageName(this.getPageNameEnum().savetodatabase);
+    this.#setCurrentPageName(this.getPageNameEnum().savetodatabase);
     window.location.hash = this.getPageNameEnum().savetodatabase;
   }
 
   setHashLogin() {
-    this.#hash_previous = this.getNormalizedCurrentHash();
+    const that = this;
+    // this.#hash_previous = this.getNormalizedCurrentHash();
+    this.#hash_previous = this.getPageNameEnum().main;
 
-    this.#setCurrenPageName(this.getPageNameEnum().login);
+    this.#setCurrentPageName(this.getPageNameEnum().login);
     window.location.hash = this.getPageNameEnum().login;
   }
 
@@ -217,7 +225,7 @@ class HashService {
 
   openSettingsActionBlockPage(title) {
     this.#hash_previous = window.location.hash;
-    this.#setCurrenPageName(this.getPageNameEnum().editActionBlock);
+    this.#setCurrentPageName(this.getPageNameEnum().editActionBlock);
     window.location.hash = this.getPageNameEnum().editActionBlock + "=" + title;
     this.setPageName(this.getPageNameEnum().settingsActionBlock);
   }
@@ -256,12 +264,12 @@ class HashService {
 
   openPageSettingsToCreateLink() {
     window.location.hash = this.getPageNameEnum().createLink;
-    this.#setCurrenPageName(this.getPageNameEnum().createLink);
+    this.#setCurrentPageName(this.getPageNameEnum().createLink);
   }
 
   openPageSettingsToCreateNote() {
     window.location.hash = this.getPageNameEnum().createNote;
-    this.#setCurrenPageName(this.getPageNameEnum().createNote);
+    this.#setCurrentPageName(this.getPageNameEnum().createNote);
   }
 
   openPreviousBrowserPage() {
@@ -522,7 +530,7 @@ class HashService {
     new EditActionBlockDataHolder(this);
   }
 
-  #setCurrenPageName(new_page_name) {
+  #setCurrentPageName(new_page_name) {
     this.#current_page_name = new_page_name;
   }
 }

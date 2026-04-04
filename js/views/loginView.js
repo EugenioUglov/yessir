@@ -1,6 +1,6 @@
 class LoginView {
     constructor() {
-
+        
     }
 
     bindClickBtnSubmit(handler) {
@@ -10,6 +10,7 @@ class LoginView {
             handler(login, password); 
         });
     }
+
 
     show() {
         $('.login-panel').show();
