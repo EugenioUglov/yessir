@@ -335,8 +335,6 @@ class ActionBlockModel {
 
         if (isTitleValid(actionBlock_to_add.title) === false) return false;
 
-        console.log('actionBlocks_map', this.#actionBlocks_map);
-
         // Add new id.
         const actionBlocksArray = [ ...this.#actionBlocks_map.values() ];
         const ids = actionBlocksArray.map(obj => obj.id).filter(item => typeof item === "number" && !isNaN(item));

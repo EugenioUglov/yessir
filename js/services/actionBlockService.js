@@ -266,7 +266,7 @@ class ActionBlockService {
     const statusBar = document.getElementById('status-bar');
   
     // Показываем: плашка "раздвигает" страницу
-  statusBar.classList.replace('status-bar-hidden', 'status-bar-visible');
+    statusBar.classList.replace('status-bar-hidden', 'status-bar-visible');
 
     setTagsForActionBlockAsync();
     if (!image_URL) setImageAutomaticallyForActionBlockAsync();
