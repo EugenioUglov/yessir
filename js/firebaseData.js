@@ -68,38 +68,19 @@ class FirebaseData {
     /**
      * СОХРАНЕНИЕ
      */
-    saveActionBlocksAsync({inputUsername, inputPassword, actionBlocksMapString, onSuccess, onError}) {
-        const that = this;
+    // В методе сохранения сделай так:
+    saveActionBlocksAsync(newData) {
+        const serialized = JSON.stringify(newData);
+        
+        // Если мы пытаемся сохранить то же самое, что пришло из базы - стоп
+        if (serialized === this.#lastSerializedData) return;
 
-        this.#isCorrectPasswordAsync({
-            username: inputUsername,
-            password: inputPassword, 
-            onResult: isCorrect => {
-                if (isCorrect) {
-                    // 1. Сразу помечаем данные как "уже виденные", чтобы .on() их проигнорировал
-                    this.#lastSerializedData = JSON.stringify(actionBlocksMapString);
+        this.#lastSerializedData = serialized;
 
-                    this.#getKeyActionBlocksOfUserAsync({
-                        username: inputUsername,
-                        onGet: actionBlocksKey => {
-                            if (actionBlocksKey === null || actionBlocksKey === undefined) return;
-
-                            const updates = {};
-                            updates[actionBlocksKey] = actionBlocksMapString;
-                            
-                            firebase.database().ref('actionBlocks').update(updates)
-                                .then(() => {
-                                    if (onSuccess) onSuccess();
-                                })
-                                .catch(err => onError(err));
-                        }
-                    });
-                } else {
-                    onError('Invalid password');
-                }
-            },
-            onError: error => onError(error)
-        });
+        // Прямое сохранение по уже известному ключу (который мы получили при логине)
+        if (this.cachedKey) {
+            firebase.database().ref('actionBlocks').child(this.cachedKey).set(newData);
+        }
     }
 
     /**
