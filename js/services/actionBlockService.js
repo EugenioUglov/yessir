@@ -643,7 +643,7 @@ class ActionBlockService {
     function onSetActionBlocks() {
       that.hashService.init();
       const time = new Date() - start;
-      console.log("time:" + time);
+      // console.log("time:" + time);
     }
 
     function onUserStorageDifferentFromLocal() {

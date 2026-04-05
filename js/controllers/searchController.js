@@ -90,7 +90,7 @@ class SearchController {
 
             const time_spent_for_search = time_after_search - time_before_search;
 
-            console.log('time_spent_for_search: ', time_spent_for_search/1000 + ' seconds');
+            // console.log('time_spent_for_search: ', time_spent_for_search/1000 + ' seconds');
         };
 
         function onClickBtnSearchByTags(user_plus_tags, user_minus_tags) {

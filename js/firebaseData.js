@@ -1,14 +1,12 @@
 class FirebaseData {
+    // 1. Добавляем переменные для контроля состояния
     #currentActionBlocksRef = null;
     #isSaving = false;
 
-    /**
-     * Загружает данные и вешает ПОСТОЯННЫЙ слушатель
-     */
     getActionBlocksMapStringAsync({inputUsername, inputPassword, onGetActionBlocks, onError}) {
         const that = this;
         const dbRef = firebase.database().ref();
-
+    
         this.#isCorrectPasswordAsync({
             username: inputUsername,
             password: inputPassword, 
@@ -26,36 +24,26 @@ class FirebaseData {
             that.#getKeyActionBlocksOfUserAsync({
                 username: inputUsername,
                 onGet: actionBlocksKey => {
-                    if (!actionBlocksKey) {
-                        onError("Action blocks key not found for this user");
-                        return;
-                    }
-
-                    // Если уже есть активный слушатель — снимаем его
+                    // 2. ОТПИСЫВАЕМСЯ от старого пути, если он был
                     if (that.#currentActionBlocksRef) {
                         that.#currentActionBlocksRef.off();
                     }
 
                     that.#currentActionBlocksRef = dbRef.child('actionBlocks').child(actionBlocksKey);
 
-                    // Устанавливаем постоянный слушатель
+                    // 3. Устанавливаем слушатель
                     that.#currentActionBlocksRef.on('value', (snapshot) => {
-                        // КРИТИЧНО: Если мы сами сейчас сохраняем, игнорируем "эхо" от сервера
+                        // 4. ГЛАВНОЕ: Если мы сами сейчас сохраняем, игнорируем это обновление
                         if (that.#isSaving) return;
 
                         const actionBlocksMapString = snapshot.val();
                         onGetActionBlocks(actionBlocksMapString);
-                    }, (error) => {
-                        onError(error);
                     });
                 }
             });
         }
     }
 
-    /**
-     * Сохраняет данные в базу
-     */
     saveActionBlocksAsync({inputUsername, inputPassword, actionBlocksMapString, onSuccess, onError}) {
         const that = this;
         const dbRef = firebase.database().ref();
@@ -65,32 +53,33 @@ class FirebaseData {
             password: inputPassword, 
             onResult: isCorrect => {
                 if (isCorrect) {
-                    executeSave();
-                } else {
+                    saveActonBlocks();
+                }
+                else {
                     onError('Invalid username or password');
                 }
             },
             onError: error => { onError(error); }
         });
 
-        function executeSave() {
-            that.#isSaving = true; // Включаем блокировку слушателя
+        // Внутри функции сохранения:
+        function saveActonBlocks() {
+            that.#isSaving = true; // БЛОКИРУЕМ входящие обновления
 
             that.#getKeyActionBlocksOfUserAsync({
                 username: inputUsername,
                 onGet: actionBlocksKey => {
-                    const updateData = {};
-                    updateData[actionBlocksKey] = actionBlocksMapString;
+                    const newdata = {};
+                    newdata[actionBlocksKey] = actionBlocksMapString;
+                    const dbRef = firebase.database().ref();
                     
-                    const actionBlocksRef = dbRef.child('actionBlocks');
-    
-                    actionBlocksRef.update(updateData)
+                    dbRef.child('actionBlocks').update(newdata)
                         .then(() => {
-                            that.#isSaving = false; // Отключаем блокировку
+                            that.#isSaving = false; // РАЗБЛОКИРУЕМ
                             onSuccess();
                         })
-                        .catch(function(error) {
-                            that.#isSaving = false; // Снимаем блокировку даже при ошибке
+                        .catch(error => {
+                            that.#isSaving = false;
                             onError(error);
                         });
                 }
@@ -98,55 +87,52 @@ class FirebaseData {
         }
     }
 
+
     #getKeyActionBlocksOfUserAsync({username, onGet}) {
         const dbRef = firebase.database().ref();
-        const userRelRef = dbRef.child('userActionBlocksRelation').child(username);
+
+        const userActionBlocksRelationRef = dbRef.child('userActionBlocksRelation').child(username);
         
-        userRelRef.once("value").then(function(snapshot) {
-            const val = snapshot.val();
-            onGet(val ? val.actionBlocksKey : null);
+        userActionBlocksRelationRef.once("value").then(function(snapshot) {
+            const intendedValue = snapshot.val();
+            onGet(intendedValue.actionBlocksKey);
         });
     }
 
     #isCorrectPasswordAsync({username, password, onResult, onError}) {
         const dbRef = firebase.database().ref();
-        const hashPassword = new HashPassword(); // Предполагается, что этот класс определен выше
-
-        const getUserData = ({username, onGet, onError}) => {
-            if (!username) {
-                onError('Username is empty');
-                return;
-            }
-
-            const userRef = dbRef.child('user').child(username);
-            userRef.once("value").then(snapshot => {
-                onGet(snapshot.val());
-            }).catch(e => onError(e));
-        };
+        const hashPassword = new HashPassword();
 
         getUserData({
             username: username, 
             onGet: userData => {
-                if (!userData) {
-                    onError('User not found');
-                    return;
+                if (userData === null) {
+                    onError('Invalid username');
+                    return false;
                 }
     
                 if (hashPassword.getHashedPassword(password) === userData.password) {
                     onResult(true);
-                } else {
+                }
+                else {
                     onResult(false);
                 }
             },
             onError: onError
         });
-    }
 
-    // Метод для ручной очистки слушателя (например, при логауте)
-    destroy() {
-        if (this.#currentActionBlocksRef) {
-            this.#currentActionBlocksRef.off();
-            this.#currentActionBlocksRef = null;
+        function getUserData({username, onGet, onError}) {
+            if ( ! username) {
+                onError('Invalid username');
+                return false;
+            }
+
+            const userRef = dbRef.child('user').child(username);
+            
+            userRef.once("value").then(function(snapshot) {
+                const intendedValue = snapshot.val();
+                onGet(intendedValue);
+            });
         }
     }
 }

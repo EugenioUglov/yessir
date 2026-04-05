@@ -122,7 +122,7 @@ class DefaultActionBlocks {
         };
 
         const actionBlock_get_from_database = {
-            title: 'GetFrom database in Live',
+            title: 'Get from database in Live',
             tags: 'get from database in Live, default',
             action: 'showHTML',
             content: getContentActionBlockGetFromDatabase(),

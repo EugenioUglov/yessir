@@ -48,7 +48,6 @@ class NoteView {
                 $('#content_executed_from_actionBlock').find('.content').html(getContentWithHighlightedURLs(content));
             // }
             // else {
-            //     // console.log('not html');
             //     $('#content_executed_from_actionBlock').find('.content').css('white-space', 'pre-wrap');
             //     // this.textManager.getConvertedTextToHTML(content);
             //     $('#content_executed_from_actionBlock').find('.content').text(content);
@@ -86,7 +85,6 @@ class NoteView {
         for (const button_close of buttons_close) {
             $(button_close).on('click', () => {
                 that.close();
-                console.log('test');
                 hideCommandInput();
                 $('.btn_open_settings_actionBlock').hide();
                 $('.btn_open_command_palette').hide();
