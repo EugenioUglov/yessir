@@ -1,64 +1,68 @@
 class FirebaseData {
-    #currentActionBlocksRef = null;
-    #lastSerializedData = ""; 
+    // Храним ссылку на активный узел, чтобы иметь возможность сделать .off()
+    #currentRef = null;
+    // Храним последние данные, чтобы не перерисовывать UI при собственных сохранениях
+    #lastSerializedData = "";
 
     /**
-     * ЗАГРУЗКА И ПОДПИСКА (REALTIME)
+     * ЗАГРУЗКА И ПОДПИСКА
      */
     getActionBlocksMapStringAsync({inputUsername, inputPassword, onGetActionBlocks, onError}) {
         const that = this;
-        const dbRef = firebase.database().ref();
-    
+        
         this.#isCorrectPasswordAsync({
             username: inputUsername,
             password: inputPassword, 
             onResult: isCorrect => {
                 if (isCorrect) {
-                    setupListener();
+                    this.#setupRealtimeListener(inputUsername, onGetActionBlocks, onError);
                 } else {
                     onError('Invalid username or password');
                 }
             },
-            onError: error => { onError(error); }
+            onError: error => onError(error)
         });
+    }
 
-        function setupListener() {
-            that.#getKeyActionBlocksOfUserAsync({
-                username: inputUsername,
-                onGet: actionBlocksKey => {
-                    if (actionBlocksKey === null || actionBlocksKey === undefined) return;
+    #setupRealtimeListener(username, onGetActionBlocks, onError) {
+        const that = this;
+        const dbRef = firebase.database().ref();
 
-                    const newRef = dbRef.child('actionBlocks').child(actionBlocksKey);
+        this.#getKeyActionBlocksOfUserAsync({
+            username: username,
+            onGet: actionBlocksKey => {
+                if (actionBlocksKey === null || actionBlocksKey === undefined) {
+                    onError("Action blocks key not found");
+                    return;
+                }
 
-                    // 1. ПРОВЕРКА: Если мы уже слушаем ЭТУ ЖЕ ветку, не надо создавать новый слушатель
-                    if (that.#currentActionBlocksRef && that.#currentActionBlocksRef.toString() === newRef.toString()) {
-                        console.log("Слушатель уже активен для этого пути, дубликат не создаем.");
+                // КРИТИЧЕСКИЙ МОМЕНТ: Убиваем абсолютно все слушатели на старом пути
+                if (this.#currentRef) {
+                    console.log("--- Отключаем старый слушатель ---");
+                    this.#currentRef.off(); 
+                }
+
+                // Запоминаем новый путь
+                this.#currentRef = dbRef.child('actionBlocks').child(actionBlocksKey);
+
+                console.log("--- Устанавливаем ОДИН свежий слушатель ---");
+                this.#currentRef.on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    const serialized = JSON.stringify(data);
+
+                    // Если данные не изменились (пришло "эхо" нашего сохранения) — игнорируем
+                    if (serialized === this.#lastSerializedData) {
                         return;
                     }
 
-                    // 2. ОЧИСТКА: Если мы переключаемся на другой путь, гасим старый слушатель абсолютно везде
-                    if (that.#currentActionBlocksRef) {
-                        console.log("Удаляем старый слушатель...");
-                        that.#currentActionBlocksRef.off(); 
-                    }
-
-                    that.#currentActionBlocksRef = newRef;
-
-                    // 3. УСТАНОВКА: Теперь создаем только ОДИН слушатель
-                    console.log("Устанавливаем свежий слушатель для:", actionBlocksKey);
-                    that.#currentActionBlocksRef.on('value', (snapshot) => {
-                        const data = snapshot.val();
-                        const serialized = JSON.stringify(data);
-
-                        if (serialized === that.#lastSerializedData) return;
-
-                        console.log("Данные из облака обновились!", data);
-                        that.#lastSerializedData = serialized;
-                        onGetActionBlocks(data);
-                    });
-                }
-            });
-        }
+                    console.log("Данные из облака обновились!");
+                    this.#lastSerializedData = serialized;
+                    onGetActionBlocks(data);
+                }, (err) => {
+                    if (onError) onError(err);
+                });
+            }
+        });
     }
 
     /**
@@ -66,108 +70,71 @@ class FirebaseData {
      */
     saveActionBlocksAsync({inputUsername, inputPassword, actionBlocksMapString, onSuccess, onError}) {
         const that = this;
-        const dbRef = firebase.database().ref();
 
-        // 1. Проверяем пароль
         this.#isCorrectPasswordAsync({
             username: inputUsername,
             password: inputPassword, 
             onResult: isCorrect => {
                 if (isCorrect) {
-                    executeSave();
+                    // 1. Сразу помечаем данные как "уже виденные", чтобы .on() их проигнорировал
+                    this.#lastSerializedData = JSON.stringify(actionBlocksMapString);
+
+                    this.#getKeyActionBlocksOfUserAsync({
+                        username: inputUsername,
+                        onGet: actionBlocksKey => {
+                            if (actionBlocksKey === null || actionBlocksKey === undefined) return;
+
+                            const updates = {};
+                            updates[actionBlocksKey] = actionBlocksMapString;
+                            
+                            firebase.database().ref('actionBlocks').update(updates)
+                                .then(() => {
+                                    if (onSuccess) onSuccess();
+                                })
+                                .catch(err => onError(err));
+                        }
+                    });
                 } else {
-                    onError('Invalid username or password');
+                    onError('Invalid password');
                 }
             },
-            onError: error => { onError(error); }
+            onError: error => onError(error)
         });
-
-        function executeSave() {
-            // ОБЯЗАТЕЛЬНО: Обновляем локальный кеш данных ПЕРЕД отправкой, 
-            // чтобы наш собственный слушатель проигнорировал это обновление.
-            that.#lastSerializedData = JSON.stringify(actionBlocksMapString);
-
-            that.#getKeyActionBlocksOfUserAsync({
-                username: inputUsername,
-                onGet: actionBlocksKey => {
-                    if (actionBlocksKey === null || actionBlocksKey === undefined) {
-                        onError("Key not found");
-                        return;
-                    }
-
-                    const updates = {};
-                    updates[`/actionBlocks/${actionBlocksKey}`] = actionBlocksMapString;
-                    
-                    // Используем update на корневом уровне для скорости
-                    dbRef.update(updates)
-                        .then(() => {
-                            console.log("Сохранение успешно");
-                            onSuccess();
-                        })
-                        .catch(error => onError(error));
-                }
-            });
-        }
     }
 
     /**
-     * ПОЛУЧЕНИЕ КЛЮЧА (С защитой от "0" и массивов)
+     * ПРИВАТНЫЕ МЕТОДЫ (ВСПОМОГАТЕЛЬНЫЕ)
      */
     #getKeyActionBlocksOfUserAsync({username, onGet}) {
-        const dbRef = firebase.database().ref();
-        const userRelRef = dbRef.child('userActionBlocksRelation').child(username);
-        
-        userRelRef.once("value").then(snapshot => {
-            const val = snapshot.val();
-            let key = null;
-
-            if (val !== null) {
-                // Если Firebase вернул массив (числовые индексы)
-                if (Array.isArray(val)) {
-                    const found = val.find(item => item && item.hasOwnProperty('actionBlocksKey'));
-                    key = found ? found.actionBlocksKey : null;
-                } 
-                // Если нормальный объект
-                else if (val.hasOwnProperty('actionBlocksKey')) {
-                    key = val.actionBlocksKey;
+        firebase.database().ref('userActionBlocksRelation').child(username)
+            .once("value")
+            .then(snapshot => {
+                const val = snapshot.val();
+                let key = null;
+                if (val !== null) {
+                    if (Array.isArray(val)) {
+                        const found = val.find(item => item && item.hasOwnProperty('actionBlocksKey'));
+                        key = found ? found.actionBlocksKey : null;
+                    } else {
+                        key = val.actionBlocksKey;
+                    }
                 }
-            }
-            onGet(key);
-        }).catch(() => onGet(null));
+                onGet(key);
+            })
+            .catch(() => onGet(null));
     }
 
-    /**
-     * ПРОВЕРКА ПАРОЛЯ
-     */
     #isCorrectPasswordAsync({username, password, onResult, onError}) {
-        const dbRef = firebase.database().ref();
-        const hashPassword = new HashPassword(); // Убедитесь, что этот класс подключен
-
-        const getUserData = (un) => {
-            if (!un) return Promise.reject('Empty username');
-            return dbRef.child('user').child(un).once("value").then(s => s.val());
-        };
-
-        getUserData(username).then(userData => {
-            if (!userData) {
-                onError('Invalid username');
-                return;
-            }
-            if (hashPassword.getHashedPassword(password) === userData.password) {
-                onResult(true);
-            } else {
-                onResult(false);
-            }
-        }).catch(e => onError(e));
-    }
-
-    /**
-     * ОЧИСТКА (вызывать при логауте)
-     */
-    destroy() {
-        if (this.#currentActionBlocksRef) {
-            this.#currentActionBlocksRef.off();
-            this.#currentActionBlocksRef = null;
-        }
+        const hashPassword = new HashPassword();
+        firebase.database().ref('user').child(username).once("value")
+            .then(snapshot => {
+                const userData = snapshot.val();
+                if (!userData) {
+                    onError('Invalid username');
+                    return;
+                }
+                onResult(hashPassword.getHashedPassword(password) === userData.password);
+            })
+            .catch(e => onError(e));
     }
 }
