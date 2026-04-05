@@ -3,8 +3,6 @@ class FirebaseManager {
 
     }
 
-
-
     bindChangeDatabaseValue(handler) {
         const dbRef = firebase.database().ref();
 

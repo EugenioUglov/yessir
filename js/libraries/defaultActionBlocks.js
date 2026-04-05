@@ -115,7 +115,7 @@ class DefaultActionBlocks {
 
         const actionBlock_login = {
             title: 'Login',
-            tags: 'login, register, database',
+            tags: 'login, register, database, default',
             action: 'showHTML',
             content: getContentActionBlockLogin(),
             imageURL: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcjwBjErg0BEdVO88E6_a4KxB-3nsdwn41NQ&usqp=CAU'
@@ -123,7 +123,7 @@ class DefaultActionBlocks {
 
         const actionBlock_get_from_database = {
             title: 'GetFrom database in Live',
-            tags: 'get from database in Live',
+            tags: 'get from database in Live, default',
             action: 'showHTML',
             content: getContentActionBlockGetFromDatabase(),
             imageURL: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS647trQFxA8PHI7gxQuuC5kM_IGkD6u65N7CHyhTFToOP-RBhlXE0F_ZBw3GIkXk3mOpA&usqp=CAU'
@@ -131,7 +131,7 @@ class DefaultActionBlocks {
 
         const actionBlock_save_to_database = {
             title: 'Save Action-Blocks to database',
-            tags: 'Save Action-Blocks to database',
+            tags: 'Save Action-Blocks to database, default',
             action: 'showHTML',
             content: getContentActionBlockSaveToDatabase(),
             imageURL: 'https://static.vecteezy.com/system/resources/previews/015/433/950/original/database-save-illustration-on-a-background-premium-quality-symbols-icons-for-concept-and-graphic-design-vector.jpg'
