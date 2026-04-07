@@ -657,27 +657,34 @@ class ActionBlockService {
   showActionBlocksByRequest(request, is_execute_actionBlock_by_title = true) {
     const that = this;
 
+    let plusTags;
+    let minusTags;
+
     let actionBlocks_to_show;
 
-    // Convert strings "tag1, tag2" into arrays of lowercase, trimmed strings
-    // Get raw strings and split by spaces OR commas
-    const plusTags = this.searchService.view.getPlusTags()
-        .toLowerCase()
-        .split(/[\s,]+/)
-        .filter(t => t.length > 0); // Remove empty strings from extra spaces
+    if (is_execute_actionBlock_by_title === false) {
+      // Convert strings "tag1, tag2" into arrays of lowercase, trimmed strings
+      // Get raw strings and split by spaces OR commas
+      plusTags = this.searchService.view.getPlusTags()
+          .toLowerCase()
+          .split(/[\s,]+/)
+          .filter(t => t.length > 0); // Remove empty strings from extra spaces
 
-    const minusTags = this.searchService.view.getMinusTags()
-        .toLowerCase()
-        .split(/[\s,]+/)
-        .filter(t => t.length > 0);
+      minusTags = this.searchService.view.getMinusTags()
+          .toLowerCase()
+          .split(/[\s,]+/)
+          .filter(t => t.length > 0);
 
+      if (request === "" && plusTags.length === 0 && minusTags.length === 0) {
+        // Show data in images.
+        that.showActionBlocks();
 
-    if (request === "" && plusTags.length === 0 && minusTags.length === 0) {
-      // Show data in images.
-      that.showActionBlocks();
-
-      return;
+        return;
+      }
     }
+
+
+
 
     // Get request text from input field and find possible search data.
     actionBlocks_to_show = this.model.getByPhrase(request);
@@ -700,26 +707,28 @@ class ActionBlockService {
       actionBlocks_to_show = that.getAllActionBlocksInArray();
     }
 
-    // Filter the array before rendering
-    if (plusTags.length > 0 || minusTags.length > 0) {
-        actionBlocks_to_show = actionBlocks_to_show.filter(block => {
-            // Flatten block.tags: ["urgent", "work project"] -> ["urgent", "work", "project"]
-            const individualBlockTags = (block.tags || [])
-                .flatMap(tag => tag.toLowerCase().split(/[\s,]+/))
-                .filter(tag => tag.length > 0);
+    if (is_execute_actionBlock_by_title === false) {
+      // Filter the array before rendering
+      if (plusTags.length > 0 || minusTags.length > 0) {
+          actionBlocks_to_show = actionBlocks_to_show.filter(block => {
+              // Flatten block.tags: ["urgent", "work project"] -> ["urgent", "work", "project"]
+              const individualBlockTags = (block.tags || [])
+                  .flatMap(tag => tag.toLowerCase().split(/[\s,]+/))
+                  .filter(tag => tag.length > 0);
 
-            // Logic: All plusTags must be present in the flattened block tags
-            const matchesPlus = plusTags.every(searchTag => 
-                individualBlockTags.includes(searchTag)
-            );
+              // Logic: All plusTags must be present in the flattened block tags
+              const matchesPlus = plusTags.every(searchTag => 
+                  individualBlockTags.includes(searchTag)
+              );
 
-            // Logic: None of the minusTags should be present in the flattened block tags
-            const matchesMinus = minusTags.some(searchTag => 
-                individualBlockTags.includes(searchTag)
-            );
+              // Logic: None of the minusTags should be present in the flattened block tags
+              const matchesMinus = minusTags.some(searchTag => 
+                  individualBlockTags.includes(searchTag)
+              );
 
-            return (plusTags.length === 0 || matchesPlus) && !matchesMinus;
-        });
+              return (plusTags.length === 0 || matchesPlus) && !matchesMinus;
+          });
+      }
     }
 
 
@@ -735,6 +744,7 @@ class ActionBlockService {
           break;
         }
       }
+
       if (is_actionBlock_exist === false) {
         this.#index_last_showed_actionBlock = 0;
         // Show Action-Blocks separated by pages.
