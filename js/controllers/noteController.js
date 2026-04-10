@@ -51,6 +51,15 @@ class NoteController {
                         contentElement.style.textAlign = 'left';
                     }
                 }, tags: ['text', 'align', 'left'], icon: 'https://cdn4.iconfinder.com/data/icons/user-interface-pack-3-outline/48/left-align-4598625-512.png'
+            },
+            {
+                key: 'aligntexttocenter', title: 'Align text to center', action: () => {
+                    const contentElement = document.querySelector('#content_executed_from_actionBlock .content');
+
+                    if (contentElement) {
+                        contentElement.style.textAlign = 'center';
+                    }
+                }, tags: ['text', 'align', 'center'], icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Feather-core-align-center.svg/1200px-Feather-core-align-center.svg.png'
             }
             
         ];
