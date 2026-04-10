@@ -85,8 +85,6 @@ class ActionBlockController {
         if (is_actionBlock_created === false) {
           return false;
         }
-
-        this.hashService.openMainPage();
       }
     );
   };
