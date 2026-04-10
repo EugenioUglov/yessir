@@ -42,6 +42,15 @@ class NoteController {
                 key: 'listen', title: 'Read text aloud', action: () => {
                     that.noteService.noteSpeakerService.speak();
                 }, tags: ['text', 'aloud', 'listen', 'speak', 'talk', 'tell'], icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Font_Awesome_5_solid_volume-up.svg/800px-Font_Awesome_5_solid_volume-up.svg.png'
+            },
+            {
+                key: 'aligntexttoleft', title: 'Align text to left', action: () => {
+                    const contentElement = document.querySelector('#content_executed_from_actionBlock .content');
+
+                    if (contentElement) {
+                        contentElement.style.textAlign = 'left';
+                    }
+                }, tags: ['text', 'align', 'left'], icon: 'https://cdn4.iconfinder.com/data/icons/user-interface-pack-3-outline/48/left-align-4598625-512.png'
             }
             
         ];
