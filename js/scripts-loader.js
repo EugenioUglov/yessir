@@ -38,6 +38,7 @@
         "./js/libraries/tagsNormalizer.js",
         "./js/libraries/hashPassword.js",
         "./js/libraries/infoPanel.js",
+        "./js/libraries/idGenerator.js",
 
         // Сервисы
         "./js/services/actionBlockService.js",
@@ -56,7 +57,7 @@
 
         // Модели
         "./js/models/noteSpeakerModel.js",
-        "./js/models/actionBlockModel.js",
+        "./js/models/actionBlockWithIdModel.js",
         "./js/models/voiceRecognitionModel.js",
         "./js/models/logsModel.js",
 

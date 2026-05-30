@@ -45,21 +45,19 @@ class ActionBlockService {
       mapDataStructure,
       fileManager
     );
+
     this.view = new ActionBlockView(
       this.model.getActionNameEnum(),
       this.model.getContentTypeDescriptionByActionEnum(),
-      this.model.action_description_by_action_name,
+      this.model.actionDescriptionByActionName,
       fileManager,
       textManager,
       dropdownManager
     );
 
-    this.init();
-  }
-
-  init() {
     this.hashService.setActionBlockService(this);
   }
+
 
   async createActionBlockWithAutomationAsyncOld(
     title,
@@ -242,6 +240,9 @@ class ActionBlockService {
 
     const isCreated = that.createActionBlock(title, tags, action, content, image_URL, onEnd);
 
+    // !!!
+    return;
+
     
     // const getSingularizedWordsPromise = new Promise((resolve, reject) => {
     //   const title_words = title.split(/[^a-z]+/i).filter(Boolean);
@@ -413,6 +414,7 @@ class ActionBlockService {
       if (onEnd != undefined) onEnd(false);
       return false;
     }
+
 
     if (window.location.href.includes("#main&speechrecognition")) {
       yesSir.loadingService.stopLoading();
@@ -854,7 +856,7 @@ class ActionBlockService {
       this.view.showContentOfActionBlock();
       this.noteService.openNote(content, actionBlock.title, isHTML);
 
-      this.model.title_actionBlock_before_update = $('.note_title').text();
+      this.model.actionBlockTitleBeforeUpdate = $('.note_title').text();
 
       this.view.hidePage();
       // that.scrollService.setPositionTop();
@@ -869,7 +871,7 @@ class ActionBlockService {
 
       this.noteService.openNote(content, actionBlock.title, isHTML);
       
-      this.model.title_actionBlock_before_update = $('.note_title').text();
+      this.model.actionBlockTitleBeforeUpdate = $('.note_title').text();
 
       onNoteOpened();
 
@@ -1258,7 +1260,7 @@ class ActionBlockService {
   updateQuicklyEditedActionBlock = ({title, content}) => {
     this.modalLoadingService.show();
 
-    const actionBlockBeforeUpdate = this.model.getActionBlockByTitle(this.model.title_actionBlock_before_update);
+    const actionBlockBeforeUpdate = this.model.getActionBlockByTitle(this.model.actionBlockTitleBeforeUpdate);
 
     const tags = actionBlockBeforeUpdate.tags;
     const selected_action = actionBlockBeforeUpdate.action;
@@ -1453,7 +1455,7 @@ class ActionBlockService {
     // NEW
     const actionBlock = this.model.getActionBlockByTitle(title);
     this.hashService.openSettingsActionBlockPage(title);
-    this.model.title_actionBlock_before_update = title;
+    this.model.actionBlockTitleBeforeUpdate = title;
     this.onPageContentChange();
     const elements_to_show =
       this.view.showElementsToEditActionBlock(actionBlock);

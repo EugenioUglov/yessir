@@ -50,8 +50,6 @@ class TagsNormalizer {
                     });
                 }
             });
-
-            console.log('Итоговый результат:', handledTags);
         }
 
         syncUserSynonymsWithChildren();
