@@ -9,7 +9,7 @@ class NoteSpeakerModel {
         return this.#language;
     }
 
-    setLanguage(new_language) {
-        this.#language = new_language;
+    setLanguage(newLanguage) {
+        this.#language = newLanguage;
     }
 }

@@ -796,6 +796,17 @@ class ActionBlockService {
     return this.#scroll_position_on_execute_block;
   }
 
+  executeActionBlockById(id) {
+    const actionBlock = this.model.getActionBlockById(id);
+    if (actionBlock) {
+      this.executeActionBlockByTitle(actionBlock.title);
+
+      return true;
+    }
+
+    return false;
+  }
+
   executeActionBlockByTitle(title) {
     const that = this;
 

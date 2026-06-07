@@ -42,6 +42,10 @@ class ActionBlockModel {
         return this.getActionBlocks().get(this.#actionBlockIdByTitle.get(title.toUpperCase()));
     }
 
+    getActionBlockById(id) {
+        return this.#actionBlockById.get(id);
+    }
+
     getActionBlocksFromLocalStorageAsync(onGetCallback) {
         let actionBlocksFromLocalStorage = new Map;
         const key = 'actionBlocks';
@@ -57,20 +61,20 @@ class ActionBlockModel {
         return actionBlocksFromLocalStorage;
     }
 
-    getByPhrase(user_phrase) {
+    getByPhrase(userPhrase) {
         const that = this;
         
         // Delete characters "," from phrase.
-        user_phrase = user_phrase.replaceAll(',', '');
+        userPhrase = userPhrase.replaceAll(',', '');
     
         // If phrase doesn't exist.
-        if ( ! user_phrase) {
+        if ( ! userPhrase) {
             // console.log('Action-Blocks don\'t exist with tags: ' + user_phrase);
             return;
         }
     
-        if (user_phrase === undefined || user_phrase === null) {
-            let error_text = 'user_phrase not defined during information searching';
+        if (userPhrase === undefined || userPhrase === null) {
+            let errorText = 'user_phrase not defined during information searching';
             // console.log(error_text);
         }
     
@@ -79,10 +83,10 @@ class ActionBlockModel {
         
         const actionBlocks = this.getActionBlocks();
         
-        user_phrase = user_phrase.toLowerCase();
-        const user_words = this.#textManager.splitText(user_phrase, ' ');
+        userPhrase = userPhrase.toLowerCase();
+        const userWords = this.#textManager.splitText(userPhrase, ' ');
         
-        const actionBlockIdsToShow = getIdActionBlocksByTags(user_words);
+        const actionBlockIdsToShow = getIdActionBlocksByTags(userWords);
 
         
             
@@ -90,11 +94,11 @@ class ActionBlockModel {
         for (const idActionBlock of actionBlockIdsToShow) {
             let actionBlock = this.#actionBlockById.get(idActionBlock);
 
-            const priority_actionBlock = this.#getPriorityActionBlockByPhrase(actionBlock, user_phrase);
+            const priorityActionBlock = this.#getPriorityActionBlockByPhrase(actionBlock, userPhrase);
 
-            actionBlock.priority = priority_actionBlock;
+            actionBlock.priority = priorityActionBlock;
     
-            if (priority_actionBlock > 0) {
+            if (priorityActionBlock > 0) {
                 // Push current obj.
                 foundActionBlocks.push(actionBlock);
             }
@@ -112,59 +116,59 @@ class ActionBlockModel {
         return actionBlocksSortedByPriority;
     
         function getIdActionBlocksByTags(userWords) {
-            const indexes_infoObjects_to_show = [];
+            const indexesActionBlocksToShow = [];
             
             // Push index of infoObj by user phrase if it doesn't exist yet in array. 
             for (const indexUserWord in userWords) {
                 // One user word of phrase.
                 const userWord = userWords[indexUserWord];
                 // Indexes of current tag.
-                const indexesCurrentActionBlock = that.#actionBlockIndexesByTag[userWord];
+                const actionBlockIndexesOfCurrentTag = that.#actionBlockIndexesByTag[userWord];
     
                 // For each index of infoObject for current tag.
-                for (const i_index_infoObj_to_show in indexesCurrentActionBlock) {
-                    let i_infoObj_to_show = indexesCurrentActionBlock[i_index_infoObj_to_show];
+                for (const indexActionBlockToShowCurrent in actionBlockIndexesOfCurrentTag) {
+                    let indexActionBlockToShow = actionBlockIndexesOfCurrentTag[indexActionBlockToShowCurrent];
     
-                    let index_exist_in_indexes_infoObjects = yesSir.arrayManager.isValueExistsInArray(indexes_infoObjects_to_show, i_infoObj_to_show);
+                    let isIndexExistInIndexesActionBlocks = yesSir.arrayManager.isValueExistsInArray(indexesActionBlocksToShow, indexActionBlockToShow);
     
-                    if (index_exist_in_indexes_infoObjects) {
+                    if (isIndexExistInIndexesActionBlocks) {
                         continue;
                     }
     
-                    indexes_infoObjects_to_show.push(i_infoObj_to_show);
+                    indexesActionBlocksToShow.push(indexActionBlockToShow);
                 }
             }
     
-            return indexes_infoObjects_to_show;
+            return indexesActionBlocksToShow;
         }
     }
 
-    getActionBlocksByTags(user_phrase, minus_tags) {
+    getActionBlocksByTags(userPhrase, minusTags) {
         const that = this;
 
         // Delete characters ',' from phrase.
-        user_phrase = user_phrase.replaceAll(',', ' ');
-        minus_tags = minus_tags.replaceAll(',', ' ');
+        userPhrase = userPhrase.replaceAll(',', ' ');
+        minusTags = minusTags.replaceAll(',', ' ');
     
         // If phrase doesn't exist.
-        if ( ! user_phrase) {
+        if ( ! userPhrase) {
             // console.log('Action-Blocks don\'t exist with tags: ' + user_phrase);
             return;
         }
     
-        if (user_phrase === undefined || user_phrase === null) {
-            let error_text = 'user_phrase not defined during information searching';
+        if (userPhrase === undefined || userPhrase === null) {
+            let error_text = 'userPhrase not defined during information searching';
             // console.log(error_text);
         }
 
         // Here all objects from a storage which info can to be looking by user.
         let searchedInfoObjects = [];
         
-        user_phrase = user_phrase.toLowerCase();
-        minus_tags = minus_tags.toLowerCase();
+        userPhrase = userPhrase.toLowerCase();
+        minusTags = minusTags.toLowerCase();
 
-        const userTags = this.#textManager.splitText(user_phrase, ' ');
-        const userMinusTags = this.#textManager.splitText(minus_tags, ' ');
+        const userTags = this.#textManager.splitText(userPhrase, ' ');
+        const userMinusTags = this.#textManager.splitText(minusTags, ' ');
         
         const titlesActionBlocksToShow = getIdActionBlocksByTags(userTags, userMinusTags);
         
@@ -172,7 +176,7 @@ class ActionBlockModel {
         // Create an array with actionBlocks and priority value to show.
         for (let titleActionBlock of titlesActionBlocksToShow) {
             let actionBlock = this.getActionBlockByTitle(titleActionBlock);
-            const priorityActionBlock = this.#getPriorityActionBlockByPhrase(actionBlock, user_phrase);
+            const priorityActionBlock = this.#getPriorityActionBlockByPhrase(actionBlock, userPhrase);
 
             actionBlock.priority = priorityActionBlock;
     
@@ -182,17 +186,17 @@ class ActionBlockModel {
             }
         }
     
-        const property_in_actionBlock_for_sort = 'priority';
+        const propertyInActionBlockForSort = 'priority';
         let isSortFromAToZ = false;
     
         // Sort by priority.
         searchedInfoObjects = this.#getSortedActionBlocksByProperty(searchedInfoObjects, 
-            property_in_actionBlock_for_sort, isSortFromAToZ);
+            propertyInActionBlockForSort, isSortFromAToZ);
     
         return searchedInfoObjects;
 
-        function getIdActionBlocksByTags(tags, minus_tags) {
-            let titlesActionBlocksToShow = [];
+        function getIdActionBlocksByTags(tags, minusTags) {
+            let actionBlockIndexesToShow = [];
     
             // Push index of Action-blocks by user phrase if it doesn't exist yet in array. 
             for (const indexTag in tags) {
@@ -204,17 +208,17 @@ class ActionBlockModel {
                 }
                 
                 // If array with indexes to show is empty. 
-                if (titlesActionBlocksToShow.length < 1) {
+                if (actionBlockIndexesToShow.length < 1) {
                     // Add all Action-Blocks indexes of tag to array.
-                    titlesActionBlocksToShow = titlesActionBlocksToShow.concat(that.#actionBlockIndexesByTag[tag]);
+                    actionBlockIndexesToShow = actionBlockIndexesToShow.concat(that.#actionBlockIndexesByTag[tag]);
                 }
                 else {
-                    titlesActionBlocksToShow = yesSir.arrayManager.getSameItemsFromArrays
+                    actionBlockIndexesToShow = yesSir.arrayManager.getSameItemsFromArrays
                     (
-                        titlesActionBlocksToShow, that.#actionBlockIndexesByTag[tag]
+                        actionBlockIndexesToShow, that.#actionBlockIndexesByTag[tag]
                     );
     
-                    if (titlesActionBlocksToShow.length < 1) {
+                    if (actionBlockIndexesToShow.length < 1) {
                         // No same indexes in tags after comparation.
     
                         return []; 
@@ -222,36 +226,36 @@ class ActionBlockModel {
                 }
             }
     
-            titlesActionBlocksToShow = getTitlesActionBlocksWithoutMinusTags(titlesActionBlocksToShow, minus_tags);
+            actionBlockIndexesToShow = getActionBlockIndexesWithoutMinusTags(actionBlockIndexesToShow, minusTags);
     
-            return titlesActionBlocksToShow;
+            return actionBlockIndexesToShow;
     
     
-            function getTitlesActionBlocksWithoutMinusTags(titles_actionBlocks_to_show, minus_tags) {
+            function getActionBlockIndexesWithoutMinusTags(actionBlockIndexesToShow, minusTags) {
                 // Delete items with minus tags.
-                for (const minus_tag of minus_tags) {
-                    for (const i_index_infoObj_to_show in titles_actionBlocks_to_show) {
-                        if (that.#actionBlockIndexesByTag[minus_tag] === undefined) continue;
-                        const i_infoObj_to_show = titles_actionBlocks_to_show[i_index_infoObj_to_show];
+                for (const minusTag of minusTags) {
+                    for (const indexActionBlockToShow in actionBlockIndexesToShow) {
+                        if (that.#actionBlockIndexesByTag[minusTag] === undefined) continue;
+                        const indexActionBlockToShow = actionBlockIndexesToShow[indexActionBlockToShow];
                         
                         // console.log(that.#titles_actionBlocksMap_by_tag[minus_tag]);
     
                         // Compare minus tag with each Action-Block that has this tag.
-                        for (const index_actionBlock_with_minus_tag of that.#actionBlockIndexesByTag[minus_tag]) {
-                            if (index_actionBlock_with_minus_tag === i_infoObj_to_show) {
-                                titles_actionBlocks_to_show[i_index_infoObj_to_show] = undefined;
+                        for (const indexActionBlockWithMinusTag of that.#actionBlockIndexesByTag[minusTag]) {
+                            if (indexActionBlockWithMinusTag === indexActionBlockToShow) {
+                                actionBlockIndexesToShow[indexActionBlockToShow] = undefined;
                             }
                         }
                     }
                 }
     
                 // Delete all undefined elements from array.
-                titles_actionBlocks_to_show = titles_actionBlocks_to_show.filter(function(x) {
+                actionBlockIndexesToShow = actionBlockIndexesToShow.filter(function(x) {
                     return x !== undefined;
                 });
     
     
-                return titles_actionBlocks_to_show;
+                return actionBlockIndexesToShow;
             }
         }
     }
@@ -288,8 +292,6 @@ class ActionBlockModel {
         this.#actionBlockIdByTitle.clear();
         this.#actionBlockById.clear();
 
-        console.trace('setActionBlocks', actionBlocksMapNew);
-
         if ( ! actionBlocksMapNew) { 
             actionBlocksMapNew = new Map();
         }
@@ -311,7 +313,7 @@ class ActionBlockModel {
         this.getActionBlocksFromLocalStorageAsync(onGetActionBlocks);
 
         function onGetActionBlocks(actionBlocksFromUserStorage) {
-            const actionBlocks_from_localStorage = that.getActionBlocksFromLocalStorageAsync();
+            const actionBlocksFromLocalStorage = that.getActionBlocksFromLocalStorageAsync();
 
             // IF data is equal to data from localStorage THEN show Action-Blocks
             // ELSE open dialog database.
@@ -320,7 +322,7 @@ class ActionBlockModel {
                 if (callbackSetActionBlocks) callbackSetActionBlocks();
             }
             else {
-                if (that.mapDataStructure.getStringified(actionBlocksFromUserStorage) === that.mapDataStructure.getStringified(actionBlocks_from_localStorage)) {
+                if (that.mapDataStructure.getStringified(actionBlocksFromUserStorage) === that.mapDataStructure.getStringified(actionBlocksFromLocalStorage)) {
                     that.setActionBlocks(actionBlocksFromUserStorage);
                     if (callbackSetActionBlocks) callbackSetActionBlocks();
                 }
@@ -349,6 +351,7 @@ class ActionBlockModel {
 
         this.#actionBlockIdByTitle.set(actionBlockToAdd.title.toUpperCase(), actionBlockToAdd.id);
         this.#actionBlockById.set(actionBlockToAdd.id, actionBlockToAdd);
+
         
         this.#onUpdateVarialbeWithActionBlocks();
 
@@ -468,9 +471,12 @@ class ActionBlockModel {
     }
 
     saveInLocalStorage(actionBlocks) {
-        const actionBlocksToSave = this.mapDataStructure.getStringified(actionBlocks);
+        const stringifiedActionBlocks = this.mapDataStructure.getStringified(actionBlocks);
         const key = 'actionBlocks';
-        localStorage.setItem(key, actionBlocksToSave);
+        localStorage.setItem(key, stringifiedActionBlocks);
+
+        const keyActionBlockByTitle = 'actionBlockIdByTitle';
+        localStorage.setItem(keyActionBlockByTitle, this.mapDataStructure.getStringified(this.#actionBlockIdByTitle));
 
         return true;
     }
@@ -481,9 +487,9 @@ class ActionBlockModel {
   
         // Check new title validation.
         if (originalTitle.toUpperCase() != newTitle.toUpperCase()) {
-            const is_actionBlock_exists_by_title = this.getActionBlockByTitle(newTitle);
+            const isActionBlockExistsByTitle = this.getActionBlockByTitle(newTitle);
             
-            if (is_actionBlock_exists_by_title) {
+            if (isActionBlockExistsByTitle) {
                 alert('Action-Block with current title already exists. Title: ' + newTitle);
                 return false;
             }
@@ -492,9 +498,9 @@ class ActionBlockModel {
         }
 
 
-        const is_deleted = this.deleteActionBlockByTitle(originalTitle);
+        const isDeleted = this.deleteActionBlockByTitle(originalTitle);
 
-        if ( ! is_deleted) {
+        if ( ! isDeleted) {
             alert('ERROR! Action-Block hasn\'t been deleted');
             return false;
         }
@@ -573,25 +579,31 @@ class ActionBlockModel {
         function addTitleToTags() {
             // Add new tag getting text from title.
     
-            const title_without_symbols = title.replace(/[^a-zа-яё0-9\s]/gi, '');
+            const titleWithoutSymbols = title.replace(/[^a-zа-яё0-9\s]/gi, '');
             
             if (tags) tags = tags + ", ";
             
             // Add new tag getting text from title.
-            tags += title + ", " + title_without_symbols;
+            tags += title + ", " + titleWithoutSymbols;
         }
     }
 
-    deleteActionBlockByTitle(title, is_show_alert_on_error = true) {
-        const actionBlockId = this.getActionBlockByTitle(title.toUpperCase()).id;
+    deleteActionBlockByTitle(title) {
+        const normalizedTags = title.toUpperCase();
+        if (this.getActionBlockByTitle(normalizedTags) === undefined) {
+            return false;
+        }
 
-        this.#actionBlockIdByTitle.delete(title);
 
-        const is_deleted = this.#actionBlockById.delete(actionBlockId);
+        const actionBlockId = this.getActionBlockByTitle(normalizedTags).id;
+
+        const isActionBlockIdByTitleDeleted = this.#actionBlockIdByTitle.delete(normalizedTags);
+
+        const isDeleted = this.#actionBlockById.delete(actionBlockId);
 
         this.#onUpdateVarialbeWithActionBlocks();
     
-        return is_deleted;
+        return isDeleted;
     }
 
     deleteActionBlocks() {
@@ -831,10 +843,9 @@ class ActionBlockModel {
 
     // Get priority of object from DB. How many times words from user phrase are in the tags of objet DB.
     // Priority = 0 means that user words not exist in tags of object.
-    #getPriorityActionBlockByPhrase(obj, user_phrase) {
+    #getPriorityActionBlockByPhrase(obj, userPhrase) {
         let priority = 0;
-        console.trace(obj);
-        let tags_phrases = obj.tags;
+        let tagsPhrases = obj.tags;
 
         // Check for each object in a storage is the same TITLE with user phrase.
         // IF 'title' == 'user phrase' THEN info is probably that we are looking. Add proiority for current info obj + 10
@@ -843,26 +854,26 @@ class ActionBlockModel {
         }
 
         // Separated words of user phrase.
-        const user_words = this.#textManager.splitText(user_phrase, ' ');
+        const userWords = this.#textManager.splitText(userPhrase, ' ');
         // All tags.
         let tags = [];
 
         // For all user words.
-        for (const i_wordUser in user_words) {
+        for (const indexWordUser in userWords) {
             // for each tags phrases separated by ','.
-            for (const i_inTags in tags_phrases) {
-                const tag = tags_phrases[i_inTags];
-                const tag_words = this.#textManager.splitText(tag, ' ');
-                tags = tags.concat(tag_words);
+            for (const indexInTags in tagsPhrases) {
+                const tag = tagsPhrases[indexInTags];
+                const tagWords = this.#textManager.splitText(tag, ' ');
+                tags = tags.concat(tagWords);
             }
             
             // For each word in tag.
-            for (let i_wordTag in tags) {
-                let user_word = user_words[i_wordUser];
-                let tag_word = tags[i_wordTag];
+            for (let indexWordTag in tags) {
+                let userword = userWords[indexWordUser];
+                let tagWord = tags[indexWordTag];
 
                 // If in tag exist user word THEN add priority for this info object.
-                if (this.#textManager.isSame(user_word, tag_word)) {
+                if (this.#textManager.isSame(userword, tagWord)) {
                     priority++;
                     
                     break;
@@ -876,16 +887,16 @@ class ActionBlockModel {
     // Bubble sort O(n^2).
     // Get sorted actionBlocks by property.
     #getSortedActionBlocksByProperty = function(actionBlocks, property = "priority") {
-        let is_sorting = true;
-        while (is_sorting) {
-            is_sorting = false;
+        let isSorting = true;
+        while (isSorting) {
+            isSorting = false;
             for (let i = 0; i < actionBlocks.length - 1; i++) {
                 let infoObj_curr = actionBlocks[i];
                 let infoObj_next = actionBlocks[i + 1];
                 if (infoObj_curr[property] < infoObj_next[property]) {
                     actionBlocks[i] = infoObj_next;
                     actionBlocks[i + 1] = infoObj_curr;
-                    is_sorting = true;
+                    isSorting = true;
                 }
             }
         }

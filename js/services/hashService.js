@@ -1,5 +1,24 @@
+/*
+ !!! Change constants
+ // Константа живет отдельно и создается ОДИН раз
+export const PAGE_NAME_ENUM = Object.freeze({
+  main: "main",
+  request: "request",
+  actionBlock: "action-block",
+  publicActionBlocks: "public-action-blocks",
+  createActionBlock: "create-action-block",
+  createNote: "create-note",
+  createLink: "create-link",
+  editActionBlock: "edit-action-block",
+  speechRecognition: "speech-assistant", // Если значение принципиально другое, это ок, но пусть будет читаемым
+  contentActionBlock: "content-action-block",
+  login: "login",
+  saveToDatabase: "save-to-database", // Исправили camelCase в ключе
+  getFromDatabase: "get-from-database",
+});
+*/
 class HashService {
-  #hash_previous;
+  #hashPrevious;
 
   constructor(textManager, noteSpeakerService, searchService, scrollService) {
     this.textManager = textManager;
@@ -8,12 +27,12 @@ class HashService {
     this.scrollService = scrollService;
     this.#view = new PageElementView();
 
-    this.#hash_previous;
+    this.#hashPrevious;
   }
 
   #actionBlockService;
-  #is_hash_change_listener_active_state_enabled = false;
-  #current_page_name;
+  #isHashChangeListenerActiveStateEnabled = false;
+  #currentPageName;
   #view;
 
   init() {
@@ -25,6 +44,7 @@ class HashService {
     const PAGE_NAME_ENUM = {
       main: "main",
       request: "request",
+      actionBlock: "actionBlock",
       publicActionBlocks: "publicActionBlocks",
       createActionBlock: "createactionblock",
       createNote: "createnote",
@@ -51,7 +71,7 @@ class HashService {
   }
 
   getCurrentPageName() {
-    return this.#current_page_name;
+    return this.#currentPageName;
   }
 
   getNormalizedCurrentHash() {
@@ -59,7 +79,7 @@ class HashService {
   }
 
   setHashMain() {
-    this.#hash_previous = this.getNormalizedCurrentHash();
+    this.#hashPrevious = this.getNormalizedCurrentHash();
     this.#setCurrentPageName(this.getPageNameEnum().name);
     window.location.hash = this.getPageNameEnum().name;
   }
@@ -70,88 +90,86 @@ class HashService {
 
   setHashRequest = (
     parameter = {
-      request_value: "",
-      is_execute_actionBlock_by_title: false,
-      is_listen_text: false,
+      requestValue: "",
+      isExecuteActionBlockByTitle: false,
+      isListenText: false,
     }
   ) => {
     const DEFAULT_PARAMETER = {
-      request_value: "",
-      is_execute_actionBlock_by_title: false,
-      is_listen_text: false,
+      requestValue: "",
+      isExecuteActionBlockByTitle: false,
+      isListenText: false,
     };
 
-    const request_value =
-      parameter.request_value != undefined
-        ? parameter.request_value
-        : DEFAULT_PARAMETER.request_value;
+    const requestValue =
+      parameter.requestValue != undefined
+        ? parameter.requestValue
+        : DEFAULT_PARAMETER.requestValue;
 
-    const is_execute_actionBlock_by_title =
-      parameter.is_execute_actionBlock_by_title != undefined
-        ? parameter.is_execute_actionBlock_by_title
-        : DEFAULT_PARAMETER.is_execute_actionBlock_by_title;
+    const isExecuteActionBlockByTitle =
+      parameter.isExecuteActionBlockByTitle != undefined
+        ? parameter.isExecuteActionBlockByTitle
+        : DEFAULT_PARAMETER.isExecuteActionBlockByTitle;
 
-    const is_listen_text =
-      parameter.is_listen_text != undefined
-        ? parameter.is_listen_text
-        : DEFAULT_PARAMETER.is_listen_text;
+    const isListenText =
+      parameter.isListenText != undefined
+        ? parameter.isListenText
+        : DEFAULT_PARAMETER.isListenText;
 
-    this.#hash_previous = this.getNormalizedCurrentHash();
+    this.#hashPrevious = this.getNormalizedCurrentHash();
 
-    if (request_value === undefined || request_value === "") {
+    if (requestValue === undefined || requestValue === "") {
       this.openMainPage();
     }
 
     this.#setCurrentPageName(this.getPageNameEnum().request);
-    const new_hash =
+    const newHash =
       this.getPageNameEnum().request +
       "=" +
-      request_value +
-      (is_execute_actionBlock_by_title
+      requestValue +
+      (isExecuteActionBlockByTitle
         ? "&" + this.getPageOptionNameEnum().executebytitle
         : "") +
-      (is_listen_text ? "&" + this.getPageOptionNameEnum().listen : "");
-    window.location.hash = new_hash;
+      (isListenText ? "&" + this.getPageOptionNameEnum().listen : "");
+    window.location.hash = newHash;
   };
 
-  setPreviousHash(new_hash_previous) {
-    this.#hash_previous =
-      new_hash_previous != undefined ? new_hash_previous : window.location.hash;
+  setPreviousHash(newHashPrevious) {
+    this.#hashPrevious =
+      newHashPrevious != undefined ? newHashPrevious : window.location.hash;
   }
 
   setHashCreateActionBlock() {
-    this.#hash_previous = this.getNormalizedCurrentHash();
+    this.#hashPrevious = this.getNormalizedCurrentHash();
 
     this.#setCurrentPageName(this.getPageNameEnum().createActionBlock);
     window.location.hash = this.getPageNameEnum().createActionBlock;
   }
 
   setHashCreateNote() {
-    this.#hash_previous = this.getNormalizedCurrentHash();
+    this.#hashPrevious = this.getNormalizedCurrentHash();
 
     this.#setCurrentPageName(this.getPageNameEnum().createNote);
     window.location.hash = this.getPageNameEnum().createNote;
   }
 
   setHashCreateLink() {
-    this.#hash_previous = this.getNormalizedCurrentHash();
+    this.#hashPrevious = this.getNormalizedCurrentHash();
 
     this.#setCurrentPageName(this.getPageNameEnum().createLink);
     window.location.hash = this.getPageNameEnum().createLink;
   }
 
   setHashSpeechAssistant() {
-    this.#hash_previous = this.getNormalizedCurrentHash();
+    this.#hashPrevious = this.getNormalizedCurrentHash();
 
     this.#setCurrentPageName(this.getPageNameEnum().speechRecognition);
     window.location.hash = this.getPageNameEnum().speechRecognition;
   }
 
   setHashGetFromDatabase() {
-    const that = this;
-
     // this.#hash_previous = this.getNormalizedCurrentHash();
-    this.#hash_previous = this.getPageNameEnum().main;
+    this.#hashPrevious = this.getPageNameEnum().main;
 
 
     this.#setCurrentPageName(this.getPageNameEnum().getfromdatabase);
@@ -160,17 +178,15 @@ class HashService {
   }
 
   setHashSaveToDatabase() {
-    const that = this;
-    this.#hash_previous = this.getNormalizedCurrentHash();
+    this.#hashPrevious = this.getNormalizedCurrentHash();
 
     this.#setCurrentPageName(this.getPageNameEnum().savetodatabase);
     window.location.hash = this.getPageNameEnum().savetodatabase;
   }
 
   setHashLogin() {
-    const that = this;
     // this.#hash_previous = this.getNormalizedCurrentHash();
-    this.#hash_previous = this.getPageNameEnum().main;
+    this.#hashPrevious = this.getPageNameEnum().main;
 
     this.#setCurrentPageName(this.getPageNameEnum().login);
     window.location.hash = this.getPageNameEnum().login;
@@ -196,7 +212,7 @@ class HashService {
   }
 
   setPageName(new_page_name) {
-    this.#current_page_name = new_page_name;
+    this.#currentPageName = new_page_name;
   }
 
   openMainPage() {
@@ -212,7 +228,7 @@ class HashService {
   }
 
   openActionBlockPage(title) {
-    this.#hash_previous = window.location.hash;
+    this.#hashPrevious = window.location.hash;
 
     window.location.hash =
       this.getPageNameEnum().request +
@@ -224,7 +240,7 @@ class HashService {
   }
 
   openSettingsActionBlockPage(title) {
-    this.#hash_previous = window.location.hash;
+    this.#hashPrevious = window.location.hash;
     this.#setCurrentPageName(this.getPageNameEnum().editActionBlock);
     window.location.hash = this.getPageNameEnum().editActionBlock + "=" + title;
     this.setPageName(this.getPageNameEnum().settingsActionBlock);
@@ -232,31 +248,31 @@ class HashService {
 
   openPreviousPage() {
     if (
-      this.#hash_previous &&
-      this.#hash_previous.includes(this.getPageNameEnum().editActionBlock) ===
+      this.#hashPrevious &&
+      this.#hashPrevious.includes(this.getPageNameEnum().editActionBlock) ===
         false
     ) {
-      let hash_to_open = this.#hash_previous;
+      let hashToOpen = this.#hashPrevious;
 
-      const is_previous_hash_includes_execute_by_title =
-        this.#hash_previous.includes(
+      const isPreviousHashIncludesExecuteByTitle =
+        this.#hashPrevious.includes(
           "&" + this.getPageOptionNameEnum().executebytitle
         ) &&
-        this.#hash_previous.includes(
+        this.#hashPrevious.includes(
           "&" + this.getPageOptionNameEnum().executebytitle + "=false"
         ) === false;
 
-      if (is_previous_hash_includes_execute_by_title) {
-        const i_start_word_execute_by_title = this.#hash_previous.indexOf(
+      if (isPreviousHashIncludesExecuteByTitle) {
+        const indexStartWordExecuteByTitle = this.#hashPrevious.indexOf(
           "&" + this.getPageOptionNameEnum().executebytitle
         );
-        hash_to_open = this.#hash_previous.substring(
+        hashToOpen = this.#hashPrevious.substring(
           0,
-          i_start_word_execute_by_title
+          indexStartWordExecuteByTitle
         );
       }
 
-      window.location.hash = hash_to_open;
+      window.location.hash = hashToOpen;
     } else {
       this.openMainPage();
     }
@@ -277,16 +293,18 @@ class HashService {
   }
 
   setHashChangeListenerActiveState(is_active_new) {
-    this.#is_hash_change_listener_active_state_enabled = is_active_new;
+    this.#isHashChangeListenerActiveStateEnabled = is_active_new;
   }
 
   getHashChangeListenerActiveState() {
-    return this.#is_hash_change_listener_active_state_enabled;
+    return this.#isHashChangeListenerActiveStateEnabled;
   }
 
   handleHash() {
     const that = this;
     
+    const hashParamsInLowerCase = this.#getHashParamsInLowerCase();
+
     hideCommandInput();
     yesSir.domElementManager.hideShowedElements();
     yesSir.noteService.close();
@@ -307,6 +325,8 @@ class HashService {
     // console.log('edit page', this.getPageNameEnum().editActionBlock);
 
     // this.#actionBlockService.view.clear();
+
+
 
     if (
       this.getNormalizedCurrentHash() === "#" + this.getPageNameEnum().main ||
@@ -392,25 +412,30 @@ class HashService {
 
       this.scrollService.setPositionTop();
     } else if (
-      this.getNormalizedCurrentHash().includes(this.getPageNameEnum().request)
+      hashParamsInLowerCase.has(this.getPageNameEnum().actionBlock.toLowerCase())
+    ) {
+        const idFromUrl = hashParamsInLowerCase.get(this.getPageNameEnum().actionBlock.toLowerCase());
+
+        that.#actionBlockService.executeActionBlockById(idFromUrl);
+    } else if (
+      hashParamsInLowerCase.get(this.getPageNameEnum().request)
     ) {
       let request = "";
-      const text_to_cut = window.location.hash;
-      const from_character_request = "=";
+      const textToCut = window.location.hash;
+      const fromCharacterRequest = "=";
 
-      let is_execute_actionBlock_by_title = false;
+      let isExecuteActionBlockByTitle = false;
 
       if (
-        window.location.hash.includes(
-          this.getPageOptionNameEnum().executebytitle + "=false"
-        )
+        hashParamsInLowerCase.get(this.getPageOptionNameEnum().executebytitle) == false
       ) {
-        const to_character_request =
+        const toCharacterRequest =
           "&" + this.getPageOptionNameEnum().executebytitle;
+
         request = that.textManager.getCuttedText(
-          text_to_cut,
-          from_character_request,
-          to_character_request
+          textToCut,
+          fromCharacterRequest,
+          toCharacterRequest
         );
         request = decodeURIComponent(request);
         this.searchService.setTextToInputField(request);
@@ -422,18 +447,18 @@ class HashService {
           this.getPageOptionNameEnum().executebytitle
         )
       ) {
-        is_execute_actionBlock_by_title = true;
-        const to_character_request =
+        isExecuteActionBlockByTitle = true;
+        const toCharacterRequest =
           "&" + this.getPageOptionNameEnum().executebytitle;
         request = that.textManager.getCuttedText(
-          text_to_cut,
-          from_character_request,
-          to_character_request
+          textToCut,
+          fromCharacterRequest,
+          toCharacterRequest
         );
       } else {
         request = that.textManager.getCuttedText(
-          text_to_cut,
-          from_character_request
+          textToCut,
+          fromCharacterRequest
         );
         request = decodeURIComponent(request);
         this.searchService.setTextToInputField(request);
@@ -442,7 +467,7 @@ class HashService {
       request = decodeURIComponent(request);
       that.#actionBlockService.showActionBlocksByRequest(
         request,
-        is_execute_actionBlock_by_title
+        isExecuteActionBlockByTitle
       );
       // this.searchService.setTextToInputField(request);
 
@@ -474,14 +499,14 @@ class HashService {
         this.getPageNameEnum().editActionBlock
       )
     ) {
-      const text_to_cut = window.location.hash;
-      const from_character_actionBlock_settings = "=";
-      const to_character_request_actionBlock_settings = "";
+      const textToCut = window.location.hash;
+      const fromCharacterActionBlockSettings = "=";
+      const toCharacterRequestActionBlockSettings = "";
 
       let title = this.textManager.getCuttedText(
-        text_to_cut,
-        from_character_actionBlock_settings,
-        to_character_request_actionBlock_settings
+        textToCut,
+        fromCharacterActionBlockSettings,
+        toCharacterRequestActionBlockSettings
       );
 
       title = decodeURIComponent(title);
@@ -510,17 +535,17 @@ class HashService {
 
       // $('#actionBlocks_page').css('display', 'block');
       this.#actionBlockService.showActionBlocksContainer();
-      const scroll_position_on_execute_actionBlock =
+      const scrollPositionOnExecuteActionBlock =
         yesSir.actionBlockService.getScrollPositionOnExecuteBlock();
-      const index_last_showed_actionBlock =
+      const indexLastShowedActionBlock =
         this.#actionBlockService.getIndexLastShowedActionBlock();
 
-      if (index_last_showed_actionBlock === 0) {
+      if (indexLastShowedActionBlock === 0) {
         this.openPreviousPage();
       } else {
         yesSir.scrollService.setPosition(
           0,
-          scroll_position_on_execute_actionBlock
+          scrollPositionOnExecuteActionBlock
         );
       }
     } else {
@@ -531,6 +556,29 @@ class HashService {
   }
 
   #setCurrentPageName(new_page_name) {
-    this.#current_page_name = new_page_name;
+    this.#currentPageName = new_page_name;
+  }
+
+  #getHashParams() {
+    // Get hash and remove '#'.
+    const hashString = window.location.hash.slice(1); 
+
+    // Create object of parameters.
+    const hashParams = new URLSearchParams(hashString);
+
+    return hashParams;
+  }
+
+  #getHashParamsInLowerCase() {
+    const hashParams = this.#getHashParams();
+
+    // Create a new empty URLSearchParams object
+    const lowerCaseHashParams = new URLSearchParams();
+
+    hashParams.forEach((value, key) => {
+      lowerCaseHashParams.append(key.toLowerCase(), value);
+    });
+
+    return lowerCaseHashParams;
   }
 }

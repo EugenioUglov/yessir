@@ -1,26 +1,22 @@
 class HashManager {
-    #hash_previous;
-
-    constructor() {
-        this.#hash_previous;
-    }
+    #hashPrevious;
 
     /// Set value of previous hash.
     /// @param {String} if is undefined then set crrent hash as previous.
     /// In the case if is the same hash as previous one then don't save it.
     /// Return boolean value if new hash_previous is set.
-    setValueForPreviousHash(new_hash_previous) {
-        if (new_hash_previous === this.#hash_previous) return false;
+    setValueForPreviousHash(newHashPrevious) {
+        if (newHashPrevious === this.#hashPrevious) return false;
 
-        this.#hash_previous = new_hash_previous != undefined ? new_hash_previous : window.location.hash;
+        this.#hashPrevious = newHashPrevious != undefined ? newHashPrevious : window.location.hash;
 
         return true;
     }
 
 
     setPreviousHash() {
-        if (this.#hash_previous) {
-            window.location.hash = this.#hash_previous;
+        if (this.#hashPrevious) {
+            window.location.hash = this.#hashPrevious;
         }
     }
 

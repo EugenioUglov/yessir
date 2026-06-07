@@ -7,11 +7,11 @@ class ArrayManager {
         return array1.filter(element => array2.includes(element));
     }
 
-    isValueExistsInArray = function(arr, value_to_search) {
-        for (const i_value in arr) {
-            let current_value_from_array = arr[i_value];
+    isValueExistsInArray = function(arr, valueToSearch) {
+        for (const indexValue in arr) {
+            let currentValueFromArray = arr[indexValue];
             
-            if (value_to_search === current_value_from_array) {
+            if (valueToSearch === currentValueFromArray) {
                 return true;
             }
         }
