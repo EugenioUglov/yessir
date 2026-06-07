@@ -29,12 +29,12 @@ class NoteSpeakerService {
         this.stopSpeak();
     }
 
-    changeTextForSpeakButton(new_text) {
-        this.view.changeTextForSpeakButton(new_text);
+    changeTextForSpeakButton(newText) {
+        this.view.changeTextForSpeakButton(newText);
     }
 
-    setLanguage(new_language) {
-        this.model.setLanguage(new_language);
+    setLanguage(newLanguage) {
+        this.model.setLanguage(newLanguage);
     }
 
     showBtnSpeaker() {

@@ -12,7 +12,7 @@ class YesSir {
     this.mapDataStructure = new MapDataStructure();
     this.dbManager = new DBManager();
     this.arrayManager = new ArrayManager();
-    this.hashManager = new HashManager();
+    this.hashHelper = new HashHelper();
     this.blockManager = new BlockManager();
     this.domElementManager = new DOMElementManager();
 

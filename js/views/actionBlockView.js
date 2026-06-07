@@ -8,7 +8,7 @@ class ActionBlockView {
     dropdownManager
   ) {
     this.action_name_enum = action_name_enum;
-    this.content_type_description_by_action =
+    this.contentTypeDescriptionByAction =
       content_type_description_by_action;
     this.action_description_by_action_name = action_description_by_action_name;
 
@@ -32,7 +32,7 @@ class ActionBlockView {
     const first_dropdown_item_text_for_create =
       dropdown_select_action_for_create_container[i_action].value;
     const content_type_description =
-      this.content_type_description_by_action[
+      this.contentTypeDescriptionByAction[
         first_dropdown_item_text_for_create
       ];
   }
@@ -40,27 +40,27 @@ class ActionBlockView {
   addOnPage(
     id,
     actionBlock,
-    parent_element = $(".actionBlocks_container").first(),
+    parentElement = $(".actionBlocks_container").first(),
     isEditable = true
   ) {
     if (!id) id = "n";
-    const actionBlock_html = this.#createHTMLContainerActionBlock(
+    const actionBlockHTML = this.#createHTMLContainerActionBlock(
       id,
       actionBlock,
       isEditable
     );
 
     // Add ActionBlock to parent element.
-    parent_element.append(actionBlock_html);
+    parentElement.append(actionBlockHTML);
     // Search for last actionBlock.
-    const actionBlock_container = parent_element.children().last();
+    const actionBlockContainer = parentElement.children().last();
 
-    return actionBlock_container;
+    return actionBlockContainer;
   }
 
   updatePreview() {
     // // console.log('Update preview');
-    const actionBlock_preview = {
+    const actionBlockPreview = {
       title: $("#settings_actionBlock_container").find(".input_field_title")[0]
         .value,
       imageURL: $("#settings_actionBlock_container").find(
@@ -73,12 +73,12 @@ class ActionBlockView {
     $("#actionBlock-preview").find(".img").removeAttr("src");
 
     $("#actionBlock-preview").find(".title")[0].innerText =
-      actionBlock_preview.title;
+      actionBlockPreview.title;
 
-    if (actionBlock_preview.imageURL)
+    if (actionBlockPreview.imageURL)
       $("#actionBlock-preview")
         .find(".img")
-        .attr("src", actionBlock_preview.imageURL);
+        .attr("src", actionBlockPreview.imageURL);
   }
 
   showActionBlocksContainer() {
@@ -95,7 +95,7 @@ class ActionBlockView {
     $(".actionBlocks_container").hide();
   }
 
-  showSettingsToCreateActionBlock(action_name) {
+  showSettingsToCreateActionBlock(actionName) {
     $("#btn_close").show();
     $("#elements_to_create_action-block").show();
     $("#settings_actionBlock_container").show();
@@ -106,15 +106,15 @@ class ActionBlockView {
     $("#settings_actionBlock_container").find(".input_field_title")[0].focus();
     $("#btn_back").show();
 
-    if (action_name) {
-      const settings_actionBlock_container = $(
+    if (actionName) {
+      const settingsActionBlockContainer = $(
         "#settings_actionBlock_container"
       );
-      settings_actionBlock_container
+      settingsActionBlockContainer
         .find(".dropdown_select_action")
-        .val(action_name);
+        .val(actionName);
       $("#title_action_descritption").text(
-        this.content_type_description_by_action[action_name]
+        this.contentTypeDescriptionByAction[actionName]
       );
     }
 
@@ -124,18 +124,18 @@ class ActionBlockView {
   }
 
   showElementsToEditActionBlock(actionBlock) {
-    const settings_actionBlock_container = $("#settings_actionBlock_container");
-    let action_name_of_actionBlock = actionBlock.action;
-    if (action_name_of_actionBlock === "showAlert")
-      action_name_of_actionBlock = this.action_name_enum.showInfo;
-    if (action_name_of_actionBlock === "openUrl")
-      action_name_of_actionBlock = this.action_name_enum.openURL;
+    const settingsActionBlockContainer = $("#settings_actionBlock_container");
+    let actionNameOfActionBlock = actionBlock.action;
+    if (actionNameOfActionBlock === "showAlert")
+      actionNameOfActionBlock = this.action_name_enum.showInfo;
+    if (actionNameOfActionBlock === "openUrl")
+      actionNameOfActionBlock = this.action_name_enum.openURL;
 
     $("#btn_close").show();
     $("#elements_to_edit_actionBlock").show();
-    settings_actionBlock_container.show();
+    settingsActionBlockContainer.show();
     $("#elements_for_delete_infoBlock").show();
-    settings_actionBlock_container.find(".input_field_title")[0].focus();
+    settingsActionBlockContainer.find(".input_field_title")[0].focus();
 
     $(".btn_open_command_palette").hide();
     $("#btn_create_actionBlock").hide();
@@ -144,51 +144,51 @@ class ActionBlockView {
     $("#btn_delete_actionBlock").show();
 
     // Set value title.
-    settings_actionBlock_container.find(".input_field_title")[0].value =
+    settingsActionBlockContainer.find(".input_field_title")[0].value =
       actionBlock.title;
 
     let tags = "";
 
     // Set value tags
-    for (const i_tag in actionBlock.tags) {
-      tags += actionBlock.tags[i_tag];
-      if (i_tag < actionBlock.tags.length - 1) {
+    for (const indexTag in actionBlock.tags) {
+      tags += actionBlock.tags[indexTag];
+      if (indexTag < actionBlock.tags.length - 1) {
         tags += ", ";
       }
     }
 
-    settings_actionBlock_container.find(".input_field_tags")[0].value = tags;
+    settingsActionBlockContainer.find(".input_field_tags")[0].value = tags;
 
     // Set value dropdown.
     $("#settings_actionBlock_container")
       .find(".type_actionBlock_container")
       .show();
-    settings_actionBlock_container
+    settingsActionBlockContainer
       .find(".dropdown_select_action")
-      .val(action_name_of_actionBlock);
+      .val(actionNameOfActionBlock);
     // console.log('dropdown select action', settings_actionBlock_container.find('.dropdown_select_action').val());
     // DropDown to choose action of Action-Block hide.
 
     // Set value content.
-    settings_actionBlock_container.find(".input_field_content")[0].value =
+    settingsActionBlockContainer.find(".input_field_content")[0].value =
       actionBlock.content;
 
     // Set value image path.
-    settings_actionBlock_container.find(".input_field_image_URL")[0].value =
+    settingsActionBlockContainer.find(".input_field_image_URL")[0].value =
       actionBlock.imageURL;
 
     if (
-      settings_actionBlock_container.find(".input_field_image_URL")[0].value ===
+      settingsActionBlockContainer.find(".input_field_image_URL")[0].value ===
       "undefined"
     ) {
-      settings_actionBlock_container.find(".input_field_image_URL")[0].value =
+      settingsActionBlockContainer.find(".input_field_image_URL")[0].value =
         "";
     }
 
-    const titles_elements = $(".title_actionBlock");
+    const titlesElements = $(".title_actionBlock");
 
-    for (const title_elem of titles_elements) {
-      title_elem.innerText = actionBlock.title;
+    for (const titleElem of titlesElements) {
+      titleElem.innerText = actionBlock.title;
     }
 
     this.updatePreview();
@@ -720,11 +720,11 @@ class ActionBlockView {
   }
 
   closeSettings() {
-    const elements_for_executed_actionBlock_array =
+    const elementsForExecutedActionBlockArray =
       document.getElementsByClassName("elements_for_executed_actionBlock");
 
-    for (const elements_for_executed_actionBlock of elements_for_executed_actionBlock_array) {
-      elements_for_executed_actionBlock.style.display = "none";
+    for (const elementsForExecutedActionBlock of elementsForExecutedActionBlockArray) {
+      elementsForExecutedActionBlock.style.display = "none";
     }
 
     this.setDefaultValuesForSettingsElementsActionBlock();
@@ -746,21 +746,21 @@ class ActionBlockView {
   }
 
   showAlert(content, title) {
-    let dialog_info_elem = $("#dialog_info");
+    let dialogInfoElem = $("#dialog_info");
     $(".black_background").show();
     // Hide search area with Action-Blocks.
     this.hidePage();
 
-    if (typeof dialog_info_elem[0].showModal === "function") {
-      dialog_info_elem[0].showModal();
+    if (typeof dialogInfoElem[0].showModal === "function") {
+      dialogInfoElem[0].showModal();
 
       if (title) {
         // Set title of infoBlock.
-        dialog_info_elem.find(".title")[0].innerText = title;
+        dialogInfoElem.find(".title")[0].innerText = title;
       }
 
       // Set content.
-      dialog_info_elem.find(".text_info")[0].innerText = content;
+      dialogInfoElem.find(".text_info")[0].innerText = content;
 
       $(".black_background").show();
     } else {
@@ -788,12 +788,12 @@ class ActionBlockView {
     isEditable = true
   ) {
     const title = actionBlock.title;
-    const is_folder = actionBlock.action === this.action_name_enum.openFolder;
+    const isFolder = actionBlock.action === this.action_name_enum.openFolder;
     let imageURL = actionBlock.imageURL;
 
     this.infoBlock_container;
 
-    let title_html = "";
+    let titleHTML = "";
 
     if (!id) {
       // console.log('ERROR! Id must be defined to create infoBlock');
@@ -801,41 +801,41 @@ class ActionBlockView {
     }
 
     if (title != undefined) {
-      title_html = '<div class="title">' + title + "</div>";
+      titleHTML = '<div class="title">' + title + "</div>";
     }
 
-    let img_div_html = "";
-    let folder_elem = "";
-    let is_padding_top = false;
-    const settings_html =
+    let imgDivHtml = "";
+    let folderElem = "";
+    let isPaddingTop = false;
+    const settingsHTML =
       '<div class="settings"><div class="icon"></div></div>';
 
     if (imageURL) {
-      img_div_html = '<img class="img" src="' + imageURL + '">';
+      imgDivHtml = '<img class="img" src="' + imageURL + '">';
     } else {
       imageURL = "";
-      img_div_html = '<img class="img">';
+      imgDivHtml = '<img class="img">';
     }
     /*
         else {
-            is_padding_top = true;
+            isPaddingTop = true;
         }
         */
 
-    if (is_folder) {
-      folder_elem = '<div class="folder"></div>';
+    if (isFolder) {
+      folderElem = '<div class="folder"></div>';
     }
 
-    const id_html = "infoBlock" + id; // title.replaceAll(' ', '_');
+    const idHTML = "infoBlock" + id; // title.replaceAll(' ', '_');
 
-    let perspective_container_html =
-      '<div id="' + id_html + '" class="perspective_img_effect_container">';
+    let perspectiveContainerHTML =
+      '<div id="' + idHTML + '" class="perspective_img_effect_container">';
 
-    let first_part_actionBlock_html = "";
+    let firstPartActionBlockHTML = "";
 
-    first_part_actionBlock_html =
+    firstPartActionBlockHTML =
       '<div id="' +
-      id_html +
+      idHTML +
       '" name="' +
       title +
       '" class="infoBlock" value="' +
@@ -844,41 +844,41 @@ class ActionBlockView {
 
     // Set padding from settings button.
     /*
-        if (is_padding_top) {
-            first_part_actionBlock_html = '<div id="' + id_html +  '" class="infoBlock" style="padding-top:30px">';
+        if (isPaddingTop) {
+            firstPartActionBlockHTML = '<div id="' + idHTML +  '" class="infoBlock" style="padding-top:30px">';
         }
         else {
-            first_part_actionBlock_html = '<div id="' + id_html +  '" class="infoBlock">';
+            firstPartActionBlockHTML = '<div id="' + idHTML +  '" class="infoBlock">';
         }
         */
 
     if (isEditable) {
-      this.actionBlock_html =
-        first_part_actionBlock_html +
-        folder_elem +
-        settings_html +
-        img_div_html +
-        title_html +
+      this.actionBlockHTML =
+        firstPartActionBlockHTML +
+        folderElem +
+        settingsHTML +
+        imgDivHtml +
+        titleHTML +
         "</div>";
     } else {
-      this.actionBlock_html =
-        first_part_actionBlock_html +
-        folder_elem +
-        img_div_html +
-        title_html +
+      this.actionBlockHTML =
+        firstPartActionBlockHTML +
+        folderElem +
+        imgDivHtml +
+        titleHTML +
         "</div>";
     }
 
-    return this.actionBlock_html;
+    return this.actionBlockHTML;
   };
 
   #onDropdownActionValueChange() {
     let dropdown = $("#settings_actionBlock_container").find(
       ".dropdown_select_action"
     );
-    const selected_action = dropdown.find(":selected")[0];
+    const selectedAction = dropdown.find(":selected")[0];
     $("#title_action_descritption").text(
-      this.content_type_description_by_action[selected_action.value]
+      this.contentTypeDescriptionByAction[selectedAction.value]
     );
   }
 }

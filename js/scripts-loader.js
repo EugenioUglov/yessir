@@ -29,7 +29,7 @@
         "./js/libraries/inputDeviceManger.js",
         "./js/libraries/voiceRecognitionManager.js",
         "./js/libraries/speakerManager.js",
-        "./js/libraries/hashManager.js",
+        "./js/libraries/hashHelper.js",
         "./js/libraries/blockManager.js",
         "./js/libraries/defaultActionBlocks.js",
         "./js/libraries/googleSpeechRecognition.js",

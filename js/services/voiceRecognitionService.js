@@ -20,26 +20,26 @@ class VoiceRecognitionService {
 
         that.#view.showProgressRecognition();
 
-        function onInterimTranscript(interim_transcript) {
+        function onInterimTranscript(interimTranscript) {
             
             that.hashService.setHashRequest({
-                request_value: interim_transcript, 
+                request_value: interimTranscript, 
                 is_execute_actionBlock_by_title: false
             });
         }
 
-        function onFinalTranscript(final_transcript) {                   
+        function onFinalTranscript(finalTranscript) {                   
             input_field_request.style.color = 'black';
-            const last_character_final_transcript = final_transcript[final_transcript.length - 1];
+            const lastCharacterFinalTranscript = finalTranscript[finalTranscript.length - 1];
 
-            if (last_character_final_transcript === '.') {
-                final_transcript = final_transcript.substr(0, final_transcript.length - 1);
+            if (lastCharacterFinalTranscript === '.') {
+                finalTranscript = finalTranscript.substr(0, finalTranscript.length - 1);
             }
 
             that.hashService.setHashRequest({
-                request_value: final_transcript,
-                is_execute_actionBlock_by_title: true,
-                is_listen_text: true
+                requestValue: finalTranscript,
+                isExecuteActionBlockByTitle: true,
+                isListenText: true
             });
         }
 
@@ -55,8 +55,8 @@ class VoiceRecognitionService {
         this.#onStopRecognizing();
     }
 
-    setLanguge(new_language) {
-        this.voiceRecognitionManager.setLanguge(new_language)
+    setLanguge(newLanguage) {
+        this.voiceRecognitionManager.setLanguge(newLanguage)
     }
 
     isRecognizing() {

@@ -1,4 +1,4 @@
-class HashManager {
+class HashHelper {
     #hashPrevious = '';
 
     /**

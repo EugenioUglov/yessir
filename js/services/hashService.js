@@ -314,7 +314,7 @@ class HashService {
     yesSir.domElementManager.showElement(".fixed_elements");
 
     const hash_converted_to_object =
-      yesSir.hashManager.getConvertedHashToObject();
+      yesSir.hashHelper.getConvertedHashToObject();
     // console.log('hash_converted_to_object', hash_converted_to_object);
     // console.log('hash_converted_to_object.hasOwnProperty("request")', hash_converted_to_object.hasOwnProperty(this.getPageNameEnum().request));
     if (this.noteSpeakerService.isSpeaking) this.noteSpeakerService.stopSpeak();
