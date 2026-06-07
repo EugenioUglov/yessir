@@ -1,35 +1,51 @@
 class HashManager {
-    #hashPrevious;
+    #hashPrevious = '';
 
-    /// Set value of previous hash.
-    /// @param {String} if is undefined then set crrent hash as previous.
-    /// In the case if is the same hash as previous one then don't save it.
-    /// Return boolean value if new hash_previous is set.
-    setValueForPreviousHash(newHashPrevious) {
-        if (newHashPrevious === this.#hashPrevious) return false;
+    /**
+     * Сохраняет предыдущий хэш.
+     * @param {string} [newHash] - Если не передан, берет текущий из адреса.
+     * @returns {boolean} - Изменился ли хэш по сравнению с прошлым сохраненным.
+     */
+    setValueForPreviousHash(newHash) {
+        // Если ничего не передали, берем текущий хэш из строки браузера
+        const targetHash = newHash !== undefined ? newHash : window.location.hash;
 
-        this.#hashPrevious = newHashPrevious != undefined ? newHashPrevious : window.location.hash;
+        // Если он совпадает с тем, что уже лежит в памяти — ничего не делаем
+        if (targetHash === this.#hashPrevious) {
+        return false;
+        }
 
+        this.#hashPrevious = targetHash;
         return true;
     }
 
-
+    /**
+     * Возвращает пользователя на сохраненный хэш.
+     */
     setPreviousHash() {
         if (this.#hashPrevious) {
-            window.location.hash = this.#hashPrevious;
+        window.location.hash = this.#hashPrevious;
         }
     }
 
+    /**
+     * Возвращает очищенный хэш в нижнем регистре (без знака #)
+     */
     getNormalizedCurrentHash() {
-        return window.location.hash.toLowerCase();
+        // Убираем '#' в начале, если он есть, для более удобного роутинга
+        return window.location.hash.replace(/^#/, '').toLowerCase();
     }
 
+    /**
+     * Парсит хэш-параметры в удобный объект.
+     * Безопасно обрабатывает пустые строки и спецсимволы.
+     */
     getConvertedHashToObject() {
-        const hash2Obj = window.location.hash
-            .split("&")
-            .map(v => v.split("="))
-            .reduce( (pre, [key, value]) => ({ ...pre, [key]: value }), {} );
+        const hash = window.location.hash.replace(/^#/, '');
+        if (!hash) return {};
 
-        return hash2Obj;
+        // Используем встроенный и надежный URLSearchParams вместо хрупкого split()
+        const params = new URLSearchParams(hash);
+        return Object.fromEntries(params.entries());
     }
 }
