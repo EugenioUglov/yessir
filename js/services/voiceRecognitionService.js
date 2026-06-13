@@ -23,8 +23,8 @@ class VoiceRecognitionService {
         function onInterimTranscript(interimTranscript) {
             
             that.hashService.setHashRequest({
-                request_value: interimTranscript, 
-                is_execute_actionBlock_by_title: false
+                requestValue: interimTranscript, 
+                isExecuteActionBlockByTitle: false
             });
         }
 

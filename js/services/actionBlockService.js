@@ -64,7 +64,7 @@ class ActionBlockService {
     tags,
     action,
     content,
-    image_URL,
+    imageURL,
     onEnd
   ) {
     const that = this;
@@ -102,7 +102,7 @@ class ActionBlockService {
     $(cancel_button).on("click", () => {
       is_canceled = true;
       hideLoadingElmenets();
-      const isCreated = that.createActionBlock(title, tags, action, content, image_URL, onEnd);
+      const isCreated = that.createActionBlock(title, tags, action, content, imageURL, onEnd);
 
       // if (onEnd != undefined) onEnd();
     });
@@ -120,10 +120,10 @@ class ActionBlockService {
     showLoadingElmenets();
 
     const getSingularizedWordsPromise = new Promise((resolve, reject) => {
-      const title_words = title.split(/[^a-z]+/i).filter(Boolean);
+      const titleWords = title.split(/[^a-z]+/i).filter(Boolean);
 
       nounNumber.getSingularizedWords(
-        title_words,
+        titleWords,
         (singularized_words) => {
           resolve({
             status: "success",
@@ -138,35 +138,35 @@ class ActionBlockService {
 
     //  Get image rom unspash IF uer didn't set image.
     const getImagePromise = new Promise((resolve, reject) => {
-      if (image_URL === undefined || image_URL === "") {
-        const unspash_image_searcher = new UnsplashImageSearcher();
-        unspash_image_searcher.getImageByKeyword(
+      if (imageURL === undefined || imageURL === "") {
+        const unspashImageSearcher = new UnsplashImageSearcher();
+        unspashImageSearcher.getImageByKeyword(
           title,
           1,
-          (image_from_unsplash) => {
-            if (image_from_unsplash != undefined && image_from_unsplash != "") {
-              image_URL = image_from_unsplash;
+          (imageFromUnsplash) => {
+            if (imageFromUnsplash != undefined && imageFromUnsplash != "") {
+              imageURL = imageFromUnsplash;
             }
-            resolve(image_URL);
+            resolve(imageURL);
           }
         );
       } else {
-        resolve(image_URL);
+        resolve(imageURL);
       }
     });
 
     getImagePromise
-      .then((received_image_URL) => {
-        console.log(received_image_URL);
-        console.log(image_URL);
+      .then((receivedImageURL) => {
+        console.log(receivedImageURL);
+        console.log(imageURL);
       })
       .catch((err) => console.log(err))
       .finally(() => {});
 
     getSingularizedWordsPromise
-      .then((received_image_URL) => {
-        console.log(received_image_URL);
-        console.log(image_URL);
+      .then((receivedImageURL) => {
+        console.log(receivedImageURL);
+        console.log(imageURL);
       })
       .catch((err) => console.log(err));
 
@@ -175,13 +175,13 @@ class ActionBlockService {
         if (is_canceled) return false;
 
         hideLoadingElmenets();
-        let singularized_words_obj = values[0];
+        let singularizedWordsObj = values[0];
 
         let image_URL = values[1];
-        if (singularized_words_obj.status === "success") {
-          const singularized_words = singularized_words_obj.singularized_words;
-          singularized_words.forEach((singularized_word) => {
-            if (singularized_word) tags += ", " + singularized_word;
+        if (singularizedWordsObj.status === "success") {
+          const singularizedWords = singularizedWordsObj.singularized_words;
+          singularizedWords.forEach((singularizedWord) => {
+            if (singularizedWord) tags += ", " + singularizedWord;
           });
         }
 
@@ -274,11 +274,11 @@ class ActionBlockService {
 
     function setTagsForActionBlockAsync() {
       const nounNumber = new NounNumber();
-      const title_words = title.split(/[^a-z]+/i).filter(Boolean);
+      const titleWords = title.split(/[^a-z]+/i).filter(Boolean);
 
 
       tagsPromise = new Promise((resolve) => {
-          nounNumber.getSingularizedWords(title_words, 
+          nounNumber.getSingularizedWords(titleWords, 
               (words) => resolve(words), 
               () => resolve([])
           );
@@ -518,23 +518,23 @@ class ActionBlockService {
   }
 
   showActionBlocks(
-    actionBlocks_to_show,
+    actionBlocksToShow,
     count_actionBlocks_to_show_at_time = 50
   ) {
     const that = this;
 
-    const time_start_show_actionBlocks = new Date();
+    const timeStartShowActionBlocks = new Date();
     yesSir.loadingService.startLoading();
     // this.loadingService.startLoading();
     this.view.hideActionBlocksContainer();
 
     this.#index_last_showed_actionBlock = 0;
 
-    if (actionBlocks_to_show === undefined) {
-      actionBlocks_to_show = this.getAllActionBlocksInArray();
+    if (actionBlocksToShow === undefined) {
+      actionBlocksToShow = this.getAllActionBlocksInArray();
     }
 
-    if (!actionBlocks_to_show || actionBlocks_to_show.size === 0) {
+    if (!actionBlocksToShow || actionBlocksToShow.size === 0) {
       this.view.onOpenMainPageWithoutActionBlocks();
     } else {
       this.view.onOpenMainPageWithActionBlocks();
@@ -542,7 +542,7 @@ class ActionBlockService {
 
     this.view.onShowMainPage();
 
-    that.model.actionBlocks_to_show = actionBlocks_to_show;
+    that.model.actionBlocks_to_show = actionBlocksToShow;
 
     this.view.clear();
 
@@ -590,7 +590,7 @@ class ActionBlockService {
         that.dataStorageService.getStorageNameEnum().localStorage
       ] = "browser";
 
-      let log = "Found " + actionBlocks_to_show.length + " results";
+      let log = "Found " + actionBlocksToShow.length + " results";
 
       // if (localStorage[localStorage.usernameIndex] != undefined) {
       //     log += ' | Storage: browser';
@@ -606,10 +606,10 @@ class ActionBlockService {
       that.logsService.showLog(log);
     }
 
-    const time_end_show_actionBlocks = new Date();
+    const timeEndShowActionBlocks = new Date();
 
     const time_spent_show_actionBlocks =
-      time_end_show_actionBlocks - time_start_show_actionBlocks;
+      timeEndShowActionBlocks - timeStartShowActionBlocks;
 
     yesSir.loadingService.stopLoading();
   }
@@ -618,19 +618,19 @@ class ActionBlockService {
     this.view.showActionBlocksContainer();
   }
 
-  showActionBlocksByTags(user_plus_tags, user_minus_tags) {
+  showActionBlocksByTags(userPlusTags, userMinusTags) {
     // Get command text from input field and find possible search data.
-    let actionBlocks_to_show = this.model.getActionBlocksByTags(
-      user_plus_tags,
-      user_minus_tags
+    let actionBlocksToShow = this.model.getActionBlocksByTags(
+      userPlusTags,
+      userMinusTags
     );
 
-    if (!actionBlocks_to_show) {
-      actionBlocks_to_show = [];
+    if (!actionBlocksToShow) {
+      actionBlocksToShow = [];
     }
 
     // Show Action-Blocks separated by pages.
-    this.showActionBlocks(actionBlocks_to_show);
+    this.showActionBlocks(actionBlocksToShow);
   }
 
   showActionBlocksFromStorage = () => {
@@ -656,26 +656,30 @@ class ActionBlockService {
     }
   };
 
-  showActionBlocksByRequest(request, is_execute_actionBlock_by_title = true) {
+  showActionBlocksByRequest(request, isExecuteActionBlockByTitle = true) {
     const that = this;
 
-    let plusTags;
-    let minusTags;
+    let plusTags = [];
+    let minusTags = [];
 
-    let actionBlocks_to_show;
+    let actionBlocksToShow;
 
-    if (is_execute_actionBlock_by_title === false) {
+    if (isExecuteActionBlockByTitle === false) {
       // Convert strings "tag1, tag2" into arrays of lowercase, trimmed strings
       // Get raw strings and split by spaces OR commas
-      plusTags = this.searchService.view.getPlusTags()
-          .toLowerCase()
-          .split(/[\s,]+/)
-          .filter(t => t.length > 0); // Remove empty strings from extra spaces
+      if (this.searchService.view.getPlusTags() != undefined) {
+        plusTags = this.searchService.view.getPlusTags()
+            .toLowerCase()
+            .split(/[\s,]+/)
+            .filter(t => t.length > 0); // Remove empty strings from extra spaces
+      }
 
-      minusTags = this.searchService.view.getMinusTags()
-          .toLowerCase()
-          .split(/[\s,]+/)
-          .filter(t => t.length > 0);
+      if (this.searchService.view.getMinusTags() != undefined) {
+        minusTags = this.searchService.view.getMinusTags()
+            .toLowerCase()
+            .split(/[\s,]+/)
+            .filter(t => t.length > 0);
+      }
 
       if (request === "" && plusTags.length === 0 && minusTags.length === 0) {
         // Show data in images.
@@ -689,30 +693,30 @@ class ActionBlockService {
 
 
     // Get request text from input field and find possible search data.
-    actionBlocks_to_show = this.model.getByPhrase(request);
+    actionBlocksToShow = this.model.getByPhrase(request);
 
 
 
     // Set Action-Block by title at the beginning. And remove this Action-Block from position where it was before.
-    const actionBlock_by_title = this.model.getActionBlockByTitle(request);
+    const actionBlockByTitle = this.model.getActionBlockByTitle(request);
 
-    if (actionBlock_by_title) {
-      var index = actionBlocks_to_show.indexOf(actionBlock_by_title);
-      actionBlocks_to_show.splice(index, 1);
+    if (actionBlockByTitle) {
+      var index = actionBlocksToShow.indexOf(actionBlockByTitle);
+      actionBlocksToShow.splice(index, 1);
 
-      actionBlocks_to_show.unshift(actionBlock_by_title);
+      actionBlocksToShow.unshift(actionBlockByTitle);
     }
     //
 
-    if (!actionBlocks_to_show) {
+    if (!actionBlocksToShow) {
       // actionBlocks_to_show = [];
-      actionBlocks_to_show = that.getAllActionBlocksInArray();
+      actionBlocksToShow = that.getAllActionBlocksInArray();
     }
 
-    if (is_execute_actionBlock_by_title === false) {
+    if (isExecuteActionBlockByTitle === false) {
       // Filter the array before rendering
       if (plusTags.length > 0 || minusTags.length > 0) {
-          actionBlocks_to_show = actionBlocks_to_show.filter(block => {
+          actionBlocksToShow = actionBlocksToShow.filter(block => {
               // Flatten block.tags: ["urgent", "work project"] -> ["urgent", "work", "project"]
               const individualBlockTags = (block.tags || [])
                   .flatMap(tag => tag.toLowerCase().split(/[\s,]+/))
@@ -734,28 +738,28 @@ class ActionBlockService {
     }
 
 
-    if (is_execute_actionBlock_by_title) {
-      let is_actionBlock_exist = false;
+    if (isExecuteActionBlockByTitle) {
+      let isActionBlockExist = false;
 
       // IF ActionBlock has been found with the same title THEN execute action.
-      for (const actionBlock of actionBlocks_to_show) {
+      for (const actionBlock of actionBlocksToShow) {
         if (that.textManager.isSame(actionBlock.title, request)) {
-          is_actionBlock_exist = true;
+          isActionBlockExist = true;
           that.executeActionBlockByTitle(actionBlock.title);
           that.view.hidePage();
           break;
         }
       }
 
-      if (is_actionBlock_exist === false) {
+      if (isActionBlockExist === false) {
         this.#index_last_showed_actionBlock = 0;
         // Show Action-Blocks separated by pages.
-        this.showActionBlocks(actionBlocks_to_show);
+        this.showActionBlocks(actionBlocksToShow);
       }
     } else {
       this.#index_last_showed_actionBlock = 0;
       // Show Action-Blocks separated by pages.
-      this.showActionBlocks(actionBlocks_to_show);
+      this.showActionBlocks(actionBlocksToShow);
     }
 
 
@@ -786,8 +790,8 @@ class ActionBlockService {
   #showSettingsToCreateActionBlock() {
     const that = this;
 
-    const view_elements_to_show = this.view.showSettingsToCreateActionBlock();
-    view_elements_to_show.forEach((element) => {
+    const viewElementsToShow = this.view.showSettingsToCreateActionBlock();
+    viewElementsToShow.forEach((element) => {
       // that.hashService.showElement(element);
     });
   }
@@ -816,7 +820,7 @@ class ActionBlockService {
     // console.log('I took action block by title ' + title);
     // console.log(actionBlock);
 
-    let action_name_of_actionBlock = actionBlock.action;
+    let actionNameOfActionBlock = actionBlock.action;
 
     let content = actionBlock.content;
 
@@ -826,15 +830,15 @@ class ActionBlockService {
     }
 
     // Support old version with old action names.
-    // if (action_name_of_actionBlock === 'showAlert') action_name_of_actionBlock = this.model.getActionNameEnum().showInfo;
-    // else if (action_name_of_actionBlock === 'openUrl') action_name_of_actionBlock = this.model.getActionNameEnum().openURL;
+    // if (actionNameOfActionBlock === 'showAlert') actionNameOfActionBlock = this.model.getActionNameEnum().showInfo;
+    // else if (actionNameOfActionBlock === 'openUrl') actionNameOfActionBlock = this.model.getActionNameEnum().openURL;
 
     this.#scroll_position_on_execute_block =
       this.scrollService.getScrollXY()[1];
 
     if (
-      action_name_of_actionBlock === this.model.getActionNameEnum().openURL ||
-      action_name_of_actionBlock === this.model.getActionNameEnum().openUrl
+      actionNameOfActionBlock === this.model.getActionNameEnum().openURL ||
+      actionNameOfActionBlock === this.model.getActionNameEnum().openUrl
     ) {
       const url = this.#getValidURL(content);
 
@@ -844,12 +848,12 @@ class ActionBlockService {
       //     location.href = url;
       // }
       // else {
-      //     let new_tab = window.open(url, '_blank');
+      //     let newTab = window.open(url, '_blank');
       // }
 
-      let new_tab = window.open(url, "_blank");
+      let newTab = window.open(url, "_blank");
 
-      if (!new_tab || new_tab.closed || typeof new_tab.closed == "undefined") {
+      if (!newTab || newTab.closed || typeof newTab.closed == "undefined") {
         // Popup is blocked.
 
         location.href = url;
@@ -859,7 +863,7 @@ class ActionBlockService {
     }
     // Action alertInfo must to include info option.
     else if (
-      action_name_of_actionBlock === this.model.getActionNameEnum().showInfo
+      actionNameOfActionBlock === this.model.getActionNameEnum().showInfo
     ) {
       const isHTML = false;
 
@@ -874,7 +878,7 @@ class ActionBlockService {
 
       onNoteOpened();
     } else if (
-      action_name_of_actionBlock === this.model.getActionNameEnum().showHTML
+      actionNameOfActionBlock === this.model.getActionNameEnum().showHTML
     ) {
       this.onPageContentChange();
       const isHTML = true;
@@ -891,7 +895,7 @@ class ActionBlockService {
       // Set position top.
       that.scrollService.setPosition(0, 0);
     } else if (
-      action_name_of_actionBlock === this.model.getActionNameEnum().openFolder
+      actionNameOfActionBlock === this.model.getActionNameEnum().openFolder
     ) {
       //console.log('open folder from actionblock');
       this.openFolder(i_actionBlock);
@@ -1250,7 +1254,7 @@ class ActionBlockService {
   updateActionBlock = (title, tags, selectedAction, content, imageURL) => {
     this.modalLoadingService.show();
 
-    const is_updated = this.model.updateActionBlock(
+    const isUpdated = this.model.updateActionBlock(
       title,
       tags,
       selectedAction,
@@ -1258,7 +1262,7 @@ class ActionBlockService {
       imageURL
     );
 
-    if (is_updated === false) {
+    if (isUpdated === false) {
       this.modalLoadingService.hide();
 
       return false;
@@ -1277,7 +1281,7 @@ class ActionBlockService {
     const selected_action = actionBlockBeforeUpdate.action;
     const imageURL = actionBlockBeforeUpdate.imageURL;
 
-    const is_updated = this.model.updateActionBlock(
+    const isUpdated = this.model.updateActionBlock(
       title,
       tags,
       selected_action,
@@ -1285,7 +1289,7 @@ class ActionBlockService {
       imageURL
     );
 
-    if (is_updated === false) {
+    if (isUpdated === false) {
       this.modalLoadingService.hide();
 
       return false;
@@ -1468,11 +1472,11 @@ class ActionBlockService {
     this.hashService.openSettingsActionBlockPage(title);
     this.model.actionBlockTitleBeforeUpdate = title;
     this.onPageContentChange();
-    const elements_to_show =
+    const elementsToShow =
       this.view.showElementsToEditActionBlock(actionBlock);
     that.hashService.hideShowedElements();
 
-    elements_to_show.forEach((element) => {
+    elementsToShow.forEach((element) => {
       that.hashService.showElement(element);
     });
   };

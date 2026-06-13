@@ -31,8 +31,8 @@ class VoiceRecognitionController {
 
             // function onInterimTranscript(interim_transcript) {
             //     hashService.setHashRequest({
-            //         request_value: interim_transcript, 
-            //         is_execute_actionBlock_by_title: false
+            //         requestValue: interim_transcript, 
+            //         isExecuteActionBlockByTitle: false
             //     });
             // }
 
@@ -45,9 +45,9 @@ class VoiceRecognitionController {
             //     }
 
             //     hashService.setHashRequest({
-            //         request_value: final_transcript,
-            //         is_execute_actionBlock_by_title: true,
-            //         is_listen_text: true
+            //         requestValue: final_transcript,
+            //         isExecuteActionBlockByTitle: true,
+            //         isListenText: true
             //     });
             // }
         }

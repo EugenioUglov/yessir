@@ -22,14 +22,14 @@ class ActionBlockModel {
 
         this.#actionBlockById = new Map();
         this.#actionBlockIdByTitle = new Map();
-        this.#actionBlockIndexesByTag = {};
+        this.#actionBlockIdsByTag = {};
         this.#actionBlockTitleById = {};
     }
     
 
     #actionBlockById;
     #actionBlockIdByTitle;
-    #actionBlockIndexesByTag = {};
+    #actionBlockIdsByTag = {};
     #actionBlockTitleById = {};
 
 
@@ -61,86 +61,158 @@ class ActionBlockModel {
         return actionBlocksFromLocalStorage;
     }
 
+    /**
+     * Get id Action-Blocks by user phrase.
+     * It returns an array sorted in the next priority:
+     * 1. User request is the same as title of an Action-Block.
+     * 2. Tags with words in sequence from user requests.
+     * 3. Tags with words not in sequence but in the same tag comparing with words from user requests.
+     * 4. As many words from tags are equal to words from user requests.
+     */
     getByPhrase(userPhrase) {
-        const that = this;
-        
-        // Delete characters "," from phrase.
-        userPhrase = userPhrase.replaceAll(',', '');
-    
-        // If phrase doesn't exist.
-        if ( ! userPhrase) {
-            // console.log('Action-Blocks don\'t exist with tags: ' + user_phrase);
-            return;
-        }
-    
-        if (userPhrase === undefined || userPhrase === null) {
-            let errorText = 'user_phrase not defined during information searching';
-            // console.log(error_text);
-        }
-    
-        // Here all objects from a storage which info can to be looking by user.
-        let foundActionBlocks = [];
-        
-        const actionBlocks = this.getActionBlocks();
-        
-        userPhrase = userPhrase.toLowerCase();
+        // Очистка фразы
+        userPhrase = userPhrase.replaceAll(',', ' ').toLowerCase().trim();
+        if (!userPhrase) return [];
+
         const userWords = this.#textManager.splitText(userPhrase, ' ');
-        
-        const actionBlockIdsToShow = getIdActionBlocksByTags(userWords);
+        if (userWords.length === 0) return [];
 
-        
-            
-        // Create an array with actionBlocks and priority value to show.
-        for (const idActionBlock of actionBlockIdsToShow) {
-            let actionBlock = this.#actionBlockById.get(idActionBlock);
+        // 1. Собираем все уникальные ID блоков, где есть хоть один тег из запроса
+        const candidateIds = new Set();
+        userWords.forEach(word => {
+            const matches = this.#actionBlockIdsByTag[word] || {};
+            Object.keys(matches).forEach(id => candidateIds.add(id));
+        });
 
-            const priorityActionBlock = this.#getPriorityActionBlockByPhrase(actionBlock, userPhrase);
-
-            actionBlock.priority = priorityActionBlock;
-    
-            if (priorityActionBlock > 0) {
-                // Push current obj.
-                foundActionBlocks.push(actionBlock);
-            }
+        // Также добавляем блок, если есть точное совпадение по Title (даже если теги не совпали)
+        // Предполагаю, что в Map ключом является очищенный/lowercase тайтл, либо ID. 
+        // Если ключ — это фраза, проверяем её:
+        const exactTitleBlockId = this.#actionBlockIdByTitle.get(userPhrase);
+        if (exactTitleBlockId) {
+            candidateIds.add(String(exactTitleBlockId));
         }
 
-        foundActionBlocks = Array.from(foundActionBlocks).reverse();
+        if (candidateIds.size === 0) return [];
+
+        const actionBlocksArray = [...this.getActionBlocks().values()];
         
-        const propertyInActionBlockToSort = 'priority';
-        const isSortFromAToZ = false;
-    
-        // Sort by priority.
-        const actionBlocksSortedByPriority = this.#getSortedActionBlocksByProperty(foundActionBlocks, propertyInActionBlockToSort, isSortFromAToZ);
-        
-    
-        return actionBlocksSortedByPriority;
-    
-        function getIdActionBlocksByTags(userWords) {
-            const indexesActionBlocksToShow = [];
-            
-            // Push index of infoObj by user phrase if it doesn't exist yet in array. 
-            for (const indexUserWord in userWords) {
-                // One user word of phrase.
-                const userWord = userWords[indexUserWord];
-                // Indexes of current tag.
-                const actionBlockIndexesOfCurrentTag = that.#actionBlockIndexesByTag[userWord];
-    
-                // For each index of infoObject for current tag.
-                for (const indexActionBlockToShowCurrent in actionBlockIndexesOfCurrentTag) {
-                    let indexActionBlockToShow = actionBlockIndexesOfCurrentTag[indexActionBlockToShowCurrent];
-    
-                    let isIndexExistInIndexesActionBlocks = yesSir.arrayManager.isValueExistsInArray(indexesActionBlocksToShow, indexActionBlockToShow);
-    
-                    if (isIndexExistInIndexesActionBlocks) {
-                        continue;
+        // Группы для разделения блоков по приоритетам
+        const group1ExactTitle = [];
+        const group2SequenceWords = [];
+        const group3ScatteredWords = [];
+        const group4Others = [];
+
+        // 2. Распределяем блоки по группам приоритета
+        for (const actionBlockId of candidateIds) {
+            let actionBlock = actionBlocksArray.find(obj => String(obj.id) === String(actionBlockId));
+            if (!actionBlock) continue;
+
+            // Клонируем или сбрасываем приоритет для корректной внутренней сортировки
+            actionBlock.priority = 0; 
+
+            // --- ПРИОРИТЕТ 1: Точное совпадение с Title ---
+            if (exactTitleBlockId && String(actionBlock.id) === String(exactTitleBlockId)) {
+                group1ExactTitle.push(actionBlock);
+                continue; // Если совпал тайтл, это абсолютный топ, идем дальше
+            }
+
+            // Анализируем теги для определения группы
+            let hasSequence = false;
+            let hasScatteredWordsInSameTag = false;
+            let maxSequencePriority = 0;
+
+            // Собираем все координаты слов запроса для данного блока, сгруппированные по tagIndex
+            // Структура: { [tagIndex]: [wordIndex1, wordIndex2, ...] }
+            const wordsByTag = {};
+
+            userWords.forEach((word, userWordIndex) => {
+                const wordMatches = this.#actionBlockIdsByTag[word] || {};
+                const coords = wordMatches[actionBlockId] || [];
+                
+                coords.forEach(coord => {
+                    if (!wordsByTag[coord.tagIndex]) {
+                        wordsByTag[coord.tagIndex] = [];
                     }
-    
-                    indexesActionBlocksToShow.push(indexActionBlockToShow);
+                    // Сохраняем индекс слова в теге и его позицию в запросе для проверки последовательности
+                    wordsByTag[coord.tagIndex].push({
+                        wordIndex: coord.wordIndex,
+                        userWordIndex: userWordIndex
+                    });
+                });
+            });
+
+            // Проверяем условия внутри каждого тега
+            for (const tagIndex in wordsByTag) {
+                const coordsInTag = wordsByTag[tagIndex];
+                
+                // Сортируем координаты по порядку их появления в теге
+                coordsInTag.sort((a, b) => a.wordIndex - b.wordIndex);
+
+                // Проверка на последовательность (идут ли друг за другом из запроса)
+                // Ищем непрерывные цепочки, где wordIndex увеличивается на столько же, на сколько userWordIndex
+                for (let i = 0; i < coordsInTag.length; i++) {
+                    let sequenceLength = 1;
+                    let currentWordIndex = coordsInTag[i].wordIndex;
+                    let currentUserWordIndex = coordsInTag[i].userWordIndex;
+
+                    // Считаем стандартный внутренний приоритет для формулы (на случай если цепочки одинаковые)
+                    let currentPriority = (100 - (parseInt(tagIndex) * 10 + currentWordIndex));
+
+                    for (let j = i + 1; j < coordsInTag.length; j++) {
+                        if (coordsInTag[j].wordIndex === currentWordIndex + sequenceLength && 
+                            coordsInTag[j].userWordIndex === currentUserWordIndex + sequenceLength) {
+                            sequenceLength++;
+                        } else {
+                            break;
+                        }
+                    }
+
+                    // Если нашли цепочку хотя бы из 2-х слов подряд (или больше)
+                    if (sequenceLength > 1 && sequenceLength === userWords.length) {
+                        hasSequence = true;
+                        if (currentPriority > maxSequencePriority) {
+                            maxSequencePriority = currentPriority;
+                        }
+                    }
+                }
+
+                // --- ПРИОРИТЕТ 3: Большинство слов в одном теге, но в случайном порядке ---
+                // "Большинство" определим как > 50% от слов запроса (или хотя бы 2 слова, если запрос короткий)
+                const uniqueUserWordsInTag = new Set(coordsInTag.map(c => c.userWordIndex)).size;
+                const majorityCount = Math.max(2, Math.ceil(userWords.length / 2));
+                
+                if (uniqueUserWordsInTag >= majorityCount) {
+                    hasScatteredWordsInSameTag = true;
                 }
             }
-    
-            return indexesActionBlocksToShow;
+
+            // Распределяем по оставшимся группам и вычисляем внутренний priority для сортировки методом
+            if (hasSequence) {
+                actionBlock.priority = maxSequencePriority;
+                group2SequenceWords.push(actionBlock);
+            } else if (hasScatteredWordsInSameTag) {
+                // Для группы 3 в качестве priority можно взять просто кол-во совпавших слов
+                actionBlock.priority = 1; 
+                group3ScatteredWords.push(actionBlock);
+            } else {
+                actionBlock.priority = 0;
+                group4Others.push(actionBlock);
+            }
         }
+
+        // 3. Сортируем каждую группу внутренним методом (если это необходимо)
+        const sortedGroup1 = group1ExactTitle; // Тут обычно 1 элемент
+        const sortedGroup2 = this.#getSortedActionBlocksByProperty(group2SequenceWords, 'priority');
+        const sortedGroup3 = this.#getSortedActionBlocksByProperty(group3ScatteredWords, 'priority');
+        const sortedGroup4 = this.#getSortedActionBlocksByProperty(group4Others, 'priority');
+
+        // 4. Склеиваем массивы строго по порядку приоритетов
+        return [
+            ...sortedGroup1,
+            ...sortedGroup2,
+            ...sortedGroup3,
+            ...sortedGroup4
+        ];
     }
 
     getActionBlocksByTags(userPhrase, minusTags) {
@@ -203,19 +275,19 @@ class ActionBlockModel {
                 // One user word of phrase.
                 const tag = tags[indexTag];
     
-                if (that.#actionBlockIndexesByTag[tag] === undefined) {
+                if (that.#actionBlockIdsByTag[tag] === undefined) {
                     return [];
                 }
                 
                 // If array with indexes to show is empty. 
                 if (actionBlockIndexesToShow.length < 1) {
                     // Add all Action-Blocks indexes of tag to array.
-                    actionBlockIndexesToShow = actionBlockIndexesToShow.concat(that.#actionBlockIndexesByTag[tag]);
+                    actionBlockIndexesToShow = actionBlockIndexesToShow.concat(that.#actionBlockIdsByTag[tag]);
                 }
                 else {
                     actionBlockIndexesToShow = yesSir.arrayManager.getSameItemsFromArrays
                     (
-                        actionBlockIndexesToShow, that.#actionBlockIndexesByTag[tag]
+                        actionBlockIndexesToShow, that.#actionBlockIdsByTag[tag]
                     );
     
                     if (actionBlockIndexesToShow.length < 1) {
@@ -235,13 +307,13 @@ class ActionBlockModel {
                 // Delete items with minus tags.
                 for (const minusTag of minusTags) {
                     for (const indexActionBlockToShow in actionBlockIndexesToShow) {
-                        if (that.#actionBlockIndexesByTag[minusTag] === undefined) continue;
+                        if (that.#actionBlockIdsByTag[minusTag] === undefined) continue;
                         const indexActionBlockToShow = actionBlockIndexesToShow[indexActionBlockToShow];
                         
                         // console.log(that.#titles_actionBlocksMap_by_tag[minus_tag]);
     
                         // Compare minus tag with each Action-Block that has this tag.
-                        for (const indexActionBlockWithMinusTag of that.#actionBlockIndexesByTag[minusTag]) {
+                        for (const indexActionBlockWithMinusTag of that.#actionBlockIdsByTag[minusTag]) {
                             if (indexActionBlockWithMinusTag === indexActionBlockToShow) {
                                 actionBlockIndexesToShow[indexActionBlockToShow] = undefined;
                             }
@@ -701,53 +773,98 @@ class ActionBlockModel {
     #updateTagsIndexesForMap() {
         const that = this;
 
-        const actionBlockIndexesByTag = createIndexes();
-        const key = 'actionBlockIndexesByTag';
-        localStorage[key] = JSON.stringify(actionBlockIndexesByTag);
-        this.#actionBlockIndexesByTag = actionBlockIndexesByTag;
+        const actionBlockIdsByTag = createIndexes();
+        const key = 'actionBlockIdsByTag';
+        localStorage[key] = JSON.stringify(actionBlockIdsByTag);
+        this.#actionBlockIdsByTag = actionBlockIdsByTag;
     
     
         // Example: indexes_actionBlocks_by_tag['hello'] = [1, 2];
         function createIndexes() {
             const actionBlocksMap = that.getActionBlocks();
-            let indexesActionBlocksByTag = {};
+            let idsOfActionBlocksByTagWord = {};
 
             actionBlocksMap.forEach((actionBlock, indexActionBlock) => {
-                if (indexActionBlock === undefined) return indexesActionBlocksByTag;
+                if (actionBlock === undefined || actionBlock.id === undefined) return idsOfActionBlocksByTagWord;
+
+                const actionBlockId = actionBlock.id; // Используем ID заметки/блока
                 const tags = actionBlock.tags;
 
-                // For all tags.
-                for (const tag of tags) {
-                    let tagLowerCase = tag.toLowerCase();
 
-                    if ( ! tagLowerCase) continue;
 
-                    // WHILE first symbol in tag_lower_case is empty THEN delete empty.
-                    while (tagLowerCase[0] === ' ') tagLowerCase = tagLowerCase.replace(tagLowerCase[0], '');
+                tags.forEach((tag, tagIndex) => {
+                    let tagLower = tag.toLowerCase().trim();
+                    if (!tagLower) return;
 
-                    // Separated words of tag_lower_case.
-                    let tagWords = that.#textManager.splitText(tagLowerCase, ' ');
+                    // Разбиваем конкретную фразу на слова.
+                    let tagWords = that.#textManager.splitText(tagLower, ' ');
 
-                    // For each word in tag_lower_case.
-                    for (const tagWord of tagWords) {
-                        if ( ! indexesActionBlocksByTag[tagWord]) {
-                            indexesActionBlocksByTag[tagWord] = [];
+                    // Проходим по каждому слову во фразе.
+                    tagWords.forEach((word, wordIndex) => {
+                        if ( ! word) return;
+
+                        // Создаем структуру, если слова еще нет в индексе
+                        if ( ! idsOfActionBlocksByTagWord[word]) {
+                            idsOfActionBlocksByTagWord[word] = {};
                         }
-                        
-                        // Indexes for link to actionBlock.
-                        let indexes_arr = Object.values(indexesActionBlocksByTag[tagWord]);
-                        
-                        // Each index must be different in indexes array.
-                        let isIndexExistInIndexesArr = yesSir.arrayManager.isValueExistsInArray(indexes_arr, indexActionBlock);
+                        if ( ! idsOfActionBlocksByTagWord[word][actionBlockId]) {
+                            idsOfActionBlocksByTagWord[word][actionBlockId] = [];
+                        }
 
-                        if (isIndexExistInIndexesArr) continue;
+                        // Сохраняем точные координаты слова
+                        idsOfActionBlocksByTagWord[word][actionBlockId].push({
+                            tagIndex: tagIndex,
+                            wordIndex: wordIndex
+                        });
+                    });
+                });
 
-                        indexesActionBlocksByTag[tagWord].push(indexActionBlock);
-                    }
-                }
+
+
+
+
+
+                // For all tags.
+                // for (const tag of tags) {
+                //     let tagLowerCase = tag.toLowerCase();
+
+                //     if ( ! tagLowerCase) continue;
+
+                //     // WHILE first symbol in tag_lower_case is empty THEN delete empty.
+                //     while (tagLowerCase[0] === ' ') tagLowerCase = tagLowerCase.replace(tagLowerCase[0], '');
+
+                //     // Separated words of tag_lower_case.
+                //     let tagWords = that.#textManager.splitText(tagLowerCase, ' ');
+
+                //     // For each word in tag_lower_case.
+                //     for (const tagWord of tagWords) {
+                //         if ( ! indexesActionBlocksByTag[tagWord]) {
+                //             indexesActionBlocksByTag[tagWord] = [];
+                //         }
+                        
+                //         // Indexes for link to actionBlock.
+                //         let indexes_arr = Object.values(indexesActionBlocksByTag[tagWord]);
+                        
+                //         // Each index must be different in indexes array.
+                //         let isIndexExistInIndexesArr = yesSir.arrayManager.isValueExistsInArray(indexes_arr, indexActionBlock);
+
+                //         if (isIndexExistInIndexesArr) continue;
+
+                //         indexesActionBlocksByTag[tagWord].push(indexActionBlock);
+                //     }
+                // }
+
+
+
+
+
+
+
+
+
             });
 
-            return indexesActionBlocksByTag;
+            return idsOfActionBlocksByTagWord;
         }
     }
 

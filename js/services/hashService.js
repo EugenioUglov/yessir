@@ -101,6 +101,8 @@ class HashService {
       isListenText: false,
     };
 
+    console.log(parameter.requestValue);
+
     const requestValue =
       parameter.requestValue != undefined
         ? parameter.requestValue
@@ -123,6 +125,7 @@ class HashService {
     }
 
     this.#setCurrentPageName(this.getPageNameEnum().request);
+
     const newHash =
       this.getPageNameEnum().request +
       "=" +
@@ -131,6 +134,7 @@ class HashService {
         ? "&" + this.getPageOptionNameEnum().executebytitle
         : "") +
       (isListenText ? "&" + this.getPageOptionNameEnum().listen : "");
+
     window.location.hash = newHash;
   };
 
@@ -326,8 +330,6 @@ class HashService {
 
     // this.#actionBlockService.view.clear();
 
-
-
     if (
       this.getNormalizedCurrentHash() === "#" + this.getPageNameEnum().main ||
       this.getNormalizedCurrentHash() === "" ||
@@ -418,7 +420,7 @@ class HashService {
 
         that.#actionBlockService.executeActionBlockById(idFromUrl);
     } else if (
-      hashParamsInLowerCase.get(this.getPageNameEnum().request)
+      hashParamsInLowerCase.has(this.getPageNameEnum().request)
     ) {
       let request = "";
       const textToCut = window.location.hash;
