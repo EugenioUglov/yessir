@@ -555,8 +555,8 @@ class HashService {
     new EditActionBlockDataHolder(this);
   }
 
-  #setCurrentPageName(new_page_name) {
-    this.#currentPageName = new_page_name;
+  #setCurrentPageName(newPageName) {
+    this.#currentPageName = newPageName;
   }
 
   #getHashParams() {

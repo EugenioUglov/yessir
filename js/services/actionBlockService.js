@@ -1078,16 +1078,16 @@ class ActionBlockService {
     this.model.saveAsync(actionBlocks);
   }
 
-  saveActionBlocksFromFile(content_of_file) {
-    let actionBlocks_from_file;
+  saveActionBlocksFromFile(contentOfFile) {
+    let actionBlocksFromFile;
 
-    if (content_of_file === undefined) {
+    if (contentOfFile === undefined) {
       alert("Error! Data from the file has not been loaded");
       return;
     }
 
     try {
-      actionBlocks_from_file = this.mapDataStructure.getParsed(content_of_file);
+      actionBlocksFromFile = this.mapDataStructure.getParsed(contentOfFile);
     } catch (error) {
       alert(
         "Content of file is not correct. File must contain an Action-Blocks data."
@@ -1096,12 +1096,12 @@ class ActionBlockService {
       return;
     }
 
-    this.model.setActionBlocks(actionBlocks_from_file);
+    this.model.setActionBlocks(actionBlocksFromFile);
   }
 
   deleteAllActionBlocks() {
     const that = this;
-    const text_confirm_window =
+    const textConfirmWindow =
       "Are you sure you want to delete ALL Action-Blocks?";
 
     function onClickOkConfirm() {
@@ -1116,7 +1116,7 @@ class ActionBlockService {
     }
 
     this.dialogWindow.confirmAlert(
-      text_confirm_window,
+      textConfirmWindow,
       onClickOkConfirm,
       onClickCancelConfirm
     );
@@ -1125,16 +1125,16 @@ class ActionBlockService {
   downloadFileWithActionBlocks = (actionBlocks) => {
     if (!actionBlocks) actionBlocks = this.model.getActionBlocks();
     const content = this.mapDataStructure.getStringified(actionBlocks);
-    const date_now = this.#dateManager.getDateNow();
-    const time_now = this.#dateManager.getTimeNow();
+    const dateNow = this.#dateManager.getDateNow();
+    const timeNow = this.#dateManager.getTimeNow();
 
-    const date_text = date_now + "-" + time_now;
+    const dateText = dateNow + "-" + timeNow;
 
     // Set variable for name of the saving file with date and time.
-    const file_name = "Action-Blocks " + date_text;
+    const fileName = "Action-Blocks " + dateText;
     const extension = ".json";
 
-    download(content, file_name, extension);
+    download(content, fileName, extension);
 
     // Function to download data to a file
     function download(data, filename, type) {
@@ -1159,19 +1159,19 @@ class ActionBlockService {
     // this.fileManager.downloadFile(content, file_name, extension);
   };
 
-  uploadFileWithActionBlocks = (content_of_file) => {
-    if (content_of_file === undefined) {
+  uploadFileWithActionBlocks = (contentOfFile) => {
+    if (contentOfFile === undefined) {
       alert("Error! Data from the file has not been loaded");
       return;
     }
 
     // Get actionBlocks from the file.
-    let actionBlocks_from_file;
+    let actionBlocksFromFile;
 
     this.modalLoadingService.show();
 
     try {
-      actionBlocks_from_file = this.mapDataStructure.getParsed(content_of_file);
+      actionBlocksFromFile = this.mapDataStructure.getParsed(contentOfFile);
     } catch (error) {
       alert(
         "Content of file is not correct. File must contain an Action-Blocks data."
@@ -1181,7 +1181,7 @@ class ActionBlockService {
     }
 
     this.view.closeSettings();
-    this.model.setActionBlocks(actionBlocks_from_file);
+    this.model.setActionBlocks(actionBlocksFromFile);
     this.scrollService.setPositionTop();
     this.showActionBlocks();
     this.searchService.clearInputField();
@@ -1247,15 +1247,15 @@ class ActionBlockService {
     this.#onActionBlocksStorageUpdated();
   }
 
-  updateActionBlock = (title, tags, selected_action, content, image_url) => {
+  updateActionBlock = (title, tags, selectedAction, content, imageURL) => {
     this.modalLoadingService.show();
 
     const is_updated = this.model.updateActionBlock(
       title,
       tags,
-      selected_action,
+      selectedAction,
       content,
-      image_url
+      imageURL
     );
 
     if (is_updated === false) {
@@ -1299,16 +1299,16 @@ class ActionBlockService {
 
   updateDefaultActionBlocks = () => {
     const that = this;
-    const is_show_alert_on_error = false;
+    const isShowAlertOnError = false;
 
-    const actionBlocks_to_create = this.model.getDefaultActionBlocks();
+    const actionBlocksToCreate = this.model.getDefaultActionBlocks();
 
     // Delete previous default Action-Blocks.
-    for (const actionBlock_to_delete of actionBlocks_to_create) {
+    for (const actionBlockToDelete of actionBlocksToCreate) {
       // Update site.
       this.model.deleteActionBlockByTitle(
-        actionBlock_to_delete.title,
-        is_show_alert_on_error
+        actionBlockToDelete.title,
+        isShowAlertOnError
       );
     }
 
@@ -1320,7 +1320,7 @@ class ActionBlockService {
     return;
 
     function createDefaultActionBlocks() {
-      actionBlocks_to_create.forEach((actionBlock) => {
+      actionBlocksToCreate.forEach((actionBlock) => {
         that.createActionBlock(
           actionBlock.title,
           actionBlock.tags,
@@ -1340,7 +1340,7 @@ class ActionBlockService {
     // this.loadingService.stopLoading();
     this.view.closeSettings();
 
-    const text_confirm_window =
+    const textConfirmWindow =
       "Are you sure you want to delete" + "\n" + ' "' + title + '" ?';
 
     function onClickOkConfirm() {
@@ -1358,7 +1358,7 @@ class ActionBlockService {
     }
 
     this.dialogWindow.confirmAlert(
-      text_confirm_window,
+      textConfirmWindow,
       onClickOkConfirm,
       onClickCancelConfirm
     );
@@ -1366,25 +1366,25 @@ class ActionBlockService {
     this.#onActionBlocksStorageUpdated();
   };
 
-  openFolder(actionBlock_title) {
+  openFolder(actionBlockTitle) {
     // !!! not tested
     // OLD
     // const actionBlocks = this.model.getActionBlocks();
     // const actionBlock = actionBlocks.get(actionBlock_title);
     // NEW
-    const actionBlock = this.model.getActionBlockByTitle(actionBlock_title);
-    const tags_to_search = actionBlock.content;
+    const actionBlock = this.model.getActionBlockByTitle(actionBlockTitle);
+    const tagsToSearch = actionBlock.content;
 
-    let actionBlocks_to_show;
+    let actionBlocksToShow;
 
-    if (!tags_to_search) {
+    if (!tagsToSearch) {
       // console.log('Warning! Tags for folder don\'t exist');
       return;
     }
 
     this.view.clear();
     // Get command text from input field and find possible search data.
-    actionBlocks_to_show = this.model.getByPhrase(tags_to_search);
+    actionBlocksToShow = this.model.getByPhrase(tagsToSearch);
 
     // Delete a folder from array. In order to don't show a folder with Action-Blocks.
     // if (i_actionBlock >= 0) {
@@ -1392,7 +1392,7 @@ class ActionBlockService {
     // }
 
     this.scrollService.setPositionTop();
-    this.showActionBlocks(actionBlocks_to_show);
+    this.showActionBlocks(actionBlocksToShow);
 
     /*
         if (actionBlocks_to_show.length === 1) {
@@ -1415,9 +1415,9 @@ class ActionBlockService {
       actionBlock.action === this.model.getActionNameEnum().openUrl
     ) {
       const url = this.#getValidURL(actionBlock.content);
-      let new_tab = window.open(url, "_blank");
+      let newTab = window.open(url, "_blank");
 
-      if (!new_tab || new_tab.closed || typeof new_tab.closed == "undefined") {
+      if (!newTab || newTab.closed || typeof newTab.closed == "undefined") {
         // Popup is blocked.
 
         location.href = url;
@@ -1437,12 +1437,12 @@ class ActionBlockService {
     this.hashService.openSettingsActionBlockPage(title);
   };
 
-  showSettingsToCreateActionBlock = (action_name) => {
+  showSettingsToCreateActionBlock = (actionName) => {
     this.#scroll_position_on_execute_block =
       this.scrollService.getScrollXY()[1];
-    this.model.action_for_new_actionBlock = action_name;
+    this.model.action_for_new_actionBlock = actionName;
 
-    this.view.showSettingsToCreateActionBlock(action_name);
+    this.view.showSettingsToCreateActionBlock(actionName);
     this.onPageContentChange();
   };
 
