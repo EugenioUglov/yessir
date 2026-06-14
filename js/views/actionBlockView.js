@@ -21,19 +21,19 @@ class ActionBlockView {
   }
 
   #init() {
-    const dropdown_select_action_for_create_container = $(
+    const dropdownSelectActionForCreateContainer = $(
       "#settings_actionBlock_container"
     ).find(".dropdown_select_action")[0];
     this.dropdownManager.setOptions(
-      dropdown_select_action_for_create_container,
+      dropdownSelectActionForCreateContainer,
       this.action_description_by_action_name
     );
-    const i_action = 0;
-    const first_dropdown_item_text_for_create =
-      dropdown_select_action_for_create_container[i_action].value;
-    const content_type_description =
+    const indexAction = 0;
+    const firstDropdownItemTextForCreate =
+      dropdownSelectActionForCreateContainer[indexAction].value;
+    const contentTypeDescription =
       this.contentTypeDescriptionByAction[
-        first_dropdown_item_text_for_create
+        firstDropdownItemTextForCreate
       ];
   }
 

@@ -154,6 +154,14 @@ let yesSir;
 
     // resizeContentDialogInfo();
     // window.addEventListener('resize', onWindowResize);
+
+    scrollController.bindScrollEndPage({
+      onScrollEndPage: function onScrollEndPage() {
+        if (actionBlockService.view.isActionBlocksPageActive()) {
+            actionBlockService.addOnPageNextActionBlocks();
+        }
+      }
+    });
   }
 
   function onWindowResize() {
@@ -168,4 +176,6 @@ let yesSir;
       width: "250px",
     });
   }
+
+  
 })();

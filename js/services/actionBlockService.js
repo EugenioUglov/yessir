@@ -1,8 +1,8 @@
 class ActionBlockService {
   #dateManager;
 
-  #index_last_showed_actionBlock = 0;
-  #scroll_position_on_execute_block = 0;
+  #indexLastShowedActionBlock = 0;
+  #scrollPositionOnExecuteBlock = 0;
 
   constructor(
     dbManager,
@@ -79,12 +79,12 @@ class ActionBlockService {
     }
 
     // Cancel buttton in center.
-    const cancel_button = document.createElement("button");
-    cancel_button.appendChild(document.createTextNode("Cancel"));
+    const cancelButton = document.createElement("button");
+    cancelButton.appendChild(document.createTextNode("Cancel"));
 
-    let is_canceled = false;
+    let isCanceled = false;
 
-    $(cancel_button).css({
+    $(cancelButton).css({
       position: "fixed",
       "z-index": "2000",
       padding: "10px",
@@ -99,21 +99,21 @@ class ActionBlockService {
       color: "wheat",
     });
 
-    $(cancel_button).on("click", () => {
-      is_canceled = true;
+    $(cancelButton).on("click", () => {
+      isCanceled = true;
       hideLoadingElmenets();
       const isCreated = that.createActionBlock(title, tags, action, content, imageURL, onEnd);
 
       // if (onEnd != undefined) onEnd();
     });
 
-    document.body.appendChild(cancel_button);
+    document.body.appendChild(cancelButton);
     //
 
     const autmation_in_progress_text =
       'Automation in progress. It can take a while.\n\nYou can click "Cancel" button to skip automation works.';
 
-    let top_fixed_info_container_height = document.getElementsByClassName(
+    let topFixedInfoContainerHeight = document.getElementsByClassName(
       "fixed-text-info-container"
     )[0].offsetHeight;
 
@@ -124,10 +124,10 @@ class ActionBlockService {
 
       nounNumber.getSingularizedWords(
         titleWords,
-        (singularized_words) => {
+        (singularizedWords) => {
           resolve({
             status: "success",
-            singularized_words: singularized_words,
+            singularized_words: singularizedWords,
           });
         },
         (error) => {
@@ -172,7 +172,7 @@ class ActionBlockService {
 
     return await Promise.all([getSingularizedWordsPromise, getImagePromise])
       .then((values) => {
-        if (is_canceled) return false;
+        if (isCanceled) return false;
 
         hideLoadingElmenets();
         let singularizedWordsObj = values[0];
@@ -201,7 +201,7 @@ class ActionBlockService {
     }
 
     function hideLoadingElmenets() {
-      cancel_button.parentNode.removeChild(cancel_button);
+      cancelButton.parentNode.removeChild(cancelButton);
       $(".fixed-text-info-container").hide();
       $(".fixed-text-info").text("");
       $(".gray-foreground").hide();
@@ -519,7 +519,7 @@ class ActionBlockService {
 
   showActionBlocks(
     actionBlocksToShow,
-    count_actionBlocks_to_show_at_time = 50
+    countActionBlocksToShowAtTime = 50
   ) {
     const that = this;
 
@@ -528,7 +528,7 @@ class ActionBlockService {
     // this.loadingService.startLoading();
     this.view.hideActionBlocksContainer();
 
-    this.#index_last_showed_actionBlock = 0;
+    this.#indexLastShowedActionBlock = 0;
 
     if (actionBlocksToShow === undefined) {
       actionBlocksToShow = this.getAllActionBlocksInArray();
@@ -552,7 +552,7 @@ class ActionBlockService {
       key,
       actionBlock,
     ] of that.model.actionBlocks_to_show.entries()) {
-      if (i >= count_actionBlocks_to_show_at_time - 1) {
+      if (i >= countActionBlocksToShowAtTime - 1) {
         break;
       }
 
@@ -562,7 +562,7 @@ class ActionBlockService {
       i++;
     }
 
-    that.#index_last_showed_actionBlock = i;
+    that.#indexLastShowedActionBlock = i;
 
     this.bindClickActionBlock(
       this.#onClickActionBlock,
@@ -752,12 +752,12 @@ class ActionBlockService {
       }
 
       if (isActionBlockExist === false) {
-        this.#index_last_showed_actionBlock = 0;
+        this.#indexLastShowedActionBlock = 0;
         // Show Action-Blocks separated by pages.
         this.showActionBlocks(actionBlocksToShow);
       }
     } else {
-      this.#index_last_showed_actionBlock = 0;
+      this.#indexLastShowedActionBlock = 0;
       // Show Action-Blocks separated by pages.
       this.showActionBlocks(actionBlocksToShow);
     }
@@ -773,7 +773,7 @@ class ActionBlockService {
   }
 
   getIndexLastShowedActionBlock() {
-    return this.#index_last_showed_actionBlock;
+    return this.#indexLastShowedActionBlock;
   }
 
   showActionBlock(actionBlock) {
@@ -797,7 +797,7 @@ class ActionBlockService {
   }
 
   getScrollPositionOnExecuteBlock() {
-    return this.#scroll_position_on_execute_block;
+    return this.#scrollPositionOnExecuteBlock;
   }
 
   executeActionBlockById(id) {
@@ -833,7 +833,7 @@ class ActionBlockService {
     // if (actionNameOfActionBlock === 'showAlert') actionNameOfActionBlock = this.model.getActionNameEnum().showInfo;
     // else if (actionNameOfActionBlock === 'openUrl') actionNameOfActionBlock = this.model.getActionNameEnum().openURL;
 
-    this.#scroll_position_on_execute_block =
+    this.#scrollPositionOnExecuteBlock =
       this.scrollService.getScrollXY()[1];
 
     if (
@@ -929,8 +929,8 @@ class ActionBlockService {
       return;
     }
 
-    let count_actionBlocks_curr = 0;
-    let max_count_actionBlocks_to_add_on_page = 50;
+    let countActionBlocksCurr = 0;
+    let maxCountActionBlocksToAddOnPage = 50;
 
     const actionBlocks = this.model.actionBlocks_to_show;
 
@@ -941,19 +941,19 @@ class ActionBlockService {
     // console.log('this.#index_last_showed_actionBlock', this.#index_last_showed_actionBlock);
 
     for (
-      i = this.#index_last_showed_actionBlock;
+      i = this.#indexLastShowedActionBlock;
       i < actionBlocks.length;
       i++
     ) {
-      if (count_actionBlocks_curr >= max_count_actionBlocks_to_add_on_page) {
+      if (countActionBlocksCurr >= maxCountActionBlocksToAddOnPage) {
         break;
       }
 
       this.showActionBlock(actionBlocks[i]);
-      count_actionBlocks_curr++;
+      countActionBlocksCurr++;
     }
 
-    this.#index_last_showed_actionBlock = i;
+    this.#indexLastShowedActionBlock = i;
 
     this.bindClickActionBlock(
       this.#onClickActionBlock,
@@ -1241,8 +1241,6 @@ class ActionBlockService {
     this.loadingService.stopLoading();
     this.view.closeSettings();
     this.view.setDefaultValuesForSettingsElementsActionBlock();
-    // Scroll top.
-    this.scrollService.scrollTo();
     this.view.updatePage();
     // Refresh Action-Blocks on page.
     this.scrollService.setPositionTop();
@@ -1435,14 +1433,14 @@ class ActionBlockService {
   };
 
   #onClickBtnShowSettingsActionBlock = (title) => {
-    this.#scroll_position_on_execute_block =
+    this.#scrollPositionOnExecuteBlock =
       this.scrollService.getScrollXY()[1];
 
     this.hashService.openSettingsActionBlockPage(title);
   };
 
   showSettingsToCreateActionBlock = (actionName) => {
-    this.#scroll_position_on_execute_block =
+    this.#scrollPositionOnExecuteBlock =
       this.scrollService.getScrollXY()[1];
     this.model.action_for_new_actionBlock = actionName;
 
@@ -1451,13 +1449,13 @@ class ActionBlockService {
   };
 
   #getValidURL(url) {
-    let valid_url = url;
+    let validURL = url;
 
     if (url.toLowerCase().includes("http") === false) {
-      valid_url = "http://" + url;
+      validURL = "http://" + url;
     }
 
-    return valid_url;
+    return validURL;
   }
 
   openActionBlockSettings = (title) => {
@@ -1491,8 +1489,5 @@ class ActionBlockService {
     this.view.onPageContentChange();
   }
 
-  closeActionBlockSettings = () => {
-    yesSir.voiceRecognitionService.stopRecognizing();
-    this.hashService.openPreviousPage();
-  };
+
 }

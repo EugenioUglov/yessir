@@ -130,7 +130,12 @@ class ActionBlockController {
       this.#onClickBtnShowSettingsToCreateAdvancedActionBlock
     );
     this.actionBlockService.view.bindClickBtnCancelSettings(
-      this.actionBlockService.closeActionBlockSettings
+      this.closeActionBlockSettings
     );
   }
+
+  closeActionBlockSettings = () => {
+    yesSir.voiceRecognitionService.stopRecognizing();
+    this.hashService.openPreviousPage();
+  };
 }

@@ -101,8 +101,6 @@ class HashService {
       isListenText: false,
     };
 
-    console.log(parameter.requestValue);
-
     const requestValue =
       parameter.requestValue != undefined
         ? parameter.requestValue

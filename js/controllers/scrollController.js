@@ -4,19 +4,14 @@ class ScrollController {
         this.scrollService = scrollService;
 
         this.view = new ScrollView();
-        this.#bindViewEvents();
     }
 
-
-    #bindViewEvents() {
+    bindScrollEndPage({onScrollEndPage}) {
         const that = this;
-
         that.scrollService.bindScroll(onScrollEndPage);
-            
-        function onScrollEndPage() {
-            if (that.actionBlockService.view.isActionBlocksPageActive()) {
-                that.actionBlockService.addOnPageNextActionBlocks();
-            }
-        }
+    }
+
+    setPositionTop() {
+        window.scrollTo(0, 0);
     }
 }

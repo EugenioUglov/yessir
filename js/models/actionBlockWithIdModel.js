@@ -364,11 +364,17 @@ class ActionBlockModel {
         this.#actionBlockIdByTitle.clear();
         this.#actionBlockById.clear();
 
+        console.log(actionBlocksMapNew);
+
         if ( ! actionBlocksMapNew) { 
             actionBlocksMapNew = new Map();
         }
         else {
             actionBlocksMapNew.forEach(actionBlock => {
+                if (actionBlock.id === undefined) {
+                    actionBlock.id = crypto.randomUUID();
+                }
+
                 this.#actionBlockById.set(actionBlock.id, actionBlock);
                 this.#actionBlockIdByTitle.set(actionBlock.title.toUpperCase(), actionBlock.id);
             });
