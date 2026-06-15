@@ -16,7 +16,7 @@ class ActionBlockService {
     keyCodeByKeyName,
     scrollService,
     searchService,
-    loadingService,
+    loaderController,
     hashService,
     noteService,
     dateManager,
@@ -31,7 +31,7 @@ class ActionBlockService {
     this.mapDataStructure = mapDataStructure;
     this.scrollService = scrollService;
     this.searchService = searchService;
-    this.loadingService = loadingService;
+    this.loaderController = loaderController;
     this.hashService = hashService;
     this.noteService = noteService;
     this.modalLoadingService = modalLoadingService;
@@ -68,7 +68,7 @@ class ActionBlockService {
     onEnd
   ) {
     const that = this;
-    this.loadingService.startLoading();
+    this.loaderController.startLoading();
     const nounNumber = new NounNumber();
 
     if (this.model.isActionBlockExist(title)) {
@@ -229,7 +229,7 @@ class ActionBlockService {
     onEnd
   ) {
     const that = this;
-    this.loadingService.startLoading();
+    this.loaderController.startLoading();
     
     if (this.model.isActionBlockExist(title)) {
       alert('Action-Block with current title already exists. Title: ' + title);
@@ -383,7 +383,7 @@ class ActionBlockService {
         console.log("Вся автоматизация завершена", results);
         
         // Скрываем глобальную индикацию загрузки
-        this.loadingService.stopLoading();
+        this.loaderController.stopLoading();
         if (typeof hideLoadingElements === 'function') {
             hideLoadingElements(); 
         }
@@ -417,7 +417,7 @@ class ActionBlockService {
 
 
     if (window.location.href.includes("#main&speechrecognition")) {
-      yesSir.loadingService.stopLoading();
+      yesSir.loaderController.stopLoading();
       if (onEnd != undefined) onEnd(true);
       return true;
     }
@@ -425,7 +425,7 @@ class ActionBlockService {
     this.view.closeSettings();
     this.view.clearAllSettingsFields();
     this.hashService.openPreviousPage();
-    this.loadingService.stopLoading();
+    this.loaderController.stopLoading();
     this.updatePage();
     this.#onActionBlocksStorageUpdated();
     if (onEnd != undefined) onEnd(true);
@@ -524,8 +524,8 @@ class ActionBlockService {
     const that = this;
 
     const timeStartShowActionBlocks = new Date();
-    yesSir.loadingService.startLoading();
-    // this.loadingService.startLoading();
+    yesSir.loaderController.startLoading();
+    // this.loaderController.startLoading();
     this.view.hideActionBlocksContainer();
 
     this.#indexLastShowedActionBlock = 0;
@@ -611,7 +611,7 @@ class ActionBlockService {
     const time_spent_show_actionBlocks =
       timeEndShowActionBlocks - timeStartShowActionBlocks;
 
-    yesSir.loadingService.stopLoading();
+    yesSir.loaderController.stopLoading();
   }
 
   showActionBlocksContainer() {
@@ -936,7 +936,7 @@ class ActionBlockService {
 
     let i;
 
-    this.loadingService.startLoading();
+    this.loaderController.startLoading();
 
     // console.log('this.#index_last_showed_actionBlock', this.#index_last_showed_actionBlock);
 
@@ -959,7 +959,7 @@ class ActionBlockService {
       this.#onClickActionBlock,
       this.#onClickBtnShowSettingsActionBlock
     );
-    this.loadingService.stopLoading();
+    this.loaderController.stopLoading();
   }
 
   updatePage() {
@@ -1021,7 +1021,7 @@ class ActionBlockService {
 
     $('.login-panel .close-icon').one('click', () => {
       $('.login-panel').css('display', 'none');
-      window.location.hash = that.hashService.getPageNameEnum().main;
+      window.location.hash = that.hashService.PAGE_NAME_ENUM.main;
     });
   }
 
@@ -1074,7 +1074,7 @@ class ActionBlockService {
 
     $('.login-panel .close-icon').one('click', () => {
       $('.login-panel').css('display', 'none');
-      window.location.hash = that.hashService.getPageNameEnum().main;
+      window.location.hash = that.hashService.PAGE_NAME_ENUM.main;
     });
   }
 
@@ -1238,7 +1238,7 @@ class ActionBlockService {
 
   #onActionBlockUpdated = () => {
     this.hashService.openPreviousPage();
-    this.loadingService.stopLoading();
+    this.loaderController.stopLoading();
     this.view.closeSettings();
     this.view.setDefaultValuesForSettingsElementsActionBlock();
     this.view.updatePage();
@@ -1339,7 +1339,7 @@ class ActionBlockService {
     const that = this;
 
     this.hashService.openPreviousPage();
-    // this.loadingService.stopLoading();
+    // this.loaderController.stopLoading();
     this.view.closeSettings();
 
     const textConfirmWindow =

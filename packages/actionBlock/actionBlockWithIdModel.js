@@ -364,8 +364,6 @@ class ActionBlockModel {
         this.#actionBlockIdByTitle.clear();
         this.#actionBlockById.clear();
 
-        console.log(actionBlocksMapNew);
-
         if ( ! actionBlocksMapNew) { 
             actionBlocksMapNew = new Map();
         }
@@ -1014,11 +1012,11 @@ class ActionBlockModel {
         while (isSorting) {
             isSorting = false;
             for (let i = 0; i < actionBlocks.length - 1; i++) {
-                let infoObj_curr = actionBlocks[i];
-                let infoObj_next = actionBlocks[i + 1];
-                if (infoObj_curr[property] < infoObj_next[property]) {
-                    actionBlocks[i] = infoObj_next;
-                    actionBlocks[i + 1] = infoObj_curr;
+                let infoObjCurr = actionBlocks[i];
+                let infoObjNext = actionBlocks[i + 1];
+                if (infoObjCurr[property] < infoObjNext[property]) {
+                    actionBlocks[i] = infoObjNext;
+                    actionBlocks[i + 1] = infoObjCurr;
                     isSorting = true;
                 }
             }

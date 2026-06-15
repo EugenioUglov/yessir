@@ -30,7 +30,7 @@ class AutocompleteController {
     function onSelect() {
       if (
         that.hashService.getCurrentPageName() ===
-        that.hashService.getPageNameEnum().main
+        that.hashService.PAGE_NAME_ENUM.main
       ) {
         window.scrollTo(0, 0);
         const actionBlocks_to_show =

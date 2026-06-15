@@ -395,20 +395,20 @@ class ActionBlockView {
 
   bindClickBtnCreateActionBlock(handler) {
     $("#btn_create_actionBlock").on("click", () => {
-      const settings_actionBlock_container = $(
+      const settingsActionBlockContainer = $(
         "#settings_actionBlock_container"
       );
 
       // Get title value.
-      const input_field_title =
-        settings_actionBlock_container.find(".input_field_title");
-      let title = this.textManager.getTextInOneLine(input_field_title.val());
+      const inputFielditle =
+        settingsActionBlockContainer.find(".input_field_title");
+      let title = this.textManager.getTextInOneLine(inputFielditle.val());
 
       // Get content.
-      const input_field_info_container = settings_actionBlock_container.find(
+      const inputFieldInfoContainer = settingsActionBlockContainer.find(
         ".input_field_content"
       );
-      let content = input_field_info_container.val();
+      let content = inputFieldInfoContainer.val();
 
       if ( ! title) {
         if (content === "") {
@@ -416,28 +416,28 @@ class ActionBlockView {
           return false;
         }
 
-        const first_line_content = this.textManager.getFirstLine(content);
-        const first_ten_words_of_first_line_content = this.textManager.getWords(
-          first_line_content,
+        const firstLineContent = this.textManager.getFirstLine(content);
+        const firstTenWordsOfFirstLineContent = this.textManager.getWords(
+          firstLineContent,
           0,
           10
         );
 
-        title = first_ten_words_of_first_line_content;
+        title = firstTenWordsOfFirstLineContent;
       }
 
       // .Start tags.
       // Get tags values.
-      let input_field_tags =
-        settings_actionBlock_container.find(".input_field_tags")[0];
-      let tags_from_field = input_field_tags.value;
+      let inputFieldTags =
+        settingsActionBlockContainer.find(".input_field_tags")[0];
+      let tagsFromField = inputFieldTags.value;
 
-      let tags_plus_title = "";
+      let tagsPlusTitle = "";
 
-      if (tags_from_field) tags_plus_title += tags_from_field + ", ";
+      if (tagsFromField) tagsPlusTitle += tagsFromField + ", ";
 
       // Add new tag getting text from title.
-      tags_plus_title += title;
+      tagsPlusTitle += title;
       // .End tags.
 
       // Get action.
@@ -463,30 +463,30 @@ class ActionBlockView {
         // return false;
       }
 
-      const input_field_image_URL_container =
-        settings_actionBlock_container.find(".input_field_image_URL");
-      const image_URL = input_field_image_URL_container.val();
+      const inputFieldImageUrlContainer =
+        settingsActionBlockContainer.find(".input_field_image_URL");
+      const imageUrl = inputFieldImageUrlContainer.val();
 
-      handler(title, tags_plus_title, this.getUserAction(), content, image_URL);
+      handler(title, tagsPlusTitle, this.getUserAction(), content, imageUrl);
     });
   }
 
   bindClickBtnCreateActionBlockWithAutomation(handler) {
     $("#btn_create_actionBlock_with_automation").on("click", () => {
-      const settings_actionBlock_container = $(
+      const settingsActionBlockContainer = $(
         "#settings_actionBlock_container"
       );
 
       // Get title value.
-      const input_field_title =
-        settings_actionBlock_container.find(".input_field_title");
-      let title = this.textManager.getTextInOneLine(input_field_title.val());
+      const inputFieldTitle =
+        settingsActionBlockContainer.find(".input_field_title");
+      let title = this.textManager.getTextInOneLine(inputFieldTitle.val());
 
       // Get content.
-      const input_field_info_container = settings_actionBlock_container.find(
+      const inputFieldInfoContainer = settingsActionBlockContainer.find(
         ".input_field_content"
       );
-      let content = input_field_info_container.val();
+      let content = inputFieldInfoContainer.val();
 
       if (!title) {
         if (content === "") {
@@ -494,28 +494,28 @@ class ActionBlockView {
           return false;
         }
 
-        const first_line_content = this.textManager.getFirstLine(content);
-        const first_ten_words_of_first_line_content = this.textManager.getWords(
-          first_line_content,
+        const firstLineContent = this.textManager.getFirstLine(content);
+        const firstTenWordsOfFirstLineContent = this.textManager.getWords(
+          firstLineContent,
           0,
           10
         );
 
-        title = first_ten_words_of_first_line_content;
+        title = firstTenWordsOfFirstLineContent;
       }
 
       // .Start tags.
       // Get tags values.
-      let input_field_tags =
-        settings_actionBlock_container.find(".input_field_tags")[0];
-      let tags_from_field = input_field_tags.value;
+      let inputFieldTags =
+        settingsActionBlockContainer.find(".input_field_tags")[0];
+      let tagsFromField = inputFieldTags.value;
 
-      let tags_plus_title = "";
+      let tagsPlusTitle = "";
 
-      if (tags_from_field) tags_plus_title += tags_from_field + ", ";
+      if (tagsFromField) tagsPlusTitle += tagsFromField + ", ";
 
       // Add new tag getting text from title.
-      tags_plus_title += title;
+      tagsPlusTitle += title;
       // .End tags.
 
       // Get action.
@@ -542,10 +542,10 @@ class ActionBlockView {
       }
 
       const input_field_image_URL_container =
-        settings_actionBlock_container.find(".input_field_image_URL");
+        settingsActionBlockContainer.find(".input_field_image_URL");
       const image_URL = input_field_image_URL_container.val();
 
-      handler(title, tags_plus_title, this.getUserAction(), content, image_URL);
+      handler(title, tagsPlusTitle, this.getUserAction(), content, image_URL);
     });
   }
 
@@ -608,14 +608,14 @@ class ActionBlockView {
             */
 
       // Action.
-      const dropdown_select_action_for_update = $(
+      const dropdownSelectActionForUpdate = $(
         "#settings_actionBlock_container"
       ).find(".dropdown_select_action");
       // Get selected action.
-      const selected_action =
-        dropdown_select_action_for_update.find(":selected")[0].value;
+      const selectedAction =
+        dropdownSelectActionForUpdate.find(":selected")[0].value;
 
-      if (selected_action === undefined || selected_action === null) {
+      if (selectedAction === undefined || selectedAction === null) {
         alert(
           "Impossible to create command. Dropdown action_user_choose = undefined"
         );
@@ -623,10 +623,10 @@ class ActionBlockView {
       }
 
       // Get content.
-      const input_field_info_container = $(
+      const inputFieldInfoContainer = $(
         "#settings_actionBlock_container"
       ).find(".input_field_content");
-      const content = input_field_info_container.val();
+      const content = inputFieldInfoContainer.val();
 
       if (!content) {
         alert("Impossible to create command. Action input field is empty");
@@ -634,23 +634,23 @@ class ActionBlockView {
       }
 
       // Get image URL.
-      const input_field_image_URL_container = $(
+      const inputFieldImageUrlContainer = $(
         "#settings_actionBlock_container"
       ).find(".input_field_image_URL");
-      const image_url = input_field_image_URL_container.val();
+      const imageUrl = inputFieldImageUrlContainer.val();
 
-      handler(title, tags, selected_action, content, image_url);
+      handler(title, tags, selectedAction, content, imageUrl);
     });
   }
 
   bindClickBtnSaveQuicklyEditedActionBlock(handler) {
     $("#btn_quick_update_actionBlock").on("click", () => {
       // Get new title value.
-      const note_title_element = $("#content_executed_from_actionBlock").find(
+      const noteTitleElement = $("#content_executed_from_actionBlock").find(
         ".note_title"
       );
 
-      let title = note_title_element.text();
+      let title = noteTitleElement.text();
 
       if ( ! title) {
         alert("ERROR! Empty field for title.");
@@ -658,10 +658,10 @@ class ActionBlockView {
       }
 
       // Get content.
-      const note_content_element = $("#content_executed_from_actionBlock").find(
+      const noteContentElement = $("#content_executed_from_actionBlock").find(
         ".content"
       );
-      const content = note_content_element.text();
+      const content = noteContentElement.text();
 
       if ( ! content) {
         alert("ERROR! Content is wrong.");
@@ -699,23 +699,23 @@ class ActionBlockView {
   }
 
   setDefaultValuesForSettingsElementsActionBlock() {
-    const settings_actionBlock_container = $("#settings_actionBlock_container");
+    const settingsActionBlockContainer = $("#settings_actionBlock_container");
 
     // Get title value
-    let input_field_title =
-      settings_actionBlock_container.find(".input_field_title");
-    input_field_title.val("");
+    let inputFieldTitle =
+      settingsActionBlockContainer.find(".input_field_title");
+    inputFieldTitle.val("");
 
-    let input_field_info_container = settings_actionBlock_container.find(
+    let inputFieldInfoContainer = settingsActionBlockContainer.find(
       ".input_field_content"
     );
-    input_field_info_container.val("");
+    inputFieldInfoContainer.val("");
 
-    let input_field_tags =
-      settings_actionBlock_container.find(".input_field_tags")[0];
-    input_field_tags.value = "";
+    let inputFieldTags =
+      settingsActionBlockContainer.find(".input_field_tags")[0];
+    inputFieldTags.value = "";
 
-    settings_actionBlock_container.find(".input_field_image_URL").val("");
+    settingsActionBlockContainer.find(".input_field_image_URL").val("");
     // INPUT_FIELD_IMAGE_URL_CONTAINER.val('');
   }
 
@@ -778,8 +778,8 @@ class ActionBlockView {
   }
 
   rotateFixedBtnPlus() {
-    const icon_plus = document.querySelector(".ico-btn");
-    icon_plus.classList.toggle("is-active");
+    const iconPlus = document.querySelector(".ico-btn");
+    iconPlus.classList.toggle("is-active");
   }
 
   #createHTMLContainerActionBlock = function (

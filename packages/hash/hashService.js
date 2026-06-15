@@ -40,35 +40,35 @@ class HashService {
     this.handleHash();
   }
 
-  getPageNameEnum() {
-    const PAGE_NAME_ENUM = {
-      main: "main",
-      request: "request",
-      actionBlock: "actionBlock",
-      publicActionBlocks: "publicActionBlocks",
-      createActionBlock: "createactionblock",
-      createNote: "createnote",
-      createLink: "createlink",
-      editActionBlock: "editactionblock",
-      speechRecognition: "speechassistant",
-      contentActionBlock: "contentactionblock",
-      login: "login",
-      savetodatabase: "savetodatabase",
-      getfromdatabase: "getfromdatabase",
-    };
+  // getPageNameEnum() {
+  PAGE_NAME_ENUM = Object.freeze({
+    main: "main",
+    request: "request",
+    actionBlock: "actionBlock",
+    publicActionBlocks: "publicActionBlocks",
+    createActionBlock: "createactionblock",
+    createNote: "createnote",
+    createLink: "createlink",
+    editActionBlock: "editactionblock",
+    speechRecognition: "speechassistant",
+    contentActionBlock: "contentactionblock",
+    login: "login",
+    savetodatabase: "savetodatabase",
+    getfromdatabase: "getfromdatabase",
+  });
 
-    return PAGE_NAME_ENUM;
-  }
+  //   return PAGE_NAME_ENUM;
+  // }
 
-  getPageOptionNameEnum() {
-    const PAGE_OPTION_NAME_ENUM = {
+  // PAGE_OPTION_NAME_ENUM {
+    PAGE_OPTION_NAME_ENUM = {
       executebytitle: "executebytitle",
       listen: "listen",
       fileManager: "filemanager",
     };
 
-    return PAGE_OPTION_NAME_ENUM;
-  }
+  //   return PAGE_OPTION_NAME_ENUM;
+  // }
 
   getCurrentPageName() {
     return this.#currentPageName;
@@ -80,8 +80,8 @@ class HashService {
 
   setHashMain() {
     this.#hashPrevious = this.getNormalizedCurrentHash();
-    this.#setCurrentPageName(this.getPageNameEnum().name);
-    window.location.hash = this.getPageNameEnum().name;
+    this.#setCurrentPageName(this.PAGE_NAME_ENUM.name);
+    window.location.hash = this.PAGE_NAME_ENUM.name;
   }
 
   setHashMainPrevious() {
@@ -122,16 +122,16 @@ class HashService {
       this.openMainPage();
     }
 
-    this.#setCurrentPageName(this.getPageNameEnum().request);
+    this.#setCurrentPageName(this.PAGE_NAME_ENUM.request);
 
     const newHash =
-      this.getPageNameEnum().request +
+      this.PAGE_NAME_ENUM.request +
       "=" +
       requestValue +
       (isExecuteActionBlockByTitle
-        ? "&" + this.getPageOptionNameEnum().executebytitle
+        ? "&" + this.PAGE_OPTION_NAME_ENUM.executebytitle
         : "") +
-      (isListenText ? "&" + this.getPageOptionNameEnum().listen : "");
+      (isListenText ? "&" + this.PAGE_OPTION_NAME_ENUM.listen : "");
 
     window.location.hash = newHash;
   };
@@ -144,61 +144,61 @@ class HashService {
   setHashCreateActionBlock() {
     this.#hashPrevious = this.getNormalizedCurrentHash();
 
-    this.#setCurrentPageName(this.getPageNameEnum().createActionBlock);
-    window.location.hash = this.getPageNameEnum().createActionBlock;
+    this.#setCurrentPageName(this.PAGE_NAME_ENUM.createActionBlock);
+    window.location.hash = this.PAGE_NAME_ENUM.createActionBlock;
   }
 
   setHashCreateNote() {
     this.#hashPrevious = this.getNormalizedCurrentHash();
 
-    this.#setCurrentPageName(this.getPageNameEnum().createNote);
-    window.location.hash = this.getPageNameEnum().createNote;
+    this.#setCurrentPageName(this.PAGE_NAME_ENUM.createNote);
+    window.location.hash = this.PAGE_NAME_ENUM.createNote;
   }
 
   setHashCreateLink() {
     this.#hashPrevious = this.getNormalizedCurrentHash();
 
-    this.#setCurrentPageName(this.getPageNameEnum().createLink);
-    window.location.hash = this.getPageNameEnum().createLink;
+    this.#setCurrentPageName(this.PAGE_NAME_ENUM.createLink);
+    window.location.hash = this.PAGE_NAME_ENUM.createLink;
   }
 
   setHashSpeechAssistant() {
     this.#hashPrevious = this.getNormalizedCurrentHash();
 
-    this.#setCurrentPageName(this.getPageNameEnum().speechRecognition);
-    window.location.hash = this.getPageNameEnum().speechRecognition;
+    this.#setCurrentPageName(this.PAGE_NAME_ENUM.speechRecognition);
+    window.location.hash = this.PAGE_NAME_ENUM.speechRecognition;
   }
 
   setHashGetFromDatabase() {
     // this.#hash_previous = this.getNormalizedCurrentHash();
-    this.#hashPrevious = this.getPageNameEnum().main;
+    this.#hashPrevious = this.PAGE_NAME_ENUM.main;
 
 
-    this.#setCurrentPageName(this.getPageNameEnum().getfromdatabase);
-    // window.location.hash = this.getPageNameEnum().getfromdatabase;
-    window.location.replace('#' + this.getPageNameEnum().getfromdatabase);
+    this.#setCurrentPageName(this.PAGE_NAME_ENUM.getfromdatabase);
+    // window.location.hash = this.PAGE_NAME_ENUM.getfromdatabase;
+    window.location.replace('#' + this.PAGE_NAME_ENUM.getfromdatabase);
   }
 
   setHashSaveToDatabase() {
     this.#hashPrevious = this.getNormalizedCurrentHash();
 
-    this.#setCurrentPageName(this.getPageNameEnum().savetodatabase);
-    window.location.hash = this.getPageNameEnum().savetodatabase;
+    this.#setCurrentPageName(this.PAGE_NAME_ENUM.savetodatabase);
+    window.location.hash = this.PAGE_NAME_ENUM.savetodatabase;
   }
 
   setHashLogin() {
     // this.#hash_previous = this.getNormalizedCurrentHash();
-    this.#hashPrevious = this.getPageNameEnum().main;
+    this.#hashPrevious = this.PAGE_NAME_ENUM.main;
 
-    this.#setCurrentPageName(this.getPageNameEnum().login);
-    window.location.hash = this.getPageNameEnum().login;
+    this.#setCurrentPageName(this.PAGE_NAME_ENUM.login);
+    window.location.hash = this.PAGE_NAME_ENUM.login;
   }
 
   // setHashEditActionBlock(title) {
   //     this.#hash_previous = this.getNormalizedCurrentHash();
   //     console.log("hash_previous = " + this.#hash_previous);
-  //     this.#setCurrenPageName(this.getPageNameEnum().editActionBlock);
-  //     window.location.hash = this.getPageNameEnum().editActionBlock + '=' + title;
+  //     this.#setCurrenPageName(this.PAGE_NAME_ENUM.editActionBlock);
+  //     window.location.hash = this.PAGE_NAME_ENUM.editActionBlock + '=' + title;
   // }
 
   showElement(element) {
@@ -209,64 +209,64 @@ class HashService {
     this.#view.hideShowedElements();
   }
 
-  setActionBlockService(actionBlockService_to_set) {
-    this.#actionBlockService = actionBlockService_to_set;
+  setActionBlockService(actionBlockServiceToSet) {
+    this.#actionBlockService = actionBlockServiceToSet;
   }
 
-  setPageName(new_page_name) {
-    this.#currentPageName = new_page_name;
+  setPageName(newPageName) {
+    this.#currentPageName = newPageName;
   }
 
   openMainPage() {
-    if (window.location.hash === "#" + this.getPageNameEnum().main) {
+    if (window.location.hash === "#" + this.PAGE_NAME_ENUM.main) {
       this.handleHash();
     } else {
-      window.location.hash = this.getPageNameEnum().main;
+      window.location.hash = this.PAGE_NAME_ENUM.main;
     }
   }
 
   openPublicActionBlocksPage() {
-    window.location.hash = this.getPageNameEnum().publicActionBlocks;
+    window.location.hash = this.PAGE_NAME_ENUM.publicActionBlocks;
   }
 
   openActionBlockPage(title) {
     this.#hashPrevious = window.location.hash;
 
     window.location.hash =
-      this.getPageNameEnum().request +
+      this.PAGE_NAME_ENUM.request +
       "=" +
       title +
       "&" +
-      this.getPageOptionNameEnum().executebytitle +
+      this.PAGE_OPTION_NAME_ENUM.executebytitle +
       "=true";
   }
 
   openSettingsActionBlockPage(title) {
     this.#hashPrevious = window.location.hash;
-    this.#setCurrentPageName(this.getPageNameEnum().editActionBlock);
-    window.location.hash = this.getPageNameEnum().editActionBlock + "=" + title;
-    this.setPageName(this.getPageNameEnum().settingsActionBlock);
+    this.#setCurrentPageName(this.PAGE_NAME_ENUM.editActionBlock);
+    window.location.hash = this.PAGE_NAME_ENUM.editActionBlock + "=" + title;
+    this.setPageName(this.PAGE_NAME_ENUM.settingsActionBlock);
   }
 
   openPreviousPage() {
     if (
       this.#hashPrevious &&
-      this.#hashPrevious.includes(this.getPageNameEnum().editActionBlock) ===
+      this.#hashPrevious.includes(this.PAGE_NAME_ENUM.editActionBlock) ===
         false
     ) {
       let hashToOpen = this.#hashPrevious;
 
       const isPreviousHashIncludesExecuteByTitle =
         this.#hashPrevious.includes(
-          "&" + this.getPageOptionNameEnum().executebytitle
+          "&" + this.PAGE_OPTION_NAME_ENUM.executebytitle
         ) &&
         this.#hashPrevious.includes(
-          "&" + this.getPageOptionNameEnum().executebytitle + "=false"
+          "&" + this.PAGE_OPTION_NAME_ENUM.executebytitle + "=false"
         ) === false;
 
       if (isPreviousHashIncludesExecuteByTitle) {
         const indexStartWordExecuteByTitle = this.#hashPrevious.indexOf(
-          "&" + this.getPageOptionNameEnum().executebytitle
+          "&" + this.PAGE_OPTION_NAME_ENUM.executebytitle
         );
         hashToOpen = this.#hashPrevious.substring(
           0,
@@ -281,21 +281,21 @@ class HashService {
   }
 
   openPageSettingsToCreateLink() {
-    window.location.hash = this.getPageNameEnum().createLink;
-    this.#setCurrentPageName(this.getPageNameEnum().createLink);
+    window.location.hash = this.PAGE_NAME_ENUM.createLink;
+    this.#setCurrentPageName(this.PAGE_NAME_ENUM.createLink);
   }
 
   openPageSettingsToCreateNote() {
-    window.location.hash = this.getPageNameEnum().createNote;
-    this.#setCurrentPageName(this.getPageNameEnum().createNote);
+    window.location.hash = this.PAGE_NAME_ENUM.createNote;
+    this.#setCurrentPageName(this.PAGE_NAME_ENUM.createNote);
   }
 
   openPreviousBrowserPage() {
     history.back();
   }
 
-  setHashChangeListenerActiveState(is_active_new) {
-    this.#isHashChangeListenerActiveStateEnabled = is_active_new;
+  setHashChangeListenerActiveState(isActiveNew) {
+    this.#isHashChangeListenerActiveStateEnabled = isActiveNew;
   }
 
   getHashChangeListenerActiveState() {
@@ -318,22 +318,22 @@ class HashService {
     const hash_converted_to_object =
       yesSir.hashHelper.getConvertedHashToObject();
     // console.log('hash_converted_to_object', hash_converted_to_object);
-    // console.log('hash_converted_to_object.hasOwnProperty("request")', hash_converted_to_object.hasOwnProperty(this.getPageNameEnum().request));
+    // console.log('hash_converted_to_object.hasOwnProperty("request")', hash_converted_to_object.hasOwnProperty(this.PAGE_NAME_ENUM.request));
     if (this.noteSpeakerService.isSpeaking) this.noteSpeakerService.stopSpeak();
 
     this.hideShowedElements();
     if (this.getHashChangeListenerActiveState() === false) return;
     // console.log('handleHash', this.getNormalizedCurrentHash());
-    // console.log('edit page', this.getPageNameEnum().editActionBlock);
+    // console.log('edit page', this.PAGE_NAME_ENUM.editActionBlock);
 
     // this.#actionBlockService.view.clear();
 
     if (
-      this.getNormalizedCurrentHash() === "#" + this.getPageNameEnum().main ||
+      this.getNormalizedCurrentHash() === "#" + this.PAGE_NAME_ENUM.main ||
       this.getNormalizedCurrentHash() === "" ||
       this.getNormalizedCurrentHash() === "#undefined"
     ) {
-      this.setPageName(this.getPageNameEnum().main);
+      this.setPageName(this.PAGE_NAME_ENUM.main);
       this.searchService.clearInputField();
 
       if (that.#actionBlockService.model.getActionBlocks().size > 0) {
@@ -374,9 +374,9 @@ class HashService {
       });
     } else if (
       this.getNormalizedCurrentHash().includes(
-        "#" + this.getPageNameEnum().main
+        "#" + this.PAGE_NAME_ENUM.main
       ) &&
-      window.location.hash.includes(this.getPageOptionNameEnum().fileManager)
+      window.location.hash.includes(this.PAGE_OPTION_NAME_ENUM.fileManager)
     ) {
       yesSir.domElementManager.hideShowedElements();
 
@@ -402,7 +402,7 @@ class HashService {
       this.scrollService.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
-        "#" + this.getPageNameEnum().speechRecognition
+        "#" + this.PAGE_NAME_ENUM.speechRecognition
       )
     ) {
       console.log("speechRecognition");
@@ -412,13 +412,13 @@ class HashService {
 
       this.scrollService.setPositionTop();
     } else if (
-      hashParamsInLowerCase.has(this.getPageNameEnum().actionBlock.toLowerCase())
+      hashParamsInLowerCase.has(this.PAGE_NAME_ENUM.actionBlock.toLowerCase())
     ) {
-        const idFromUrl = hashParamsInLowerCase.get(this.getPageNameEnum().actionBlock.toLowerCase());
+        const idFromUrl = hashParamsInLowerCase.get(this.PAGE_NAME_ENUM.actionBlock.toLowerCase());
 
         that.#actionBlockService.executeActionBlockById(idFromUrl);
     } else if (
-      hashParamsInLowerCase.has(this.getPageNameEnum().request)
+      hashParamsInLowerCase.has(this.PAGE_NAME_ENUM.request)
     ) {
       let request = "";
       const textToCut = window.location.hash;
@@ -427,10 +427,10 @@ class HashService {
       let isExecuteActionBlockByTitle = false;
 
       if (
-        hashParamsInLowerCase.get(this.getPageOptionNameEnum().executebytitle) == false
+        hashParamsInLowerCase.get(this.PAGE_OPTION_NAME_ENUM.executebytitle) == false
       ) {
         const toCharacterRequest =
-          "&" + this.getPageOptionNameEnum().executebytitle;
+          "&" + this.PAGE_OPTION_NAME_ENUM.executebytitle;
 
         request = that.textManager.getCuttedText(
           textToCut,
@@ -441,15 +441,15 @@ class HashService {
         this.searchService.setTextToInputField(request);
       } else if (
         window.location.hash.includes(
-          this.getPageOptionNameEnum().executebytitle + "=true"
+          this.PAGE_OPTION_NAME_ENUM.executebytitle + "=true"
         ) ||
         window.location.hash.includes(
-          this.getPageOptionNameEnum().executebytitle
+          this.PAGE_OPTION_NAME_ENUM.executebytitle
         )
       ) {
         isExecuteActionBlockByTitle = true;
         const toCharacterRequest =
-          "&" + this.getPageOptionNameEnum().executebytitle;
+          "&" + this.PAGE_OPTION_NAME_ENUM.executebytitle;
         request = that.textManager.getCuttedText(
           textToCut,
           fromCharacterRequest,
@@ -474,7 +474,7 @@ class HashService {
       this.scrollService.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
-        this.getPageNameEnum().createActionBlock
+        this.PAGE_NAME_ENUM.createActionBlock
       )
     ) {
       this.#actionBlockService.showSettingsToCreateAdvancedActionBlock();
@@ -482,21 +482,21 @@ class HashService {
       this.scrollService.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
-        this.getPageNameEnum().createNote
+        this.PAGE_NAME_ENUM.createNote
       )
     ) {
       this.#actionBlockService.showSettingsToCreateNote();
       this.scrollService.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
-        this.getPageNameEnum().createLink
+        this.PAGE_NAME_ENUM.createLink
       )
     ) {
       this.#actionBlockService.showSettingsToCreateLink();
       this.scrollService.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
-        this.getPageNameEnum().editActionBlock
+        this.PAGE_NAME_ENUM.editActionBlock
       )
     ) {
       const textToCut = window.location.hash;
@@ -514,14 +514,14 @@ class HashService {
       this.scrollService.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
-        this.getPageNameEnum().savetodatabase
+        this.PAGE_NAME_ENUM.savetodatabase
       )
     ) {
       yesSir.actionBlockService.saveToDatabase();
       this.scrollService.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
-        this.getPageNameEnum().getfromdatabase
+        this.PAGE_NAME_ENUM.getfromdatabase
       )
     ) {
       this.#actionBlockService.getFromDatabase();
@@ -549,7 +549,7 @@ class HashService {
         );
       }
     } else {
-      // window.location.hash === this.getPageNameEnum().main;
+      // window.location.hash === this.PAGE_NAME_ENUM.main;
     }
 
     new EditActionBlockDataHolder(this);

@@ -1,4 +1,4 @@
-class LoadingService {
+class LoaderController {
     constructor() {
         this.view = new LoadingView();
     }

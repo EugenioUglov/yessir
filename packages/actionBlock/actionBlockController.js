@@ -1,14 +1,14 @@
 class ActionBlockController {
   constructor(
     actionBlockService,
-    loadingService,
+    loaderController,
     dialogWindow,
     searchService,
     hashService,
     noteService
   ) {
     this.actionBlockService = actionBlockService;
-    this.loadingService = loadingService;
+    this.loaderController = loaderController;
     this.dialogWindow = dialogWindow;
     this.searchService = searchService;
     this.hashService = hashService;
@@ -31,27 +31,27 @@ class ActionBlockController {
 
   #onClickBtnCreateActionBlock = (
     title,
-    tags_plus_title,
+    tagsPlusTitle,
     action,
     content,
-    image_URL
+    imageURL
   ) => {
     // Disable all buttons.
     $(":submit, :button").attr("disabled", "disabled");
-    yesSir.loadingService.startLoading();
+    yesSir.loaderController.startLoading();
     this.actionBlockService.createActionBlock(
       title,
-      tags_plus_title,
+      tagsPlusTitle,
       action,
       content,
-      image_URL,
-      (is_actionBlock_created) => {
-        yesSir.loadingService.stopLoading();
+      imageURL,
+      (isActionBlockCreated) => {
+        yesSir.loaderController.stopLoading();
 
         // Enable all buttons.
         $(":submit, :button").attr("disabled", false);
 
-        if (is_actionBlock_created === false) {
+        if (isActionBlockCreated === false) {
           return false;
         }
 
@@ -62,27 +62,27 @@ class ActionBlockController {
 
   #onClickBtnCreateActionBlockWithAutomation = (
     title,
-    tags_plus_title,
+    tagsPlusTitle,
     action,
     content,
-    image_URL
+    imageURL
   ) => {
     // Disable all buttons.
     $(":submit, :button").attr("disabled", "disabled");
-    yesSir.loadingService.startLoading();
+    yesSir.loaderController.startLoading();
     this.actionBlockService.createActionBlockWithOptimizedAutomationAsync(
       title,
-      tags_plus_title,
+      tagsPlusTitle,
       action,
       content,
-      image_URL,
-      (is_actionBlock_created) => {
-        yesSir.loadingService.stopLoading();
+      imageURL,
+      (isActionBlockCreated) => {
+        yesSir.loaderController.stopLoading();
 
         // Enable all buttons.
         $(":submit, :button").attr("disabled", false);
 
-        if (is_actionBlock_created === false) {
+        if (isActionBlockCreated === false) {
           return false;
         }
       }

@@ -38,7 +38,7 @@ class YesSir {
       this.voiceRecognitionManager,
       this.hashService
     );
-    this.loadingService = new LoadingService();
+    this.loaderController = new LoaderController();
     this.noteService = new NoteService(
       this.noteSpeakerService,
       this.hashService
@@ -55,7 +55,7 @@ class YesSir {
       this.keyCodeByKeyName,
       this.scrollService,
       this.searchService,
-      this.loadingService,
+      this.loaderController,
       this.hashService,
       this.noteService,
       this.dateManager,
@@ -68,7 +68,7 @@ let yesSir;
 
 (function () {
   yesSir = new YesSir();
-  yesSir.loadingService.startLoading();
+  yesSir.loaderController.startLoading();
 
   window.addEventListener("load", function () {
     onPageLoaded();
@@ -94,7 +94,7 @@ let yesSir;
     const scrollService = yesSir.scrollService;
     const searchService = yesSir.searchService;
     const logsService = yesSir.logsService;
-    const loadingService = yesSir.loadingService;
+    const loaderController = yesSir.loaderController;
     const noteService = yesSir.noteService;
     const dataStorageService = yesSir.dataStorageService;
     const hashService = yesSir.hashService;
@@ -109,7 +109,7 @@ let yesSir;
     
     const actionBlockController = new ActionBlockController(
       actionBlockService,
-      loadingService,
+      loaderController,
       dialogWindow,
       searchService,
       hashService,
@@ -150,7 +150,7 @@ let yesSir;
     const hashController = new HashController(hashService);
 
     actionBlockService.showActionBlocksFromStorage();
-    yesSir.loadingService.stopLoading();
+    yesSir.loaderController.stopLoading();
 
     // resizeContentDialogInfo();
     // window.addEventListener('resize', onWindowResize);
