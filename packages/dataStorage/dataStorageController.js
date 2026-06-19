@@ -24,12 +24,12 @@ class DataStorageController {
         // On click btn authorization.
         $('#btn_authorization')[0].addEventListener('click', function() {
             // console.log('btn_authorization click');
-            const authorization_data = {
+            const authorizationData = {
                 nickname: $('#input_field_nickname').val(),
                 password: $('#input_field_password').val()
             };
 
-            localStorage['authorization'] = JSON.stringify(authorization_data);
+            localStorage['authorization'] = JSON.stringify(authorizationData);
 
             $('#autorization_log').text('');
             // $('#btn_authorization')[0].disabled = true;

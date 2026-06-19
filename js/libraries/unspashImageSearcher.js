@@ -24,7 +24,7 @@ class UnsplashImageSearcher {
       this.#ACCESS_KEY
     }`;
 
-    let first_image = "";
+    let firstImage = "";
 
     try {
       const response = await fetch(url);
@@ -33,15 +33,15 @@ class UnsplashImageSearcher {
 
       // Returns irst image.
       if (results[0] != undefined) {
-        first_image = results[0].urls.small;
+        firstImage = results[0].urls.small;
       }
     } catch (error) {
       console.log(error);
     }
 
-    if (onDone != undefined) onDone(first_image);
+    if (onDone != undefined) onDone(firstImage);
 
-    return first_image;
+    return firstImage;
 
     // Loop for 10 images.
     // results.map((result) => {

@@ -66,21 +66,21 @@ class TagsNormalizer {
         let normalizedTags;
     
         // Change all new lines to symbol ',".
-        const tags_without_new_line = tags.replaceAll('\n', ',');
+        const tagsWithoutNewLine = tags.replaceAll('\n', ',');
         //tags_lower_case = tags_without_new_line.toLowerCase();
     
-        let tags_array = this.#textManager.getArrayByText(tags_without_new_line);
+        let tagsArray = this.#textManager.getArrayByText(tagsWithoutNewLine);
         
         // Delete empty symbols from sides in text.
-        for (const i_tag in tags_array) {
-            tags_array[i_tag] = tags_array[i_tag].trim();
+        for (const indexTag in tagsArray) {
+            tagsArray[indexTag] = tagsArray[indexTag].trim();
         }
     
         // Delete same tags.
-        const tags_set = new Set(tags_array);
+        const tagsSet = new Set(tagsArray);
     
         // Convertation from Set to Array.
-        normalizedTags = Array.from(tags_set);
+        normalizedTags = Array.from(tagsSet);
     
         return normalizedTags;
     }

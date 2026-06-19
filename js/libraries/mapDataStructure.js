@@ -3,30 +3,30 @@ class MapDataStructure {
 
     }
 
-    isMap(data_to_check) {
+    isMap(dataToCheck) {
         const getType = obj => Object.prototype.toString.call(obj).slice(8, -1);
         const isDataHasTypeMap = obj => getType(obj) === 'Map';
 
-        const is_map = isDataHasTypeMap(data_to_check);
+        const isMap = isDataHasTypeMap(dataToCheck);
 
-        return is_map;
+        return isMap;
     }
 
     getStringified(map) {
         return JSON.stringify(map, this.#replacer);
     }
 
-    getParsed(map_str) {
+    getParsed(mapString) {
         let parsed = {};
         // try {
-            parsed = JSON.parse(map_str, this.#reviver);
+            parsed = JSON.parse(mapString, this.#reviver);
         // }
         // catch {
         //     map_str = replaceSymbols(map_str, '\n', '\\n');
         //     parsed = JSON.parse(map_str, this.#reviver);
         // }
         
-        return JSON.parse(map_str, this.#reviver);
+        return JSON.parse(mapString, this.#reviver);
 
         // function replaceSymbols(text, find, replace) {
         //     let escapedFind = find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");

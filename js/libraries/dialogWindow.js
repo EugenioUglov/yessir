@@ -3,13 +3,13 @@ class DialogWindow {
 
     }
 
-    confirmAlert(text, callBackOk, callBackCancel) {
+    confirmAlert(text, callBackOk, onCancel) {
         const is_confirmed = confirm(text);
         
         if (is_confirmed == true) {
             callBackOk();
         } else {
-            callBackCancel();
+            onCancel();
         }
     }
 }

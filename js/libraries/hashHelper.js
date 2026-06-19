@@ -12,7 +12,7 @@ class HashHelper {
 
         // Если он совпадает с тем, что уже лежит в памяти — ничего не делаем
         if (targetHash === this.#hashPrevious) {
-        return false;
+            return false;
         }
 
         this.#hashPrevious = targetHash;
@@ -24,7 +24,7 @@ class HashHelper {
      */
     setPreviousHash() {
         if (this.#hashPrevious) {
-        window.location.hash = this.#hashPrevious;
+            window.location.hash = this.#hashPrevious;
         }
     }
 

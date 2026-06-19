@@ -7,13 +7,12 @@ class YesSir {
     this.fileManager = new FileManager(this.textManager);
     this.dateManager = new DateManager();
     this.voiceRecognitionManager = new VoiceRecognitionManager();
-    this.speakerManager = new SpeakerManager();
+    this.speakerManager = new TextToSpeechSynthesizer();
     this.dropdownManager = new DropdownManager();
     this.mapDataStructure = new MapDataStructure();
     this.dbManager = new DBManager();
     this.arrayManager = new ArrayManager();
     this.hashHelper = new HashHelper();
-    this.blockManager = new BlockManager();
     this.domElementManager = new DOMElementManager();
 
     this.keyCodeByKeyName = inputDeviceManager.getKeyCodeByKeyName();

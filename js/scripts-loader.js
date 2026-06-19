@@ -12,7 +12,7 @@
         // Основные компоненты
         "./js/commandInputField.js",
         "./js/actionBlockNoteCommands.js",
-        "./js/firebaseData.js",
+        "./packages/firebase/firebaseData.js",
 
         // Библиотеки (Core)
         "./js/libraries/inputFieldWithSuggestions.js",
@@ -28,9 +28,9 @@
         "./js/libraries/arrayManager.js",
         "./js/libraries/inputDeviceManger.js",
         "./packages/voiceRecognition/voiceRecognitionManager.js",
-        "./js/libraries/speakerManager.js",
+        "./js/libraries/textToSpeechSynthesizer.js",
         "./js/libraries/hashHelper.js",
-        "./js/libraries/blockManager.js",
+        "./js/libraries/elementsVisibility.js",
         "./js/libraries/defaultActionBlocks.js",
         "./js/libraries/googleSpeechRecognition.js",
         "./js/libraries/googleTextToSpeech.js",
@@ -74,13 +74,12 @@
         "./packages/loader/loadingView.js",
         "./packages/dataStorage/dataStorageView.js",
         "./packages/modalBox/modalBoxView.js",
-        "./js/views/loginView.js",
+        "./packages/login/loginView.js",
 
         // Контроллеры
         "./packages/logs/logsController.js",
         "./packages/hash/hashController.js",
         "./packages/note/noteController.js",
-        "./js/controllers/speakerController.js",
         "./packages/noteSpeaker/noteSpeakerController.js",
         "./packages/voiceRecognition/voiceRecognitionController.js",
         "./packages/scroll/scrollController.js",
@@ -94,7 +93,7 @@
         // Firebase & Дополнения
         "https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js",
         "https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js",
-        "./js/firebaseConfig.js",
+        "./packages/firebase/firebaseConfig.js",
         "./js/libraries/unspashImageSearcher.js",
 
         // Точка входа

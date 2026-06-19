@@ -3,7 +3,7 @@ class GoogleSpeechRecognition {
         this.#init();
     }
 
-    #is_recognizing = false;
+    #isRecognizing = false;
     #speechRecognition;
     #languages =
     [
@@ -78,12 +78,12 @@ class GoogleSpeechRecognition {
         let seconds_to_stop_recognizing_on_no_speech = option.seconds_to_stop_recognizing_on_no_speech != undefined ? option.seconds_to_stop_recognizing_on_no_speech : 0;
 
         let is_final_result = false;
-        let timer_to_stop_speech_recognition;
+        let timerToStopSpeechRecognition;
         let full_transcript = "";
         
         this.#speechRecognition.lang = recognition_language;
         this.#speechRecognition.start();
-        this.#is_recognizing = true;
+        this.#isRecognizing = true;
         this.#speechRecognition.continuous = false;
 
         this.#speechRecognition.onstart = function() {
@@ -116,11 +116,11 @@ class GoogleSpeechRecognition {
 
         this.#speechRecognition.onend = function() {
             console.log("onend");
-            if (is_final_result === false && that.#is_recognizing) { 
+            if (is_final_result === false && that.#isRecognizing) { 
                 that.startRecognizing(option);
             }
             else {
-                that.#is_recognizing = false;
+                that.#isRecognizing = false;
                 if (callbackEnd) callbackEnd();
             }
         }
@@ -132,8 +132,8 @@ class GoogleSpeechRecognition {
         function setTimerToStopSpeechRecognition(new_seconds) {
             console.log(callbackFullTranscript);
 
-            if (timer_to_stop_speech_recognition) clearInterval(timer_to_stop_speech_recognition);
-            timer_to_stop_speech_recognition = setTimeout(
+            if (timerToStopSpeechRecognition) clearInterval(timerToStopSpeechRecognition);
+            timerToStopSpeechRecognition = setTimeout(
                 () => {
                     if (callbackFullTranscript) callbackFullTranscript(full_transcript); 
                     that.stopRecognizing();
@@ -165,7 +165,7 @@ class GoogleSpeechRecognition {
         speechRecognition.interimResults = true;
         speechRecognition.lang = 'en-US';
         let timer_to_stop_speech_recognition;
-        this.#is_recognizing = true;
+        this.#isRecognizing = true;
         
         const seconds_to_stop_recognizing_on_no_speech = option.seconds_to_stop_recognizing_on_no_speech != undefined ? option.seconds_to_stop_recognizing_on_no_speech : 3;
         const callbackFullTranscript = option.callbackFullTranscript;
@@ -180,7 +180,7 @@ class GoogleSpeechRecognition {
         };
         speechRecognition.onend = () => {
             console.log("end");
-            this.#is_recognizing = false;
+            this.#isRecognizing = false;
         };
     
         speechRecognition.onresult = (event) => {
@@ -212,7 +212,7 @@ class GoogleSpeechRecognition {
             }
         };
 
-        function setTimerToStopSpeechRecognition(new_seconds) {
+        function setTimerToStopSpeechRecognition(newSeconds) {
             if (timer_to_stop_speech_recognition) clearInterval(timer_to_stop_speech_recognition);
 
             timer_to_stop_speech_recognition = setTimeout(
@@ -220,9 +220,9 @@ class GoogleSpeechRecognition {
                     if (callbackFullTranscript) callbackFullTranscript(full_transcript); 
                     // that.stopRecognizing();
                     speechRecognition.stop();
-                    that.#is_recognizing = false;
+                    that.#isRecognizing = false;
                 },
-                new_seconds * 1000
+                newSeconds * 1000
             );
         }
         
@@ -246,7 +246,7 @@ class GoogleSpeechRecognition {
         this.#speechRecognition.interimResults = true;
         this.#speechRecognition.lang = 'en-US';
         let timer_to_stop_speech_recognition;
-        this.#is_recognizing = true;
+        this.#isRecognizing = true;
         
         const seconds_to_stop_recognizing_on_no_speech = option.seconds_to_stop_recognizing_on_no_speech != undefined ? option.seconds_to_stop_recognizing_on_no_speech : 3;
         const callbackFullTranscript = option.callbackFullTranscript;
@@ -261,7 +261,7 @@ class GoogleSpeechRecognition {
         };
         this.#speechRecognition.onend = () => {
             console.log("end");
-            this.#is_recognizing = false;
+            this.#isRecognizing = false;
         };
     
         this.#speechRecognition.onresult = (event) => {
@@ -312,7 +312,7 @@ class GoogleSpeechRecognition {
             // }
         };
 
-        function setTimerToStopSpeechRecognition(new_seconds) {
+        function setTimerToStopSpeechRecognition(newSeconds) {
             if (timer_to_stop_speech_recognition) clearInterval(timer_to_stop_speech_recognition);
 
             timer_to_stop_speech_recognition = setTimeout(
@@ -320,7 +320,7 @@ class GoogleSpeechRecognition {
                     if (callbackFullTranscript) callbackFullTranscript(full_transcript); 
                     that.stopRecognizing();
                 },
-                new_seconds * 1000
+                newSeconds * 1000
             );
         }
         
@@ -365,18 +365,18 @@ class GoogleSpeechRecognition {
     }
     
     stopRecognizing = () => {
-        if (this.#is_recognizing === false) return;
+        if (this.#isRecognizing === false) return;
 
         this.#speechRecognition.stop();
-        this.#is_recognizing = false;
+        this.#isRecognizing = false;
     }
 
-    setLanguge(new_language) {
-        this.#speechRecognition.lang = new_language;
+    setLanguge(newLanguage) {
+        this.#speechRecognition.lang = newLanguage;
     }
 
     isRecognizing() {
-        return this.#is_recognizing;
+        return this.#isRecognizing;
     }
 
     isBrowserSupportRecognition() {

@@ -10,12 +10,12 @@ class DataStorageView {
     bindClickBtnUpload(okClickHandler, cancelClickHandler) {
         const that = this;
 
-        const dialog_database_manager = {};
-        dialog_database_manager.btn_add = $('#dialog_database_manager').find('.btn_add_actionBlocks')[0];
-        dialog_database_manager.btn_rewrite = $('#dialog_database_manager').find('.btn_rewrite_actionBlocks')[0];
-        dialog_database_manager.btn_upload = $('#dialog_database_manager').find('.btn_upload_actionBlocks')[0];
+        const dialogDatabaseManager = {};
+        dialogDatabaseManager.btn_add = $('#dialog_database_manager').find('.btn_add_actionBlocks')[0];
+        dialogDatabaseManager.btn_rewrite = $('#dialog_database_manager').find('.btn_rewrite_actionBlocks')[0];
+        dialogDatabaseManager.btn_upload = $('#dialog_database_manager').find('.btn_upload_actionBlocks')[0];
 
-        dialog_database_manager.btn_upload.addEventListener('click', function() {
+        dialogDatabaseManager.btn_upload.addEventListener('click', function() {
             const text_confirm_window = 'Are you sure that you want to synchronize current Action-Blocks?\n\
                 All previous data in database will be deleted.';
             

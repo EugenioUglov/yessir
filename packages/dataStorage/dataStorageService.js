@@ -3,7 +3,7 @@ class DataStorageService {
         this.view = new DataStorageView(dialogWindow);
     }
 
-    #user_storage = localStorage['storage'];
+    #userStorage = localStorage['storage'];
 
     showDataStorageSettings() {
         this.view.showDataStorageSettings();
@@ -19,15 +19,15 @@ class DataStorageService {
     }
 
     getUserStorage() {
-        if (this.#user_storage === undefined) {
-            this.#user_storage = this.getStorageNameEnum().localStorage;
+        if (this.#userStorage === undefined) {
+            this.#userStorage = this.getStorageNameEnum().localStorage;
         }
         
-        return this.#user_storage;
+        return this.#userStorage;
     }
 
     setUserStorage(storage) {
-        this.#user_storage = storage;
+        this.#userStorage = storage;
         localStorage['storage'] = storage;
 
         if (storage === this.getStorageNameEnum().database) {

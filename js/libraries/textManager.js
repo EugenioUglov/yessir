@@ -4,11 +4,11 @@ class TextManager {
   /**
    * Get array of splited string.
    * */
-  splitText = function (string_to_split, separator = " ") {
+  splitText = function (stringToSplit, separator = " ") {
     let array = [];
-    let splited_text = string_to_split.split(separator);
+    let splitedText = stringToSplit.split(separator);
 
-    for (const word of splited_text) {
+    for (const word of splitedText) {
       // if tag not empty.
       if (!!word) {
         array.push(word);
@@ -17,14 +17,14 @@ class TextManager {
     return array;
   };
 
-  getCuttedText = function (string, start_symbol, end_symbol) {
+  getCuttedText = function (string, startSymbol, endSymbol) {
     let from;
     let to;
 
-    if (start_symbol) from = string.indexOf(start_symbol) + 1;
+    if (startSymbol) from = string.indexOf(startSymbol) + 1;
     else from = 0;
 
-    if (end_symbol) to = string.indexOf(end_symbol);
+    if (endSymbol) to = string.indexOf(endSymbol);
     else to = string.length;
 
     return string.slice(from, to);
@@ -41,14 +41,14 @@ class TextManager {
     return false;
   };
 
-  getArrayByText = function (text, symbol_split = ",") {
-    return text.split(symbol_split);
+  getArrayByText = function (text, symbolSplit = ",") {
+    return text.split(symbolSplit);
   };
 
   getTextInOneLine = function (text) {
     // Delete all lines break in text
-    let text_of_textarea = text.replace(/(\r\n|\n|\r)/gm, " ");
-    return text_of_textarea;
+    let textOfTextarea = text.replace(/(\r\n|\n|\r)/gm, " ");
+    return textOfTextarea;
   };
 
   getConvertedTextToHTML = function (text) {
@@ -66,11 +66,11 @@ class TextManager {
     return text_to_edit.substr(0, text_to_edit.length - 1);
   }
 
-  getLastWord = function (text, symol_before_word = " ") {
+  getLastWord = function (text, symolBeforeWord = " ") {
     // Delete spaces from the sides of text.
     text = text.trim();
-    var separated_words = text.split(symol_before_word);
-    return separated_words[separated_words.length - 1];
+    var separatedWords = text.split(symolBeforeWord);
+    return separatedWords[separatedWords.length - 1];
   };
 
   getWords = function (str, firstIndexWord, lastIndexWord) {
