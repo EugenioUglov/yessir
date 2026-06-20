@@ -52,7 +52,8 @@ class ActionBlockService {
       this.model.actionDescriptionByActionName,
       fileManager,
       textManager,
-      dropdownManager
+      dropdownManager,
+      loaderController
     );
 
     this.hashService.setActionBlockService(this);
@@ -110,7 +111,7 @@ class ActionBlockService {
     document.body.appendChild(cancelButton);
     //
 
-    const autmation_in_progress_text =
+    const autmationInProgressText =
       'Automation in progress. It can take a while.\n\nYou can click "Cancel" button to skip automation works.';
 
     let topFixedInfoContainerHeight = document.getElementsByClassName(
@@ -197,7 +198,7 @@ class ActionBlockService {
       $(".fixed-text-info-container").show();
       $(".gray-foreground").show();
 
-      setTextForFixedTextInfo(autmation_in_progress_text);
+      setTextForFixedTextInfo(autmationInProgressText);
     }
 
     function hideLoadingElmenets() {
@@ -235,6 +236,7 @@ class ActionBlockService {
       alert('Action-Block with current title already exists. Title: ' + title);
 
       if (onEnd) onEnd(false);
+
       return false;
     }
 
@@ -442,7 +444,7 @@ class ActionBlockService {
   }
 
   switchStateMenuTypeActionBlocksToCreate = () => {
-    if (this.model.is_menu_create_type_actionBlock_open) {
+    if (this.model.isMenuCreateTypeActionBlockOpen) {
       this.view.hideListOfTypeActionBlocksToCreate();
     } else {
       this.view.showListOfTypeActionBlocksToCreate();
@@ -450,8 +452,8 @@ class ActionBlockService {
 
     this.view.rotateFixedBtnPlus();
 
-    this.model.is_menu_create_type_actionBlock_open =
-      !this.model.is_menu_create_type_actionBlock_open;
+    this.model.isMenuCreateTypeActionBlockOpen =
+      !this.model.isMenuCreateTypeActionBlockOpen;
   };
 
   showSettingsToCreateNote = () => {
@@ -459,7 +461,7 @@ class ActionBlockService {
       this.model.getActionNameEnum().showInfo
     );
 
-    if (this.model.is_menu_create_type_actionBlock_open) {
+    if (this.model.isMenuCreateTypeActionBlockOpen) {
       this.switchStateMenuTypeActionBlocksToCreate();
     }
   };
@@ -469,7 +471,7 @@ class ActionBlockService {
       this.model.getActionNameEnum().openURL
     );
 
-    if (this.model.is_menu_create_type_actionBlock_open) {
+    if (this.model.isMenuCreateTypeActionBlockOpen) {
       this.switchStateMenuTypeActionBlocksToCreate();
     }
   };
@@ -479,7 +481,7 @@ class ActionBlockService {
       this.model.getActionNameEnum().openFolder
     );
 
-    if (this.model.is_menu_create_type_actionBlock_open) {
+    if (this.model.isMenuCreateTypeActionBlockOpen) {
       this.switchStateMenuTypeActionBlocksToCreate();
     }
   };
@@ -489,13 +491,13 @@ class ActionBlockService {
       this.model.getActionNameEnum().openURL
     );
 
-    if (this.model.is_menu_create_type_actionBlock_open) {
+    if (this.model.isMenuCreateTypeActionBlockOpen) {
       this.switchStateMenuTypeActionBlocksToCreate();
     }
   };
 
-  setActionBlocks(new_actionBlocks) {
-    this.model.setActionBlocks(new_actionBlocks);
+  setActionBlocks(newActionBlocks) {
+    this.model.setActionBlocks(newActionBlocks);
   }
 
   getActionBlocks() {
@@ -583,10 +585,10 @@ class ActionBlockService {
         that.dataStorageService.getStorageNameEnum()[
           that.dataStorageService.getUserStorage()
         ];
-      const storage_for_log = {};
-      storage_for_log[that.dataStorageService.getStorageNameEnum().database] =
+      const storageForLog = {};
+      storageForLog[that.dataStorageService.getStorageNameEnum().database] =
         "database";
-      storage_for_log[
+      storageForLog[
         that.dataStorageService.getStorageNameEnum().localStorage
       ] = "browser";
 
@@ -608,7 +610,7 @@ class ActionBlockService {
 
     const timeEndShowActionBlocks = new Date();
 
-    const time_spent_show_actionBlocks =
+    const timeSpentShowActionBlocks =
       timeEndShowActionBlocks - timeStartShowActionBlocks;
 
     yesSir.loaderController.stopLoading();
@@ -985,7 +987,7 @@ class ActionBlockService {
     $(".btn-submit").click(function(e) {
         e.preventDefault();
 
-        yesSir.modalBoxService.show({
+        yesSir.modalBoxController.show({
             header_text:'Loading', 
             body_text:'Data is being verified..'
         });
@@ -1001,20 +1003,20 @@ class ActionBlockService {
             onSuccess: () => {
                 $('.login-panel').hide();
     
-                yesSir.modalBoxService.show({
+                yesSir.modalBoxController.show({
                     header_text:'Success', 
                     body_text:'Data saved successfully to firebase database.'
                 });
         
                 setTimeout(() => {
-                    yesSir.modalBoxService.hide();
+                    yesSir.modalBoxController.hide();
                 }, "3000");
     
                 yesSir.hashService.openMainPage();
             },
             onError: error => {
                 alert("Error! Data could not be saved. " + error);
-                yesSir.modalBoxService.hide();
+                yesSir.modalBoxController.hide();
             }
         });
     });
@@ -1033,7 +1035,7 @@ class ActionBlockService {
     $(".btn-submit").click(function(e) {
       e.preventDefault();
 
-      yesSir.modalBoxService.show({header_text:'Loading', body_text:'Data is being verified..'});
+      yesSir.modalBoxController.show({header_text:'Loading', body_text:'Data is being verified..'});
 
       const inputUsername = $('.input-username').val();
       const inputPassword = $('.input-password').val();
@@ -1050,13 +1052,13 @@ class ActionBlockService {
 
             that.model.setActionBlocks(actionBlocks);
 
-            yesSir.modalBoxService.show({
+            yesSir.modalBoxController.show({
               header_text:'Success', 
               body_text:'Receiving data from firebase database has been completed.'
             });
   
             setTimeout(() => {
-              yesSir.modalBoxService.hide();
+              yesSir.modalBoxController.hide();
             }, "3000");
             
   
@@ -1066,7 +1068,7 @@ class ActionBlockService {
           that.hashService.openMainPage();
         },
         onError: error => {
-          yesSir.modalBoxService.hide();
+          yesSir.modalBoxController.hide();
           alert(error); 
         }
       });
@@ -1223,7 +1225,7 @@ class ActionBlockService {
     function onClickOkConfirm() {
       that.modalLoadingService.show();
       $("#dialog_database_manager")[0].close();
-      that.model.setActionBlocks(that.model.actionBlocks_from_database);
+      that.model.setActionBlocks(that.model.actionBlocksFromDatabase);
       this.scrollService.setPositionTop();
       that.showActionBlocks();
       that.modalLoadingService.hide();
@@ -1428,7 +1430,7 @@ class ActionBlockService {
       this.hashService.openActionBlockPage(title);
     }
 
-    if (this.model.is_menu_create_type_actionBlock_open)
+    if (this.model.isMenuCreateTypeActionBlockOpen)
       this.switchStateMenuTypeActionBlocksToCreate();
   };
 
@@ -1484,10 +1486,8 @@ class ActionBlockService {
   }
 
   onPageContentChange() {
-    if (this.model.is_menu_create_type_actionBlock_open)
+    if (this.model.isMenuCreateTypeActionBlockOpen)
       this.switchStateMenuTypeActionBlocksToCreate();
     this.view.onPageContentChange();
   }
-
-
 }

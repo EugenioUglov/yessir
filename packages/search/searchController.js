@@ -12,7 +12,7 @@ class SearchController {
 
     onEnter = () => {
         this.searchService.view.setTextColorInInputField('black');
-        const user_request = this.searchService.view.getTextFromMainInputField();
+        const userRequest = this.searchService.view.getTextFromMainInputField();
         
         // this.searchService.setHashRequest({
         //     requestValue: user_request, 
@@ -21,7 +21,7 @@ class SearchController {
 
         let isExecuteActionBlockByTitle = true;
 
-        this.#searchActionBlocks(user_request, isExecuteActionBlockByTitle);
+        this.#searchActionBlocks(userRequest, isExecuteActionBlockByTitle);
     }
 
     onClickBtnClear = () => {
@@ -61,16 +61,16 @@ class SearchController {
     #bindViewEvenets() {
         const that = this;
 
-        const onKeyUpRequestField = (request, clicked_keyCode) => {
-            let is_execute_actionBlock_by_title = false;
+        const onKeyUpRequestField = (request, clickedKeyCode) => {
+            let isExecuteActionBlockByTitle = false;
 
-            if (clicked_keyCode === that.keyCodeByKeyName.enter) {
-                is_execute_actionBlock_by_title = true;
+            if (clickedKeyCode === that.keyCodeByKeyName.enter) {
+                isExecuteActionBlockByTitle = true;
             } else {
-                is_execute_actionBlock_by_title = false;
+                isExecuteActionBlockByTitle = false;
             }
 
-            this.#searchActionBlocks(request, is_execute_actionBlock_by_title);
+            this.#searchActionBlocks(request, isExecuteActionBlockByTitle);
         };
 
         const onChangeInputRequestField = (request, clicked_keyCode) => {
@@ -93,9 +93,9 @@ class SearchController {
             // console.log('timeSpentForSearch: ', timeSpentForSearch/1000 + ' seconds');
         };
 
-        function onClickBtnSearchByTags(user_plus_tags, user_minus_tags) {
+        function onClickBtnSearchByTags(userPlusTags, userMinusTags) {
             window.scrollTo(0, 0);
-            that.actionBlockService.showActionBlocksByTags(user_plus_tags, user_minus_tags);
+            that.actionBlockService.showActionBlocksByTags(userPlusTags, userMinusTags);
         }
 
         this.searchService.view.bindClickBtnClearRequestField(this.onClickBtnClear);
@@ -104,7 +104,7 @@ class SearchController {
         this.searchService.view.bindChangeInputRequestField(onChangeInputRequestField);
         this.searchService.view.bindKeypressInputFieldPlusTags(this.#onKeypressInputFieldPlusTags);
         this.searchService.view.bindKeypressInputFieldMinusTags(this.#onKeypressInputFieldMinusTags);
-        this.searchService.view.bindClickBtnSearchByTags((user_plus_tags, user_minus_tags) => onClickBtnSearchByTags(user_plus_tags, user_minus_tags));
+        this.searchService.view.bindClickBtnSearchByTags((userPlusTags, userMinusTags) => onClickBtnSearchByTags(userPlusTags, userMinusTags));
     }
 
     #searchActionBlocks(request, isExecuteActionBlockByTitle = false) {

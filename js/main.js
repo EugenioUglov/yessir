@@ -161,6 +161,13 @@ let yesSir;
         }
       }
     });
+
+    
+
+    actionBlockController.bindClickBtnShowSettingsToCreateAdvancedActionBlock(() => { hashService.setHashCreateActionBlock(); });
+    actionBlockController.bindClickBtnShowSettingsToCreateNote(() => { hashService.openPageSettingsToCreateNote(); });
+    actionBlockController.bindClickBtnShowSettingsToCreateLink(() => { this.hashService.openPageSettingsToCreateLink(); });
+
   }
 
   function onWindowResize() {

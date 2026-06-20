@@ -53,7 +53,9 @@
         "./packages/dataStorage/dataStorageService.js",
         "./packages/loader/loaderController.js",
         "./packages/modalBox/modalBoxService.js",
-        "./js/services/modalLoadingService.js",
+        "./packages/modalBox/modalBoxController.js",
+        "./packages/modalBox/modalLoadingService.js",
+        "./packages/modalBox/index.js",
 
         // Модели
         "./packages/noteSpeaker/noteSpeakerModel.js",

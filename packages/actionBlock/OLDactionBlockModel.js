@@ -11,7 +11,7 @@ class ActionBlockModel {
 
         // this.actionBlocks = [];
         this.actionBlocks_from_database = [];
-        this.is_menu_create_type_actionBlock_open = false;
+        this.isMenuCreateTypeActionBlockOpen = false;
     
         this.action_description_by_action_name = {
             openURL: 'Open URL',

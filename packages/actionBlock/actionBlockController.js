@@ -17,16 +17,20 @@ class ActionBlockController {
     this.#bindViewEvenets();
   }
 
-  #onClickBtnShowSettingsToCreateAdvancedActionBlock = () => {
-    this.hashService.setHashCreateActionBlock();
-  };
+  #onClickBtnShowSettingsToCreateAdvancedActionBlock;
+  #onClickBtnShowSettingsToCreateNote;
+  #onClickBtnShowSettingsToCreateLink;
 
-  #onClickBtnShowSettingsToCreateNote = () => {
-    this.hashService.openPageSettingsToCreateNote();
-  };
+  bindClickBtnShowSettingsToCreateAdvancedActionBlock(handler) {
+    this.#onClickBtnShowSettingsToCreateAdvancedActionBlock = handler;
+  }
 
-  #onClickBtnShowSettingsToCreateLink = () => {
-    this.hashService.openPageSettingsToCreateLink();
+  bindClickBtnShowSettingsToCreateNote(handler) {
+    this.#onClickBtnShowSettingsToCreateNote = handler;
+  }
+
+  bindClickBtnShowSettingsToCreateLink(handler) {
+    this.#onClickBtnShowSettingsToCreateLink = handler;
   };
 
   #onClickBtnCreateActionBlock = (
@@ -36,9 +40,7 @@ class ActionBlockController {
     content,
     imageURL
   ) => {
-    // Disable all buttons.
-    $(":submit, :button").attr("disabled", "disabled");
-    yesSir.loaderController.startLoading();
+    this.view.startLoading();
     this.actionBlockService.createActionBlock(
       title,
       tagsPlusTitle,
@@ -46,10 +48,7 @@ class ActionBlockController {
       content,
       imageURL,
       (isActionBlockCreated) => {
-        yesSir.loaderController.stopLoading();
-
-        // Enable all buttons.
-        $(":submit, :button").attr("disabled", false);
+        this.view.stopLoading();
 
         if (isActionBlockCreated === false) {
           return false;
@@ -67,9 +66,7 @@ class ActionBlockController {
     content,
     imageURL
   ) => {
-    // Disable all buttons.
-    $(":submit, :button").attr("disabled", "disabled");
-    yesSir.loaderController.startLoading();
+    this.view.startLoading();
     this.actionBlockService.createActionBlockWithOptimizedAutomationAsync(
       title,
       tagsPlusTitle,
@@ -77,10 +74,7 @@ class ActionBlockController {
       content,
       imageURL,
       (isActionBlockCreated) => {
-        yesSir.loaderController.stopLoading();
-
-        // Enable all buttons.
-        $(":submit, :button").attr("disabled", false);
+        this.view.stopLoading();
 
         if (isActionBlockCreated === false) {
           return false;

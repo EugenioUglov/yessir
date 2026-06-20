@@ -1,32 +1,28 @@
 class ActionBlockView {
   constructor(
-    action_name_enum,
-    content_type_description_by_action,
-    action_description_by_action_name,
+    actionNameEnum,
+    contentTypeDescriptionByAction,
+    actionDescriptionByActionName,
     fileManager,
     textManager,
-    dropdownManager
+    dropdownManager,
+    loaderController
   ) {
-    this.action_name_enum = action_name_enum;
-    this.contentTypeDescriptionByAction =
-      content_type_description_by_action;
-    this.action_description_by_action_name = action_description_by_action_name;
+    this.actionNameEnum = actionNameEnum;
+    this.contentTypeDescriptionByAction = contentTypeDescriptionByAction;
+    this.actionDescriptionByActionName = actionDescriptionByActionName;
 
     this.fileManager = fileManager;
     this.textManager = textManager;
     this.dropdownManager = dropdownManager;
+    this.loaderController = loaderController;
 
-    this.#init();
-    this.setEventListeners();
-  }
-
-  #init() {
     const dropdownSelectActionForCreateContainer = $(
       "#settings_actionBlock_container"
     ).find(".dropdown_select_action")[0];
     this.dropdownManager.setOptions(
       dropdownSelectActionForCreateContainer,
-      this.action_description_by_action_name
+      this.actionDescriptionByActionName
     );
     const indexAction = 0;
     const firstDropdownItemTextForCreate =
@@ -35,7 +31,11 @@ class ActionBlockView {
       this.contentTypeDescriptionByAction[
         firstDropdownItemTextForCreate
       ];
+
+    this.setEventListeners();
   }
+
+
 
   addOnPage(
     id,
@@ -127,9 +127,9 @@ class ActionBlockView {
     const settingsActionBlockContainer = $("#settings_actionBlock_container");
     let actionNameOfActionBlock = actionBlock.action;
     if (actionNameOfActionBlock === "showAlert")
-      actionNameOfActionBlock = this.action_name_enum.showInfo;
+      actionNameOfActionBlock = this.actionNameEnum.showInfo;
     if (actionNameOfActionBlock === "openUrl")
-      actionNameOfActionBlock = this.action_name_enum.openURL;
+      actionNameOfActionBlock = this.actionNameEnum.openURL;
 
     $("#btn_close").show();
     $("#elements_to_edit_actionBlock").show();
@@ -255,6 +255,18 @@ class ActionBlockView {
   clear() {
     // Clear infoblocks.
     $(".actionBlocks_container")[0].innerHTML = "";
+  }
+
+  startLoading() {
+    // Disable all buttons.
+    $(":submit, :button").attr("disabled", "disabled");
+    this.loaderController.startLoading();
+  }
+
+  stopLoading() {
+    // Enable all buttons.
+    $(":submit, :button").attr("disabled", false);
+    this.loaderController.stopLoading();
   }
 
   setEventListeners() {
@@ -788,7 +800,7 @@ class ActionBlockView {
     isEditable = true
   ) {
     const title = actionBlock.title;
-    const isFolder = actionBlock.action === this.action_name_enum.openFolder;
+    const isFolder = actionBlock.action === this.actionNameEnum.openFolder;
     let imageURL = actionBlock.imageURL;
 
     this.infoBlock_container;
