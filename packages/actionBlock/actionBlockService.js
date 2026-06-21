@@ -11,30 +11,30 @@ class ActionBlockService {
     dropdownManager,
     dataStorageService,
     mapDataStructure,
-    logsService,
+    logsController,
     dialogWindow,
     keyCodeByKeyName,
-    scrollService,
+    scrollController,
     searchService,
     loaderController,
     hashService,
     noteService,
     dateManager,
-    modalLoadingService
+    modalLoadingController
   ) {
     this.fileManager = fileManager;
     this.textManager = textManager;
     this.dataStorageService = dataStorageService;
-    this.logsService = logsService;
+    this.logsController = logsController;
     this.dialogWindow = dialogWindow;
     this.keyCodeByKeyName = keyCodeByKeyName;
     this.mapDataStructure = mapDataStructure;
-    this.scrollService = scrollService;
+    this.scrollController = scrollController;
     this.searchService = searchService;
     this.loaderController = loaderController;
     this.hashService = hashService;
     this.noteService = noteService;
-    this.modalLoadingService = modalLoadingService;
+    this.modalLoadingController = modalLoadingController;
 
     this.#dateManager = dateManager;
 
@@ -605,7 +605,7 @@ class ActionBlockService {
         log += " | Offline";
       }
 
-      that.logsService.showLog(log);
+      that.logsController.showLog(log);
     }
 
     const timeEndShowActionBlocks = new Date();
@@ -836,7 +836,7 @@ class ActionBlockService {
     // else if (actionNameOfActionBlock === 'openUrl') actionNameOfActionBlock = this.model.getActionNameEnum().openURL;
 
     this.#scrollPositionOnExecuteBlock =
-      this.scrollService.getScrollXY()[1];
+      this.scrollController.getScrollXY()[1];
 
     if (
       actionNameOfActionBlock === this.model.getActionNameEnum().openURL ||
@@ -876,7 +876,7 @@ class ActionBlockService {
       this.model.actionBlockTitleBeforeUpdate = $('.note_title').text();
 
       this.view.hidePage();
-      // that.scrollService.setPositionTop();
+      // that.scrollController.setPositionTop();
 
       onNoteOpened();
     } else if (
@@ -895,7 +895,7 @@ class ActionBlockService {
       $("#content_executed_from_actionBlock").show();
 
       // Set position top.
-      that.scrollService.setPosition(0, 0);
+      that.scrollController.setPosition(0, 0);
     } else if (
       actionNameOfActionBlock === this.model.getActionNameEnum().openFolder
     ) {
@@ -971,7 +971,7 @@ class ActionBlockService {
     this.showActionBlocks();
 
     // Scroll top.
-    // this.scrollService.scrollTo();
+    // this.scrollController.scrollTo();
   }
 
   saveToDatabase(actionBlocksMapString) {
@@ -988,8 +988,8 @@ class ActionBlockService {
         e.preventDefault();
 
         yesSir.modalBoxController.show({
-            header_text:'Loading', 
-            body_text:'Data is being verified..'
+            headerText:'Loading', 
+            bodyText:'Data is being verified..'
         });
 
         const inputUsername = $('.input-username').val();
@@ -1004,8 +1004,8 @@ class ActionBlockService {
                 $('.login-panel').hide();
     
                 yesSir.modalBoxController.show({
-                    header_text:'Success', 
-                    body_text:'Data saved successfully to firebase database.'
+                    headerText:'Success', 
+                    bodyText:'Data saved successfully to firebase database.'
                 });
         
                 setTimeout(() => {
@@ -1035,7 +1035,7 @@ class ActionBlockService {
     $(".btn-submit").click(function(e) {
       e.preventDefault();
 
-      yesSir.modalBoxController.show({header_text:'Loading', body_text:'Data is being verified..'});
+      yesSir.modalBoxController.show({headerText:'Loading', bodyText:'Data is being verified..'});
 
       const inputUsername = $('.input-username').val();
       const inputPassword = $('.input-password').val();
@@ -1053,8 +1053,8 @@ class ActionBlockService {
             that.model.setActionBlocks(actionBlocks);
 
             yesSir.modalBoxController.show({
-              header_text:'Success', 
-              body_text:'Receiving data from firebase database has been completed.'
+              headerText:'Success', 
+              bodyText:'Receiving data from firebase database has been completed.'
             });
   
             setTimeout(() => {
@@ -1174,7 +1174,7 @@ class ActionBlockService {
     // Get actionBlocks from the file.
     let actionBlocksFromFile;
 
-    this.modalLoadingService.show();
+    this.modalLoadingController.show();
 
     try {
       actionBlocksFromFile = this.mapDataStructure.getParsed(contentOfFile);
@@ -1182,16 +1182,16 @@ class ActionBlockService {
       alert(
         "Content of file is not correct. File must contain an Action-Blocks data."
       );
-      this.modalLoadingService.hide();
+      this.modalLoadingController.hide();
       return;
     }
 
     this.view.closeSettings();
     this.model.setActionBlocks(actionBlocksFromFile);
-    this.scrollService.setPositionTop();
+    this.scrollController.setPositionTop();
     this.showActionBlocks();
     this.searchService.clearInputField();
-    this.modalLoadingService.hide();
+    this.modalLoadingController.hide();
   };
 
   bindClickActionBlock(
@@ -1226,7 +1226,7 @@ class ActionBlockService {
       that.modalLoadingService.show();
       $("#dialog_database_manager")[0].close();
       that.model.setActionBlocks(that.model.actionBlocksFromDatabase);
-      this.scrollService.setPositionTop();
+      this.scrollController.setPositionTop();
       that.showActionBlocks();
       that.modalLoadingService.hide();
 
@@ -1245,14 +1245,14 @@ class ActionBlockService {
     this.view.setDefaultValuesForSettingsElementsActionBlock();
     this.view.updatePage();
     // Refresh Action-Blocks on page.
-    this.scrollService.setPositionTop();
+    this.scrollController.setPositionTop();
     this.showActionBlocks();
-    this.modalLoadingService.hide();
+    this.modalLoadingController.hide();
     this.#onActionBlocksStorageUpdated();
   }
 
   updateActionBlock = (title, tags, selectedAction, content, imageURL) => {
-    this.modalLoadingService.show();
+    this.modalLoadingController.show();
 
     const isUpdated = this.model.updateActionBlock(
       title,
@@ -1263,7 +1263,7 @@ class ActionBlockService {
     );
 
     if (isUpdated === false) {
-      this.modalLoadingService.hide();
+      this.modalLoadingController.hide();
 
       return false;
     }
@@ -1273,7 +1273,7 @@ class ActionBlockService {
 
   
   updateQuicklyEditedActionBlock = ({title, content}) => {
-    this.modalLoadingService.show();
+    this.modalLoadingController.show();
 
     const actionBlockBeforeUpdate = this.model.getActionBlockByTitle(this.model.actionBlockTitleBeforeUpdate);
 
@@ -1290,7 +1290,7 @@ class ActionBlockService {
     );
 
     if (isUpdated === false) {
-      this.modalLoadingService.hide();
+      this.modalLoadingController.hide();
 
       return false;
     }
@@ -1318,7 +1318,7 @@ class ActionBlockService {
 
     // Create default Action-Blocks.
     createDefaultActionBlocks();
-    this.scrollService.setPositionTop();
+    this.scrollController.setPositionTop();
     this.showActionBlocks();
 
     return;
@@ -1348,11 +1348,11 @@ class ActionBlockService {
       "Are you sure you want to delete" + "\n" + ' "' + title + '" ?';
 
     function onClickOkConfirm() {
-      that.modalLoadingService.show();
+      that.modalLoadingController.show();
       that.model.deleteActionBlockByTitle(title);
 
       that.updatePage();
-      that.modalLoadingService.hide();
+      that.modalLoadingController.hide();
 
       return;
     }
@@ -1395,7 +1395,7 @@ class ActionBlockService {
     //     actionBlocks_to_show.splice(i_actionBlock, 1);
     // }
 
-    this.scrollService.setPositionTop();
+    this.scrollController.setPositionTop();
     this.showActionBlocks(actionBlocksToShow);
 
     /*
@@ -1436,14 +1436,14 @@ class ActionBlockService {
 
   #onClickBtnShowSettingsActionBlock = (title) => {
     this.#scrollPositionOnExecuteBlock =
-      this.scrollService.getScrollXY()[1];
+      this.scrollController.getScrollXY()[1];
 
     this.hashService.openSettingsActionBlockPage(title);
   };
 
   showSettingsToCreateActionBlock = (actionName) => {
     this.#scrollPositionOnExecuteBlock =
-      this.scrollService.getScrollXY()[1];
+      this.scrollController.getScrollXY()[1];
     this.model.action_for_new_actionBlock = actionName;
 
     this.view.showSettingsToCreateActionBlock(actionName);

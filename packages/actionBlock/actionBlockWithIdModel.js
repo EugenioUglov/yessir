@@ -479,7 +479,7 @@ class ActionBlockModel {
             actionBlocks = this.#actionBlockById;
         }
 
-        yesSir.logsService.showLog('Data is saving... Don\'t close this tab');
+        yesSir.logsController.showLog('Data is saving... Don\'t close this tab');
         
 
         let isSavedInLocalStorage = this.saveInLocalStorage(actionBlocks);

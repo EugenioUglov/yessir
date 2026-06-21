@@ -5,7 +5,7 @@ class ModalBoxController {
 
     #view;
 
-    show(setting = {body_text: '', header_text: '', footer_text: '', is_possible_close: true}) {
+    show(setting = {bodyText: '', headerText: '', footerText: '', isPossibleClose: true}) {
         this.#view.show(setting);
     }
 

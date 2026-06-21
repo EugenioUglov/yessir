@@ -31,7 +31,7 @@ class SearchController {
 
 
     #onKeypressInputFieldPlusTags = (event) => {
-        window.scrollTo(0, 0);
+        
         // this.actionBlockService.showActionBlocksByTags(
         //     this.searchService.view.getPlusTags(), 
         //     this.searchService.view.getMinusTags()
@@ -41,7 +41,6 @@ class SearchController {
     }
 
     #onKeypressInputFieldMinusTags = (event) => {
-        window.scrollTo(0, 0);
         // this.actionBlockService.showActionBlocksByTags(this.searchService.view.getPlusTags(), 
         //     this.searchService.view.getMinusTags());
 
@@ -94,7 +93,6 @@ class SearchController {
         };
 
         function onClickBtnSearchByTags(userPlusTags, userMinusTags) {
-            window.scrollTo(0, 0);
             that.actionBlockService.showActionBlocksByTags(userPlusTags, userMinusTags);
         }
 

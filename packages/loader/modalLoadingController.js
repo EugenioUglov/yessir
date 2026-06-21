@@ -1,4 +1,4 @@
-class ModalLoadingService {
+class ModalLoadingController {
     #modalBoxController;
 
     constructor(modalBoxController) {

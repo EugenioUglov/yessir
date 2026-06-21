@@ -2,12 +2,18 @@ class LogsController {
   #fileManager;
   #textManager;
 
-  constructor() {
-    this.model = new LogsModel();
-    this.view = new LogsView();
+  constructor({ view, fileManager, dateManager}) {
+    this.fileManager = fileManager;
+    this.model = new LogsModel(dateManager);
+    this.#view = new LogsView();
+
     this.#fileManager;
     this.#textManager;
+
+    this.#view.bindClickDownloadLogs( () => this.downloadLogs );
   }
+
+  #view;
 
   addLog(log) {
     this.model.addLog(log);
@@ -23,19 +29,19 @@ class LogsController {
       this.#fileManager = new FileManager(this.#textManager);
     }
 
-    const data_for_file = this.model.getDataForFile();
+    const dataForFile = this.model.getDataForFile();
     this.#fileManager.downloadFile(
-      data_for_file.content,
-      data_for_file.name,
-      data_for_file.extension
+      dataForFile.content,
+      dataForFile.name,
+      dataForFile.extension
     );
   }
 
   showContainerWithLogs() {
-    this.view.showContainerWithLogs();
+    this.#view.showContainerWithLogs();
   }
 
   showLog(log) {
-    this.view.setLogForLabelHelp(log);
+    this.#view.setLogForLabelHelp(log);
   }
 }

@@ -1,14 +1,15 @@
 class LoaderController {
-    constructor() {
-        this.view = new LoadingView();
+    constructor(view) {
+        this.#view = view;
     }
+
+    #view;
 
     startLoading() {
-        this.view.startLoading();
+        this.#view.startLoading();
     }
 
-        
     stopLoading() {
-        this.view.stopLoading();
+        this.#view.stopLoading();
     }
 }

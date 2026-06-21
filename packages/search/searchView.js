@@ -90,6 +90,7 @@ class SearchView {
 
     bindClickBtnSearchByTags(handler) {
         $('#btn_search_by_tags').click(() => {
+            window.scrollTo(0, 0);
             handler(this.getPlusTags(), this.getMinusTags());
         });
 
@@ -113,6 +114,7 @@ class SearchView {
                 // that.focusInputFieldMinusTags();
             }
             else {
+                window.scrollTo(0, 0);
                 handler(event);
             }
         });
@@ -128,6 +130,7 @@ class SearchView {
                 // that.focusInputFieldPlusTags();  
             }
             else {
+                window.scrollTo(0, 0);
                 handler(event);
             }
         });

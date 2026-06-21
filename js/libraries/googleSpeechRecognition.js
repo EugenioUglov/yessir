@@ -111,7 +111,7 @@ class GoogleSpeechRecognition {
                 seconds_to_stop_recognizing_on_no_speech = option.seconds_to_stop_recognizing_on_no_speech;
                 setTimerToStopSpeechRecognition(seconds_to_stop_recognizing_on_no_speech);
             }
-            yesSir.modalBoxService.show({body_text: interim_transcript, footer_text: full_transcript, header_text: 'Speech assisstent'});
+            yesSir.modalBoxController.show({bodyText: interim_transcript, footerText: full_transcript, headerText: 'Speech assisstent'});
         }
 
         this.#speechRecognition.onend = function() {

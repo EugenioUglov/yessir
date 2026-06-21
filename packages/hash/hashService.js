@@ -20,11 +20,11 @@ export const PAGE_NAME_ENUM = Object.freeze({
 class HashService {
   #hashPrevious;
 
-  constructor(textManager, noteSpeakerService, searchService, scrollService) {
+  constructor(textManager, noteSpeakerService, searchService, scrollController) {
     this.textManager = textManager;
     this.noteSpeakerService = noteSpeakerService;
     this.searchService = searchService;
-    this.scrollService = scrollService;
+    this.scrollController = scrollController;
     this.#view = new PageElementView();
 
     this.#hashPrevious;
@@ -34,6 +34,8 @@ class HashService {
   #isHashChangeListenerActiveStateEnabled = false;
   #currentPageName;
   #view;
+
+  onHashChanged;
 
   init() {
     this.setHashChangeListenerActiveState(true);
@@ -344,7 +346,7 @@ class HashService {
       }
 
       that.#actionBlockService.view.onShowMainPage();
-      this.scrollService.setPositionTop();
+      this.scrollController.setPositionTop();
     } else if (this.getNormalizedCurrentHash() === "#testfirebase") {
       // var actionBlocks_to_save = this.mapDataStructure.getStringified(actionBlocks_map_to_save);
       // var dbRef = firebase.database().ref();
@@ -399,7 +401,7 @@ class HashService {
 
       $("#elements_for_file_manager").show();
 
-      this.scrollService.setPositionTop();
+      this.scrollController.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
         "#" + this.PAGE_NAME_ENUM.speechRecognition
@@ -410,7 +412,7 @@ class HashService {
       $(".fixed_elements").hide();
       $(".speech_recognition_container").show();
 
-      this.scrollService.setPositionTop();
+      this.scrollController.setPositionTop();
     } else if (
       hashParamsInLowerCase.has(this.PAGE_NAME_ENUM.actionBlock.toLowerCase())
     ) {
@@ -471,7 +473,7 @@ class HashService {
       );
       // this.searchService.setTextToInputField(request);
 
-      this.scrollService.setPositionTop();
+      this.scrollController.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
         this.PAGE_NAME_ENUM.createActionBlock
@@ -479,21 +481,21 @@ class HashService {
     ) {
       this.#actionBlockService.showSettingsToCreateAdvancedActionBlock();
 
-      this.scrollService.setPositionTop();
+      this.scrollController.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
         this.PAGE_NAME_ENUM.createNote
       )
     ) {
       this.#actionBlockService.showSettingsToCreateNote();
-      this.scrollService.setPositionTop();
+      this.scrollController.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
         this.PAGE_NAME_ENUM.createLink
       )
     ) {
       this.#actionBlockService.showSettingsToCreateLink();
-      this.scrollService.setPositionTop();
+      this.scrollController.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
         this.PAGE_NAME_ENUM.editActionBlock
@@ -511,21 +513,21 @@ class HashService {
 
       title = decodeURIComponent(title);
       this.#actionBlockService.openActionBlockSettings(title);
-      this.scrollService.setPositionTop();
+      this.scrollController.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
         this.PAGE_NAME_ENUM.savetodatabase
       )
     ) {
       yesSir.actionBlockService.saveToDatabase();
-      this.scrollService.setPositionTop();
+      this.scrollController.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
         this.PAGE_NAME_ENUM.getfromdatabase
       )
     ) {
       this.#actionBlockService.getFromDatabase();
-      this.scrollService.setPositionTop();
+      this.scrollController.setPositionTop();
     } else if (this.getNormalizedCurrentHash() === "#mainprevious") {
       $("#content_executed_from_actionBlock").css("display", "none");
       $("#btn_close").css("display", "none");
@@ -543,7 +545,7 @@ class HashService {
       if (indexLastShowedActionBlock === 0) {
         this.openPreviousPage();
       } else {
-        yesSir.scrollService.setPosition(
+        this.scrollController.setPosition(
           0,
           scrollPositionOnExecuteActionBlock
         );

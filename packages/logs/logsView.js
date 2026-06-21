@@ -1,10 +1,11 @@
 class LogsView {
-    constructor(controller) {
-        this.controller = controller;
+    constructor() {
         this.setListener();
 
         this.logs_container = $('.logs_text')[0];
     }
+
+    #onClickDownloadLogs;
 
     setLogForLabelHelp(log) {
         label_help.innerText = log;
@@ -17,7 +18,7 @@ class LogsView {
     setListener() {
         const that = this;
 
-        $('#btn_download_logs').on('click', () => this.controller.downloadLogs());
+        $('#btn_download_logs').on('click', () => this.#onClickDownloadLogs());
     }
     
     // Show log with red text.
@@ -32,5 +33,9 @@ class LogsView {
 
     clear() {
         this.logs_container.innerHTML = '';
+    }
+
+    bindClickDownloadLogs(handler) {
+        this.#onClickDownloadLogs = handler();
     }
 }

@@ -11,7 +11,7 @@
 
         // Основные компоненты
         "./js/commandInputField.js",
-        "./js/actionBlockNoteCommands.js",
+        "./packages/actionBlock/actionBlockNoteCommands.js",
         "./packages/firebase/firebaseData.js",
 
         // Библиотеки (Core)
@@ -47,14 +47,11 @@
         "./packages/voiceRecognition/voiceRecognitionService.js",
         "./packages/autocomplete/autocompleteService.js",
         "./packages/hash/hashService.js",
-        "./packages/scroll/scrollService.js",
-        "./packages/note/noteService.js",
-        "./packages/logs/logsService.js",
+        "./packages/logs/index.js",
         "./packages/dataStorage/dataStorageService.js",
         "./packages/loader/loaderController.js",
-        "./packages/modalBox/modalBoxService.js",
         "./packages/modalBox/modalBoxController.js",
-        "./packages/modalBox/modalLoadingService.js",
+        "./packages/loader/modalLoadingController.js",
         "./packages/modalBox/index.js",
 
         // Модели
@@ -73,7 +70,7 @@
         "./packages/logs/logsView.js",
         "./packages/autocomplete/autocompleteView.js",
         "./packages/search/searchView.js",
-        "./packages/loader/loadingView.js",
+        "./packages/loader/loaderView.js",
         "./packages/dataStorage/dataStorageView.js",
         "./packages/modalBox/modalBoxView.js",
         "./packages/login/loginView.js",
@@ -90,7 +87,11 @@
         "./packages/actionBlock/actionBlockController.js",
         "./packages/autocomplete/autocompleteController.js",
 
-        "./js/editActionBlockDataHolder.js",
+        "./packages/actionBlock/editActionBlockDataHolder.js",
+        
+        "./packages/scroll/index.js",
+        "./packages/loader/index.js",
+        "./packages/note/index.js",
 
         // Firebase & Дополнения
         "https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js",

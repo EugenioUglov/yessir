@@ -19,29 +19,33 @@ class YesSir {
     this.dialogWindow = new DialogWindow();
     this.observable = new Observable();
 
-    this.modalBoxService = new ModalBoxService();
-    this.modalLoadingService = new ModalLoadingService(this.modalBoxService);
+    this.modalBoxController = new ModalBoxInitializer();
+    this.modalLoadingController = new ModalLoadingController(this.modalBoxController);
     this.noteSpeakerService = new NoteSpeakerService(this.speakerManager);
     this.dataStorageService = new DataStorageService(this.dialogWindow);
     this.searchService = new SearchSevice();
-    this.scrollService = new ScrollService();
-    this.logsService = new LogsService(this.fileManager, this.dateManager);
+    this.scrollController = new ScrollInitializer();
+    this.logsController = new LogsInitializer(this.fileManager, this.dateManager);
     this.autocompleteService = new AutocompleteService(this.textManager);
     this.hashService = new HashService(
       this.textManager,
       this.noteSpeakerService,
       this.searchService,
-      this.scrollService
+      this.scrollController
     );
     this.voiceRecognitionService = new VoiceRecognitionService(
       this.voiceRecognitionManager,
       this.hashService
     );
-    this.loaderController = new LoaderController();
-    this.noteService = new NoteService(
-      this.noteSpeakerService,
-      this.hashService
+
+    this.loaderController = new LoaderInitializer();
+
+    this.noteService = new NoteInitializer(
+      this.hashService,
+      this.noteSpeakerService
     );
+
+
     this.actionBlockService = new ActionBlockService(
       this.dbManager,
       this.fileManager,
@@ -49,17 +53,20 @@ class YesSir {
       this.dropdownManager,
       this.dataStorageService,
       this.mapDataStructure,
-      this.logsService,
+      this.logsController,
       this.dialogWindow,
       this.keyCodeByKeyName,
-      this.scrollService,
+      this.scrollController,
       this.searchService,
       this.loaderController,
       this.hashService,
       this.noteService,
       this.dateManager,
-      this.modalLoadingService
+      this.modalLoadingController
     );
+
+    this.noteService.actionBlockService = this.actionBlockService;
+    this.noteService.setCommandInputFieldWithCommandObjects();
   }
 }
 
@@ -90,17 +97,13 @@ let yesSir;
     // Initialize Services.
     const voiceRecognitionService = yesSir.voiceRecognitionService;
     const autocompleteService = yesSir.autocompleteService;
-    const scrollService = yesSir.scrollService;
     const searchService = yesSir.searchService;
-    const logsService = yesSir.logsService;
     const loaderController = yesSir.loaderController;
     const noteService = yesSir.noteService;
     const dataStorageService = yesSir.dataStorageService;
     const hashService = yesSir.hashService;
     const actionBlockService = yesSir.actionBlockService;
 
-    // Initialize Controller.
-    const logsController = new LogsController();
     const noteSpeakerController = new NoteSpeakerController(
       yesSir.noteSpeakerService,
       noteService
@@ -121,10 +124,7 @@ let yesSir;
       hashService
     );
 
-    const scrollController = new ScrollController(
-      scrollService,
-      actionBlockService
-    );
+    const scrollController = new ScrollInitializer();
 
     const searchController = new SearchController(
       searchService,
@@ -134,11 +134,6 @@ let yesSir;
       keyCodeByKeyName
     );
 
-    const noteController = new NoteController(
-      actionBlockService,
-      noteService,
-      hashService
-    );
     
     const dataStorageController = new DataStorageController(
       actionBlockService,

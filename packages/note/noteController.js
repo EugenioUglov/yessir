@@ -1,17 +1,17 @@
 class NoteController {
-    constructor(actionBlockService, noteService, hashService) {
-        const that = this;
-        this.actionBlockService = actionBlockService;
-        this.noteService = noteService;
+    constructor(view, hashService, noteSpeakerService) {
         this.hashService = hashService;
+        this.noteSpeakerService = noteSpeakerService;
 
-        this.view = new NoteView();
+        this.view = view;
 
         this.bindViewEvents();
+        this.closeHandler;
+    }
 
+    actionBlockService;
 
-  
-
+    setCommandInputFieldWithCommandObjects() {
         const commandObjects = [
             {
                 key: 'close', title: 'Close', action: () => {that.#onClose();}, tags: ['close', 'exit', 'quit'], icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Signe_de_piste_-_Fausse_piste.svg/1200px-Signe_de_piste_-_Fausse_piste.svg.png'
@@ -40,7 +40,7 @@ class NoteController {
             },
             {
                 key: 'listen', title: 'Read text aloud', action: () => {
-                    that.noteService.noteSpeakerService.speak();
+                    that.noteSpeakerService.speak();
                 }, tags: ['text', 'aloud', 'listen', 'speak', 'talk', 'tell'], icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Font_Awesome_5_solid_volume-up.svg/800px-Font_Awesome_5_solid_volume-up.svg.png'
             },
             {
@@ -64,20 +64,47 @@ class NoteController {
             
         ];
 
-        
-
         setCommandInputFiled(commandObjects);
     }
 
+    openNote(content, title, isHTML) {
+        const that = this;
 
+        const elementsToShow = this.view.showInfo(content, title, isHTML);
 
+        elementsToShow.forEach((elementToShow) => {
+            that.hashService.showElement(elementToShow);
+        });
+
+        if (isHTML === false) {
+            const BTN_SPEAKER = this.noteSpeakerService.showBtnSpeaker();
+
+            this.hashService.showElement(BTN_SPEAKER);
+        }
+
+        if (window.location.hash.includes("&listen")) {
+            this.noteSpeakerService.speak();
+        }
+    }
+
+    close = () => {
+        $('.inputFieldWithSuggestions').hide();
+        yesSir.voiceRecognitionService.stopRecognizing();
+        this.noteSpeakerService.removeFromPage();
+        this.view.close();
+    };
+
+    bindClickBtnClose(handler) {
+        this.closeHandler = handler;
+        this.view.bindClickBtnClose(handler);
+    }
 
     bindViewEvents() {
         this.view.bindClickBtnClose(this.#onClose);
     }
 
     #onClose = () => {
-        this.noteService.close();
+        this.close();
         if (window.location.hash.toUpperCase().includes('#editActionBlock'.toUpperCase())) {
             this.actionBlockService.setDefaultValuesForSettingsElementsActionBlock();
         } else if (window.location.hash.toUpperCase().includes('#createnote'.toUpperCase())) {
@@ -85,6 +112,5 @@ class NoteController {
         }
 
         this.hashService.setHashMainPrevious();
-        // this.hashService.openPreviousPage();
     }
 }
