@@ -48,4 +48,27 @@ class HashHelper {
         const params = new URLSearchParams(hash);
         return Object.fromEntries(params.entries());
     }
+
+    getHashParams() {
+        // Get hash and remove '#'.
+        const hashString = window.location.hash.slice(1); 
+
+        // Create object of parameters.
+        const hashParams = new URLSearchParams(hashString);
+
+        return hashParams;
+    }
+
+    getHashParamsInLowerCase() {
+        const hashParams = this.getHashParams();
+
+        // Create a new empty URLSearchParams object.
+        const lowerCaseHashParams = new URLSearchParams();
+
+        hashParams.forEach((value, key) => {
+            lowerCaseHashParams.append(key.toLowerCase(), value);
+        });
+
+        return lowerCaseHashParams;
+    }
 }

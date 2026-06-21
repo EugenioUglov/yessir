@@ -27,21 +27,20 @@ class YesSir {
     this.scrollController = new ScrollInitializer();
     this.logsController = new LogsInitializer(this.fileManager, this.dateManager);
     this.autocompleteService = new AutocompleteService(this.textManager);
-    this.hashService = new HashService(
+    this.hashHandler = new HashHandler(
       this.textManager,
-      this.noteSpeakerService,
       this.searchService,
       this.scrollController
     );
     this.voiceRecognitionService = new VoiceRecognitionService(
       this.voiceRecognitionManager,
-      this.hashService
+      this.hashHandler
     );
 
     this.loaderController = new LoaderInitializer();
 
     this.noteController = new NoteInitializer(
-      this.hashService,
+      this.hashHandler,
       this.noteSpeakerService
     );
 
@@ -59,7 +58,7 @@ class YesSir {
       this.scrollController,
       this.searchService,
       this.loaderController,
-      this.hashService,
+      this.hashHandler,
       this.noteController,
       this.dateManager,
       this.modalLoadingController
@@ -70,7 +69,7 @@ class YesSir {
     this.noteController.openNoteHandler = function() {
       const BTN_SPEAKER = this.noteSpeakerService.showBtnSpeaker();
 
-      this.hashService.showElement(BTN_SPEAKER);
+      this.hashHandler.showElement(BTN_SPEAKER);
 
       if (window.location.hash.includes("&listen")) {
         this.noteSpeakerService.speak();
@@ -109,7 +108,7 @@ let yesSir;
     const loaderController = yesSir.loaderController;
     const noteController = yesSir.noteController;
     const dataStorageService = yesSir.dataStorageService;
-    const hashService = yesSir.hashService;
+    const hashHandler = yesSir.hashHandler;
     const actionBlockService = yesSir.actionBlockService;
 
     const searchController = new SearchInitializer(
@@ -127,14 +126,14 @@ let yesSir;
       loaderController,
       dialogWindow,
       searchController,
-      hashService,
+      hashHandler,
       noteController
     );
 
     const voiceRecognitionController = new VoiceRecognitionController(
       voiceRecognitionService,
       observable,
-      hashService
+      hashHandler
     );
 
     const scrollController = new ScrollInitializer();
@@ -143,10 +142,8 @@ let yesSir;
     const dataStorageController = new DataStorageController(
       actionBlockService,
       dataStorageService,
-      hashService
+      hashHandler
     );
-    
-    const hashController = new HashController(hashService);
 
     actionBlockService.showActionBlocksFromStorage();
     yesSir.loaderController.stopLoading();
@@ -162,11 +159,11 @@ let yesSir;
       }
     });
 
-    actionBlockController.bindClickBtnShowSettingsToCreateAdvancedActionBlock(() => { hashService.setHashCreateActionBlock(); });
+    actionBlockController.bindClickBtnShowSettingsToCreateAdvancedActionBlock(() => { hashHandler.setHashCreateActionBlock(); });
 
-    actionBlockController.bindClickBtnShowSettingsToCreateNote(() => { hashService.openPageSettingsToCreateNote(); });
+    actionBlockController.bindClickBtnShowSettingsToCreateNote(() => { hashHandler.openPageSettingsToCreateNote(); });
 
-    actionBlockController.bindClickBtnShowSettingsToCreateLink(() => { this.hashService.openPageSettingsToCreateLink(); });
+    actionBlockController.bindClickBtnShowSettingsToCreateLink(() => { this.hashHandler.openPageSettingsToCreateLink(); });
 
     noteController.closeHandler = function() {
       $('.inputFieldWithSuggestions').hide();
@@ -181,7 +178,7 @@ let yesSir;
     };
 
     searchController.clickBtnClearHandler = function() {
-      this.hashService.openMainPage();
+      hashHandler.openMainPage();
     };
 
     searchController.inputFieldEnterHandler = () => {
@@ -193,14 +190,14 @@ let yesSir;
       // });
       let isExecuteActionBlockByTitle = true;
 
-      hashService.setHashRequest({
+      hashHandler.setHashRequest({
           requestValue: request, 
           isExecuteActionBlockByTitle: isExecuteActionBlockByTitle
       });
     };
 
     searchController.changeInputFieldHandler = function(request) {
-      hashService.setHashRequest({
+      hashHandler.setHashRequest({
         requestValue: request, 
         isExecuteActionBlockByTitle: false
       });
@@ -209,7 +206,7 @@ let yesSir;
     searchController.keyUpRequestFieldHandler = function(request, clickedKeyCode) {
       const isExecuteActionBlockByTitle = clickedKeyCode === yesSir.keyCodeByKeyName.enter ? true : false;
 
-      hashService.setHashRequest({
+      hashHandler.setHashRequest({
         requestValue: request, 
         isExecuteActionBlockByTitle: isExecuteActionBlockByTitle
       });
@@ -230,16 +227,26 @@ let yesSir;
       const request = searchController.getTextFromMainInputField();
 
       actionBlockService.showActionBlocksByRequest(
-          {
-              request: request, 
-              isExecuteActionBlockByTitle: false
-          }
+        {
+            request: request, 
+            isExecuteActionBlockByTitle: false
+        }
       );
     };
 
     searchController.clickBtnSearchByTagsHandler = (userPlusTags, userMinusTags) => {
       actionBlockService.showActionBlocksByTags(userPlusTags, userMinusTags);
     }
+
+    hashHandler.handleHashHandler = () => {
+      yesSir.domElementManager.hideShowedElements();
+      yesSir.domElementManager.hideElement(".speech_recognition_container");
+      yesSir.domElementManager.hideElement("#elements_for_file_manager");
+      yesSir.domElementManager.showElement(".content");
+      yesSir.domElementManager.showElement(".fixed_elements");
+
+      if (yesSir.noteSpeakerService.isSpeaking) yesSir.noteSpeakerService.stopSpeak();
+    };
   }
 
   function onWindowResize() {

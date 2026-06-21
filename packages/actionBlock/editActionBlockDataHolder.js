@@ -1,12 +1,12 @@
 class EditActionBlockDataHolder {
-    constructor(hashService) {
+    constructor(hashHandler) {
         // createActionBlock: 'createactionblock',
         // createNote: 'createnote',
         // createLink: 'createlink',
-        if (hashService.getNormalizedCurrentHash().includes(hashService.PAGE_NAME_ENUM.editActionBlock) ||
-        hashService.getNormalizedCurrentHash().includes(hashService.PAGE_NAME_ENUM.createActionBlock) ||
-        hashService.getNormalizedCurrentHash().includes(hashService.PAGE_NAME_ENUM.createNote) ||
-        hashService.getNormalizedCurrentHash().includes(hashService.PAGE_NAME_ENUM.createlink) ) {
+        if (hashHandler.getNormalizedCurrentHash().includes(hashHandler.PAGE_NAME_ENUM.editActionBlock) ||
+        hashHandler.getNormalizedCurrentHash().includes(hashHandler.PAGE_NAME_ENUM.createActionBlock) ||
+        hashHandler.getNormalizedCurrentHash().includes(hashHandler.PAGE_NAME_ENUM.createNote) ||
+        hashHandler.getNormalizedCurrentHash().includes(hashHandler.PAGE_NAME_ENUM.createlink) ) {
             this.#restoreLastSavedInputValues();
             this.#setInputDataHandler();
         }

@@ -1,7 +1,7 @@
 class NoteInitializer {
-    constructor(hashService, noteSpeakerService) {
+    constructor(hashHandler, noteSpeakerService) {
         this.#view = new NoteView();
-        this.#controller = new NoteController(this.#view, hashService, noteSpeakerService);
+        this.#controller = new NoteController(this.#view, hashHandler, noteSpeakerService);
 
         return this.#controller;
     }

@@ -17,7 +17,7 @@ class ActionBlockService {
     scrollController,
     searchService,
     loaderController,
-    hashService,
+    hashHandler,
     noteController,
     dateManager,
     modalLoadingController
@@ -32,7 +32,7 @@ class ActionBlockService {
     this.scrollController = scrollController;
     this.searchService = searchService;
     this.loaderController = loaderController;
-    this.hashService = hashService;
+    this.hashHandler = hashHandler;
     this.noteController = noteController;
     this.modalLoadingController = modalLoadingController;
 
@@ -56,7 +56,7 @@ class ActionBlockService {
       loaderController
     );
 
-    this.hashService.setActionBlockService(this);
+    this.hashHandler.setActionBlockService(this);
   }
 
 
@@ -426,7 +426,7 @@ class ActionBlockService {
 
     this.view.closeSettings();
     this.view.clearAllSettingsFields();
-    this.hashService.openPreviousPage();
+    this.hashHandler.openPreviousPage();
     this.loaderController.stopLoading();
     this.updatePage();
     this.#onActionBlocksStorageUpdated();
@@ -575,7 +575,7 @@ class ActionBlockService {
     that.view.showActionBlocksContainer();
 
     // elements_to_show.forEach(element => {
-    //     this.hashService.showElement(element);
+    //     this.hashHandler.showElement(element);
     // });
 
     updateLogMessage();
@@ -645,7 +645,7 @@ class ActionBlockService {
     );
 
     function onSetActionBlocks() {
-      that.hashService.init();
+      that.hashHandler.init();
       const time = new Date() - start;
       // console.log("time:" + time);
     }
@@ -654,7 +654,7 @@ class ActionBlockService {
       that.downloadFileWithActionBlocks(
         that.model.getActionBlocksFromLocalStorageAsync()
       );
-      that.hashService.init();
+      that.hashHandler.init();
     }
   };
 
@@ -794,7 +794,7 @@ class ActionBlockService {
 
     const viewElementsToShow = this.view.showSettingsToCreateActionBlock();
     viewElementsToShow.forEach((element) => {
-      // that.hashService.showElement(element);
+      // that.hashHandler.showElement(element);
     });
   }
 
@@ -1012,7 +1012,7 @@ class ActionBlockService {
                     yesSir.modalBoxController.hide();
                 }, "3000");
     
-                yesSir.hashService.openMainPage();
+                yesSir.hashHandler.openMainPage();
             },
             onError: error => {
                 alert("Error! Data could not be saved. " + error);
@@ -1023,7 +1023,7 @@ class ActionBlockService {
 
     $('.login-panel .close-icon').one('click', () => {
       $('.login-panel').css('display', 'none');
-      window.location.hash = that.hashService.PAGE_NAME_ENUM.main;
+      window.location.hash = that.hashHandler.PAGE_NAME_ENUM.main;
     });
   }
 
@@ -1065,7 +1065,7 @@ class ActionBlockService {
             $('.login-panel').hide();
           }
   
-          that.hashService.openMainPage();
+          that.hashHandler.openMainPage();
         },
         onError: error => {
           yesSir.modalBoxController.hide();
@@ -1076,7 +1076,7 @@ class ActionBlockService {
 
     $('.login-panel .close-icon').one('click', () => {
       $('.login-panel').css('display', 'none');
-      window.location.hash = that.hashService.PAGE_NAME_ENUM.main;
+      window.location.hash = that.hashHandler.PAGE_NAME_ENUM.main;
     });
   }
 
@@ -1239,7 +1239,7 @@ class ActionBlockService {
   };
 
   #onActionBlockUpdated = () => {
-    this.hashService.openPreviousPage();
+    this.hashHandler.openPreviousPage();
     this.loaderController.stopLoading();
     this.view.closeSettings();
     this.view.setDefaultValuesForSettingsElementsActionBlock();
@@ -1340,7 +1340,7 @@ class ActionBlockService {
   deleteActionBlock = (title) => {
     const that = this;
 
-    this.hashService.openPreviousPage();
+    this.hashHandler.openPreviousPage();
     // this.loaderController.stopLoading();
     this.view.closeSettings();
 
@@ -1427,7 +1427,7 @@ class ActionBlockService {
         location.href = url;
       }
     } else {
-      this.hashService.openActionBlockPage(title);
+      this.hashHandler.openActionBlockPage(title);
     }
 
     if (this.model.isMenuCreateTypeActionBlockOpen)
@@ -1438,7 +1438,7 @@ class ActionBlockService {
     this.#scrollPositionOnExecuteBlock =
       this.scrollController.getScrollXY()[1];
 
-    this.hashService.openSettingsActionBlockPage(title);
+    this.hashHandler.openSettingsActionBlockPage(title);
   };
 
   showSettingsToCreateActionBlock = (actionName) => {
@@ -1461,7 +1461,7 @@ class ActionBlockService {
   }
 
   openActionBlockSettings = (title) => {
-    this.hashService.hideShowedElements();
+    this.hashHandler.hideShowedElements();
     const that = this;
     /// !!!
     // OLD
@@ -1469,15 +1469,15 @@ class ActionBlockService {
     // const actionBlock = actionBlocks.get(title);
     // NEW
     const actionBlock = this.model.getActionBlockByTitle(title);
-    this.hashService.openSettingsActionBlockPage(title);
+    this.hashHandler.openSettingsActionBlockPage(title);
     this.model.actionBlockTitleBeforeUpdate = title;
     this.onPageContentChange();
     const elementsToShow =
       this.view.showElementsToEditActionBlock(actionBlock);
-    that.hashService.hideShowedElements();
+    that.hashHandler.hideShowedElements();
 
     elementsToShow.forEach((element) => {
-      that.hashService.showElement(element);
+      that.hashHandler.showElement(element);
     });
   };
 

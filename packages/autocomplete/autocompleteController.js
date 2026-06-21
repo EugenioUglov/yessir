@@ -1,5 +1,5 @@
 class AutocompleteController {
-  constructor(hashService, actionBlockService, autocompleteService) {
+  constructor(hashHandler, actionBlockService, autocompleteService) {
     this.autocompleteService = autocompleteService;
     this.view = new AutocompleteView();
   }
@@ -29,8 +29,8 @@ class AutocompleteController {
 
     function onSelect() {
       if (
-        that.hashService.getCurrentPageName() ===
-        that.hashService.PAGE_NAME_ENUM.main
+        that.hashHandler.getCurrentPageName() ===
+        that.hashHandler.PAGE_NAME_ENUM.main
       ) {
         window.scrollTo(0, 0);
         const actionBlocks_to_show =

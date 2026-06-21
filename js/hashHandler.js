@@ -17,32 +17,39 @@ export const PAGE_NAME_ENUM = Object.freeze({
   getFromDatabase: "get-from-database",
 });
 */
-class HashService {
-  #hashPrevious;
-
-  constructor(textManager, noteSpeakerService, searchService, scrollController) {
+class HashHandler {
+  constructor(textManager, searchService, scrollController) {
     this.textManager = textManager;
-    this.noteSpeakerService = noteSpeakerService;
     this.searchService = searchService;
     this.scrollController = scrollController;
-    this.#view = new PageElementView();
 
-    this.#hashPrevious;
+    this.#view = new PageElementView();
+    
+    this.#setListeners();
   }
 
+  handleHashHandler;
+
+  #hashPrevious;
   #actionBlockService;
   #isHashChangeListenerActiveStateEnabled = false;
   #currentPageName;
   #view;
 
-  onHashChanged;
+  #setListeners() {
+    const that = this;
+
+    window.onhashchange = function() {
+        that.handleHash();
+    }
+  }
 
   init() {
     this.setHashChangeListenerActiveState(true);
     this.handleHash();
   }
 
-  // getPageNameEnum() {
+
   PAGE_NAME_ENUM = Object.freeze({
     main: "main",
     request: "request",
@@ -59,18 +66,12 @@ class HashService {
     getfromdatabase: "getfromdatabase",
   });
 
-  //   return PAGE_NAME_ENUM;
-  // }
+  PAGE_OPTION_NAME_ENUM = {
+    executebytitle: "executebytitle",
+    listen: "listen",
+    fileManager: "filemanager",
+  };
 
-  // PAGE_OPTION_NAME_ENUM {
-    PAGE_OPTION_NAME_ENUM = {
-      executebytitle: "executebytitle",
-      listen: "listen",
-      fileManager: "filemanager",
-    };
-
-  //   return PAGE_OPTION_NAME_ENUM;
-  // }
 
   getCurrentPageName() {
     return this.#currentPageName;
@@ -82,8 +83,8 @@ class HashService {
 
   setHashMain() {
     this.#hashPrevious = this.getNormalizedCurrentHash();
-    this.#setCurrentPageName(this.PAGE_NAME_ENUM.name);
-    window.location.hash = this.PAGE_NAME_ENUM.name;
+    this.#setCurrentPageName(this.PAGE_NAME_ENUM.main);
+    window.location.hash = this.PAGE_NAME_ENUM.main;
   }
 
   setHashMainPrevious() {
@@ -307,27 +308,14 @@ class HashService {
   handleHash() {
     const that = this;
     
-    const hashParamsInLowerCase = this.#getHashParamsInLowerCase();
+    const hashParamsInLowerCase = yesSir.hashHelper.getHashParamsInLowerCase();
 
     hideCommandInput();
-    yesSir.domElementManager.hideShowedElements();
-    yesSir.domElementManager.hideElement(".speech_recognition_container");
-    yesSir.domElementManager.hideElement("#elements_for_file_manager");
-    yesSir.domElementManager.showElement(".content");
-    yesSir.domElementManager.showElement(".fixed_elements");
 
-    const hash_converted_to_object =
-      yesSir.hashHelper.getConvertedHashToObject();
-    // console.log('hash_converted_to_object', hash_converted_to_object);
-    // console.log('hash_converted_to_object.hasOwnProperty("request")', hash_converted_to_object.hasOwnProperty(this.PAGE_NAME_ENUM.request));
-    if (this.noteSpeakerService.isSpeaking) this.noteSpeakerService.stopSpeak();
+    if (this.handleHashHandler) this.handleHashHandler();
 
     this.hideShowedElements();
     if (this.getHashChangeListenerActiveState() === false) return;
-    // console.log('handleHash', this.getNormalizedCurrentHash());
-    // console.log('edit page', this.PAGE_NAME_ENUM.editActionBlock);
-
-    // this.#actionBlockService.view.clear();
 
     if (
       this.getNormalizedCurrentHash() === "#" + this.PAGE_NAME_ENUM.main ||
@@ -406,7 +394,6 @@ class HashService {
         "#" + this.PAGE_NAME_ENUM.speechRecognition
       )
     ) {
-      console.log("speechRecognition");
       // $('.content').hide();
       $(".fixed_elements").hide();
       $(".speech_recognition_container").show();
@@ -470,7 +457,6 @@ class HashService {
         request,
         isExecuteActionBlockByTitle
       );
-      // this.searchService.setTextToInputField(request);
 
       this.scrollController.setPositionTop();
     } else if (
@@ -558,28 +544,5 @@ class HashService {
 
   #setCurrentPageName(newPageName) {
     this.#currentPageName = newPageName;
-  }
-
-  #getHashParams() {
-    // Get hash and remove '#'.
-    const hashString = window.location.hash.slice(1); 
-
-    // Create object of parameters.
-    const hashParams = new URLSearchParams(hashString);
-
-    return hashParams;
-  }
-
-  #getHashParamsInLowerCase() {
-    const hashParams = this.#getHashParams();
-
-    // Create a new empty URLSearchParams object
-    const lowerCaseHashParams = new URLSearchParams();
-
-    hashParams.forEach((value, key) => {
-      lowerCaseHashParams.append(key.toLowerCase(), value);
-    });
-
-    return lowerCaseHashParams;
   }
 }

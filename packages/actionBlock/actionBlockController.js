@@ -4,14 +4,14 @@ class ActionBlockController {
     loaderController,
     dialogWindow,
     searchService,
-    hashService,
+    hashHandler,
     noteController
   ) {
     this.actionBlockService = actionBlockService;
     this.loaderController = loaderController;
     this.dialogWindow = dialogWindow;
     this.searchService = searchService;
-    this.hashService = hashService;
+    this.hashHandler = hashHandler;
     this.noteController = noteController;
 
     this.#bindViewEvenets();
@@ -54,7 +54,7 @@ class ActionBlockController {
           return false;
         }
 
-        this.hashService.openMainPage();
+        this.hashHandler.openMainPage();
       }
     );
   };
@@ -130,6 +130,6 @@ class ActionBlockController {
 
   closeActionBlockSettings = () => {
     yesSir.voiceRecognitionService.stopRecognizing();
-    this.hashService.openPreviousPage();
+    this.hashHandler.openPreviousPage();
   };
 }

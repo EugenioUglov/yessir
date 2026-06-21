@@ -1,6 +1,6 @@
 class NoteController {
-    constructor(view, hashService, noteSpeakerService) {
-        this.hashService = hashService;
+    constructor(view, hashHandler, noteSpeakerService) {
+        this.hashHandler = hashHandler;
         this.noteSpeakerService = noteSpeakerService;
 
         this.#view = view;
@@ -77,7 +77,7 @@ class NoteController {
         const elementsToShow = this.#view.showInfo(content, title, isHTML);
 
         elementsToShow.forEach((elementToShow) => {
-            that.hashService.showElement(elementToShow);
+            that.hashHandler.showElement(elementToShow);
         });
 
         if (this.openNoteHandler) this.openNoteHandler();
@@ -90,7 +90,7 @@ class NoteController {
     close = () => {
         this.#view.close();
 
-        this.hashService.setHashMainPrevious();
+        this.hashHandler.setHashMainPrevious();
     };
 
     bindViewEvents() {

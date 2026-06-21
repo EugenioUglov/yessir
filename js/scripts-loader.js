@@ -46,7 +46,7 @@
         "./packages/noteSpeaker/noteSpeakerService.js",
         "./packages/voiceRecognition/voiceRecognitionService.js",
         "./packages/autocomplete/autocompleteService.js",
-        "./packages/hash/hashService.js",
+        "./js/hashHandler.js",
         "./packages/dataStorage/dataStorageService.js",
         "./packages/loader/loaderController.js",
         "./packages/modalBox/modalBoxController.js",
@@ -77,7 +77,6 @@
 
         // Контроллеры
         "./packages/logs/logsController.js",
-        "./packages/hash/hashController.js",
         "./packages/note/noteController.js",
         "./packages/noteSpeaker/noteSpeakerController.js",
         "./packages/voiceRecognition/voiceRecognitionController.js",
