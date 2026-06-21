@@ -106,12 +106,16 @@ let yesSir;
     // Initialize Services.
     const voiceRecognitionService = yesSir.voiceRecognitionService;
     const autocompleteService = yesSir.autocompleteService;
-    const searchService = yesSir.searchService;
     const loaderController = yesSir.loaderController;
     const noteController = yesSir.noteController;
     const dataStorageService = yesSir.dataStorageService;
     const hashService = yesSir.hashService;
     const actionBlockService = yesSir.actionBlockService;
+
+    const searchController = new SearchInitializer(
+      textManager,
+      keyCodeByKeyName
+    );
 
     const noteSpeakerController = new NoteSpeakerController(
       yesSir.noteSpeakerService,
@@ -122,7 +126,7 @@ let yesSir;
       actionBlockService,
       loaderController,
       dialogWindow,
-      searchService,
+      searchController,
       hashService,
       noteController
     );
@@ -135,13 +139,6 @@ let yesSir;
 
     const scrollController = new ScrollInitializer();
 
-    const searchController = new SearchController(
-      searchService,
-      actionBlockService,
-      hashService,
-      textManager,
-      keyCodeByKeyName
-    );
 
     const dataStorageController = new DataStorageController(
       actionBlockService,
@@ -166,8 +163,11 @@ let yesSir;
     });
 
     actionBlockController.bindClickBtnShowSettingsToCreateAdvancedActionBlock(() => { hashService.setHashCreateActionBlock(); });
+
     actionBlockController.bindClickBtnShowSettingsToCreateNote(() => { hashService.openPageSettingsToCreateNote(); });
+
     actionBlockController.bindClickBtnShowSettingsToCreateLink(() => { this.hashService.openPageSettingsToCreateLink(); });
+
     noteController.closeHandler = function() {
       $('.inputFieldWithSuggestions').hide();
       voiceRecognitionService.stopRecognizing();
@@ -179,6 +179,67 @@ let yesSir;
         this.noteController.clearAllInputElements();
       }
     };
+
+    searchController.clickBtnClearHandler = function() {
+      this.hashService.openMainPage();
+    };
+
+    searchController.inputFieldEnterHandler = () => {
+      const request = searchController.getTextFromMainInputField();
+
+      // this.searchController.setHashRequest({
+      //     requestValue: user_request, 
+      //     isExecuteActionBlockByTitle: true
+      // });
+      let isExecuteActionBlockByTitle = true;
+
+      hashService.setHashRequest({
+          requestValue: request, 
+          isExecuteActionBlockByTitle: isExecuteActionBlockByTitle
+      });
+    };
+
+    searchController.changeInputFieldHandler = function(request) {
+      hashService.setHashRequest({
+        requestValue: request, 
+        isExecuteActionBlockByTitle: false
+      });
+    };
+
+    searchController.keyUpRequestFieldHandler = function(request, clickedKeyCode) {
+      const isExecuteActionBlockByTitle = clickedKeyCode === yesSir.keyCodeByKeyName.enter ? true : false;
+
+      hashService.setHashRequest({
+        requestValue: request, 
+        isExecuteActionBlockByTitle: isExecuteActionBlockByTitle
+      });
+    };
+
+    searchController.keypressInputFieldPlusTagsHandler = (event) => {
+      const request = searchController.getTextFromMainInputField();
+
+      actionBlockService.showActionBlocksByRequest(
+        {
+            request: request, 
+            isExecuteActionBlockByTitle: false
+        }
+      );
+    };
+
+    searchController.keypressInputFieldMinusTagsHandler = (event) => {
+      const request = searchController.getTextFromMainInputField();
+
+      actionBlockService.showActionBlocksByRequest(
+          {
+              request: request, 
+              isExecuteActionBlockByTitle: false
+          }
+      );
+    };
+
+    searchController.clickBtnSearchByTagsHandler = (userPlusTags, userMinusTags) => {
+      actionBlockService.showActionBlocksByTags(userPlusTags, userMinusTags);
+    }
   }
 
   function onWindowResize() {

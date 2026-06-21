@@ -1,7 +1,7 @@
 class SearchInitializer {
-    constructor(searchService, actionBlockService, hashService, textManager, keyCodeByKeyName) {
+    constructor(textManager, keyCodeByKeyName) {
         this.#view = new SearchView();
-        this.#controller = new SearchController(searchService, actionBlockService, hashService, textManager, keyCodeByKeyName);
+        this.#controller = new SearchController(textManager, keyCodeByKeyName);
 
         return this.#controller;
     }

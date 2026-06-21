@@ -1,3 +1,4 @@
+
 class HashController {
     constructor(hashService) {
         this.hashService = hashService;
