@@ -311,7 +311,6 @@ class HashService {
 
     hideCommandInput();
     yesSir.domElementManager.hideShowedElements();
-    yesSir.noteService.close();
     yesSir.domElementManager.hideElement(".speech_recognition_container");
     yesSir.domElementManager.hideElement("#elements_for_file_manager");
     yesSir.domElementManager.showElement(".content");

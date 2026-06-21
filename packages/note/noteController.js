@@ -3,18 +3,22 @@ class NoteController {
         this.hashService = hashService;
         this.noteSpeakerService = noteSpeakerService;
 
-        this.view = view;
+        this.#view = view;
 
         this.bindViewEvents();
-        this.closeHandler;
     }
 
     actionBlockService;
+    openNoteHandler;
+    closeHandler;
+
+    #view;
+
 
     setCommandInputFieldWithCommandObjects() {
         const commandObjects = [
             {
-                key: 'close', title: 'Close', action: () => {that.#onClose();}, tags: ['close', 'exit', 'quit'], icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Signe_de_piste_-_Fausse_piste.svg/1200px-Signe_de_piste_-_Fausse_piste.svg.png'
+                key: 'close', title: 'Close', action: () => {this.close();}, tags: ['close', 'exit', 'quit'], icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Signe_de_piste_-_Fausse_piste.svg/1200px-Signe_de_piste_-_Fausse_piste.svg.png'
             },
             {
                 key: 'scrolltotop', title: 'Scroll to top', action: () => {window.scrollTo(0, 0);}, tags: ['scroll', 'top', 'scrolling'], icon: 'https://cdn4.iconfinder.com/data/icons/free-ui/64/v-8-1024.png'
@@ -27,7 +31,7 @@ class NoteController {
                       .find(".title")
                       .text();
 
-                    that.actionBlockService.openActionBlockSettings(title);}, tags: ['Action-Block', 'settings', 'setting', 'update', 'edit'], icon: 'https://cdn.onlinewebfonts.com/svg/img_120429.png'
+                    this.actionBlockService.openActionBlockSettings(title);}, tags: ['Action-Block', 'settings', 'setting', 'update', 'edit'], icon: 'https://cdn.onlinewebfonts.com/svg/img_120429.png'
             },
             {
                 key: 'quicktextedit', title: 'Quick edit text', action: () => {
@@ -40,7 +44,7 @@ class NoteController {
             },
             {
                 key: 'listen', title: 'Read text aloud', action: () => {
-                    that.noteSpeakerService.speak();
+                    this.noteSpeakerService.speak();
                 }, tags: ['text', 'aloud', 'listen', 'speak', 'talk', 'tell'], icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Font_Awesome_5_solid_volume-up.svg/800px-Font_Awesome_5_solid_volume-up.svg.png'
             },
             {
@@ -70,47 +74,26 @@ class NoteController {
     openNote(content, title, isHTML) {
         const that = this;
 
-        const elementsToShow = this.view.showInfo(content, title, isHTML);
+        const elementsToShow = this.#view.showInfo(content, title, isHTML);
 
         elementsToShow.forEach((elementToShow) => {
             that.hashService.showElement(elementToShow);
         });
 
-        if (isHTML === false) {
-            const BTN_SPEAKER = this.noteSpeakerService.showBtnSpeaker();
+        if (this.openNoteHandler) this.openNoteHandler();
+    }
 
-            this.hashService.showElement(BTN_SPEAKER);
-        }
-
-        if (window.location.hash.includes("&listen")) {
-            this.noteSpeakerService.speak();
-        }
+    clearAllInputElements() {
+        this.#view.clearAllInputElements();
     }
 
     close = () => {
-        $('.inputFieldWithSuggestions').hide();
-        yesSir.voiceRecognitionService.stopRecognizing();
-        this.noteSpeakerService.removeFromPage();
-        this.view.close();
-    };
-
-    bindClickBtnClose(handler) {
-        this.closeHandler = handler;
-        this.view.bindClickBtnClose(handler);
-    }
-
-    bindViewEvents() {
-        this.view.bindClickBtnClose(this.#onClose);
-    }
-
-    #onClose = () => {
-        this.close();
-        if (window.location.hash.toUpperCase().includes('#editActionBlock'.toUpperCase())) {
-            this.actionBlockService.setDefaultValuesForSettingsElementsActionBlock();
-        } else if (window.location.hash.toUpperCase().includes('#createnote'.toUpperCase())) {
-            this.view.clearAllInputElements();
-        }
+        this.#view.close();
 
         this.hashService.setHashMainPrevious();
+    };
+
+    bindViewEvents() {
+        this.#view.bindClickBtnClose(this.close);
     }
 }

@@ -5,14 +5,14 @@ class ActionBlockController {
     dialogWindow,
     searchService,
     hashService,
-    noteService
+    noteController
   ) {
     this.actionBlockService = actionBlockService;
     this.loaderController = loaderController;
     this.dialogWindow = dialogWindow;
     this.searchService = searchService;
     this.hashService = hashService;
-    this.noteService = noteService;
+    this.noteController = noteController;
 
     this.#bindViewEvenets();
   }

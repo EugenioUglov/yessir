@@ -80,10 +80,10 @@ class NoteView {
     
     bindClickBtnClose(handler) {
         const that = this;
-        const buttons_close = ['#btn_close', '#btn_back'];
+        const buttonsClose = ['#btn_close', '#btn_back'];
 
-        for (const button_close of buttons_close) {
-            $(button_close).on('click', () => {
+        for (const buttonClose of buttonsClose) {
+            $(buttonClose).on('click', () => {
                 that.close();
                 hideCommandInput();
                 $('.btn_open_settings_actionBlock').hide();
@@ -94,11 +94,13 @@ class NoteView {
     }
 
     close() {
-        const elements_for_executed_actionBlock_array = document.getElementsByClassName('elements_for_executed_actionBlock');
+        const elementsForExecutedActionBlockArray = document.getElementsByClassName('elements_for_executed_actionBlock');
     
-        for (const elements_for_executed_actionBlock of elements_for_executed_actionBlock_array) {
-            elements_for_executed_actionBlock.style.display = 'none';
+        for (const elementsForExecutedActionBlock of elementsForExecutedActionBlockArray) {
+            elementsForExecutedActionBlock.style.display = 'none';
         }
+        
+        $('.inputFieldWithSuggestions').hide();
     
         // Clear executed content.
         $('#content_executed_from_actionBlock').hide();
@@ -117,7 +119,7 @@ class NoteView {
         clearInputElements(textareaElements);
 
         function clearInputElements(inputElements) {
-            for (var i=0; i < inputElements.length; i++) {
+            for (var i = 0; i < inputElements.length; i++) {
                 inputElements[i].value = "";
             }
         }

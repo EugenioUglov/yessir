@@ -1,7 +1,7 @@
 class NoteSpeakerController {
-    constructor(noteSpeakerService, noteService) {
+    constructor(noteSpeakerService, noteController) {
         this.noteSpeakerService = noteSpeakerService;
-        this.noteService = noteService;
+        this.noteController = noteController;
         
         this.#bindViewEvents();
     }

@@ -47,12 +47,12 @@
         "./packages/voiceRecognition/voiceRecognitionService.js",
         "./packages/autocomplete/autocompleteService.js",
         "./packages/hash/hashService.js",
-        "./packages/logs/index.js",
         "./packages/dataStorage/dataStorageService.js",
         "./packages/loader/loaderController.js",
         "./packages/modalBox/modalBoxController.js",
         "./packages/loader/modalLoadingController.js",
-        "./packages/modalBox/index.js",
+
+
 
         // Модели
         "./packages/noteSpeaker/noteSpeakerModel.js",
@@ -89,15 +89,21 @@
 
         "./packages/actionBlock/editActionBlockDataHolder.js",
         
-        "./packages/scroll/index.js",
-        "./packages/loader/index.js",
-        "./packages/note/index.js",
 
         // Firebase & Дополнения
         "https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js",
         "https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js",
         "./packages/firebase/firebaseConfig.js",
         "./js/libraries/unspashImageSearcher.js",
+
+        
+        "./packages/scroll/index.js",
+        "./packages/loader/index.js",
+        "./packages/note/index.js",
+        "./packages/modalBox/index.js",
+        "./packages/logs/index.js",
+        "./packages/search/index.js",
+        
 
         // Точка входа
         "./js/main.js"

@@ -18,7 +18,7 @@ class ActionBlockService {
     searchService,
     loaderController,
     hashService,
-    noteService,
+    noteController,
     dateManager,
     modalLoadingController
   ) {
@@ -33,7 +33,7 @@ class ActionBlockService {
     this.searchService = searchService;
     this.loaderController = loaderController;
     this.hashService = hashService;
-    this.noteService = noteService;
+    this.noteController = noteController;
     this.modalLoadingController = modalLoadingController;
 
     this.#dateManager = dateManager;
@@ -871,7 +871,7 @@ class ActionBlockService {
 
       this.onPageContentChange();
       this.view.showContentOfActionBlock();
-      this.noteService.openNote(content, actionBlock.title, isHTML);
+      this.noteController.openNote(content, actionBlock.title, isHTML);
 
       this.model.actionBlockTitleBeforeUpdate = $('.note_title').text();
 
@@ -886,7 +886,7 @@ class ActionBlockService {
       const isHTML = true;
       
 
-      this.noteService.openNote(content, actionBlock.title, isHTML);
+      this.noteController.openNote(content, actionBlock.title, isHTML);
       
       this.model.actionBlockTitleBeforeUpdate = $('.note_title').text();
 

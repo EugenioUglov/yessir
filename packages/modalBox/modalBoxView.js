@@ -1,6 +1,6 @@
 class ModalBoxView {
     constructor() {
-        this.bindClickBtnClose(()=>this.hide());
+        this.bindClickBtnClose(() => this.hide());
     }
 
     // Get the modal

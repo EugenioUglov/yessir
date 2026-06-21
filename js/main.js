@@ -40,7 +40,7 @@ class YesSir {
 
     this.loaderController = new LoaderInitializer();
 
-    this.noteService = new NoteInitializer(
+    this.noteController = new NoteInitializer(
       this.hashService,
       this.noteSpeakerService
     );
@@ -60,13 +60,22 @@ class YesSir {
       this.searchService,
       this.loaderController,
       this.hashService,
-      this.noteService,
+      this.noteController,
       this.dateManager,
       this.modalLoadingController
     );
 
-    this.noteService.actionBlockService = this.actionBlockService;
-    this.noteService.setCommandInputFieldWithCommandObjects();
+    this.noteController.actionBlockService = this.actionBlockService;
+    this.noteController.setCommandInputFieldWithCommandObjects();
+    this.noteController.openNoteHandler = function() {
+      const BTN_SPEAKER = this.noteSpeakerService.showBtnSpeaker();
+
+      this.hashService.showElement(BTN_SPEAKER);
+
+      if (window.location.hash.includes("&listen")) {
+        this.noteSpeakerService.speak();
+      }
+    }
   }
 }
 
@@ -99,14 +108,14 @@ let yesSir;
     const autocompleteService = yesSir.autocompleteService;
     const searchService = yesSir.searchService;
     const loaderController = yesSir.loaderController;
-    const noteService = yesSir.noteService;
+    const noteController = yesSir.noteController;
     const dataStorageService = yesSir.dataStorageService;
     const hashService = yesSir.hashService;
     const actionBlockService = yesSir.actionBlockService;
 
     const noteSpeakerController = new NoteSpeakerController(
       yesSir.noteSpeakerService,
-      noteService
+      noteController
     );
     
     const actionBlockController = new ActionBlockController(
@@ -115,7 +124,7 @@ let yesSir;
       dialogWindow,
       searchService,
       hashService,
-      noteService
+      noteController
     );
 
     const voiceRecognitionController = new VoiceRecognitionController(
@@ -134,7 +143,6 @@ let yesSir;
       keyCodeByKeyName
     );
 
-    
     const dataStorageController = new DataStorageController(
       actionBlockService,
       dataStorageService,
@@ -157,12 +165,20 @@ let yesSir;
       }
     });
 
-    
-
     actionBlockController.bindClickBtnShowSettingsToCreateAdvancedActionBlock(() => { hashService.setHashCreateActionBlock(); });
     actionBlockController.bindClickBtnShowSettingsToCreateNote(() => { hashService.openPageSettingsToCreateNote(); });
     actionBlockController.bindClickBtnShowSettingsToCreateLink(() => { this.hashService.openPageSettingsToCreateLink(); });
+    noteController.closeHandler = function() {
+      $('.inputFieldWithSuggestions').hide();
+      voiceRecognitionService.stopRecognizing();
+      this.noteSpeakerService.removeFromPage();
 
+      if (window.location.hash.toUpperCase().includes('#editActionBlock'.toUpperCase())) {
+        this.actionBlockService.setDefaultValuesForSettingsElementsActionBlock();
+      } else if (window.location.hash.toUpperCase().includes('#createnote'.toUpperCase())) {
+        this.noteController.clearAllInputElements();
+      }
+    };
   }
 
   function onWindowResize() {
@@ -177,6 +193,4 @@ let yesSir;
       width: "250px",
     });
   }
-
-  
 })();

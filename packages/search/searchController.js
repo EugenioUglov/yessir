@@ -6,13 +6,15 @@ class SearchController {
         this.textManager = textManager;
         this.keyCodeByKeyName = keyCodeByKeyName;
 
+        this.view = new SearchView();
+
         this.#setEventListeners();
         this.#bindViewEvenets();
     }
 
     onEnter = () => {
-        this.searchService.view.setTextColorInInputField('black');
-        const userRequest = this.searchService.view.getTextFromMainInputField();
+        this.view.setTextColorInInputField('black');
+        const userRequest = this.view.getTextFromMainInputField();
         
         // this.searchService.setHashRequest({
         //     requestValue: user_request, 
@@ -29,6 +31,22 @@ class SearchController {
         this.hashService.openMainPage();
     }
 
+    clearInputField() {
+        this.view.clear();
+    }
+
+    setTextToInputField(text) {
+        this.view.setTextToInputField(text)
+    }
+
+    getTextFromMainInputField() {
+        this.view.getTextFromMainInputField();
+    }
+
+
+    focusInputField() {
+        this.view.focus();
+    }
 
     #onKeypressInputFieldPlusTags = (event) => {
         
