@@ -16,8 +16,6 @@
 
 	<link rel="stylesheet" type="text/css" media="screen" href="./css/main.css?v1">
 	<link rel="stylesheet" type="text/css" media="screen" href="./css/statusBar.css">
-	<link rel="stylesheet" type="text/css" media="screen" href="./css/multiColorCircleLoader.css">
-	<link rel="stylesheet" type="text/css" media="screen" href="./css/bigMultiColorCircleLoader.css">
 	<link rel="stylesheet" type="text/css" media="screen" href="./css/modalBox.css">
 	<link rel="stylesheet" type="text/css" media="screen" href="./css/button.css">
 	<link rel="stylesheet" type="text/css" media="screen" href="./css/radiobutton.css">
@@ -40,16 +38,19 @@
 	<link rel="stylesheet" type="text/css" media="screen" href="./css/jquery-ui.css">
 	<!-- .END - Load styles. -->
 
+	<script src="https://cdn.jsdelivr.net/npm/mustache@4.2.0/mustache.min.js"></script>
+
 </head>
 
 <body>
+	<div id="test"></div>
 	<div id="status-bar" class="status-bar-hidden">
 		Data is being saved, please do not close the page
 	</div>
 	<div class="gray-foreground" style="display: none;"></div>
 	<div class = "content">
 		<div class="fixed-text-info-container" style="display: none;"><p class="fixed-text-info"></p></div>
-		<div class="multiColorCircleLoader" alt="loading..." ></div>
+		<div id="multiColorCircleLoaderContainer" ></div>
 
 		<!-- The Modal -->
 		<div id="modalBox" class="modal">
@@ -569,7 +570,7 @@
 	<div class="black_background" style="display: none;"></div>
 
 	<!-- .START (Load scripts) -->
-	<script src="./js/scripts-loader.js"></script>
+	<script src="./js/scriptsLoader.js"></script>
 	<!-- .END (Load scripts) -->
 
 	<!-- Autors of used resources. -->

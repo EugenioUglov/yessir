@@ -24,14 +24,17 @@ class NoteController {
                 key: 'scrolltotop', title: 'Scroll to top', action: () => {window.scrollTo(0, 0);}, tags: ['scroll', 'top', 'scrolling'], icon: 'https://cdn4.iconfinder.com/data/icons/free-ui/64/v-8-1024.png'
             },
             {
-                key: 'opensettings', title: 'Edit Action-Block', action: () => {
-                    $("#content_executed_from_actionBlock").hide();
+                key: 'opensettings', title: 'Edit Action-Block', action: () => 
+                    {
+                        $("#content_executed_from_actionBlock").hide();
 
-                    const title = $("#content_executed_from_actionBlock")
-                      .find(".title")
-                      .text();
+                        const title = $("#content_executed_from_actionBlock")
+                        .find(".title")
+                        .text();
 
-                    this.actionBlockService.openActionBlockSettings(title);}, tags: ['Action-Block', 'settings', 'setting', 'update', 'edit'], icon: 'https://cdn.onlinewebfonts.com/svg/img_120429.png'
+                        this.actionBlockService.openActionBlockSettings(title);
+                    }, 
+                    tags: ['Action-Block', 'settings', 'setting', 'update', 'edit'], icon: 'https://cdn.onlinewebfonts.com/svg/img_120429.png'
             },
             {
                 key: 'quicktextedit', title: 'Quick edit text', action: () => {

@@ -5,8 +5,7 @@ class ActionBlockView {
     actionDescriptionByActionName,
     fileManager,
     textManager,
-    dropdownManager,
-    loaderController
+    dropdownManager
   ) {
     this.actionNameEnum = actionNameEnum;
     this.contentTypeDescriptionByAction = contentTypeDescriptionByAction;
@@ -15,7 +14,6 @@ class ActionBlockView {
     this.fileManager = fileManager;
     this.textManager = textManager;
     this.dropdownManager = dropdownManager;
-    this.loaderController = loaderController;
 
     const dropdownSelectActionForCreateContainer = $(
       "#settings_actionBlock_container"
@@ -260,13 +258,13 @@ class ActionBlockView {
   startLoading() {
     // Disable all buttons.
     $(":submit, :button").attr("disabled", "disabled");
-    this.loaderController.startLoading();
+    // yesSir.loaderController.startLoading();
   }
 
   stopLoading() {
     // Enable all buttons.
     $(":submit, :button").attr("disabled", false);
-    this.loaderController.stopLoading();
+    // yesSir.loaderController.stopLoading();
   }
 
   setEventListeners() {

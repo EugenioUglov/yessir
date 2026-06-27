@@ -1,5 +1,5 @@
 class YesSir {
-  constructor() {
+  constructor({ onEnd }) {
     const inputDeviceManager = new InputDeviceManager();
     this.googleSpeechRecognition = new GoogleSpeechRecognition();
     this.googleTextToSpeech = new GoogleTextToSpeech();
@@ -37,228 +37,212 @@ class YesSir {
       this.hashHandler
     );
 
-    this.loaderController = new LoaderInitializer();
+    (async () => {
+      this.loaderController = await new LoaderInitializer(
+        { 
+          targetId: 'multiColorCircleLoaderContainer', 
+          data: {} 
+        }
+      );
 
-    this.noteController = new NoteInitializer(
-      this.hashHandler,
-      this.noteSpeakerService
-    );
+      this.noteController = new NoteInitializer(
+        this.hashHandler,
+        this.noteSpeakerService
+      );
 
+      this.actionBlockService = new ActionBlockService(
+        this.dbManager,
+        this.fileManager,
+        this.textManager,
+        this.dropdownManager,
+        this.dataStorageService,
+        this.mapDataStructure,
+        this.logsController,
+        this.dialogWindow,
+        this.keyCodeByKeyName,
+        this.scrollController,
+        this.searchService,
+        this.hashHandler,
+        this.noteController,
+        this.dateManager,
+        this.modalLoadingController
+      );
 
-    this.actionBlockService = new ActionBlockService(
-      this.dbManager,
-      this.fileManager,
-      this.textManager,
-      this.dropdownManager,
-      this.dataStorageService,
-      this.mapDataStructure,
-      this.logsController,
-      this.dialogWindow,
-      this.keyCodeByKeyName,
-      this.scrollController,
-      this.searchService,
-      this.loaderController,
-      this.hashHandler,
-      this.noteController,
-      this.dateManager,
-      this.modalLoadingController
-    );
+      this.noteController.actionBlockService = this.actionBlockService;
+      this.noteController.setCommandInputFieldWithCommandObjects();
+      this.noteController.openNoteHandler = function() {
+        const BTN_SPEAKER = this.noteSpeakerService.showBtnSpeaker();
 
-    this.noteController.actionBlockService = this.actionBlockService;
-    this.noteController.setCommandInputFieldWithCommandObjects();
-    this.noteController.openNoteHandler = function() {
-      const BTN_SPEAKER = this.noteSpeakerService.showBtnSpeaker();
+        this.hashHandler.showElement(BTN_SPEAKER);
 
-      this.hashHandler.showElement(BTN_SPEAKER);
-
-      if (window.location.hash.includes("&listen")) {
-        this.noteSpeakerService.speak();
+        if (window.location.hash.includes("&listen")) {
+          this.noteSpeakerService.speak();
+        }
       }
-    }
+      
+      if (onEnd) onEnd();
+    })();
   }
 }
 
 let yesSir;
 
 (function () {
-  yesSir = new YesSir();
-  yesSir.loaderController.startLoading();
-
-  window.addEventListener("load", function () {
-    onPageLoaded();
-  });
-
-  function onPageLoaded() {
-    // Initialize Libraries.
-    const observable = yesSir.observable;
-    const dateManager = yesSir.dateManager;
-
-    const keyCodeByKeyName = yesSir.keyCodeByKeyName;
-    const textManager = yesSir.textManager;
-    const dialogWindow = yesSir.dialogWindow;
-    const fileManager = yesSir.fileManager;
-    dropdownManager = yesSir.dropdownManager;
-    mapDataStructure = yesSir.mapDataStructure;
-    dbManager = yesSir.dbManager;
-    arrayManager = yesSir.arrayManager;
-
-    // Initialize Services.
-    const voiceRecognitionService = yesSir.voiceRecognitionService;
-    const autocompleteService = yesSir.autocompleteService;
-    const loaderController = yesSir.loaderController;
-    const noteController = yesSir.noteController;
-    const dataStorageService = yesSir.dataStorageService;
-    const hashHandler = yesSir.hashHandler;
-    const actionBlockService = yesSir.actionBlockService;
-
-    const searchController = new SearchInitializer(
-      textManager,
-      keyCodeByKeyName
-    );
-
-    const noteSpeakerController = new NoteSpeakerController(
-      yesSir.noteSpeakerService,
-      noteController
-    );
-    
-    const actionBlockController = new ActionBlockController(
-      actionBlockService,
-      loaderController,
-      dialogWindow,
-      searchController,
-      hashHandler,
-      noteController
-    );
-
-    const voiceRecognitionController = new VoiceRecognitionController(
-      voiceRecognitionService,
-      observable,
-      hashHandler
-    );
-
-    const scrollController = new ScrollInitializer();
+  // new LoaderInitializer('.multiColorCircleLoader');
 
 
-    const dataStorageController = new DataStorageController(
-      actionBlockService,
-      dataStorageService,
-      hashHandler
-    );
 
-    actionBlockService.showActionBlocksFromStorage();
-    yesSir.loaderController.stopLoading();
-
-    // resizeContentDialogInfo();
-    // window.addEventListener('resize', onWindowResize);
-
-    scrollController.bindScrollEndPage({
-      onScrollEndPage: function onScrollEndPage() {
-        if (actionBlockService.view.isActionBlocksPageActive()) {
-            actionBlockService.addOnPageNextActionBlocks();
-        }
-      }
+    window.addEventListener("load", function () {
+      onPageLoaded();
     });
 
-    actionBlockController.bindClickBtnShowSettingsToCreateAdvancedActionBlock(() => { hashHandler.setHashCreateActionBlock(); });
+    function onYesSirLoaded() {
+      yesSir.loaderController.startLoading();
 
-    actionBlockController.bindClickBtnShowSettingsToCreateNote(() => { hashHandler.openPageSettingsToCreateNote(); });
+      // Initialize Libraries.
+      const observable = yesSir.observable;
+      const dateManager = yesSir.dateManager;
 
-    actionBlockController.bindClickBtnShowSettingsToCreateLink(() => { this.hashHandler.openPageSettingsToCreateLink(); });
+      const keyCodeByKeyName = yesSir.keyCodeByKeyName;
+      const textManager = yesSir.textManager;
+      const dialogWindow = yesSir.dialogWindow;
+      const fileManager = yesSir.fileManager;
+      dropdownManager = yesSir.dropdownManager;
+      mapDataStructure = yesSir.mapDataStructure;
+      dbManager = yesSir.dbManager;
+      arrayManager = yesSir.arrayManager;
 
-    noteController.closeHandler = function() {
-      $('.inputFieldWithSuggestions').hide();
-      voiceRecognitionService.stopRecognizing();
-      this.noteSpeakerService.removeFromPage();
+      // Initialize Services.
+      const voiceRecognitionService = yesSir.voiceRecognitionService;
+      const autocompleteService = yesSir.autocompleteService;
+      const loaderController = yesSir.loaderController;
+      const noteController = yesSir.noteController;
+      const dataStorageService = yesSir.dataStorageService;
+      const hashHandler = yesSir.hashHandler;
+      const actionBlockService = yesSir.actionBlockService;
 
-      if (window.location.hash.toUpperCase().includes('#editActionBlock'.toUpperCase())) {
-        this.actionBlockService.setDefaultValuesForSettingsElementsActionBlock();
-      } else if (window.location.hash.toUpperCase().includes('#createnote'.toUpperCase())) {
-        this.noteController.clearAllInputElements();
-      }
-    };
 
-    searchController.clickBtnClearHandler = function() {
-      hashHandler.openMainPage();
-    };
+      const scrollController = new ScrollInitializer();
 
-    searchController.inputFieldEnterHandler = () => {
-      const request = searchController.getTextFromMainInputField();
-
-      // this.searchController.setHashRequest({
-      //     requestValue: user_request, 
-      //     isExecuteActionBlockByTitle: true
-      // });
-      let isExecuteActionBlockByTitle = true;
-
-      hashHandler.setHashRequest({
-          requestValue: request, 
-          isExecuteActionBlockByTitle: isExecuteActionBlockByTitle
-      });
-    };
-
-    searchController.changeInputFieldHandler = function(request) {
-      hashHandler.setHashRequest({
-        requestValue: request, 
-        isExecuteActionBlockByTitle: false
-      });
-    };
-
-    searchController.keyUpRequestFieldHandler = function(request, clickedKeyCode) {
-      const isExecuteActionBlockByTitle = clickedKeyCode === yesSir.keyCodeByKeyName.enter ? true : false;
-
-      hashHandler.setHashRequest({
-        requestValue: request, 
-        isExecuteActionBlockByTitle: isExecuteActionBlockByTitle
-      });
-    };
-
-    searchController.keypressInputFieldPlusTagsHandler = (event) => {
-      const request = searchController.getTextFromMainInputField();
-
-      actionBlockService.showActionBlocksByRequest(
-        {
-            request: request, 
-            isExecuteActionBlockByTitle: false
-        }
+      const searchController = new SearchInitializer(
+        textManager,
+        keyCodeByKeyName
       );
-    };
 
-    searchController.keypressInputFieldMinusTagsHandler = (event) => {
-      const request = searchController.getTextFromMainInputField();
-
-      actionBlockService.showActionBlocksByRequest(
-        {
-            request: request, 
-            isExecuteActionBlockByTitle: false
-        }
+      const noteSpeakerController = new NoteSpeakerController(
+        yesSir.noteSpeakerService,
+        noteController
       );
-    };
+      
+      const actionBlockController = new ActionBlockController(
+        actionBlockService,
+        loaderController,
+        dialogWindow,
+        searchController,
+        hashHandler,
+        noteController,
+        dbManager,
+        fileManager,
+        textManager,
+        dropdownManager,
+        dataStorageService,
+        mapDataStructure,
+        yesSir.logsController,
+        keyCodeByKeyName,
+        scrollController,
+        yesSir.searchService,
+        dateManager,
+        yesSir.modalLoadingController
+      );
 
-    searchController.clickBtnSearchByTagsHandler = (userPlusTags, userMinusTags) => {
-      actionBlockService.showActionBlocksByTags(userPlusTags, userMinusTags);
+      const voiceRecognitionController = new VoiceRecognitionController(
+        voiceRecognitionService,
+        observable,
+        hashHandler
+      );
+
+
+      const dataStorageController = new DataStorageController(
+        actionBlockService,
+        dataStorageService,
+        hashHandler
+      );
+
+      actionBlockService.showActionBlocksFromStorage();
+      yesSir.loaderController.stopLoading();
+
+      // resizeContentDialogInfo();
+      // window.addEventListener('resize', onWindowResize);
+
+      scrollController.bindScrollEndPage({
+        onScrollEndPage: function onScrollEndPage() {
+          if (actionBlockService.view.isActionBlocksPageActive()) {
+              actionBlockService.addOnPageNextActionBlocks();
+          }
+        }
+      });
+
+      actionBlockController.bindClickBtnShowSettingsToCreateAdvancedActionBlock(() => { hashHandler.setHashCreateActionBlock(); });
+
+      actionBlockController.bindClickBtnShowSettingsToCreateNote(() => { hashHandler.openPageSettingsToCreateNote(); });
+
+      actionBlockController.bindClickBtnShowSettingsToCreateLink(() => { hashHandler.openPageSettingsToCreateLink(); });
+
+      actionBlockController.bindLoadingHandler(() => {
+        loaderController.startLoading();
+      });
+
+      actionBlockController.bindStopLoadingHandler(() => {
+        loaderController.stopLoading();
+      });
+
+      noteController.closeHandler = function() {
+        $('.inputFieldWithSuggestions').hide();
+        voiceRecognitionService.stopRecognizing();
+        this.noteSpeakerService.removeFromPage();
+
+        if (window.location.hash.toUpperCase().includes('#editActionBlock'.toUpperCase())) {
+          this.actionBlockService.setDefaultValuesForSettingsElementsActionBlock();
+        } else if (window.location.hash.toUpperCase().includes('#createnote'.toUpperCase())) {
+          this.noteController.clearAllInputElements();
+        }
+      };
+
+      const searchControllerEventBinder = new SearchControllerEventBinder({
+        searchController: searchController, 
+        hashHandler: hashHandler, 
+        actionBlockService: actionBlockService
+      });
+
+
+
+      hashHandler.handleHashHandler = () => {
+        yesSir.domElementManager.hideShowedElements();
+        yesSir.domElementManager.hideElement(".speech_recognition_container");
+        yesSir.domElementManager.hideElement("#elements_for_file_manager");
+        yesSir.domElementManager.showElement(".content");
+        yesSir.domElementManager.showElement(".fixed_elements");
+
+        if (yesSir.noteSpeakerService.isSpeaking) yesSir.noteSpeakerService.stopSpeak();
+      };
     }
 
-    hashHandler.handleHashHandler = () => {
-      yesSir.domElementManager.hideShowedElements();
-      yesSir.domElementManager.hideElement(".speech_recognition_container");
-      yesSir.domElementManager.hideElement("#elements_for_file_manager");
-      yesSir.domElementManager.showElement(".content");
-      yesSir.domElementManager.showElement(".fixed_elements");
+    function onPageLoaded() {
+      yesSir = new YesSir({ onEnd: () => { onYesSirLoaded(); }});
+    }
 
-      if (yesSir.noteSpeakerService.isSpeaking) yesSir.noteSpeakerService.stopSpeak();
-    };
-  }
+    function onWindowResize() {
+      resizeContentDialogInfo();
+    }
 
-  function onWindowResize() {
-    resizeContentDialogInfo();
-  }
+    // Resize content in dialog info.
+    function resizeContentDialogInfo() {
+      let width_dialog_info = $(".content").css("width");
 
-  // Resize content in dialog info.
-  function resizeContentDialogInfo() {
-    let width_dialog_info = $(".content").css("width");
+      $(".dialog_content").css({
+        width: "250px",
+      });
+    }
 
-    $(".dialog_content").css({
-      width: "250px",
-    });
-  }
+  
 })();

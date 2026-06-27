@@ -3,7 +3,6 @@ class InputDeviceManager {
 
     }
 
-
     getKeyCodeByKeyName() {
         const keycodeByKeyname = {
             arrowDown: 40,

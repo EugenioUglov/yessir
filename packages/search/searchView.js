@@ -5,15 +5,14 @@ class SearchView {
     }
 
 
-
     #init() {
         // Set text gray in input field command.
         $('#input_field_request')[0].style.color = 'gray';
     }
 
     getTextFromMainInputField() {
-        const user_phrase = $('#input_field_request')[0].value;
-        return user_phrase;
+        const userPhrase = $('#input_field_request')[0].value;
+        return userPhrase;
     }
 
     setTextToInputField(text) {
@@ -21,17 +20,17 @@ class SearchView {
     }
 
     getPlusTags() {
-        const input_field_plus_tags = $("#search_by_tags_container").find(".input_field_plus_tags");
-        const user_plus_tags = input_field_plus_tags.val();
+        const inputFieldPlusTags = $("#search_by_tags_container").find(".input_field_plus_tags");
+        const userPlusTags = inputFieldPlusTags.val();
 
-        return user_plus_tags;
+        return userPlusTags;
     }
 
     getMinusTags() {
-        const input_field_minus_tags = $("#search_by_tags_container").find(".input_field_minus_tags");
-        const user_minus_tags = input_field_minus_tags.val();
+        const inputFieldMinusTags = $("#search_by_tags_container").find(".input_field_minus_tags");
+        const userMinusTags = inputFieldMinusTags.val();
 
-        return user_minus_tags;
+        return userMinusTags;
     }
 
     getRequest() {
@@ -58,6 +57,7 @@ class SearchView {
     bindClickBtnEnterRequest(handler) {
         // console.log('bindClickBtnEnterRequest');
         const that = this;
+        
         $('#btn_accept_input_field_request').on('click', () => { 
             that.setTextColorInInputField('black'); 
             handler();

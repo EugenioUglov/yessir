@@ -1,13 +1,18 @@
-// scripts-loader.js
 (function() {
     const scripts = [
         // Внешние библиотеки (CDN)
         "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js",
+        "https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js",
         "./js/libraries/opensource/jquery-3.6.0.min.js",
         "https://code.jquery.com/jquery-3.6.0.js",
         "https://code.jquery.com/ui/1.13.0/jquery-ui.js",
         "./js/libraries/opensource/observable.js",
         "./js/libraries/opensource/md5.min.js",
+
+        "./shared/utils/urlValidator.js",
+        "./shared/utils/moduleLoader.js",
+        "./packages/test/test.js",
+        "./shared/projectAssetLoader.js",
 
         // Основные компоненты
         "./js/commandInputField.js",
@@ -48,9 +53,8 @@
         "./packages/autocomplete/autocompleteService.js",
         "./js/hashHandler.js",
         "./packages/dataStorage/dataStorageService.js",
-        "./packages/loader/loaderController.js",
         "./packages/modalBox/modalBoxController.js",
-        "./packages/loader/modalLoadingController.js",
+        "./core/modalLoadingController.js",
 
 
 
@@ -70,7 +74,6 @@
         "./packages/logs/logsView.js",
         "./packages/autocomplete/autocompleteView.js",
         "./packages/search/searchView.js",
-        "./packages/loader/loaderView.js",
         "./packages/dataStorage/dataStorageView.js",
         "./packages/modalBox/modalBoxView.js",
         "./packages/login/loginView.js",
@@ -97,11 +100,13 @@
 
         
         "./packages/scroll/index.js",
-        "./packages/loader/index.js",
+        "./packages/multiColorCircleLoader/index.js",
         "./packages/note/index.js",
         "./packages/modalBox/index.js",
         "./packages/logs/index.js",
         "./packages/search/index.js",
+
+        "./core/searchControllerEventBinder.js",
         
 
         // Точка входа

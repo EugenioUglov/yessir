@@ -3,9 +3,21 @@ class ActionBlockController {
     actionBlockService,
     loaderController,
     dialogWindow,
-    searchService,
+    searchController,
     hashHandler,
-    noteController
+    noteController,
+    dbManager,
+    fileManager,
+    textManager,
+    dropdownManager,
+    dataStorageService,
+    mapDataStructure,
+    logsController,
+    keyCodeByKeyName,
+    scrollController,
+    searchService,
+    dateManager,
+    modalLoadingController
   ) {
     this.actionBlockService = actionBlockService;
     this.loaderController = loaderController;
@@ -17,20 +29,37 @@ class ActionBlockController {
     this.#bindViewEvenets();
   }
 
-  #onClickBtnShowSettingsToCreateAdvancedActionBlock;
-  #onClickBtnShowSettingsToCreateNote;
-  #onClickBtnShowSettingsToCreateLink;
+  #dateManager;
+  #indexLastShowedActionBlock = 0;
+  #scrollPositionOnExecuteBlock = 0;
+  #loadingHandler;
+  #stopLoadingHandler;
+
+  bindLoadingHandler(handler) {
+    this.#loadingHandler = handler;
+  }
+
+  bindStopLoadingHandler(handler) {
+    this.#stopLoadingHandler = handler;
+  }
+
 
   bindClickBtnShowSettingsToCreateAdvancedActionBlock(handler) {
-    this.#onClickBtnShowSettingsToCreateAdvancedActionBlock = handler;
+    this.actionBlockService.view.bindClickBtnShowSettingsToCreateAdvancedActionBlock(
+      handler
+    );
   }
 
   bindClickBtnShowSettingsToCreateNote(handler) {
-    this.#onClickBtnShowSettingsToCreateNote = handler;
+    this.actionBlockService.view.bindClickBtnShowSettingsToCreateNote(
+      handler
+    );
   }
 
   bindClickBtnShowSettingsToCreateLink(handler) {
-    this.#onClickBtnShowSettingsToCreateLink = handler;
+    this.actionBlockService.view.bindClickBtnShowSettingsToCreateLink(
+      handler
+    );
   };
 
   #onClickBtnCreateActionBlock = (
@@ -41,6 +70,7 @@ class ActionBlockController {
     imageURL
   ) => {
     this.view.startLoading();
+    this.#loadingHandler();
     this.actionBlockService.createActionBlock(
       title,
       tagsPlusTitle,
@@ -49,6 +79,7 @@ class ActionBlockController {
       imageURL,
       (isActionBlockCreated) => {
         this.view.stopLoading();
+        this.#stopLoadingHandler();
 
         if (isActionBlockCreated === false) {
           return false;
@@ -66,7 +97,8 @@ class ActionBlockController {
     content,
     imageURL
   ) => {
-    this.view.startLoading();
+    this.actionBlockService.view.startLoading();
+    this.#loadingHandler();
     this.actionBlockService.createActionBlockWithOptimizedAutomationAsync(
       title,
       tagsPlusTitle,
@@ -74,7 +106,8 @@ class ActionBlockController {
       content,
       imageURL,
       (isActionBlockCreated) => {
-        this.view.stopLoading();
+        this.actionBlockService.view.stopLoading();
+        this.#stopLoadingHandler();
 
         if (isActionBlockCreated === false) {
           return false;
@@ -111,18 +144,11 @@ class ActionBlockController {
     this.actionBlockService.view.bindClickBtnCreateDefaultActionBlocks(
       this.actionBlockService.updateDefaultActionBlocks
     );
-    this.actionBlockService.view.bindClickBtnShowSettingsToCreateNote(
-      this.#onClickBtnShowSettingsToCreateNote
-    );
-    this.actionBlockService.view.bindClickBtnShowSettingsToCreateLink(
-      this.#onClickBtnShowSettingsToCreateLink
-    );
+
     this.actionBlockService.view.bindClickBtnShowSettingsToCreateFolder(
       this.actionBlockService.showSettingsToCreateFolder
     );
-    this.actionBlockService.view.bindClickBtnShowSettingsToCreateAdvancedActionBlock(
-      this.#onClickBtnShowSettingsToCreateAdvancedActionBlock
-    );
+
     this.actionBlockService.view.bindClickBtnCancelSettings(
       this.closeActionBlockSettings
     );

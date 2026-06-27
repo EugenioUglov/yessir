@@ -16,7 +16,6 @@ class ActionBlockService {
     keyCodeByKeyName,
     scrollController,
     searchService,
-    loaderController,
     hashHandler,
     noteController,
     dateManager,
@@ -31,7 +30,6 @@ class ActionBlockService {
     this.mapDataStructure = mapDataStructure;
     this.scrollController = scrollController;
     this.searchService = searchService;
-    this.loaderController = loaderController;
     this.hashHandler = hashHandler;
     this.noteController = noteController;
     this.modalLoadingController = modalLoadingController;
@@ -52,8 +50,7 @@ class ActionBlockService {
       this.model.actionDescriptionByActionName,
       fileManager,
       textManager,
-      dropdownManager,
-      loaderController
+      dropdownManager
     );
 
     this.hashHandler.setActionBlockService(this);
@@ -69,7 +66,7 @@ class ActionBlockService {
     onEnd
   ) {
     const that = this;
-    this.loaderController.startLoading();
+    yesSir.loaderController.startLoading();
     const nounNumber = new NounNumber();
 
     if (this.model.isActionBlockExist(title)) {
@@ -230,7 +227,7 @@ class ActionBlockService {
     onEnd
   ) {
     const that = this;
-    this.loaderController.startLoading();
+    yesSir.loaderController.startLoading();
     
     if (this.model.isActionBlockExist(title)) {
       alert('Action-Block with current title already exists. Title: ' + title);
@@ -385,7 +382,7 @@ class ActionBlockService {
         console.log("Вся автоматизация завершена", results);
         
         // Скрываем глобальную индикацию загрузки
-        this.loaderController.stopLoading();
+        yesSir.loaderController.stopLoading();
         if (typeof hideLoadingElements === 'function') {
             hideLoadingElements(); 
         }
@@ -427,7 +424,7 @@ class ActionBlockService {
     this.view.closeSettings();
     this.view.clearAllSettingsFields();
     this.hashHandler.openPreviousPage();
-    this.loaderController.stopLoading();
+    yesSir.loaderController.stopLoading();
     this.updatePage();
     this.#onActionBlocksStorageUpdated();
     if (onEnd != undefined) onEnd(true);
@@ -527,7 +524,7 @@ class ActionBlockService {
 
     const timeStartShowActionBlocks = new Date();
     yesSir.loaderController.startLoading();
-    // this.loaderController.startLoading();
+    // yesSir.loaderController.startLoading();
     this.view.hideActionBlocksContainer();
 
     this.#indexLastShowedActionBlock = 0;
@@ -842,7 +839,7 @@ class ActionBlockService {
       actionNameOfActionBlock === this.model.getActionNameEnum().openURL ||
       actionNameOfActionBlock === this.model.getActionNameEnum().openUrl
     ) {
-      const url = this.#getValidURL(content);
+      const url = UrlValidator.getValidUrl(content);
 
       // var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
@@ -938,7 +935,7 @@ class ActionBlockService {
 
     let i;
 
-    this.loaderController.startLoading();
+    yesSir.loaderController.startLoading();
 
     // console.log('this.#index_last_showed_actionBlock', this.#index_last_showed_actionBlock);
 
@@ -961,7 +958,7 @@ class ActionBlockService {
       this.#onClickActionBlock,
       this.#onClickBtnShowSettingsActionBlock
     );
-    this.loaderController.stopLoading();
+    yesSir.loaderController.stopLoading();
   }
 
   updatePage() {
@@ -1240,7 +1237,7 @@ class ActionBlockService {
 
   #onActionBlockUpdated = () => {
     this.hashHandler.openPreviousPage();
-    this.loaderController.stopLoading();
+    yesSir.loaderController.stopLoading();
     this.view.closeSettings();
     this.view.setDefaultValuesForSettingsElementsActionBlock();
     this.view.updatePage();
@@ -1341,7 +1338,7 @@ class ActionBlockService {
     const that = this;
 
     this.hashHandler.openPreviousPage();
-    // this.loaderController.stopLoading();
+    // yesSir.loaderController.stopLoading();
     this.view.closeSettings();
 
     const textConfirmWindow =
@@ -1418,7 +1415,9 @@ class ActionBlockService {
       actionBlock.action === this.model.getActionNameEnum().openURL ||
       actionBlock.action === this.model.getActionNameEnum().openUrl
     ) {
-      const url = this.#getValidURL(actionBlock.content);
+      const url = UrlValidator.getValidUrl(actionBlock.content);
+
+      
       let newTab = window.open(url, "_blank");
 
       if (!newTab || newTab.closed || typeof newTab.closed == "undefined") {
@@ -1450,16 +1449,6 @@ class ActionBlockService {
     this.onPageContentChange();
   };
 
-  #getValidURL(url) {
-    let validURL = url;
-
-    if (url.toLowerCase().includes("http") === false) {
-      validURL = "http://" + url;
-    }
-
-    return validURL;
-  }
-
   openActionBlockSettings = (title) => {
     this.hashHandler.hideShowedElements();
     const that = this;
@@ -1486,8 +1475,10 @@ class ActionBlockService {
   }
 
   onPageContentChange() {
-    if (this.model.isMenuCreateTypeActionBlockOpen)
+    if (this.model.isMenuCreateTypeActionBlockOpen) {
       this.switchStateMenuTypeActionBlocksToCreate();
+    }
+    
     this.view.onPageContentChange();
   }
 }

@@ -1,15 +1,10 @@
 class ActionBlockModel {
-    #textManager;
-
     constructor(dbManager, textManager, dataStorageService, mapDataStructure, fileManager) {
-        this.#textManager = textManager;
         this.actionBlockTitleBeforeUpdate = '';
         this.dbManager = dbManager;
         this.dataStorageService = dataStorageService;
         this.mapDataStructure = mapDataStructure;
         this.fileManager = fileManager;
-
-        // this.actionBlocks = [];
         this.actionBlocksFromDatabase = [];
         this.isMenuCreateTypeActionBlockOpen = false;
     
@@ -20,13 +15,14 @@ class ActionBlockModel {
             showHTML: 'Show info in HTML mode'
         };
 
+        this.#textManager = textManager;
         this.#actionBlockById = new Map();
         this.#actionBlockIdByTitle = new Map();
         this.#actionBlockIdsByTag = {};
         this.#actionBlockTitleById = {};
     }
     
-
+    #textManager;
     #actionBlockById;
     #actionBlockIdByTitle;
     #actionBlockIdsByTag = {};

@@ -1,0 +1,84 @@
+/**
+ * This class gives possibility to load js, css and html dinamically into main page.
+ */
+class ProjectAssetLoader {
+    /**
+     * @param {string} [currentScriptUrl] - Необязательный URL. Если передан, пути будут считаться относительно него.
+     */
+    constructor(currentScriptUrl) {
+        this._BASE_PATH = this._calculateBasePath(currentScriptUrl);
+    }
+
+    _calculateBasePath(url) {
+        if (url) {
+            return url.substring(0, url.lastIndexOf('/') + 1);
+        }
+        return '';
+    }
+
+    getNormalizedPath(path) {
+        if (!path.includes('/')) {
+            return this._BASE_PATH + path;
+        }
+        return path;
+    }
+
+    loadJavaScript(path) {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = this.getNormalizedPath(path);
+            script.onload = () => {
+                console.log("📦 AssetLoader: Loaded JS ->", script.src);
+                resolve();
+            };
+            script.onerror = () => reject(new Error(`Failed to load script: ${path}`));
+            document.body.appendChild(script);
+        });
+    }
+
+    loadStyle(path) {
+        return new Promise((resolve, reject) => {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = this.getNormalizedPath(path); 
+
+            // Разрешаем Promise, когда браузер полностью загрузил CSS
+            link.onload = () => {
+                console.log("📦 AssetLoader: Loaded CSS ->", link.href);
+                resolve();
+            };
+
+            link.onerror = () => reject(new Error(`Failed to load CSS: ${path}`));
+
+            document.head.appendChild(link);
+        });
+    }
+
+    async loadMustacheHtml(targetId, pathHtml, data) {
+        const templateUrl = this.getNormalizedPath(pathHtml);
+        const response = await fetch(templateUrl);
+
+        if (!response.ok) {
+            throw new Error(`AssetLoader: Failed to load HTML -> ${response.statusText}`);
+        }
+        
+        const templateText = await response.text();
+        const renderedHtml = Mustache.render(templateText, data);
+        
+        const targetElement = document.getElementById(targetId);
+
+        if (!targetElement) {
+            console.error(`Debug: Searching for #${targetId}`);
+            console.error("Current DOM snapshot:", document.body.innerHTML); // See what's actually there
+            throw new Error(`AssetLoader: Failed to load HTML -> Element with id ${targetId} doesn't exist.`);
+        }
+
+        if (targetElement) {
+            targetElement.innerHTML = renderedHtml;
+        } else {
+            throw new Error(`AssetLoader: Failed to load HTML -> Element with id ${targetId} doesn't exist.`);
+        }
+
+        return renderedHtml;
+    }
+}

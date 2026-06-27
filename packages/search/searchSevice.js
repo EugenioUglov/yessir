@@ -15,7 +15,6 @@ class SearchSevice {
         this.view.getTextFromMainInputField();
     }
 
-
     focusInputField() {
         this.view.focus();
     }
