@@ -14,6 +14,14 @@
   margin: auto;
 }
 
+
+/* .multiColorCircleLoader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+} */
+
 @keyframes animate {
   0% {
     transform: translateY(-50%) translateX(-50%) rotate(0deg);

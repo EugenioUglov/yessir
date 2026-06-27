@@ -1,45 +1,49 @@
 class YesSir {
   constructor({ onEnd }) {
-    const inputDeviceManager = new InputDeviceManager();
-    this.googleSpeechRecognition = new GoogleSpeechRecognition();
-    this.googleTextToSpeech = new GoogleTextToSpeech();
-    this.textManager = new TextManager();
-    this.fileManager = new FileManager(this.textManager);
-    this.dateManager = new DateManager();
-    this.voiceRecognitionManager = new VoiceRecognitionManager();
-    this.speakerManager = new TextToSpeechSynthesizer();
-    this.dropdownManager = new DropdownManager();
-    this.mapDataStructure = new MapDataStructure();
-    this.dbManager = new DBManager();
-    this.arrayManager = new ArrayManager();
-    this.hashHelper = new HashHelper();
-    this.domElementManager = new DOMElementManager();
-
-    this.keyCodeByKeyName = inputDeviceManager.getKeyCodeByKeyName();
-    this.dialogWindow = new DialogWindow();
-    this.observable = new Observable();
-
-    this.modalBoxController = new ModalBoxInitializer();
-    this.modalLoadingController = new ModalLoadingController(this.modalBoxController);
-    this.noteSpeakerService = new NoteSpeakerService(this.speakerManager);
-    this.dataStorageService = new DataStorageService(this.dialogWindow);
-    this.searchService = new SearchSevice();
-    this.scrollController = new ScrollInitializer();
-    this.logsController = new LogsInitializer(this.fileManager, this.dateManager);
-    this.autocompleteService = new AutocompleteService(this.textManager);
-    this.hashHandler = new HashHandler(
-      this.textManager,
-      this.searchService,
-      this.scrollController
-    );
-    this.voiceRecognitionService = new VoiceRecognitionService(
-      this.voiceRecognitionManager,
-      this.hashHandler
-    );
-
     (async () => {
+      const inputDeviceManager = new InputDeviceManager();
+      this.googleSpeechRecognition = new GoogleSpeechRecognition();
+      this.googleTextToSpeech = new GoogleTextToSpeech();
+      this.textManager = new TextManager();
+      this.fileManager = new FileManager(this.textManager);
+      this.dateManager = new DateManager();
+      this.voiceRecognitionManager = new VoiceRecognitionManager();
+      this.speakerManager = new TextToSpeechSynthesizer();
+      this.dropdownManager = new DropdownManager();
+      this.mapDataStructure = new MapDataStructure();
+      this.dbManager = new DBManager();
+      this.arrayManager = new ArrayManager();
+      this.hashHelper = new HashHelper();
+      this.domElementManager = new DOMElementManager();
+
+      this.keyCodeByKeyName = inputDeviceManager.getKeyCodeByKeyName();
+      this.dialogWindow = new DialogWindow();
+      this.observable = new Observable();
+
+      this.modalBoxController = await new ModalBoxInitializer({ 
+        projectAssetLoaderClass: ProjectAssetLoader, 
+        targetId: 'modalBoxContainer', 
+        data: {} 
+      });
+      this.modalLoadingController = new ModalLoadingController(this.modalBoxController);
+      this.noteSpeakerService = new NoteSpeakerService(this.speakerManager);
+      this.dataStorageService = new DataStorageService(this.dialogWindow);
+      this.searchService = new SearchSevice();
+      this.scrollController = new ScrollInitializer();
+      this.logsController = new LogsInitializer(this.fileManager, this.dateManager);
+      this.autocompleteService = new AutocompleteService(this.textManager);
+      this.hashHandler = new HashHandler(
+        this.textManager,
+        this.searchService,
+        this.scrollController
+      );
+      this.voiceRecognitionService = new VoiceRecognitionService(
+        this.voiceRecognitionManager,
+        this.hashHandler
+      );
       this.loaderController = await new LoaderInitializer(
         { 
+          projectAssetLoaderClass: ProjectAssetLoader,
           targetId: 'multiColorCircleLoaderContainer', 
           data: {} 
         }

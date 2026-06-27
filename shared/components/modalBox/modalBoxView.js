@@ -1,16 +1,33 @@
 class ModalBoxView {
-    constructor() {
+    constructor({ containerId }) {
+        this.#domContainer = document.getElementById(containerId);
+
+        if ( ! this.#domContainer) {
+            throw new Error(`Контейнер с id "${this.#domContainer}" не найден`);
+        }
+
+        // Get the modal
+        this.#modal = this.#domContainer.querySelector("#modalBox");
+
+        // Get the modal-content
+        this.#modalContent = this.#domContainer.querySelectorAll(".modal-content")[0];
+
+        // Get the <span> element that closes the modal
+        this.#btnClose = this.#domContainer.querySelectorAll(".close")[0];
+        
         this.bindClickBtnClose(() => this.hide());
     }
 
+    #domContainer;
+
     // Get the modal
-    #modal = document.getElementById("modalBox");
+    #modal;
 
     // Get the modal-content
-    #modalContent = document.getElementsByClassName("modal-content")[0];
+    #modalContent;
 
     // Get the <span> element that closes the modal
-    $btnClose = document.getElementsByClassName("close")[0];
+    #btnClose;
 
 
     show(parameter = { bodyText: '', headerText: '', footerText: '', isPossibleClose: true }) {
@@ -52,9 +69,12 @@ class ModalBoxView {
              $('.modal-footer').hide();
         }
 
+
+
         this.#modal.classList.remove('hide');
         this.#modalContent.classList.remove('hide');
         this.#modal.style.display = 'block';
+
     }
 
     hide() {
@@ -68,7 +88,7 @@ class ModalBoxView {
 
     bindClickBtnClose(handler) {
         // When the user clicks on <span> (x), close the modal
-        this.$btnClose.onclick = function() {
+        this.#btnClose.onclick = function() {
             handler();
         }
     }

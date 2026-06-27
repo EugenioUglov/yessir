@@ -55,8 +55,8 @@ class ProjectAssetLoader {
     }
 
     async loadMustacheHtml(targetId, pathHtml, data) {
-        const templateUrl = this.getNormalizedPath(pathHtml);
-        const response = await fetch(templateUrl);
+        const normalizedPath = this.getNormalizedPath(pathHtml);
+        const response = await fetch(normalizedPath);
 
         if (!response.ok) {
             throw new Error(`AssetLoader: Failed to load HTML -> ${response.statusText}`);
@@ -78,6 +78,8 @@ class ProjectAssetLoader {
         } else {
             throw new Error(`AssetLoader: Failed to load HTML -> Element with id ${targetId} doesn't exist.`);
         }
+
+        console.log("📦 AssetLoader: Loaded HTML ->", normalizedPath);
 
         return renderedHtml;
     }

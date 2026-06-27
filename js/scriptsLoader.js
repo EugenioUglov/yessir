@@ -53,7 +53,6 @@
         "./packages/autocomplete/autocompleteService.js",
         "./js/hashHandler.js",
         "./packages/dataStorage/dataStorageService.js",
-        "./packages/modalBox/modalBoxController.js",
         "./core/modalLoadingController.js",
 
 
@@ -75,7 +74,6 @@
         "./packages/autocomplete/autocompleteView.js",
         "./packages/search/searchView.js",
         "./packages/dataStorage/dataStorageView.js",
-        "./packages/modalBox/modalBoxView.js",
         "./packages/login/loginView.js",
 
         // Контроллеры
@@ -100,9 +98,9 @@
 
         
         "./packages/scroll/index.js",
-        "./packages/multiColorCircleLoader/index.js",
+        "./shared/components/multiColorCircleLoader/index.js",
         "./packages/note/index.js",
-        "./packages/modalBox/index.js",
+        "./shared/components/modalBox/index.js",
         "./packages/logs/index.js",
         "./packages/search/index.js",
 
