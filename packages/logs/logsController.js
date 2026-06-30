@@ -2,10 +2,10 @@ class LogsController {
   #fileManager;
   #textManager;
 
-  constructor({ view, fileManager, dateManager}) {
+  constructor({ model, view, fileManager, dateManager}) {
     this.fileManager = fileManager;
-    this.model = new LogsModel(dateManager);
-    this.#view = new LogsView();
+    this.#model = model;
+    this.#view = view;
 
     this.#fileManager;
     this.#textManager;
@@ -13,14 +13,15 @@ class LogsController {
     this.#view.bindClickDownloadLogs( () => this.downloadLogs );
   }
 
+  #model;
   #view;
 
   addLog(log) {
-    this.model.addLog(log);
+    this.#model.addLog(log);
   }
 
   getLogs() {
-    return this.model.getLogs();
+    return this.#model.getLogs();
   }
 
   downloadLogs() {
@@ -29,7 +30,8 @@ class LogsController {
       this.#fileManager = new FileManager(this.#textManager);
     }
 
-    const dataForFile = this.model.getDataForFile();
+    const dataForFile = this.#model.getDataForFile();
+    
     this.#fileManager.downloadFile(
       dataForFile.content,
       dataForFile.name,

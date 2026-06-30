@@ -1,10 +1,12 @@
 class ScrollController {
-    constructor(view) {
+    constructor({ model, view }) {
+        this.#model = model;
         this.#view = view;
 
         this.#bindViewEvents();
     }
 
+    #model;
     #view;
 
     bindScrollEndPage({ onScrollEndPage }) {
@@ -24,16 +26,7 @@ class ScrollController {
     }
 
     getScrollXY = function() {
-        if (window.pageYOffset != undefined) {
-            return [pageXOffset, pageYOffset];
-        } else {
-            var sx, sy, d = document,
-                r = d.documentElement,
-                b = d.body;
-            sx = r.scrollLeft || b.scrollLeft || 0;
-            sy = r.scrollTop || b.scrollTop || 0;
-            return [sx, sy];
-        }
+        return this.#model.getScrollXY();
     }
 
     setPosition = (pageX, pageY) => {

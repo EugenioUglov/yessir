@@ -19,7 +19,8 @@ class ActionBlockService {
     hashHandler,
     noteController,
     dateManager,
-    modalLoadingController
+    modalLoadingController,
+    bottomInfoPanel
   ) {
     this.fileManager = fileManager;
     this.textManager = textManager;
@@ -33,6 +34,7 @@ class ActionBlockService {
     this.hashHandler = hashHandler;
     this.noteController = noteController;
     this.modalLoadingController = modalLoadingController;
+    this.#bottomInfoPanel = bottomInfoPanel;
 
     this.#dateManager = dateManager;
 
@@ -55,6 +57,8 @@ class ActionBlockService {
 
     this.hashHandler.setActionBlockService(this);
   }
+
+  #bottomInfoPanel;
 
 
   async createActionBlockWithAutomationAsyncOld(
@@ -272,6 +276,8 @@ class ActionBlockService {
     if (!image_URL) setImageAutomaticallyForActionBlockAsync();
 
     function setTagsForActionBlockAsync() {
+      const that = this;
+
       const nounNumber = new NounNumber();
       const titleWords = title.split(/[^a-z]+/i).filter(Boolean);
 
@@ -294,13 +300,15 @@ class ActionBlockService {
               receivedImg
             );
 
-            const infoPanel = new InfoPanel();
-            infoPanel.showPanel('Tags has been set');
+            // const infoPanel = new InfoPanel();
+            that.#bottomInfoPanel.showPanel('Tags has been set');
           }
       });
     }
 
     function setImageAutomaticallyForActionBlockAsync() {
+      const that = this;
+
       const unspashSearcher = new UnsplashImageSearcher();
       imagePromise = new Promise((resolve) => {
           unspashSearcher.getImageByKeyword(title, 1, (img) => resolve(img));
@@ -318,8 +326,8 @@ class ActionBlockService {
           receivedImg
         );
 
-        const infoPanel = new InfoPanel();
-        infoPanel.showPanel('Image has been set');
+        // const infoPanel = new InfoPanel();
+        that.#bottomInfoPanel.showPanel('Image has been set');
       });
     }
 

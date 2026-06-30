@@ -20,7 +20,16 @@ class YesSir {
       this.dialogWindow = new DialogWindow();
       this.observable = new Observable();
 
-      this.modalBoxController = await new ModalBoxInitializer({ 
+      this.searchController = await new SearchManager(
+        { 
+          projectAssetLoaderClass: ProjectAssetLoader, 
+          textManager: this.textManager, 
+          keyCodeByKeyName: this.keyCodeByKeyName, 
+          targetId: 'request_container' 
+        }
+      );
+
+      this.modalBoxController = await new ModalBoxManager({ 
         projectAssetLoaderClass: ProjectAssetLoader, 
         targetId: 'modalBoxContainer', 
         data: {} 
@@ -28,20 +37,19 @@ class YesSir {
       this.modalLoadingController = new ModalLoadingController(this.modalBoxController);
       this.noteSpeakerService = new NoteSpeakerService(this.speakerManager);
       this.dataStorageService = new DataStorageService(this.dialogWindow);
-      this.searchService = new SearchSevice();
-      this.scrollController = new ScrollInitializer();
-      this.logsController = new LogsInitializer(this.fileManager, this.dateManager);
+      this.scrollController = await new ScrollManager({ projectAssetLoaderClass: ProjectAssetLoader, targetId: 'scrollContainer' });
+      this.logsController = new LogsManager(this.fileManager, this.dateManager);
       this.autocompleteService = new AutocompleteService(this.textManager);
       this.hashHandler = new HashHandler(
         this.textManager,
-        this.searchService,
+        this.searchController,
         this.scrollController
       );
       this.voiceRecognitionService = new VoiceRecognitionService(
         this.voiceRecognitionManager,
         this.hashHandler
       );
-      this.loaderController = await new LoaderInitializer(
+      this.loaderController = await new LoaderManager(
         { 
           projectAssetLoaderClass: ProjectAssetLoader,
           targetId: 'multiColorCircleLoaderContainer', 
@@ -52,6 +60,13 @@ class YesSir {
       this.noteController = new NoteInitializer(
         this.hashHandler,
         this.noteSpeakerService
+      );
+
+      this.bottomInfoPanel = await new BottomInfoPanelManager(
+        {
+          projectAssetLoaderClass: ProjectAssetLoader, 
+          targetId: 'bottomInfoPanelContainer'
+        }
       );
 
       this.actionBlockService = new ActionBlockService(
@@ -65,11 +80,12 @@ class YesSir {
         this.dialogWindow,
         this.keyCodeByKeyName,
         this.scrollController,
-        this.searchService,
+        this.searchController,
         this.hashHandler,
         this.noteController,
         this.dateManager,
-        this.modalLoadingController
+        this.modalLoadingController,
+        this.bottomInfoPanel
       );
 
       this.noteController.actionBlockService = this.actionBlockService;
@@ -92,7 +108,7 @@ class YesSir {
 let yesSir;
 
 (function () {
-  // new LoaderInitializer('.multiColorCircleLoader');
+  // new LoaderManager('.multiColorCircleLoader');
 
 
 
@@ -126,12 +142,16 @@ let yesSir;
       const actionBlockService = yesSir.actionBlockService;
 
 
-      const scrollController = new ScrollInitializer();
+      const scrollController = yesSir.scrollController;
 
-      const searchController = new SearchInitializer(
-        textManager,
-        keyCodeByKeyName
-      );
+      // const searchController = new SearchManager(
+      //   { 
+      //     projectAssetLoaderClass: ProjectAssetLoaderClass, 
+      //     textManager: textManager, 
+      //     keyCodeByKeyName: keyCodeByKeyName, 
+      //     targetId: 'request_container' 
+      //   }
+      // );
 
       const noteSpeakerController = new NoteSpeakerController(
         yesSir.noteSpeakerService,
@@ -142,7 +162,7 @@ let yesSir;
         actionBlockService,
         loaderController,
         dialogWindow,
-        searchController,
+        yesSir.searchController,
         hashHandler,
         noteController,
         dbManager,
@@ -154,7 +174,6 @@ let yesSir;
         yesSir.logsController,
         keyCodeByKeyName,
         scrollController,
-        yesSir.searchService,
         dateManager,
         yesSir.modalLoadingController
       );
@@ -213,7 +232,7 @@ let yesSir;
       };
 
       const searchControllerEventBinder = new SearchControllerEventBinder({
-        searchController: searchController, 
+        searchController: yesSir.searchController, 
         hashHandler: hashHandler, 
         actionBlockService: actionBlockService
       });

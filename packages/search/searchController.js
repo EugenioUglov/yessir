@@ -1,9 +1,9 @@
 class SearchController {
-    constructor(textManager, keyCodeByKeyName) {
+    constructor(view, textManager, keyCodeByKeyName) {
         this.textManager = textManager;
         this.keyCodeByKeyName = keyCodeByKeyName;
 
-        this.view = new SearchView();
+        this.view = view;
 
         this.#setEventListeners();
         this.#bindViewEvenets();

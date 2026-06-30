@@ -1,7 +1,7 @@
 (function() {
     const FEATURE_BASE_PATH = document.currentScript ? document.currentScript.src.substring(0, document.currentScript.src.lastIndexOf('/') + 1) : '';
 
-    class LoaderInitializer {
+    class LoaderManager {
         constructor({ projectAssetLoaderClass, targetId, data }) {
             // Return promise.
             return this.init({ projectAssetLoaderClass,targetId, data });;
@@ -15,10 +15,12 @@
         async init({ projectAssetLoaderClass, targetId, data }) {
             const projectAssetLoader = new projectAssetLoaderClass(FEATURE_BASE_PATH);
 
-            const cssPromise = projectAssetLoader.loadStyle('multiColorCircleLoader.css');
-            const htmlPromise = projectAssetLoader.loadMustacheHtml(targetId, 'index.html', data);
+            const mustachePromise = await projectAssetLoader.loadJavaScript('https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js');
 
-            await Promise.all([cssPromise, htmlPromise]);
+            const cssPromise = projectAssetLoader.loadStyle('multiColorCircleLoader.css');
+            const htmlPromise = projectAssetLoader.loadMustacheHtml(targetId, 'index.mustache', data);
+
+            await Promise.all([mustachePromise, cssPromise, htmlPromise]);
 
             const loaderViewPromise = projectAssetLoader.loadJavaScript("loaderView.js");
             const loaderControllerPromise = projectAssetLoader.loadJavaScript("loaderController.js");
@@ -33,5 +35,5 @@
         }
     }
 
-    window.LoaderInitializer = LoaderInitializer;
+    window.LoaderManager = LoaderManager;
 })();

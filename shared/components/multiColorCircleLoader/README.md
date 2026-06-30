@@ -15,7 +15,7 @@ Then create an object in async.
 
 ```js
 (async () => {
-    this.loaderController = await new LoaderInitializer(
+    this.loaderController = await new LoaderManager(
         {
             projectAssetLoaderClass: ProjectAssetLoader,
             targetId: 'multiColorCircleLoaderContainer', 

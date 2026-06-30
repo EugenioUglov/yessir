@@ -3,55 +3,56 @@
         // Внешние библиотеки (CDN)
         "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js",
         "https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js",
-        "./js/libraries/opensource/jquery-3.6.0.min.js",
+        "./libraries/opensource/jquery-3.6.0.min.js",
         "https://code.jquery.com/jquery-3.6.0.js",
         "https://code.jquery.com/ui/1.13.0/jquery-ui.js",
-        "./js/libraries/opensource/observable.js",
-        "./js/libraries/opensource/md5.min.js",
+        "./libraries/opensource/observable.js",
+        "./libraries/opensource/md5.min.js",
 
         "./shared/utils/urlValidator.js",
         "./shared/utils/moduleLoader.js",
         "./packages/test/test.js",
         "./shared/projectAssetLoader.js",
+        "./shared/components/bottomInfoPanel/index.js",
 
         // Основные компоненты
-        "./js/commandInputField.js",
+        "./commandInputField.js",
         "./packages/actionBlock/actionBlockNoteCommands.js",
         "./packages/firebase/firebaseData.js",
 
         // Библиотеки (Core)
-        "./js/libraries/inputFieldWithSuggestions.js",
-        "./js/libraries/mapDataStructure.js",
-        "./js/libraries/domElementManager.js",
-        "./js/libraries/dateManager.js",
-        "./js/libraries/firebaseManager.js",
-        "./js/libraries/textManager.js",
-        "./js/libraries/dbManager.js",
-        "./js/libraries/fileManager.js",
-        "./js/libraries/dialogWindow.js",
-        "./js/libraries/dropdownManager.js",
-        "./js/libraries/arrayManager.js",
-        "./js/libraries/inputDeviceManger.js",
+        "./libraries/inputFieldWithSuggestions.js",
+        "./libraries/mapDataStructure.js",
+        "./libraries/domElementManager.js",
+        "./libraries/dateManager.js",
+        "./libraries/firebaseManager.js",
+        "./libraries/textManager.js",
+        "./libraries/dbManager.js",
+        "./libraries/fileManager.js",
+        "./libraries/dialogWindow.js",
+        "./libraries/dropdownManager.js",
+        "./libraries/arrayManager.js",
+        "./libraries/inputDeviceManger.js",
         "./packages/voiceRecognition/voiceRecognitionManager.js",
-        "./js/libraries/textToSpeechSynthesizer.js",
-        "./js/libraries/hashHelper.js",
-        "./js/libraries/elementsVisibility.js",
-        "./js/libraries/defaultActionBlocks.js",
-        "./js/libraries/googleSpeechRecognition.js",
-        "./js/libraries/googleTextToSpeech.js",
-        "./js/libraries/nounNumber.js",
-        "./js/libraries/tagsNormalizer.js",
-        "./js/libraries/hashPassword.js",
-        "./js/libraries/infoPanel.js",
-        "./js/libraries/idGenerator.js",
+        "./libraries/textToSpeechSynthesizer.js",
+        "./libraries/hashHelper.js",
+        "./libraries/elementsVisibility.js",
+        "./libraries/defaultActionBlocks.js",
+        "./libraries/googleSpeechRecognition.js",
+        "./libraries/googleTextToSpeech.js",
+        "./libraries/nounNumber.js",
+        "./libraries/tagsNormalizer.js",
+        "./libraries/hashPassword.js",
+        // "./libraries/infoPanel.js",
+        "./libraries/idGenerator.js",
 
         // Сервисы
         "./packages/actionBlock/actionBlockService.js",
-        "./packages/search/searchSevice.js",
+        // "./packages/search/searchSevice.js",
         "./packages/noteSpeaker/noteSpeakerService.js",
         "./packages/voiceRecognition/voiceRecognitionService.js",
         "./packages/autocomplete/autocompleteService.js",
-        "./js/hashHandler.js",
+        "./hashHandler.js",
         "./packages/dataStorage/dataStorageService.js",
         "./core/modalLoadingController.js",
 
@@ -65,14 +66,14 @@
 
         // Представления (Views)
         "./packages/note/noteView.js",
-        "./js/views/pageElementView.js",
-        "./packages/scroll/scrollView.js",
+        "./views/pageElementView.js",
+        // "./packages/scroll/scrollView.js",
         "./packages/noteSpeaker/noteSpeakerView.js",
         "./packages/voiceRecognition/voiceRecognitionView.js",
         "./packages/actionBlock/actionBlockView.js",
         "./packages/logs/logsView.js",
         "./packages/autocomplete/autocompleteView.js",
-        "./packages/search/searchView.js",
+        // "./packages/search/searchView.js",
         "./packages/dataStorage/dataStorageView.js",
         "./packages/login/loginView.js",
 
@@ -81,8 +82,8 @@
         "./packages/note/noteController.js",
         "./packages/noteSpeaker/noteSpeakerController.js",
         "./packages/voiceRecognition/voiceRecognitionController.js",
-        "./packages/scroll/scrollController.js",
-        "./packages/search/searchController.js",
+        // "./packages/scroll/scrollController.js",
+        // "./packages/search/searchController.js",
         "./packages/dataStorage/dataStorageController.js",
         "./packages/actionBlock/actionBlockController.js",
         "./packages/autocomplete/autocompleteController.js",
@@ -94,7 +95,7 @@
         "https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js",
         "https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js",
         "./packages/firebase/firebaseConfig.js",
-        "./js/libraries/unspashImageSearcher.js",
+        "./libraries/unspashImageSearcher.js",
 
         
         "./packages/scroll/index.js",
@@ -108,7 +109,7 @@
         
 
         // Точка входа
-        "./js/main.js"
+        "./main.js"
     ];
 
     // Функция для последовательной загрузки (важно для зависимостей!)

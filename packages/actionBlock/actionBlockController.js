@@ -15,14 +15,13 @@ class ActionBlockController {
     logsController,
     keyCodeByKeyName,
     scrollController,
-    searchService,
     dateManager,
     modalLoadingController
   ) {
     this.actionBlockService = actionBlockService;
     this.loaderController = loaderController;
     this.dialogWindow = dialogWindow;
-    this.searchService = searchService;
+    this.searchService = searchController;
     this.hashHandler = hashHandler;
     this.noteController = noteController;
 

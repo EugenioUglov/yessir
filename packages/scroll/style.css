@@ -1,0 +1,41 @@
+.fixed_elements #btn_scroll_up {
+    position: fixed;
+    bottom: 120px;
+    right: 40px;
+    width: 60px;
+    height: 60px;
+    background-color: #796ce0;
+    border-radius: 40px;
+    font-size: 20px;
+    background-image: linear-gradient( 0deg,#da45ba,#2f1482);
+    box-shadow: 0 0 1pt 1pt #0e0e0e;
+    transition: box-shadow 0.3s ease-in-out;
+    /* transition: transform 250ms; */
+    transition: transform 250ms, opacity 400ms;
+    /* opacity: 0; */
+    /* transform: translate(0, 10vh); */
+    transition: all 1s;
+}
+  
+
+/*
+.fixed_elements #fixed_btn_plus:focus, #btn_scroll_up:focus, .btn_content_speaker:focus, .btn_back:focus {
+    outline: 0 none;
+}
+
+
+
+.fixed_elements #fixed_btn_plus:active, #btn_scroll_up:active, .btn_content_speaker:active, .btn_back:active {
+    background-color: rgba(39, 184, 224, 0.904); 
+}
+*/
+/*
+.fixed_elements #fixed_btn_plus:hover, #btn_scroll_up:hover, .btn_back, .btn_content_speaker {
+ 
+    border-color: black;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.085) inset, 0 0 8px rgba(82, 168, 236, 0.6);
+    outline: 0 none;
+    background-color: rgba(204, 242, 252, 0.904); 
+ 
+}
+*/

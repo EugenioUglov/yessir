@@ -12,18 +12,18 @@ class AutocompleteController {
       return;
     }
 
-    const indexes_actionBlocks_by_tag = JSON.parse(
+    const indexesActionBlocksByTag = JSON.parse(
       localStorage["indexes_actionBlocks_by_tag"]
     );
-    const tags = Object.keys(indexes_actionBlocks_by_tag);
+    const tags = Object.keys(indexesActionBlocksByTag);
 
     this.view.bindApplyTags(applyTagsAutocompleteForInputFields);
 
     function applyTagsAutocompleteForInputFields(
-      input_fields_for_autocomplete
+      inputFieldsForAutocomplete
     ) {
-      for (const input_field of input_fields_for_autocomplete) {
-        that.applyTagsAutocomplete(input_field, tags, onSelect);
+      for (const inputField of inputFieldsForAutocomplete) {
+        that.applyTagsAutocomplete(inputField, tags, onSelect);
       }
     }
 
@@ -33,19 +33,19 @@ class AutocompleteController {
         that.hashHandler.PAGE_NAME_ENUM.main
       ) {
         window.scrollTo(0, 0);
-        const actionBlocks_to_show =
+        const actionBlocksToShow =
           that.actionBlockService.getActionBlocksByPhrase(
             $("#input_field_request").val()
           );
-        that.actionBlockService.showActionBlocks(actionBlocks_to_show);
+        that.actionBlockService.showActionBlocks(actionBlocksToShow);
       }
     }
   }
 
-  applyTagsAutocomplete(input_field, tags, callbackSelect) {
+  applyTagsAutocomplete(inputField, tags, callbackSelect) {
     const that = this;
     this.autocompleteService.applyTagsAutocomplete(
-      input_field,
+      inputField,
       tags,
       callbackSelect
     );

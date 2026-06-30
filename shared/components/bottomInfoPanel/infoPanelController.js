@@ -1,4 +1,4 @@
-class InfoPanel {
+class BottomInfoPanelController {
     constructor() {
 
     }

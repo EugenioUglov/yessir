@@ -11,7 +11,6 @@ class LoginView {
         });
     }
 
-
     show() {
         $('.login-panel').show();
     }
