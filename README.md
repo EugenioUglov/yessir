@@ -1,2 +1,2 @@
 # YesSir
-Search your own information like in Google search. Web app for searching your information quickly by tags assigned to each block of information.
+Search your own information like in Google search. Insert title, content, tags and image to search for needed info fast.
