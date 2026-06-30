@@ -2,13 +2,14 @@
     const FEATURE_BASE_PATH = document.currentScript ? document.currentScript.src.substring(0, document.currentScript.src.lastIndexOf('/') + 1) : '';
 
     class SearchManager {
-        constructor({ projectAssetLoaderClass, textManager, keyCodeByKeyName, targetId, data }) {
+        constructor({ projectAssetLoader, textManager, keyCodeByKeyName, targetId, data }) {
             // Return promise.
-            return this.init({ projectAssetLoaderClass, textManager, keyCodeByKeyName, targetId, data });
+            return this.init({ projectAssetLoader, textManager, keyCodeByKeyName, targetId, data });
         }
         
-        async init({ projectAssetLoaderClass, textManager, keyCodeByKeyName, targetId, data }) {
-            const projectAssetLoader = new projectAssetLoaderClass(FEATURE_BASE_PATH);
+        async init({ projectAssetLoader, textManager, keyCodeByKeyName, targetId, data }) {
+            // const projectAssetLoader = new projectAssetLoader(FEATURE_BASE_PATH);
+            projectAssetLoader.setBasePath({path: FEATURE_BASE_PATH});
 
             const cssPromise = projectAssetLoader.loadStyle('style.css');
             const htmlPromise = projectAssetLoader.loadMustacheHtml(targetId, 'index.html', data);

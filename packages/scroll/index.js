@@ -2,9 +2,9 @@
     const FEATURE_BASE_PATH = document.currentScript ? document.currentScript.src.substring(0, document.currentScript.src.lastIndexOf('/') + 1) : '';
 
     class ScrollManager {
-        constructor({ projectAssetLoaderClass, targetId, data }) {
+        constructor({ projectAssetLoader, targetId, data }) {
             // Return promise.
-            return this.init({ projectAssetLoaderClass, targetId, data });
+            return this.init({ projectAssetLoader, targetId, data });
         }
 
         /**
@@ -12,8 +12,9 @@
          * @param {class, string, object} - targetid - id of the main html code. 
          * @returns 
          */
-        async init({ projectAssetLoaderClass, targetId, data }) {
-            const projectAssetLoader = new projectAssetLoaderClass(FEATURE_BASE_PATH);
+        async init({ projectAssetLoader, targetId, data }) {
+            // const projectAssetLoader = new projectAssetLoader(FEATURE_BASE_PATH);
+            projectAssetLoader.setBasePath({path: FEATURE_BASE_PATH});
 
             const cssPromise = projectAssetLoader.loadStyle('style.css');
             

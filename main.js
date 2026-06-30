@@ -1,6 +1,8 @@
 class YesSir {
   constructor({ onEnd }) {
     (async () => {
+      const projectAssetLoader = new ProjectAssetLoader();
+  
       const inputDeviceManager = new InputDeviceManager();
       this.googleSpeechRecognition = new GoogleSpeechRecognition();
       this.googleTextToSpeech = new GoogleTextToSpeech();
@@ -22,7 +24,7 @@ class YesSir {
 
       this.searchController = await new SearchManager(
         { 
-          projectAssetLoaderClass: ProjectAssetLoader, 
+          projectAssetLoader: projectAssetLoader, 
           textManager: this.textManager, 
           keyCodeByKeyName: this.keyCodeByKeyName, 
           targetId: 'request_container' 
@@ -30,14 +32,14 @@ class YesSir {
       );
 
       this.modalBoxController = await new ModalBoxManager({ 
-        projectAssetLoaderClass: ProjectAssetLoader, 
+        projectAssetLoader: projectAssetLoader, 
         targetId: 'modalBoxContainer', 
         data: {} 
       });
       this.modalLoadingController = new ModalLoadingController(this.modalBoxController);
       this.noteSpeakerService = new NoteSpeakerService(this.speakerManager);
       this.dataStorageService = new DataStorageService(this.dialogWindow);
-      this.scrollController = await new ScrollManager({ projectAssetLoaderClass: ProjectAssetLoader, targetId: 'scrollContainer' });
+      this.scrollController = await new ScrollManager({ projectAssetLoader: projectAssetLoader, targetId: 'scrollContainer' });
       this.logsController = new LogsManager(this.fileManager, this.dateManager);
       this.autocompleteService = new AutocompleteService(this.textManager);
       this.hashHandler = new HashHandler(
@@ -51,7 +53,7 @@ class YesSir {
       );
       this.loaderController = await new LoaderManager(
         { 
-          projectAssetLoaderClass: ProjectAssetLoader,
+          projectAssetLoader: projectAssetLoader,
           targetId: 'multiColorCircleLoaderContainer', 
           data: {} 
         }
@@ -64,7 +66,7 @@ class YesSir {
 
       this.bottomInfoPanel = await new BottomInfoPanelManager(
         {
-          projectAssetLoaderClass: ProjectAssetLoader, 
+          projectAssetLoader: projectAssetLoader, 
           targetId: 'bottomInfoPanelContainer'
         }
       );

@@ -6,9 +6,9 @@
      * Returns controller in async.
      */
     class BottomInfoPanelManager {
-        constructor({ projectAssetLoaderClass, targetId }) {
+        constructor({ projectAssetLoader, targetId }) {
             // Return promise.
-            return this.init({ projectAssetLoaderClass, targetId });
+            return this.init({ projectAssetLoader, targetId });
         }
 
         /**
@@ -16,8 +16,9 @@
          * @param {class, string, object} - targetid - id of the main html code. 
          * @returns 
          */
-        async init({ projectAssetLoaderClass, targetId }) {
-            const projectAssetLoader = new projectAssetLoaderClass(FEATURE_BASE_PATH);
+        async init({ projectAssetLoader, targetId }) {
+            // const projectAssetLoader = new projectAssetLoader(FEATURE_BASE_PATH);
+            projectAssetLoader.setBasePath({path: FEATURE_BASE_PATH});
 
             const mustachePromise = projectAssetLoader.loadJavaScript('https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js');
 

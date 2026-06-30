@@ -6,34 +6,46 @@ class ProjectAssetLoader {
      * @param {string} [currentScriptUrl] - Необязательный URL. Если передан, пути будут считаться относительно него.
      */
     constructor(currentScriptUrl) {
-        this._BASE_PATH = this._calculateBasePath(currentScriptUrl);
+        this.#basePath = this.#calculateBasePath(currentScriptUrl);
     }
 
-    _calculateBasePath(url) {
-        if (url) {
-            return url.substring(0, url.lastIndexOf('/') + 1);
-        }
-        return '';
+    #basePath = "";
+    #cache = new Map();
+
+    setBasePath({ path }) {
+        this.#basePath = path;
     }
 
     getNormalizedPath(path) {
         if (!path.includes('/')) {
-            return this._BASE_PATH + path;
+            return this.#basePath + path;
         }
+
         return path;
     }
 
     loadJavaScript(path) {
-        return new Promise((resolve, reject) => {
+        if (this.#cache.has(path)) {
+            return this.#cache.get(path);
+        }
+
+        const promise = new Promise((resolve, reject) => {
             const script = document.createElement('script');
             script.src = this.getNormalizedPath(path);
             script.onload = () => {
                 console.log("📦 AssetLoader: Loaded JS ->", script.src);
                 resolve();
             };
-            script.onerror = () => reject(new Error(`Failed to load script: ${path}`));
+            script.onerror = () => {
+                this.#cache.delete(path);
+                reject(new Error(`Failed to load script: ${path}`))
+            };
             document.body.appendChild(script);
         });
+
+        this.#cache.set(path, promise);
+
+        return promise;
     }
 
     loadStyle(path) {
@@ -82,5 +94,12 @@ class ProjectAssetLoader {
         console.log("📦 AssetLoader: Loaded HTML ->", normalizedPath);
 
         return renderedHtml;
+    }
+    
+    #calculateBasePath(url) {
+        if (url) {
+            return url.substring(0, url.lastIndexOf('/') + 1);
+        }
+        return '';
     }
 }
