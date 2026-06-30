@@ -28,7 +28,6 @@
 
             await Promise.all([loaderViewPromise, loaderControllerPromise]);
 
-
             const view = new LoaderView();
             const controller = new LoaderController(view);
             
