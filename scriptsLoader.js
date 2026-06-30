@@ -74,7 +74,7 @@
         "./packages/autocomplete/autocompleteView.js",
         // "./packages/search/searchView.js",
         "./packages/dataStorage/dataStorageView.js",
-        "./packages/login/loginView.js",
+        // "./packages/login/loginView.js",
 
         // Контроллеры
         "./packages/logs/logsController.js",
@@ -103,6 +103,7 @@
         "./shared/components/modalBox/index.js",
         "./packages/logs/index.js",
         "./packages/search/index.js",
+        "./packages/loginPanel/index.js",
 
         "./core/searchControllerEventBinder.js",
         
@@ -129,7 +130,7 @@
     function initializeModules() {
         $(function(){
             $("#advancedSearcherByTags").load("packages/advancedSearchearByTags/index.html");
-            $("#loginModule").load("packages/login/index.html");
+            // $("#loginModule").load("packages/login/index.html");
         });
     }
 

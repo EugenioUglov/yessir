@@ -2,7 +2,9 @@ class YesSir {
   constructor({ onEnd }) {
     (async () => {
       const projectAssetLoader = new ProjectAssetLoader();
-  
+     
+      const loginPanelController = await new LoginManager({ projectAssetLoader: projectAssetLoader, targetId: 'loginContainer' });
+
       const inputDeviceManager = new InputDeviceManager();
       this.googleSpeechRecognition = new GoogleSpeechRecognition();
       this.googleTextToSpeech = new GoogleTextToSpeech();
@@ -58,8 +60,7 @@ class YesSir {
           data: {} 
         }
       );
-
-      this.noteController = new NoteInitializer(
+      this.noteController = await new NoteInitializer(
         this.hashHandler,
         this.noteSpeakerService
       );
@@ -87,7 +88,8 @@ class YesSir {
         this.noteController,
         this.dateManager,
         this.modalLoadingController,
-        this.bottomInfoPanel
+        this.bottomInfoPanel,
+        loginPanelController
       );
 
       this.noteController.actionBlockService = this.actionBlockService;

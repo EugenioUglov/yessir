@@ -12,14 +12,12 @@
             projectAssetLoader.setBasePath({path: FEATURE_BASE_PATH});
 
             const cssPromise = projectAssetLoader.loadStyle('style.css');
-            const htmlPromise = projectAssetLoader.loadMustacheHtml(targetId, 'index.html', data);
-
-            await Promise.all([cssPromise, htmlPromise]);
+            const htmlPromise = projectAssetLoader.loadMustacheHtml(targetId, 'index.mustache', data);
 
             const sarchControllerPromise = projectAssetLoader.loadJavaScript("searchController.js");
             const sarchViewPromise = projectAssetLoader.loadJavaScript("searchView.js");
 
-            await Promise.all([sarchControllerPromise, sarchViewPromise]);
+            await Promise.all([cssPromise, htmlPromise, sarchControllerPromise, sarchViewPromise]);
 
             const view = new SearchView();
             const controller = new SearchController(view, textManager, keyCodeByKeyName);

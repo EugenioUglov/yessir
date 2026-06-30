@@ -22,19 +22,13 @@
 
             const cssPromise = projectAssetLoader.loadStyle('style.css');
             const htmlPromise = projectAssetLoader.loadMustacheHtml(targetId, 'index.mustache');
-
-            await Promise.all([cssPromise, htmlPromise]);
-
             const viewPromise = projectAssetLoader.loadJavaScript("view.js");
-
             const controllerPromise = projectAssetLoader.loadJavaScript("controller.js");
 
-            await Promise.all([viewPromise, controllerPromise]);
+            await Promise.all([cssPromise, htmlPromise, viewPromise, controllerPromise]);
 
             const domContainer = document.getElementById(targetId);
-
             const view = new LoginView({ domContainer: domContainer });
-
             const controller = new LoginController({ view: view });
 
             return controller;

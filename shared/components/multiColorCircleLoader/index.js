@@ -21,12 +21,10 @@
             const cssPromise = projectAssetLoader.loadStyle('multiColorCircleLoader.css');
             const htmlPromise = projectAssetLoader.loadMustacheHtml(targetId, 'index.mustache', data);
 
-            await Promise.all([cssPromise, htmlPromise]);
-
             const loaderViewPromise = projectAssetLoader.loadJavaScript("loaderView.js");
             const loaderControllerPromise = projectAssetLoader.loadJavaScript("loaderController.js");
 
-            await Promise.all([loaderViewPromise, loaderControllerPromise]);
+            await Promise.all([cssPromise, htmlPromise, loaderViewPromise, loaderControllerPromise]);
 
             const view = new LoaderView();
             const controller = new LoaderController(view);

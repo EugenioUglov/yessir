@@ -20,7 +20,8 @@ class ActionBlockService {
     noteController,
     dateManager,
     modalLoadingController,
-    bottomInfoPanel
+    bottomInfoPanel,
+    loginPanelController
   ) {
     this.fileManager = fileManager;
     this.textManager = textManager;
@@ -35,6 +36,7 @@ class ActionBlockService {
     this.noteController = noteController;
     this.modalLoadingController = modalLoadingController;
     this.#bottomInfoPanel = bottomInfoPanel;
+    this.#loginPanelController = loginPanelController;
 
     this.#dateManager = dateManager;
 
@@ -59,6 +61,7 @@ class ActionBlockService {
   }
 
   #bottomInfoPanel;
+  #loginPanelController;
 
 
   async createActionBlockWithAutomationAsyncOld(
@@ -987,11 +990,12 @@ class ActionBlockService {
         actionBlocksMapString = yesSir.mapDataStructure.getStringified(yesSir.actionBlockService.getActionBlocks());
     }
 
-    $('.login-panel').show();
+    // $('.login-panel').show();
+    this.#loginPanelController.show();
 
-    $(".btn-submit").click(function(e) {
-        e.preventDefault();
-
+    // $(".btn-submit").click(function(e) {
+    this.#loginPanelController.bindClickBtnSubmit({ 
+      handler: () => {
         yesSir.modalBoxController.show({
             headerText:'Loading', 
             bodyText:'Data is being verified..'
@@ -1006,7 +1010,7 @@ class ActionBlockService {
             database: firebaseData,
             actionBlocksMapString: actionBlocksMapString,
             onSuccess: () => {
-                $('.login-panel').hide();
+                that.#loginPanelController.hide();
     
                 yesSir.modalBoxController.show({
                     headerText:'Success', 
@@ -1024,65 +1028,69 @@ class ActionBlockService {
                 yesSir.modalBoxController.hide();
             }
         });
+      }
     });
 
-    $('.login-panel .close-icon').one('click', () => {
-      $('.login-panel').css('display', 'none');
-      window.location.hash = that.hashHandler.PAGE_NAME_ENUM.main;
+    this.#loginPanelController.bindClickBtnClose({ 
+      handler: () => {
+        // that.#loginPanelController.hide();
+        window.location.hash = that.hashHandler.PAGE_NAME_ENUM.main;
+      }
     });
   }
 
   getFromDatabase() {
     const that = this;
 
-    $('.login-panel').show();
+    this.#loginPanelController.show();
 
-    $(".btn-submit").click(function(e) {
-      e.preventDefault();
+    this.#loginPanelController.bindClickBtnSubmit({ 
+      handler: () => {
+        yesSir.modalBoxController.show({headerText:'Loading', bodyText:'Data is being verified..'});
 
-      yesSir.modalBoxController.show({headerText:'Loading', bodyText:'Data is being verified..'});
+        const inputUsername = $('.input-username').val();
+        const inputPassword = $('.input-password').val();
 
-      const inputUsername = $('.input-username').val();
-      const inputPassword = $('.input-password').val();
+        that.model.getActionBlocksFromDatabaseAsync({
+          inputUsername: inputUsername,
+          inputPassword: inputPassword,
+          database: new FirebaseData(),
+          onGetActionBlocks: receivedActionBlocksMapString => {
+            if (receivedActionBlocksMapString) {
+              const actionBlocks = that.mapDataStructure.getParsed(receivedActionBlocksMapString);
 
-      that.model.getActionBlocksFromDatabaseAsync({
-        inputUsername: inputUsername,
-        inputPassword: inputPassword,
-        database: new FirebaseData(),
-        onGetActionBlocks: receivedActionBlocksMapString => {
-          if (receivedActionBlocksMapString) {
-            const actionBlocks = that.mapDataStructure.getParsed(receivedActionBlocksMapString);
+              localStorage['username'] = inputUsername;
 
-            localStorage['username'] = inputUsername;
+              that.model.setActionBlocks(actionBlocks);
 
-            that.model.setActionBlocks(actionBlocks);
-
-            yesSir.modalBoxController.show({
-              headerText:'Success', 
-              bodyText:'Receiving data from firebase database has been completed.'
-            });
-  
-            setTimeout(() => {
-              yesSir.modalBoxController.hide();
-            }, "3000");
-            
-  
-            $('.login-panel').hide();
+              yesSir.modalBoxController.show({
+                headerText:'Success', 
+                bodyText:'Receiving data from firebase database has been completed.'
+              });
+    
+              setTimeout(() => {
+                yesSir.modalBoxController.hide();
+              }, "3000");
+              
+    
+              that.#loginPanelController.hide();
+            }
+    
+            that.hashHandler.openMainPage();
+          },
+          onError: error => {
+            yesSir.modalBoxController.hide();
+            alert(error); 
           }
-  
-          that.hashHandler.openMainPage();
-        },
-        onError: error => {
-          yesSir.modalBoxController.hide();
-          alert(error); 
-        }
-      });
+        });
+      }
     });
 
-    $('.login-panel .close-icon').one('click', () => {
-      $('.login-panel').css('display', 'none');
+    this.#loginPanelController.bindClickBtnClose({ handler: () => {
+      that.#loginPanelController.hide();
+
       window.location.hash = that.hashHandler.PAGE_NAME_ENUM.main;
-    });
+    }});
   }
 
   save(actionBlocks) {

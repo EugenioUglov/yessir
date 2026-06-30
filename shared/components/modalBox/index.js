@@ -21,13 +21,11 @@
             const cssPromise = projectAssetLoader.loadStyle('modalBox.css');
             
             const htmlPromise = projectAssetLoader.loadMustacheHtml(targetId, 'index.mustache', data);
-
-            await Promise.all([cssPromise, htmlPromise]);
             
             const modalBoxViewPromise = projectAssetLoader.loadJavaScript("modalBoxView.js");
             const modalBoxControllerPromise = projectAssetLoader.loadJavaScript("modalBoxController.js");
 
-            await Promise.all([modalBoxViewPromise, modalBoxControllerPromise]);
+            await Promise.all([cssPromise, htmlPromise, modalBoxViewPromise, modalBoxControllerPromise]);
             
             const view = new ModalBoxView({ containerId: targetId });
             const controller = new ModalBoxController({ view: view });

@@ -22,13 +22,13 @@
 
             // const mustachePromise = projectAssetLoader.loadJavaScript('https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js');
 
+            // const test = await projectAssetLoader.loadJavaScript("view.js");
+            // console.log(test);
+            // return;
+
             const cssPromise = projectAssetLoader.loadStyle('style.css');
 
-            await Promise.all([cssPromise]);
-
             const htmlPromise = projectAssetLoader.loadMustacheHtml(targetId, 'index.mustache');
-            
-            await Promise.all([htmlPromise]);
 
             const modelPromise = projectAssetLoader.loadJavaScript("model.js")
 
@@ -36,7 +36,7 @@
 
             const controllerPromise = projectAssetLoader.loadJavaScript("controller.js");
 
-            await Promise.all([modelPromise, viewPromise, controllerPromise]);
+            await Promise.all([cssPromise, htmlPromise, modelPromise, viewPromise, controllerPromise]);
             
             const domContainer = document.getElementById(targetId);
 
