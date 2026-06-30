@@ -20,11 +20,11 @@
             // const projectAssetLoader = new projectAssetLoader(FEATURE_BASE_PATH);
             projectAssetLoader.setBasePath({path: FEATURE_BASE_PATH});
 
-            const mustachePromise = projectAssetLoader.loadJavaScript('https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js');
+            // const mustachePromise = projectAssetLoader.loadJavaScript('https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js');
 
             const cssPromise = projectAssetLoader.loadStyle('style.css');
 
-            await Promise.all([mustachePromise, cssPromise]);
+            await Promise.all([cssPromise]);
 
             const htmlPromise = projectAssetLoader.loadMustacheHtml(targetId, 'index.mustache');
             

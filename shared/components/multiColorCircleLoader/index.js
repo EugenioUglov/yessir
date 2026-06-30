@@ -16,12 +16,12 @@
             // const projectAssetLoader = new projectAssetLoader(FEATURE_BASE_PATH);
             projectAssetLoader.setBasePath({path: FEATURE_BASE_PATH});
 
-            const mustachePromise = await projectAssetLoader.loadJavaScript('https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js');
+            // const mustachePromise = await projectAssetLoader.loadJavaScript('https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js');
 
             const cssPromise = projectAssetLoader.loadStyle('multiColorCircleLoader.css');
             const htmlPromise = projectAssetLoader.loadMustacheHtml(targetId, 'index.mustache', data);
 
-            await Promise.all([mustachePromise, cssPromise, htmlPromise]);
+            await Promise.all([cssPromise, htmlPromise]);
 
             const loaderViewPromise = projectAssetLoader.loadJavaScript("loaderView.js");
             const loaderControllerPromise = projectAssetLoader.loadJavaScript("loaderController.js");

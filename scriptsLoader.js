@@ -2,7 +2,7 @@
     const scripts = [
         // Внешние библиотеки (CDN)
         "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js",
-        "https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js",
+        // "https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js",
         "./libraries/opensource/jquery-3.6.0.min.js",
         "https://code.jquery.com/jquery-3.6.0.js",
         "https://code.jquery.com/ui/1.13.0/jquery-ui.js",
@@ -11,7 +11,6 @@
 
         "./shared/utils/urlValidator.js",
         "./shared/utils/moduleLoader.js",
-        "./packages/test/test.js",
         "./shared/projectAssetLoader.js",
         "./shared/components/bottomInfoPanel/index.js",
 
