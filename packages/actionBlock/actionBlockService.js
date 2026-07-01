@@ -22,7 +22,8 @@ class ActionBlockService {
     modalLoadingController,
     bottomInfoPanel,
     loginPanelController,
-    topInfoPanelController
+    topInfoPanelController,
+    fixedTextInfoController
   ) {
     this.fileManager = fileManager;
     this.textManager = textManager;
@@ -39,6 +40,7 @@ class ActionBlockService {
     this.#bottomInfoPanel = bottomInfoPanel;
     this.#loginPanelController = loginPanelController;
     this.#topInfoPanelController = topInfoPanelController;
+    this.#fixedTextInfoController = fixedTextInfoController;
 
     this.#dateManager = dateManager;
 
@@ -65,6 +67,7 @@ class ActionBlockService {
   #bottomInfoPanel;
   #loginPanelController;
   #topInfoPanelController;
+  #fixedTextInfoController;
 
 
   async createActionBlockWithAutomationAsyncOld(
@@ -202,28 +205,12 @@ class ActionBlockService {
       });
 
     function showLoadingElmenets() {
-      $(".fixed-text-info-container").show();
-      $(".gray-foreground").show();
-
-      setTextForFixedTextInfo(autmationInProgressText);
+      this.#fixedTextInfoController.show(autmationInProgressText);
     }
 
     function hideLoadingElmenets() {
       cancelButton.parentNode.removeChild(cancelButton);
-      $(".fixed-text-info-container").hide();
-      $(".fixed-text-info").text("");
-      $(".gray-foreground").hide();
-    }
-
-    function setTextForFixedTextInfo(new_text) {
-      let fixed_text_info = $(".fixed-text-info").text(new_text);
-
-      fixed_text_info.html(fixed_text_info.html().replace(/\n/g, "<br/>"));
-
-      $(".fixed-text-info").css(
-        "margin-top",
-        top_fixed_info_container_height / 2
-      );
+      this.#fixedTextInfoController.hide();
     }
   }
 

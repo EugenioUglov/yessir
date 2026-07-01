@@ -4,10 +4,6 @@ class YesSir {
       const projectAssetLoader = new ProjectAssetLoader();
      
       this.fixedTextInfoController = await new FixedTextInfoManager({ projectAssetLoader: projectAssetLoader, targetId: 'fixedTextInfoContainer' });
-
-      // fixedTextInfoController.show();
-
-      // console.log(fixedTextInfoController);
       
       const topInfoPanelController = await new TopInfoPanelManager({ projectAssetLoader: projectAssetLoader, targetId: 'topInfoBar' });
       const loginPanelController = await new LoginManager({ projectAssetLoader: projectAssetLoader, targetId: 'loginContainer' });
@@ -97,7 +93,8 @@ class YesSir {
         this.modalLoadingController,
         this.bottomInfoPanel,
         loginPanelController,
-        topInfoPanelController
+        topInfoPanelController,
+        this.fixedTextInfoController
       );
 
       this.noteController.actionBlockService = this.actionBlockService;
