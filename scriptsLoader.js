@@ -101,6 +101,7 @@
         "./shared/components/multiColorCircleLoader/index.js",
         "./packages/note/index.js",
         "./shared/components/modalBox/index.js",
+        "./shared/components/topInfoPanel/index.js",
         "./packages/logs/index.js",
         "./packages/search/index.js",
         "./packages/loginPanel/index.js",

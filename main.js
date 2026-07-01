@@ -3,6 +3,7 @@ class YesSir {
     (async () => {
       const projectAssetLoader = new ProjectAssetLoader();
      
+      const topInfoPanelController = await new TopInfoPanelManager({ projectAssetLoader: projectAssetLoader, targetId: 'topInfoBar' });
       const loginPanelController = await new LoginManager({ projectAssetLoader: projectAssetLoader, targetId: 'loginContainer' });
 
       const inputDeviceManager = new InputDeviceManager();
@@ -89,7 +90,8 @@ class YesSir {
         this.dateManager,
         this.modalLoadingController,
         this.bottomInfoPanel,
-        loginPanelController
+        loginPanelController,
+        topInfoPanelController
       );
 
       this.noteController.actionBlockService = this.actionBlockService;

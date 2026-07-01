@@ -21,7 +21,8 @@ class ActionBlockService {
     dateManager,
     modalLoadingController,
     bottomInfoPanel,
-    loginPanelController
+    loginPanelController,
+    topInfoPanelController
   ) {
     this.fileManager = fileManager;
     this.textManager = textManager;
@@ -37,6 +38,7 @@ class ActionBlockService {
     this.modalLoadingController = modalLoadingController;
     this.#bottomInfoPanel = bottomInfoPanel;
     this.#loginPanelController = loginPanelController;
+    this.#topInfoPanelController = topInfoPanelController;
 
     this.#dateManager = dateManager;
 
@@ -62,6 +64,7 @@ class ActionBlockService {
 
   #bottomInfoPanel;
   #loginPanelController;
+  #topInfoPanelController;
 
 
   async createActionBlockWithAutomationAsyncOld(
@@ -390,21 +393,21 @@ class ActionBlockService {
   handleAutomationEnd(tasks, onEnd) {
     Promise.allSettled(tasks).then((results) => {
       const statusBar = document.getElementById('status-bar');
-        console.log("Вся автоматизация завершена", results);
-        
-        // Скрываем глобальную индикацию загрузки
-        yesSir.loaderController.stopLoading();
-        if (typeof hideLoadingElements === 'function') {
-            hideLoadingElements(); 
-        }
+      console.log("Вся автоматизация завершена", results);
+      
+      // Скрываем глобальную индикацию загрузки
+      yesSir.loaderController.stopLoading();
+      if (typeof hideLoadingElements === 'function') {
+          hideLoadingElements(); 
+      }
 
-        // Вызываем onEnd, если он был передан
-        if (onEnd) {
-            onEnd(true);
-        }
+      // Вызываем onEnd, если он был передан
+      if (onEnd) {
+          onEnd(true);
+      }
 
-        // Скрываем плашку, когда всё готово
-        statusBar.classList.replace('status-bar-visible', 'status-bar-hidden');
+      // Скрываем плашку, когда всё готово
+      statusBar.classList.replace('status-bar-visible', 'status-bar-hidden');
     });
   }
 
