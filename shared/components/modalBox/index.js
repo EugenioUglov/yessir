@@ -20,7 +20,7 @@
 
             const cssPromise = projectAssetLoader.loadStyle('modalBox.css');
             
-            const htmlPromise = projectAssetLoader.loadMustacheHtml(targetId, 'index.mustache', data);
+            const htmlPromise = projectAssetLoader.loadMustacheHtmlToDomElementById({ targetId, pathHtml: 'index.mustache', data });
             
             const modalBoxViewPromise = projectAssetLoader.loadJavaScript("modalBoxView.js");
             const modalBoxControllerPromise = projectAssetLoader.loadJavaScript("modalBoxController.js");

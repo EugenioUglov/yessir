@@ -1,7 +1,7 @@
 (function() {
     const FEATURE_BASE_PATH = document.currentScript ? document.currentScript.src.substring(0, document.currentScript.src.lastIndexOf('/') + 1) : '';
 
-    class BlackLoaderManager {
+    class FixedTextInfoManager {
         constructor({ projectAssetLoader, targetId, data }) {
             // Return promise.
             return this.init({ projectAssetLoader, targetId,  data });;
@@ -17,18 +17,19 @@
 
             const cssPromise = projectAssetLoader.loadStyle('style.css');
             const htmlPromise = projectAssetLoader.loadMustacheHtmlToDomElementById({ targetId, pathHtml: 'index.mustache', data });
-
             const viewPromise = projectAssetLoader.loadJavaScript("view.js");
             const controllerPromise = projectAssetLoader.loadJavaScript("controller.js");
 
             await Promise.all([cssPromise, htmlPromise, viewPromise, controllerPromise]);
 
-            const view = new BlackLoaderView();
-            const controller = new BlackLoaderController({ view });
+            const domElement = document.getElementById(targetId);
+
+            const view = new FixedTextInfoView({ domElement });
+            const controller = new FixedTextInfoController({ view });
             
             return controller;
         }
     }
 
-    window.BlackLoaderManager = BlackLoaderManager;
+    window.FixedTextInfoManager = FixedTextInfoManager;
 })();

@@ -12,7 +12,7 @@
             projectAssetLoader.setBasePath({path: FEATURE_BASE_PATH});
 
             const cssPromise = projectAssetLoader.loadStyle('style.css');
-            const htmlPromise = projectAssetLoader.loadMustacheHtml(targetId, 'index.mustache', data);
+            const htmlPromise = projectAssetLoader.loadMustacheHtmlToDomElementById({ targetId, pathHtml: 'index.mustache', data });
 
             const sarchControllerPromise = projectAssetLoader.loadJavaScript("searchController.js");
             const sarchViewPromise = projectAssetLoader.loadJavaScript("searchView.js");

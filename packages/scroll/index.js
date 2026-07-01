@@ -13,12 +13,10 @@
          * @returns 
          */
         async init({ projectAssetLoader, targetId, data }) {
-            // const projectAssetLoader = new projectAssetLoader(FEATURE_BASE_PATH);
             projectAssetLoader.setBasePath({path: FEATURE_BASE_PATH});
 
-            const cssPromise = projectAssetLoader.loadStyle('style.css');
-            
-            const htmlPromise = projectAssetLoader.loadMustacheHtml(targetId, 'index.mustache', data);
+            const cssPromise = projectAssetLoader.loadStyle('style.css');            
+            const htmlPromise = projectAssetLoader.loadMustacheHtmlToDomElementById({ targetId, pathHtml: 'index.mustache', data });
 
             await Promise.all([cssPromise, htmlPromise]);
             

@@ -17,10 +17,10 @@
          * @returns 
          */
         async init({ projectAssetLoader, targetId }) {
-            projectAssetLoader.setBasePath({path: FEATURE_BASE_PATH});
+            projectAssetLoader.setBasePath({ path: FEATURE_BASE_PATH });
 
             const cssPromise = projectAssetLoader.loadStyle('style.css');
-            const htmlPromise = projectAssetLoader.loadMustacheHtml(targetId, 'index.mustache');
+            const htmlPromise = projectAssetLoader.loadMustacheHtmlToDomElementById({ targetId, pathHtml: 'index.mustache' });
             const viewPromise = projectAssetLoader.loadJavaScript("view.js");
             const controllerPromise = projectAssetLoader.loadJavaScript("controller.js");
 

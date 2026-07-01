@@ -28,7 +28,7 @@
 
             const cssPromise = projectAssetLoader.loadStyle('style.css');
 
-            const htmlPromise = projectAssetLoader.loadMustacheHtml(targetId, 'index.mustache');
+            const htmlPromise = projectAssetLoader.loadMustacheHtmlToDomElementById({ targetId, pathHtml: 'index.mustache' });
 
             const modelPromise = projectAssetLoader.loadJavaScript("model.js")
 

@@ -66,7 +66,7 @@ class ProjectAssetLoader {
         });
     }
 
-    async loadMustacheHtml(targetId, pathHtml, data) {
+    async loadMustacheHtmlToDomElementById({ targetId, pathHtml, data }) {
         await this.loadJavaScript('https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js');
 
         const normalizedPath = this.getNormalizedPath(pathHtml);

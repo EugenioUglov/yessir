@@ -19,7 +19,7 @@
             // const mustachePromise = await projectAssetLoader.loadJavaScript('https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js');
 
             const cssPromise = projectAssetLoader.loadStyle('multiColorCircleLoader.css');
-            const htmlPromise = projectAssetLoader.loadMustacheHtml(targetId, 'index.mustache', data);
+            const htmlPromise = projectAssetLoader.loadMustacheHtmlToDomElementById({ targetId, pathHtml: 'index.mustache', data });
 
             const loaderViewPromise = projectAssetLoader.loadJavaScript("loaderView.js");
             const loaderControllerPromise = projectAssetLoader.loadJavaScript("loaderController.js");
