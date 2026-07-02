@@ -2,7 +2,6 @@
     const scripts = [
         // Внешние библиотеки (CDN)
         "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js",
-        // "https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js",
         "./libraries/opensource/jquery-3.6.0.min.js",
         "https://code.jquery.com/jquery-3.6.0.js",
         "https://code.jquery.com/ui/1.13.0/jquery-ui.js",
@@ -47,7 +46,6 @@
 
         // Сервисы
         "./packages/actionBlock/actionBlockService.js",
-        // "./packages/search/searchSevice.js",
         "./packages/noteSpeaker/noteSpeakerService.js",
         "./packages/voiceRecognition/voiceRecognitionService.js",
         "./packages/autocomplete/autocompleteService.js",
@@ -66,23 +64,18 @@
         // Представления (Views)
         "./packages/note/noteView.js",
         "./views/pageElementView.js",
-        // "./packages/scroll/scrollView.js",
         "./packages/noteSpeaker/noteSpeakerView.js",
         "./packages/voiceRecognition/voiceRecognitionView.js",
         "./packages/actionBlock/actionBlockView.js",
         "./packages/logs/logsView.js",
         "./packages/autocomplete/autocompleteView.js",
-        // "./packages/search/searchView.js",
         "./packages/dataStorage/dataStorageView.js",
-        // "./packages/login/loginView.js",
 
         // Контроллеры
         "./packages/logs/logsController.js",
         "./packages/note/noteController.js",
         "./packages/noteSpeaker/noteSpeakerController.js",
         "./packages/voiceRecognition/voiceRecognitionController.js",
-        // "./packages/scroll/scrollController.js",
-        // "./packages/search/searchController.js",
         "./packages/dataStorage/dataStorageController.js",
         "./packages/actionBlock/actionBlockController.js",
         "./packages/autocomplete/autocompleteController.js",
@@ -104,7 +97,7 @@
         "./shared/components/topInfoPanel/index.js",
         "./packages/logs/index.js",
         "./packages/search/index.js",
-        "./packages/loginPanel/index.js",
+        "./shared/components/loginPanel/index.js",
         "./shared/components/fixedTextInfo/index.js",
 
         "./core/searchControllerEventBinder.js",
