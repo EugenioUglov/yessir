@@ -23,7 +23,7 @@ class ActionBlockService {
     bottomInfoPanel,
     loginPanelController,
     topInfoPanelController,
-    fixedTextInfoController
+    modalBoxController
   ) {
     this.fileManager = fileManager;
     this.textManager = textManager;
@@ -40,7 +40,7 @@ class ActionBlockService {
     this.#bottomInfoPanel = bottomInfoPanel;
     this.#loginPanelController = loginPanelController;
     this.#topInfoPanelController = topInfoPanelController;
-    this.#fixedTextInfoController = fixedTextInfoController;
+    this.#modalBoxController = modalBoxController;
 
     this.#dateManager = dateManager;
 
@@ -67,7 +67,7 @@ class ActionBlockService {
   #bottomInfoPanel;
   #loginPanelController;
   #topInfoPanelController;
-  #fixedTextInfoController;
+  #modalBoxController;
 
 
   async createActionBlockWithAutomationAsyncOld(
@@ -123,10 +123,6 @@ class ActionBlockService {
 
     const autmationInProgressText =
       'Automation in progress. It can take a while.\n\nYou can click "Cancel" button to skip automation works.';
-
-    let topFixedInfoContainerHeight = document.getElementsByClassName(
-      "fixed-text-info-container"
-    )[0].offsetHeight;
 
     showLoadingElmenets();
 
@@ -205,12 +201,12 @@ class ActionBlockService {
       });
 
     function showLoadingElmenets() {
-      this.#fixedTextInfoController.show(autmationInProgressText);
+      this.#modalBoxController.show({ bodyText: autmationInProgressText });
     }
 
     function hideLoadingElmenets() {
       cancelButton.parentNode.removeChild(cancelButton);
-      this.#fixedTextInfoController.hide();
+      this.#modalBoxController.hide();
     }
   }
 

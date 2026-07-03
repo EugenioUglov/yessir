@@ -756,7 +756,7 @@ class ActionBlockView {
   }
 
   showAlert(content, title) {
-    let dialogInfoElem = $("#dialog_info");
+    let dialogInfoElem = $("#alert_center");
     $(".black_background").show();
     // Hide search area with Action-Blocks.
     this.hidePage();

@@ -98,7 +98,6 @@
         "./packages/logs/index.js",
         "./packages/search/index.js",
         "./shared/components/loginPanel/index.js",
-        "./shared/components/fixedTextInfo/index.js",
 
         "./core/searchControllerEventBinder.js",
         

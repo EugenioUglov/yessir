@@ -2,8 +2,6 @@ class YesSir {
   constructor({ onEnd }) {
     (async () => {
       const projectAssetLoader = new ProjectAssetLoader();
-     
-      this.fixedTextInfoController = await new FixedTextInfoManager({ projectAssetLoader: projectAssetLoader, targetId: 'fixedTextInfoContainer' });
       
       const topInfoPanelController = await new TopInfoPanelManager({ projectAssetLoader: projectAssetLoader, targetId: 'topInfoBar' });
       const loginPanelController = await new LoginManager({ projectAssetLoader: projectAssetLoader, targetId: 'loginContainer' });
@@ -94,7 +92,7 @@ class YesSir {
         this.bottomInfoPanel,
         loginPanelController,
         topInfoPanelController,
-        this.fixedTextInfoController
+        this.modalBoxController
       );
 
       this.noteController.actionBlockService = this.actionBlockService;
@@ -269,9 +267,9 @@ let yesSir;
 
     // Resize content in dialog info.
     function resizeContentDialogInfo() {
-      let width_dialog_info = $(".content").css("width");
+      let width_alert_center = $(".content").css("width");
 
-      $(".dialog_content").css({
+      $(".alert_center_content").css({
         width: "250px",
       });
     }

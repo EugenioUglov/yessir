@@ -217,10 +217,6 @@ div#welcome_page {
   border-radius: 50px;
 }
 
-.dialog_content .fixed_elements {
-  margin-right: 80px;
-}
-
 #logs {
   padding: 10px;
   align-content: flex-start;
@@ -262,12 +258,20 @@ div#welcome_page {
   text-align: center;
 }
 
-#dialog_info .text_info {
+#alert_center {
+  outline: none;
+}
+
+#alert_center .text_info {
   word-wrap: break-word;
 }
 
-#dialog_info button {
+#alert_center button {
   margin: 10px;
+}
+
+.alert_center_content .fixed_elements {
+  margin-right: 80px;
 }
 
 #content_executed_from_actionBlock .content {
@@ -668,4 +672,12 @@ ul li.checked::before {
 
 .inline {
   display: inline-block;
+}
+
+.gray-foreground {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  background-color: #00000094;
 }
