@@ -147,7 +147,7 @@ class DefaultActionBlocks {
             actionBlock_open_file_manager,
             actionBlock_save_to_file,
             actionBlock_delete_all_actionBlocks,
-            actionBlock_open_speeh_assistant,
+            // actionBlock_open_speeh_assistant,
             // actionBlock_login,
             actionBlock_get_from_database,
             actionBlock_save_to_database,
@@ -721,7 +721,7 @@ class DefaultActionBlocks {
 
         function getContentActionBlockSpeechAssistant() {
             return `<script>
-                yesSir.hashHandler.setHashSpeechAssistant();
+                
             </script>`;
         }
 

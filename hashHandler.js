@@ -59,7 +59,6 @@ class HashHandler {
     createNote: "createnote",
     createLink: "createlink",
     editActionBlock: "editactionblock",
-    speechRecognition: "speechassistant",
     contentActionBlock: "contentactionblock",
     login: "login",
     savetodatabase: "savetodatabase",
@@ -165,12 +164,6 @@ class HashHandler {
     window.location.hash = this.PAGE_NAME_ENUM.createLink;
   }
 
-  setHashSpeechAssistant() {
-    this.#hashPrevious = this.getNormalizedCurrentHash();
-
-    this.#setCurrentPageName(this.PAGE_NAME_ENUM.speechRecognition);
-    window.location.hash = this.PAGE_NAME_ENUM.speechRecognition;
-  }
 
   setHashGetFromDatabase() {
     // this.#hash_previous = this.getNormalizedCurrentHash();
@@ -387,16 +380,6 @@ class HashHandler {
       });
 
       $("#elements_for_file_manager").show();
-
-      this.scrollController.setPositionTop();
-    } else if (
-      this.getNormalizedCurrentHash().includes(
-        "#" + this.PAGE_NAME_ENUM.speechRecognition
-      )
-    ) {
-      // $('.content').hide();
-      $(".fixed_elements").hide();
-      $(".speech_recognition_container").show();
 
       this.scrollController.setPositionTop();
     } else if (

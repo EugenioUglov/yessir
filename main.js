@@ -248,7 +248,6 @@ let yesSir;
 
       hashHandler.handleHashHandler = () => {
         yesSir.domElementManager.hideShowedElements();
-        yesSir.domElementManager.hideElement(".speech_recognition_container");
         yesSir.domElementManager.hideElement("#elements_for_file_manager");
         yesSir.domElementManager.showElement(".content");
         yesSir.domElementManager.showElement(".fixed_elements");

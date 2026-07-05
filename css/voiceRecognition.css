@@ -43,12 +43,7 @@
     font-size: 40px;
     font-weight: 300;
 }
-#info {
-    font-size: 20px;
-    text-align: center;
-    color: #777;
-    visibility: hidden;
-}
+
 #results {
     font-size: 14px;
     font-weight: bold;

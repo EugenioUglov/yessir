@@ -195,9 +195,6 @@ class ActionBlockView {
     return [];
   }
 
-  // showElementsForVoiceRecognitionManager() {
-  //     $('#elements_for_voice_recognition_settings').show();
-  // }
 
   showElementsForFileManager() {
     $("#elements_for_file_manager").show();

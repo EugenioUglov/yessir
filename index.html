@@ -5,7 +5,6 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-
 	<title>Yes Sir!</title>
 	<!-- Favicon -->
 	<link rel="icon" type="image/x-icon" href="./images/icons/favicon.ico"/>
@@ -26,7 +25,6 @@
  	-->
 
 	<link rel="stylesheet" type="text/css" media="screen" href="./css/voiceRecognition.css">
-	<link rel="stylesheet" type="text/css" media="screen" href="./css/speechRecognition.css">
 	<link rel="stylesheet" type="text/css" media="screen" href="./css/actionBlock.css">
 	<link rel="stylesheet" type="text/css" media="screen" href="./css/dataManager.css">
 	<link rel="stylesheet" type="text/css" media="screen" href="./css/jquery-ui.css">
@@ -37,7 +35,6 @@
 </head>
 
 <body>
-	
 	<div id="topInfoBar"></div>
 	
 	<div class = "content">
@@ -54,7 +51,6 @@
 				<div id="autocomplete">
 					<div id="request_container"></div>	
 
-
 					<div id="btn_voice_recognition" class="inline btn_icon" title="Tell request using voice" style="display:none">
 						<img id="img_voice_recognition" src="./icons/mic.gif" alt="Start">
 					</div>
@@ -66,7 +62,6 @@
 					
 				<div id="advancedSearcherByTags"></div>
 
-				
 				<div style="height: 90px;"></div>
 				<div id="advanced_settings" style="display: none;">
 					<form id="rb_search_mode_container">
@@ -104,11 +99,6 @@
 					</div>
 				</div>
 				-->
-
-				<!-- <script src="./autocomplete/js/autoComplete.js"></sc> -->
-				<!--<script src="./autocomplete/js/index.js"></script>-->
-				
-
 				
 
 				<!-- 
@@ -120,284 +110,210 @@
 				<img src="./icons/spinner-greyblue.svg" class="icon_spinner" width="200px" height="200px" alt="loading icon" style="display: none;">
 			</div>
 
-			
-				<div class="modal_header">
-					<div class="btn-close-container"style="display: flex; justify-content: flex-end; flex-flow: row wrap;">
-						<button class="btn_open_settings_actionBlock" title="Close" style="display: none;  width: 45px; height: 45px; border: none; cursor: pointer; background-color: transparent;" >
-							<!-- Get search button from site-->
-							<img class="" src="https://cdn.onlinewebfonts.com/svg/img_120429.png" onerror="this.style.visibility='hidden'" style="width: 20px; height: 20px; margin-right: 2px; vertical-align: middle; font-size: 1.5rem; filter: hue-rotate(120deg) brightness(15%) contrast(0%);">
-						</button>	
+			<div class="modal_header">
+				<div class="btn-close-container"style="display: flex; justify-content: flex-end; flex-flow: row wrap;">
+					<button class="btn_open_settings_actionBlock" title="Close" style="display: none;  width: 45px; height: 45px; border: none; cursor: pointer; background-color: transparent;" >
+						<!-- Get search button from site-->
+						<img class="" src="https://cdn.onlinewebfonts.com/svg/img_120429.png" onerror="this.style.visibility='hidden'" style="width: 20px; height: 20px; margin-right: 2px; vertical-align: middle; font-size: 1.5rem; filter: hue-rotate(120deg) brightness(15%) contrast(0%);">
+					</button>	
 
-						<button id="btn_close" title="Close" style="display: none; border: none; cursor: pointer;" >
-							<!-- Get search button from site-->
-							<div id="icon_close" class="image">
-							</div>
-						</button>
-					</div>
-					
-					<div class="buttons"style="display: flex; justify-content: flex-end; flex-flow: row wrap;">
-						
-						
-						<!-- <button class="btn_open_settings_actionBlock btn" type="button" style="display: none;">Edit</button> -->
-						<!-- <button class="btn_content_speaker btn" type="button" style="display: none;">Listen</button>
-						<button id="showJustContentButton" class="btn" type="button" style="display: none;">Show just content</button> -->
-					</div>
-
-					<input type="text" class="inputFieldWithSuggestions fixed-top" list="searherOptions" hidden />
-					<datalist id="searherOptions">
-					</datalist>
-
-					<div id="content_executed_from_actionBlock" style="margin-bottom: 30px; padding-top: 50px;  margin: 0 10px; display: none;">
-						<b></b><div class="title note_title center" style="font-size:30px"></div></b>
-						<div class="content"></div>
-						<button id="btn_quick_update_actionBlock" class="btn btn_save btn_right" type="button">Save</button>
-					</div>
-				</div>
-
-				<div id="elements_to_create_action-block" class="elements_for_executed_actionBlock" style="display: none; padding-top: 50px;" disabled>
-
-
-					<!--
-					<button class="home">
-						<div class="icon_tag"></div>
-						<span>HOME</span>
+					<button id="btn_close" title="Close" style="display: none; border: none; cursor: pointer;" >
+						<!-- Get search button from site-->
+						<div id="icon_close" class="image">
+						</div>
 					</button>
-					-->
-
-					<div class="center" style="font-size:30px; color: #404040;"><b><div class="title"><b> Create Action-Block </b></div></b></div>
-
 				</div>
-
-				<div id="elements_to_edit_actionBlock" class="elements_for_executed_actionBlock" style="display: none;" disabled>
-					<div style="font-size:30px; padding: 50px; color: #404040;"><b>Edit Action-Block </b></div>
-					<div class="title_actionBlock" style="font-size:30px; padding: 20px;"></div>
-				</div>
-
-				<div id="settings_actionBlock_container" class="elements_for_executed_actionBlock" style="display: none;" disabled>
-					<div style="outline: 1px solid gray; padding: 10px; border-radius: 10px;">
-						<div class="text_title_for_input_field" title="A uniq phrase in the title. In wirting command the same with this title, the information will be found directly">Title / Command</div> 
-						<div><textarea class="input_field_title interactive_field resize_field" placeholder="" rows="1" cols="50" max-width="20px" required></textarea> </div>
-						<div align="left" class="text_example">Example: Show my tasks</div>
-						<br>
-
-						<div class="type_actionBlock_container">
-							<div class="text_title_for_input_field" title="Action when a command is triggered">Action</div>
-							<select name="topic" class="dropdown_select_action interactive_field" style="cursor: pointer">
-							</select>
-							<br><br>
-						</div>
-						
-						<div class="action_description_container">
-							<div id="title_action_descritption" class="text_title_for_input_field">URL</div>
-							<textarea class="input_field_content interactive_field resize_field" rows=10 value=""></textarea>
-						</div>
-					</div>
 				
-				
-					<div class="optional_elements_for_action-block" style="outline: 1px solid gray; padding: 20px; margin-bottom: 10px; border-radius: 10px; margin-top: 20px;">	
-						<h2 style="color: #404040;">Optional</h2>
-						<br>
-						<div class="flex_container">
-							<img src="./icons/tag.png" class="image img_left_of_text" width="20px" height="18px" alt="tags icon">
-							<div class="text_title_for_input_field" title="Words to find an information from the search field.">Tags - words that you can use to find this information</div>
-						</div>
-						<!--<select name="topic" id="dropdown_select_language" style="width:227px">
-						</select>-->
-						<div><textarea class="input_field_tags interactive_field resize_field" placeholder="" rows="1" cols="50" max-width="20px"></textarea></div>
-						<div align="left" class="text_example">Example: targets, target, task, to do, plan</div>
-						<br>
-						
-						<div class="flex_container">
-							<img src="./icons/picture.png" class="image img_left_of_text" width="20px" height="18px">
-							<div class="text_title_for_input_field" title="Path to the image">Image URL</div> 
-						</div>
-						<div><textarea class="input_field_image_URL interactive_field resize_field" placeholder="" rows="1" cols="50" max-width="20px"></textarea></div>
-						<div align="left" class="text_example">Example: https://imageTitle.jpg</div>
-					</div>
-
-					<div class="action-block_preview_container" style="outline: 1px solid gray; padding: 20px; border-radius: 10px; margin-top: 20px">
-						<h2 style="color: #404040;">Preview</h2>
-						<div class="actionBlocks_container">
-							<div class="infoBlock_preview_container">
-								<div id="actionBlock-preview" class="infoBlock">
-									<div class="settings">
-										<div class="icon"></div>
-									</div>
-									<img class="img">
-									<div class="title"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<p id="debugOutput"></p>
-					<div style="
-						height: 60px;
-						width: 110%;
-						background-color: #dfdfdf;
-						position: fixed;
-						bottom: 0px;
-						left: 0;
-					"></div>
-					<div class="bottom_buttons">
-						<button id="btn_create_actionBlock_with_automation" class="btn btn_save btn_right"  type="button">Save</button>
+				<div class="buttons"style="display: flex; justify-content: flex-end; flex-flow: row wrap;">
 					
-						<!-- <button id="btn_create_actionBlock_with_automation" class="btn btn_save btn_right" style="
-							position: fixed;
-							bottom: 0;
-							right: 100px;
-							margin-top: 10px;
-						" type="button">Magic Save</button> -->
-						<button id="" class="btn_update_actionBlock btn btn_save btn_right" type="button">Save</button>
-						<button id="btn_create_default_actionBlocks" class="btn btn_right" style="
-							margin-top: 10px; 
-							margin-left: 20px;
-						" type="button">Create default Action-Blocks</button>
-						<button id="btn_delete_actionBlock" class="btn btn_right" style="
-							position: fixed;
-							bottom: 0;
-							right: 85px;
-							margin-top: 10px;
-							margin-left: 20px;
-							border: 2px solid #ad4d4d;
-						" type="button">Delete</button>
-						<button id="btn_cancel" class="btn_back btn btn_right" style="
-							position: fixed;
-							bottom: 0;
-							right: 235px;
-							margin-top: 10px;
-						" type="button">Cancel</button></div>
-					</div>
+					
+					<!-- <button class="btn_open_settings_actionBlock btn" type="button" style="display: none;">Edit</button> -->
+					<!-- <button class="btn_content_speaker btn" type="button" style="display: none;">Listen</button>
+					<button id="showJustContentButton" class="btn" type="button" style="display: none;">Show just content</button> -->
 				</div>
 
-				<div id="elements_for_data_storage" class="elements_for_executed_actionBlock" style="display: none;">
-					<div class="center">
-						<div class="data_storage_container">
-							<div class="forms">
-								<div id="autorization_log"></div>
-								<br>
+				<input type="text" class="inputFieldWithSuggestions fixed-top" list="searherOptions" hidden />
+				<datalist id="searherOptions">
+				</datalist>
 
-								<span class="rb_container" id="rb_storage_localStorage_container">
-									<label for="rb_storage_localStorage" title = "Hold data in the current browser">
-										<input type="radio" id="rb_storage_localStorage" name="radio" checked>
-										<span class="rdo"></span>
-										<span class="text">LocalStorage</span>
-									</label>
-								</span>
-				
-								<span class="rb_container" id="rb_storage_database_conainer">
-									<label for="rb_storage_database" title = "Use data from any browser and device for current user">
-										<input type="radio" id="rb_storage_database" name="radio">
-										<span class="rdo"></span>
-										<span class="text">Database</span>
-									</label>
-								</span>
-		
-									
-								<br><br>
-								<div id="authorization_form" class="outline" style="display: none;">	
-									<b>Authorization form</b><br><br>
-									<div class="text_title_for_input_field">Username</div>
-									<div><input type="text" id="input_field_nickname" name="username" size="4"><br><br></div>
-									<div class="text_title_for_input_field">Password</div>
-									<div><input type="text" id="input_field_password" name="password"><br><br></div>
-									<button id="btn_authorization" class="btn" type="button">Authorization</button>
-								</div>
-
-								<br>
-								<div class="info_data_storage outline">
-									<b>Info</b>
-									<br><br>
-									* LocalStorage - save data in browser storage. Data will not been synchronized between other devices and browsers.
-									<br><br>
-									* DB - all saved commands will be available from different devices and browsers.
-								</div>
-							</div>
-						</div>
-
-					</div>
+				<div id="content_executed_from_actionBlock" style="margin-bottom: 30px; padding-top: 50px;  margin: 0 10px; display: none;">
+					<b></b><div class="title note_title center" style="font-size:30px"></div></b>
+					<div class="content"></div>
+					<button id="btn_quick_update_actionBlock" class="btn btn_save btn_right" type="button">Save</button>
 				</div>
+			</div>
 
-				<div id="elements_for_voice_recognition_settings" class="elements_for_executed_actionBlock" style="display: none; padding-top: 50px;" disabled>
-					<div class="center">
-						<div class="outline">
-							<p>Language for speech recognition</p>
-							<div id="language_selector_container">
-								<select id="dropdown_select_language"></select>
-								<br>
-								<select id="select_dialect"></select>
-							</div>
-						</div>
-						<br>
+			<div id="elements_to_create_action-block" class="elements_for_executed_actionBlock" style="display: none; padding-top: 50px;" disabled>
 
-					</div>
-				</div>	
 
-				<div id="elements_for_logs" class="elements_for_executed_actionBlock" style="display: none; padding-top: 50px;" disabled>
-					<div class="center">
-						<!-- Logs -->
-						<!-- * Logs to see errors and warnings. Also a possibilities how to resolve -->
-						<button id="btn_download_logs" class="btn" title="Save logs in the file">Download logs</button>
-						<br>
+				<!--
+				<button class="home">
+					<div class="icon_tag"></div>
+					<span>HOME</span>
+				</button>
+				-->
 
-						<div class="outline">
-							<!-- Speech API logs -->
-							<div id="info">
-								<p id="info_speak_now">Speak now.</p>
-								<p id="info_no_speech">Voice Recognition error! No speech was detected. You may need to adjust your
-									<a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">
-									microphone settings</a>.</p>
-								<p id="info_no_microphone" style="display:none">
-									Voice Recognition error! No microphone was found. Ensure that a microphone is installed and that
-									<a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">
-									microphone settings</a> are configured correctly.</p>
-								<p id="info_allow">Voice Recognition error! Click the "Allow" button above to enable your microphone.</p>
-								<p id="info_denied">Voice Recognition error! Permission to use microphone was denied.</p>
-								<p id="info_blocked">Voice Recognition error! Permission to use microphone is blocked. To change,
-									go to chrome://settings/contentExceptions#media-stream</p>
-								<p id="info_upgrade"> Voice Recognition error! Web Speech API is not supported by this browser.
-									Upgrade to <a href="//www.google.com/chrome">Chrome</a>
-									version 25 or later.</p>
-							</div>
-							<!-- .END (Speech API logs) -->
-					
-					
-							<!-- Web speech-->
-							<br>
-							<div id="results">
-								<span id="final_span" class="final"></span>
-								<span id="interim_span" class="interim"></span>
-							</div>
-							<!-- .END (Web speech)-->
-						</div>
-					
-						<br>
-						<div class="outline">
-							<h1 class="title_text">Logs, Warnings, Errors</h1>
-							<div class="logs_text"></div>
-						</div>
+				<div class="center" style="font-size:30px; color: #404040;"><b><div class="title"><b> Create Action-Block </b></div></b></div>
+
+			</div>
+
+			<div id="elements_to_edit_actionBlock" class="elements_for_executed_actionBlock" style="display: none;" disabled>
+				<div style="font-size:30px; padding: 50px; color: #404040;"><b>Edit Action-Block </b></div>
+				<div class="title_actionBlock" style="font-size:30px; padding: 20px;"></div>
+			</div>
+
+			<div id="settings_actionBlock_container" class="elements_for_executed_actionBlock" style="display: none;" disabled>
+				<div style="outline: 1px solid gray; padding: 10px; border-radius: 10px;">
+					<div class="text_title_for_input_field" title="A uniq phrase in the title. In wirting command the same with this title, the information will be found directly">Title / Command</div> 
+					<div><textarea class="input_field_title interactive_field resize_field" placeholder="" rows="1" cols="50" max-width="20px" required></textarea> </div>
+					<div align="left" class="text_example">Example: Show my tasks</div>
+					<br>
+
+					<div class="type_actionBlock_container">
+						<div class="text_title_for_input_field" title="Action when a command is triggered">Action</div>
+						<select name="topic" class="dropdown_select_action interactive_field" style="cursor: pointer">
+						</select>
 						<br><br>
 					</div>
+					
+					<div class="action_description_container">
+						<div id="title_action_descritption" class="text_title_for_input_field">URL</div>
+						<textarea class="input_field_content interactive_field resize_field" rows=10 value=""></textarea>
+					</div>
+				</div>
+			
+			
+				<div class="optional_elements_for_action-block" style="outline: 1px solid gray; padding: 20px; margin-bottom: 10px; border-radius: 10px; margin-top: 20px;">	
+					<h2 style="color: #404040;">Optional</h2>
+					<br>
+					<div class="flex_container">
+						<img src="./icons/tag.png" class="image img_left_of_text" width="20px" height="18px" alt="tags icon">
+						<div class="text_title_for_input_field" title="Words to find an information from the search field.">Tags - words that you can use to find this information</div>
+					</div>
+					<!--<select name="topic" id="dropdown_select_language" style="width:227px">
+					</select>-->
+					<div><textarea class="input_field_tags interactive_field resize_field" placeholder="" rows="1" cols="50" max-width="20px"></textarea></div>
+					<div align="left" class="text_example">Example: targets, target, task, to do, plan</div>
+					<br>
+					
+					<div class="flex_container">
+						<img src="./icons/picture.png" class="image img_left_of_text" width="20px" height="18px">
+						<div class="text_title_for_input_field" title="Path to the image">Image URL</div> 
+					</div>
+					<div><textarea class="input_field_image_URL interactive_field resize_field" placeholder="" rows="1" cols="50" max-width="20px"></textarea></div>
+					<div align="left" class="text_example">Example: https://imageTitle.jpg</div>
 				</div>
 
-				<button id="btn_back" class="btn_back btn btn_right" type="button" style="
-					display: none;
-					visibility: hidden; 
-					margin-bottom: 50px;
-				">Back</button>
+				<div class="action-block_preview_container" style="outline: 1px solid gray; padding: 20px; border-radius: 10px; margin-top: 20px">
+					<h2 style="color: #404040;">Preview</h2>
+					<div class="actionBlocks_container">
+						<div class="infoBlock_preview_container">
+							<div id="actionBlock-preview" class="infoBlock">
+								<div class="settings">
+									<div class="icon"></div>
+								</div>
+								<img class="img">
+								<div class="title"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<p id="debugOutput"></p>
+				<div style="
+					height: 60px;
+					width: 110%;
+					background-color: #dfdfdf;
+					position: fixed;
+					bottom: 0px;
+					left: 0;
+				"></div>
+				<div class="bottom_buttons">
+					<button id="btn_create_actionBlock_with_automation" class="btn btn_save btn_right"  type="button">Save</button>
 				
-				<div class="modal_container"></div>
-		</div>
-	</div>
+					<!-- <button id="btn_create_actionBlock_with_automation" class="btn btn_save btn_right" style="
+						position: fixed;
+						bottom: 0;
+						right: 100px;
+						margin-top: 10px;
+					" type="button">Magic Save</button> -->
+					<button id="" class="btn_update_actionBlock btn btn_save btn_right" type="button">Save</button>
+					<button id="btn_create_default_actionBlocks" class="btn btn_right" style="
+						margin-top: 10px; 
+						margin-left: 20px;
+					" type="button">Create default Action-Blocks</button>
+					<button id="btn_delete_actionBlock" class="btn btn_right" style="
+						position: fixed;
+						bottom: 0;
+						right: 85px;
+						margin-top: 10px;
+						margin-left: 20px;
+						border: 2px solid #ad4d4d;
+					" type="button">Delete</button>
+					<button id="btn_cancel" class="btn_back btn btn_right" style="
+						position: fixed;
+						bottom: 0;
+						right: 235px;
+						margin-top: 10px;
+					" type="button">Cancel</button></div>
+				</div>
+			</div>
+
+			<div id="elements_for_data_storage" class="elements_for_executed_actionBlock" style="display: none;">
+				<div class="center">
+					<div class="data_storage_container">
+						<div class="forms">
+							<div id="autorization_log"></div>
+							<br>
+
+							<span class="rb_container" id="rb_storage_localStorage_container">
+								<label for="rb_storage_localStorage" title = "Hold data in the current browser">
+									<input type="radio" id="rb_storage_localStorage" name="radio" checked>
+									<span class="rdo"></span>
+									<span class="text">LocalStorage</span>
+								</label>
+							</span>
+			
+							<span class="rb_container" id="rb_storage_database_conainer">
+								<label for="rb_storage_database" title = "Use data from any browser and device for current user">
+									<input type="radio" id="rb_storage_database" name="radio">
+									<span class="rdo"></span>
+									<span class="text">Database</span>
+								</label>
+							</span>
 	
-	<div class = "speech_recognition_container" style = "align-items: center; display: none; justify-content: center; flex-direction: column; padding-top: 20px;">
-		<button class="btn_speech_assistant" style="margin-top: 20px; border-radius: 200px; background-color: #2b4078b8; color: white; display: flex; flex-direction: column; align-items: center; width: 250px; height: 250px; font-size: 18px; padding: 10px; text-align: center; padding-top:40px"><img class="img_speech_recognition" src="./icons/mic.gif" alt="Start" style="width: 50px; filter: invert(48%) sepia(13%) saturate(3207%) hue-rotate(25deg) brightness(95%) contrast(80%);">Speech assistant</button>
+								
+							<br><br>
+							<div id="authorization_form" class="outline" style="display: none;">	
+								<b>Authorization form</b><br><br>
+								<div class="text_title_for_input_field">Username</div>
+								<div><input type="text" id="input_field_nickname" name="username" size="4"><br><br></div>
+								<div class="text_title_for_input_field">Password</div>
+								<div><input type="text" id="input_field_password" name="password"><br><br></div>
+								<button id="btn_authorization" class="btn" type="button">Authorization</button>
+							</div>
 
-		<button class="btn_speech_recognition_info" style="border-radius: 200px; background-color: #2b4078b8; color: white; display: flex; flex-direction: column; align-items: center; text-align: center; width: 250px; height: 250px; font-size: 18px; padding: 10px; padding-top:80px">Fare clic su questo pulsante per ottenere informazioni su questa applicazione</button>
+							<br>
+							<div class="info_data_storage outline">
+								<b>Info</b>
+								<br><br>
+								* LocalStorage - save data in browser storage. Data will not been synchronized between other devices and browsers.
+								<br><br>
+								* DB - all saved commands will be available from different devices and browsers.
+							</div>
+						</div>
+					</div>
 
-		<!-- Save information with the voice assistant -->
-		<button class="btn_speech_recognition_saver" style="margin-top: 20px; border-radius: 200px; background-color: #2b4078b8; color: white; display: flex; flex-direction: column; align-items: center; width: 250px; height: 250px; font-size: 18px; padding: 10px; text-align: center; padding-top:40px"><img class="img_speech_recognition" src="./icons/mic.gif" alt="Start" style="width: 50px; filter: invert(48%) sepia(13%) saturate(3207%) hue-rotate(25deg) brightness(95%) contrast(80%);">Salva le informazioni con l'assistente vocale</button>
+				</div>
+			</div>
 
-		<button class="btn_speech_recognition_searcher" style="margin-top: 20px; border-radius: 200px; background-color: #2b4078b8; color: white; display: flex; flex-direction: column; align-items: center; width: 250px; height: 250px; font-size: 18px; padding: 10px; text-align: center; padding-top:40px"><img class="img_speech_recognition" src="./icons/mic.gif" alt="Start" style="width: 50px; filter: invert(48%) sepia(13%) saturate(3207%) hue-rotate(25deg) brightness(95%) contrast(80%);">Trova informazioni con l'assistente vocale</button>
+			<button id="btn_back" class="btn_back btn btn_right" type="button" style="
+				display: none;
+				visibility: hidden; 
+				margin-bottom: 50px;
+			">Back</button>
+			
+			<div class="modal_container"></div>
+		</div>
 	</div>
 	
 	<div class="fixed_elements">
@@ -417,8 +333,6 @@
 
 		<div id="scrollContainer"></div>
 	</div>
-
-
 
 	<dialog id="dialog_upload_actionBloks_from_file">
 		<form method="dialog">
@@ -502,7 +416,6 @@
 	<div class="footer" style="margin-bottom:150px"></div>
 
 	<div id="bottomInfoPanelContainer"></div>
-
 
 	<!-- When active hide all content, but not info alert -->
 	<div class="black_background" style="display: none;"></div>

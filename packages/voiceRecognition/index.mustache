@@ -1,0 +1,44 @@
+<div class="outline">
+    <!-- Speech API logs -->
+    <div id="info" style="font-size: 20px; text-align: center; color: #777; visibility: hidden;">
+        <p id="info_speak_now">Speak now.</p>
+        <p id="info_no_speech">Voice Recognition error! No speech was detected. You may need to adjust your
+            <a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">
+            microphone settings</a>.</p>
+        <p id="info_no_microphone" style="display:none">
+            Voice Recognition error! No microphone was found. Ensure that a microphone is installed and that
+            <a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">
+            microphone settings</a> are configured correctly.</p>
+        <p id="info_allow">Voice Recognition error! Click the "Allow" button above to enable your microphone.</p>
+        <p id="info_denied">Voice Recognition error! Permission to use microphone was denied.</p>
+        <p id="info_blocked">Voice Recognition error! Permission to use microphone is blocked. To change,
+            go to chrome://settings/contentExceptions#media-stream</p>
+        <p id="info_upgrade"> Voice Recognition error! Web Speech API is not supported by this browser.
+            Upgrade to <a href="//www.google.com/chrome">Chrome</a>
+            version 25 or later.</p>
+    </div>
+    <!-- .END (Speech API logs) -->
+
+
+    <!-- Web speech-->
+    <br>
+    <div id="results">
+        <span id="final_span" class="final"></span>
+        <span id="interim_span" class="interim"></span>
+    </div>
+    <!-- .END (Web speech)-->
+</div>
+
+<div id="elements_for_voice_recognition_settings" class="elements_for_executed_actionBlock" style="display: none; padding-top: 50px;" disabled>
+    <div class="center">
+        <div class="outline">
+            <p>Language for speech recognition</p>
+            <div id="language_selector_container">
+                <select id="dropdown_select_language"></select>
+                <br>
+                <select id="select_dialect"></select>
+            </div>
+        </div>
+        <br>
+    </div>
+</div>	

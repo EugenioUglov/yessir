@@ -197,10 +197,6 @@ div#welcome_page {
   border-radius: 8px;
 }
 
-.title_text {
-  font-size: 20px;
-  text-align: center;
-}
 
 .text_small {
   font-size: 10px;
@@ -223,9 +219,6 @@ div#welcome_page {
   text-align: left;
 }
 
-.logs_text {
-  word-wrap: break-word;
-}
 
 .line {
   margin: 30px;
