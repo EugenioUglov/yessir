@@ -23,7 +23,8 @@ class ActionBlockService {
     bottomInfoPanel,
     loginPanelController,
     topInfoPanelController,
-    modalBoxController
+    modalBoxController,
+    centeredAlert
   ) {
     this.fileManager = fileManager;
     this.textManager = textManager;
@@ -58,7 +59,8 @@ class ActionBlockService {
       this.model.actionDescriptionByActionName,
       fileManager,
       textManager,
-      dropdownManager
+      dropdownManager,
+      centeredAlert
     );
 
     this.hashHandler.setActionBlockService(this);

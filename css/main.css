@@ -251,22 +251,6 @@ div#welcome_page {
   text-align: center;
 }
 
-#alert_center {
-  outline: none;
-}
-
-#alert_center .text_info {
-  word-wrap: break-word;
-}
-
-#alert_center button {
-  margin: 10px;
-}
-
-.alert_center_content .fixed_elements {
-  margin-right: 80px;
-}
-
 #content_executed_from_actionBlock .content {
   font-size: 15px;
   text-align: center;

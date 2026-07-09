@@ -3,10 +3,15 @@ class YesSir {
     (async () => {
       const projectAssetLoader = new ProjectAssetLoader();
       
+      
       const topInfoPanelController = await new TopInfoPanelManager({ projectAssetLoader: projectAssetLoader, targetId: 'topInfoBar' });
+
       const loginPanelController = await new LoginManager({ projectAssetLoader: projectAssetLoader, targetId: 'loginContainer' });
 
+      const centeredAlertManager = await new CenteredAlertManager({ projectAssetLoader: projectAssetLoader, targetId: 'alertCenterContainer' });
+
       const inputDeviceManager = new InputDeviceManager();
+      
       this.googleSpeechRecognition = new GoogleSpeechRecognition();
       this.googleTextToSpeech = new GoogleTextToSpeech();
       this.textManager = new TextManager();
@@ -92,7 +97,8 @@ class YesSir {
         this.bottomInfoPanel,
         loginPanelController,
         topInfoPanelController,
-        this.modalBoxController
+        this.modalBoxController,
+        centeredAlertManager
       );
 
       this.noteController.actionBlockService = this.actionBlockService;
@@ -117,161 +123,142 @@ let yesSir;
 (function () {
   // new LoaderManager('.multiColorCircleLoader');
 
+  window.addEventListener("load", function () {
+    onPageLoaded();
+  });
+
+  function onYesSirLoaded() {
+    yesSir.loaderController.startLoading();
+
+    // Initialize Libraries.
+    const observable = yesSir.observable;
+    const dateManager = yesSir.dateManager;
+
+    const keyCodeByKeyName = yesSir.keyCodeByKeyName;
+    const textManager = yesSir.textManager;
+    const dialogWindow = yesSir.dialogWindow;
+    const fileManager = yesSir.fileManager;
+    dropdownManager = yesSir.dropdownManager;
+    mapDataStructure = yesSir.mapDataStructure;
+    dbManager = yesSir.dbManager;
+    arrayManager = yesSir.arrayManager;
+
+    // Initialize Services.
+    const voiceRecognitionService = yesSir.voiceRecognitionService;
+    const autocompleteService = yesSir.autocompleteService;
+    const loaderController = yesSir.loaderController;
+    const noteController = yesSir.noteController;
+    const dataStorageService = yesSir.dataStorageService;
+    const hashHandler = yesSir.hashHandler;
+    const actionBlockService = yesSir.actionBlockService;
 
 
-    window.addEventListener("load", function () {
-      onPageLoaded();
+    const scrollController = yesSir.scrollController;
+
+    // const searchController = new SearchManager(
+    //   { 
+    //     projectAssetLoaderClass: ProjectAssetLoaderClass, 
+    //     textManager: textManager, 
+    //     keyCodeByKeyName: keyCodeByKeyName, 
+    //     targetId: 'request_container' 
+    //   }
+    // );
+
+    const noteSpeakerController = new NoteSpeakerController(
+      yesSir.noteSpeakerService,
+      noteController
+    );
+    
+    const actionBlockController = new ActionBlockController(
+      actionBlockService,
+      loaderController,
+      dialogWindow,
+      yesSir.searchController,
+      hashHandler,
+      noteController,
+      dbManager,
+      fileManager,
+      textManager,
+      dropdownManager,
+      dataStorageService,
+      mapDataStructure,
+      yesSir.logsController,
+      keyCodeByKeyName,
+      scrollController,
+      dateManager,
+      yesSir.modalLoadingController
+    );
+
+    const voiceRecognitionController = new VoiceRecognitionController(
+      voiceRecognitionService,
+      observable,
+      hashHandler
+    );
+
+
+    const dataStorageController = new DataStorageController(
+      actionBlockService,
+      dataStorageService,
+      hashHandler
+    );
+
+    actionBlockService.showActionBlocksFromStorage();
+    yesSir.loaderController.stopLoading();
+
+
+    scrollController.bindScrollEndPage({
+      onScrollEndPage: function onScrollEndPage() {
+        if (actionBlockService.view.isActionBlocksPageActive()) {
+            actionBlockService.addOnPageNextActionBlocks();
+        }
+      }
     });
 
-    function onYesSirLoaded() {
-      yesSir.loaderController.startLoading();
+    actionBlockController.bindClickBtnShowSettingsToCreateAdvancedActionBlock(() => { hashHandler.setHashCreateActionBlock(); });
 
-      // Initialize Libraries.
-      const observable = yesSir.observable;
-      const dateManager = yesSir.dateManager;
+    actionBlockController.bindClickBtnShowSettingsToCreateNote(() => { hashHandler.openPageSettingsToCreateNote(); });
 
-      const keyCodeByKeyName = yesSir.keyCodeByKeyName;
-      const textManager = yesSir.textManager;
-      const dialogWindow = yesSir.dialogWindow;
-      const fileManager = yesSir.fileManager;
-      dropdownManager = yesSir.dropdownManager;
-      mapDataStructure = yesSir.mapDataStructure;
-      dbManager = yesSir.dbManager;
-      arrayManager = yesSir.arrayManager;
+    actionBlockController.bindClickBtnShowSettingsToCreateLink(() => { hashHandler.openPageSettingsToCreateLink(); });
 
-      // Initialize Services.
-      const voiceRecognitionService = yesSir.voiceRecognitionService;
-      const autocompleteService = yesSir.autocompleteService;
-      const loaderController = yesSir.loaderController;
-      const noteController = yesSir.noteController;
-      const dataStorageService = yesSir.dataStorageService;
-      const hashHandler = yesSir.hashHandler;
-      const actionBlockService = yesSir.actionBlockService;
+    actionBlockController.bindLoadingHandler(() => {
+      loaderController.startLoading();
+    });
 
+    actionBlockController.bindStopLoadingHandler(() => {
+      loaderController.stopLoading();
+    });
 
-      const scrollController = yesSir.scrollController;
+    noteController.closeHandler = function() {
+      $('.inputFieldWithSuggestions').hide();
+      voiceRecognitionService.stopRecognizing();
+      this.noteSpeakerService.removeFromPage();
 
-      // const searchController = new SearchManager(
-      //   { 
-      //     projectAssetLoaderClass: ProjectAssetLoaderClass, 
-      //     textManager: textManager, 
-      //     keyCodeByKeyName: keyCodeByKeyName, 
-      //     targetId: 'request_container' 
-      //   }
-      // );
+      if (window.location.hash.toUpperCase().includes('#editActionBlock'.toUpperCase())) {
+        this.actionBlockService.setDefaultValuesForSettingsElementsActionBlock();
+      } else if (window.location.hash.toUpperCase().includes('#createnote'.toUpperCase())) {
+        this.noteController.clearAllInputElements();
+      }
+    };
 
-      const noteSpeakerController = new NoteSpeakerController(
-        yesSir.noteSpeakerService,
-        noteController
-      );
-      
-      const actionBlockController = new ActionBlockController(
-        actionBlockService,
-        loaderController,
-        dialogWindow,
-        yesSir.searchController,
-        hashHandler,
-        noteController,
-        dbManager,
-        fileManager,
-        textManager,
-        dropdownManager,
-        dataStorageService,
-        mapDataStructure,
-        yesSir.logsController,
-        keyCodeByKeyName,
-        scrollController,
-        dateManager,
-        yesSir.modalLoadingController
-      );
-
-      const voiceRecognitionController = new VoiceRecognitionController(
-        voiceRecognitionService,
-        observable,
-        hashHandler
-      );
-
-
-      const dataStorageController = new DataStorageController(
-        actionBlockService,
-        dataStorageService,
-        hashHandler
-      );
-
-      actionBlockService.showActionBlocksFromStorage();
-      yesSir.loaderController.stopLoading();
-
-      // resizeContentDialogInfo();
-      // window.addEventListener('resize', onWindowResize);
-
-      scrollController.bindScrollEndPage({
-        onScrollEndPage: function onScrollEndPage() {
-          if (actionBlockService.view.isActionBlocksPageActive()) {
-              actionBlockService.addOnPageNextActionBlocks();
-          }
-        }
-      });
-
-      actionBlockController.bindClickBtnShowSettingsToCreateAdvancedActionBlock(() => { hashHandler.setHashCreateActionBlock(); });
-
-      actionBlockController.bindClickBtnShowSettingsToCreateNote(() => { hashHandler.openPageSettingsToCreateNote(); });
-
-      actionBlockController.bindClickBtnShowSettingsToCreateLink(() => { hashHandler.openPageSettingsToCreateLink(); });
-
-      actionBlockController.bindLoadingHandler(() => {
-        loaderController.startLoading();
-      });
-
-      actionBlockController.bindStopLoadingHandler(() => {
-        loaderController.stopLoading();
-      });
-
-      noteController.closeHandler = function() {
-        $('.inputFieldWithSuggestions').hide();
-        voiceRecognitionService.stopRecognizing();
-        this.noteSpeakerService.removeFromPage();
-
-        if (window.location.hash.toUpperCase().includes('#editActionBlock'.toUpperCase())) {
-          this.actionBlockService.setDefaultValuesForSettingsElementsActionBlock();
-        } else if (window.location.hash.toUpperCase().includes('#createnote'.toUpperCase())) {
-          this.noteController.clearAllInputElements();
-        }
-      };
-
-      const searchControllerEventBinder = new SearchControllerEventBinder({
-        searchController: yesSir.searchController, 
-        hashHandler: hashHandler, 
-        actionBlockService: actionBlockService
-      });
+    const searchControllerEventBinder = new SearchControllerEventBinder({
+      searchController: yesSir.searchController, 
+      hashHandler: hashHandler, 
+      actionBlockService: actionBlockService
+    });
 
 
 
-      hashHandler.handleHashHandler = () => {
-        yesSir.domElementManager.hideShowedElements();
-        yesSir.domElementManager.hideElement("#elements_for_file_manager");
-        yesSir.domElementManager.showElement(".content");
-        yesSir.domElementManager.showElement(".fixed_elements");
+    hashHandler.handleHashHandler = () => {
+      yesSir.domElementManager.hideShowedElements();
+      yesSir.domElementManager.hideElement("#elements_for_file_manager");
+      yesSir.domElementManager.showElement(".content");
+      yesSir.domElementManager.showElement(".fixed_elements");
 
-        if (yesSir.noteSpeakerService.isSpeaking) yesSir.noteSpeakerService.stopSpeak();
-      };
-    }
+      if (yesSir.noteSpeakerService.isSpeaking) yesSir.noteSpeakerService.stopSpeak();
+    };
+  }
 
-    function onPageLoaded() {
-      yesSir = new YesSir({ onEnd: () => { onYesSirLoaded(); }});
-    }
-
-    function onWindowResize() {
-      resizeContentDialogInfo();
-    }
-
-    // Resize content in dialog info.
-    function resizeContentDialogInfo() {
-      let width_alert_center = $(".content").css("width");
-
-      $(".alert_center_content").css({
-        width: "250px",
-      });
-    }
-
-  
+  function onPageLoaded() {
+    yesSir = new YesSir({ onEnd: () => { onYesSirLoaded(); }});
+  }  
 })();

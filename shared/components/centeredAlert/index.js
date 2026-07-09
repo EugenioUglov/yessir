@@ -5,7 +5,7 @@
      * It builds the module. 
      * Returns controller in async.
      */
-    class LoginManager {
+    class CenteredAlertManager {
         constructor({ projectAssetLoader, targetId }) {
             // Return promise.
             return this.init({ projectAssetLoader, targetId });
@@ -22,12 +22,12 @@
             await Promise.all([cssPromise, htmlPromise, viewPromise, controllerPromise]);
 
             const domContainer = document.getElementById(targetId);
-            const view = new LoginView({ domContainer: domContainer });
-            const controller = new LoginController({ view: view });
+            const view = new CenteredAlertView({ domContainer: domContainer });
+            const controller = new CenteredAlertController({ view: view });
 
             return controller;
         }
     }
-
-    window.LoginManager = LoginManager;
+    
+    window.CenteredAlertManager = CenteredAlertManager;
 })();

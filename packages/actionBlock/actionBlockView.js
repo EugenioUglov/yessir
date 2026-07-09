@@ -5,8 +5,10 @@ class ActionBlockView {
     actionDescriptionByActionName,
     fileManager,
     textManager,
-    dropdownManager
+    dropdownManager,
+    centeredAlert
   ) {
+    this.#centeredAlert = centeredAlert;
     this.actionNameEnum = actionNameEnum;
     this.contentTypeDescriptionByAction = contentTypeDescriptionByAction;
     this.actionDescriptionByActionName = actionDescriptionByActionName;
@@ -33,8 +35,9 @@ class ActionBlockView {
     this.setEventListeners();
   }
 
+  #centeredAlert;
 
-
+  
   addOnPage(
     id,
     actionBlock,
@@ -753,27 +756,29 @@ class ActionBlockView {
   }
 
   showAlert(content, title) {
-    let dialogInfoElem = $("#alert_center");
-    $(".black_background").show();
     // Hide search area with Action-Blocks.
     this.hidePage();
 
-    if (typeof dialogInfoElem[0].showModal === "function") {
-      dialogInfoElem[0].showModal();
+    this.#centeredAlert.show({ title: title, content: content })
 
-      if (title) {
-        // Set title of infoBlock.
-        dialogInfoElem.find(".title")[0].innerText = title;
-      }
+    // let dialogInfoElem = $("#alert_center");
+    // $(".black_background").show();
 
-      // Set content.
-      dialogInfoElem.find(".text_info")[0].innerText = content;
 
-      $(".black_background").show();
-    } else {
-      alert(content);
-      // console.log('WARNING! The <dialog> API is not supported by this browser');
-    }
+    // if (typeof dialogInfoElem[0].showModal === "function") {
+    //   dialogInfoElem[0].showModal();
+
+    //   if (title) {
+    //     // Set title of infoBlock.
+    //     dialogInfoElem.find(".title")[0].innerText = title;
+    //   }
+
+    //   // Set content.
+    //   dialogInfoElem.find(".text_info")[0].innerText = content;
+    // } else {
+    //   alert(content);
+    //   // console.log('WARNING! The <dialog> API is not supported by this browser');
+    // }
   }
 
   hidePage() {
