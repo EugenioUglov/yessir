@@ -3,14 +3,14 @@ class YesSir {
     (async () => {
       const projectAssetLoader = new ProjectAssetLoader();
       
-      
-      const topInfoPanelController = await new TopInfoPanelManager({ projectAssetLoader: projectAssetLoader, targetId: 'topInfoBar' });
-
-      const loginPanelController = await new LoginManager({ projectAssetLoader: projectAssetLoader, targetId: 'loginContainer' });
-
-      const centeredAlertManager = await new CenteredAlertManager({ projectAssetLoader: projectAssetLoader, targetId: 'alertCenterContainer' });
-
       const inputDeviceManager = new InputDeviceManager();
+      
+      this.topInfoPanelController = await new TopInfoPanelManager({ projectAssetLoader: projectAssetLoader, targetId: 'topInfoBar' });
+
+      this.loginPanelController = await new LoginManager({ projectAssetLoader: projectAssetLoader, targetId: 'loginContainer' });
+
+      this.centeredAlertManager = await new CenteredAlertManager({ projectAssetLoader: projectAssetLoader, targetId: 'alertCenterContainer' });
+
       
       this.googleSpeechRecognition = new GoogleSpeechRecognition();
       this.googleTextToSpeech = new GoogleTextToSpeech();
@@ -95,23 +95,13 @@ class YesSir {
         this.dateManager,
         this.modalLoadingController,
         this.bottomInfoPanel,
-        loginPanelController,
-        topInfoPanelController,
+        this.loginPanelController,
+        this.topInfoPanelController,
         this.modalBoxController,
-        centeredAlertManager
+        this.centeredAlertManager
       );
 
-      this.noteController.actionBlockService = this.actionBlockService;
-      this.noteController.setCommandInputFieldWithCommandObjects();
-      this.noteController.openNoteHandler = function() {
-        const BTN_SPEAKER = this.noteSpeakerService.showBtnSpeaker();
-
-        this.hashHandler.showElement(BTN_SPEAKER);
-
-        if (window.location.hash.includes("&listen")) {
-          this.noteSpeakerService.speak();
-        }
-      }
+     
       
       if (onEnd) onEnd();
     })();
@@ -147,13 +137,51 @@ let yesSir;
     const voiceRecognitionService = yesSir.voiceRecognitionService;
     const autocompleteService = yesSir.autocompleteService;
     const loaderController = yesSir.loaderController;
-    const noteController = yesSir.noteController;
+    // const noteController = yesSir.noteController;
     const dataStorageService = yesSir.dataStorageService;
     const hashHandler = yesSir.hashHandler;
-    const actionBlockService = yesSir.actionBlockService;
-
-
     const scrollController = yesSir.scrollController;
+
+
+
+    
+    const actionBlockController = new ActionBlockController(
+      loaderController,
+      dialogWindow,
+      yesSir.searchController,
+      hashHandler,
+      yesSir. noteController,
+      dbManager,
+      fileManager,
+      textManager,
+      dropdownManager,
+      dataStorageService,
+      mapDataStructure,
+      yesSir.logsController,
+      keyCodeByKeyName,
+      scrollController,
+      dateManager,
+      yesSir.modalLoadingController,
+      yesSir.bottomInfoPanel,
+      yesSir.loginPanelController,
+      yesSir.topInfoPanelController,
+      yesSir.modalBoxController,
+      yesSir.centeredAlert
+    );
+
+    yesSir.noteController.actionBlockService = actionBlockController;
+
+    yesSir.noteController.setCommandInputFieldWithCommandObjects();
+
+    yesSir.noteController.openNoteHandler = function() {
+      const BTN_SPEAKER = yesSir.noteSpeakerService.showBtnSpeaker();
+
+      hashHandler.showElement(BTN_SPEAKER);
+
+      if (window.location.hash.includes("&listen")) {
+        yesSir.noteSpeakerService.speak();
+      }
+    }
 
     // const searchController = new SearchManager(
     //   { 
@@ -166,28 +194,9 @@ let yesSir;
 
     const noteSpeakerController = new NoteSpeakerController(
       yesSir.noteSpeakerService,
-      noteController
+      yesSir.noteController
     );
     
-    const actionBlockController = new ActionBlockController(
-      actionBlockService,
-      loaderController,
-      dialogWindow,
-      yesSir.searchController,
-      hashHandler,
-      noteController,
-      dbManager,
-      fileManager,
-      textManager,
-      dropdownManager,
-      dataStorageService,
-      mapDataStructure,
-      yesSir.logsController,
-      keyCodeByKeyName,
-      scrollController,
-      dateManager,
-      yesSir.modalLoadingController
-    );
 
     const voiceRecognitionController = new VoiceRecognitionController(
       voiceRecognitionService,
@@ -197,19 +206,19 @@ let yesSir;
 
 
     const dataStorageController = new DataStorageController(
-      actionBlockService,
+      actionBlockController,
       dataStorageService,
       hashHandler
     );
 
-    actionBlockService.showActionBlocksFromStorage();
+    actionBlockController.showActionBlocksFromStorage();
     yesSir.loaderController.stopLoading();
 
 
     scrollController.bindScrollEndPage({
       onScrollEndPage: function onScrollEndPage() {
-        if (actionBlockService.view.isActionBlocksPageActive()) {
-            actionBlockService.addOnPageNextActionBlocks();
+        if (actionBlockController.view.isActionBlocksPageActive()) {
+            actionBlockController.addOnPageNextActionBlocks();
         }
       }
     });
@@ -228,22 +237,22 @@ let yesSir;
       loaderController.stopLoading();
     });
 
-    noteController.closeHandler = function() {
+    yesSir.noteController.closeHandler = function() {
       $('.inputFieldWithSuggestions').hide();
       voiceRecognitionService.stopRecognizing();
       this.noteSpeakerService.removeFromPage();
 
       if (window.location.hash.toUpperCase().includes('#editActionBlock'.toUpperCase())) {
-        this.actionBlockService.setDefaultValuesForSettingsElementsActionBlock();
+        actionBlockController.setDefaultValuesForSettingsElementsActionBlock();
       } else if (window.location.hash.toUpperCase().includes('#createnote'.toUpperCase())) {
-        this.noteController.clearAllInputElements();
+        yesSir.noteController.clearAllInputElements();
       }
     };
 
     const searchControllerEventBinder = new SearchControllerEventBinder({
       searchController: yesSir.searchController, 
       hashHandler: hashHandler, 
-      actionBlockService: actionBlockService
+      actionBlockController: actionBlockController
     });
 
 

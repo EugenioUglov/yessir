@@ -1,5 +1,5 @@
 class SearchControllerEventBinder {
-    constructor({ searchController, hashHandler, actionBlockService }) {
+    constructor({ searchController, hashHandler, actionBlockController }) {
          
         searchController.clickBtnClearHandler = function() {
             hashHandler.openMainPage();
@@ -39,7 +39,7 @@ class SearchControllerEventBinder {
         searchController.keypressInputFieldPlusTagsHandler = (event) => {
             const request = searchController.getTextFromMainInputField();
 
-            actionBlockService.showActionBlocksByRequest(
+            actionBlockController.showActionBlocksByRequest(
                 {
                     request: request, 
                     isExecuteActionBlockByTitle: false
@@ -50,7 +50,7 @@ class SearchControllerEventBinder {
         searchController.keypressInputFieldMinusTagsHandler = (event) => {
             const request = searchController.getTextFromMainInputField();
 
-            actionBlockService.showActionBlocksByRequest(
+            actionBlockController.showActionBlocksByRequest(
                 {
                     request: request, 
                     isExecuteActionBlockByTitle: false
@@ -59,7 +59,7 @@ class SearchControllerEventBinder {
         };
 
         searchController.clickBtnSearchByTagsHandler = (userPlusTags, userMinusTags) => {
-            actionBlockService.showActionBlocksByTags(userPlusTags, userMinusTags);
+            actionBlockController.showActionBlocksByTags(userPlusTags, userMinusTags);
         }   
     }
 }
