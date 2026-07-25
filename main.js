@@ -54,9 +54,30 @@ class YesSir {
       this.logsController = new LogsManager(this.fileManager, this.dateManager);
       this.autocompleteService = new AutocompleteService(this.textManager);
       this.hashHandler = new HashHandler(
-        this.textManager,
-        this.searchController,
-        this.scrollController
+        { 
+          textManager: this.textManager,
+          searchService: this.searchController,
+          scrollController: this.scrollController,
+          PAGE_NAME_ENUM: Object.freeze({
+            main: "main",
+            request: "request",
+            actionBlock: "actionBlock",
+            publicActionBlocks: "publicActionBlocks",
+            createActionBlock: "createactionblock",
+            createNote: "createnote",
+            createLink: "createlink",
+            editActionBlock: "editactionblock",
+            contentActionBlock: "contentactionblock",
+            login: "login",
+            savetodatabase: "savetodatabase",
+            getfromdatabase: "getfromdatabase",
+          }),
+          PAGE_OPTION_NAME_ENUM: Object.freeze({
+            executebytitle: "executebytitle",
+            listen: "listen",
+            fileManager: "filemanager",
+          })
+        }
       );
       this.voiceRecognitionService = new VoiceRecognitionService(
         this.voiceRecognitionManager,

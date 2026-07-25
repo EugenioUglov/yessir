@@ -411,8 +411,14 @@
 	<div class="black_background" style="display: none;"></div>
 
 	<!-- .START (Load scripts) -->
-	<!-- <script src="./scriptsLoader.js"></script> -->
-	<script type="module" src="./scriptsLoader.js"></script>
+	<script type="module">
+		import { loadScriptsSequence } from './shared/scriptsLoader.js';
+		import { scripts } from './core/scriptPaths.js';
+
+		loadScriptsSequence(scripts, () => {
+			console.log("Всё загружено!");
+		});
+	</script>
 	<!-- .END (Load scripts) -->
 
 	<!-- Autors of used resources. -->

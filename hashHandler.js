@@ -1,8 +1,10 @@
 class HashHandler {
-  constructor(textManager, searchService, scrollController) {
+  constructor({ textManager, searchService, scrollController, PAGE_NAME_ENUM, PAGE_OPTION_NAME_ENUM }) {
     this.textManager = textManager;
     this.searchService = searchService;
     this.scrollController = scrollController;
+    this.PAGE_NAME_ENUM = PAGE_NAME_ENUM;
+    this.PAGE_OPTION_NAME_ENUM = PAGE_OPTION_NAME_ENUM;
 
     this.#view = new PageElementView();
     
@@ -29,28 +31,6 @@ class HashHandler {
     this.setHashChangeListenerActiveState(true);
     this.handleHash();
   }
-
-
-  PAGE_NAME_ENUM = Object.freeze({
-    main: "main",
-    request: "request",
-    actionBlock: "actionBlock",
-    publicActionBlocks: "publicActionBlocks",
-    createActionBlock: "createactionblock",
-    createNote: "createnote",
-    createLink: "createlink",
-    editActionBlock: "editactionblock",
-    contentActionBlock: "contentactionblock",
-    login: "login",
-    savetodatabase: "savetodatabase",
-    getfromdatabase: "getfromdatabase",
-  });
-
-  PAGE_OPTION_NAME_ENUM = {
-    executebytitle: "executebytitle",
-    listen: "listen",
-    fileManager: "filemanager",
-  };
 
 
   getCurrentPageName() {
