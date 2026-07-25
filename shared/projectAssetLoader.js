@@ -3,9 +3,9 @@
  */
 class ProjectAssetLoader {
     /**
-     * @param {string} [currentScriptUrl] - Необязательный URL. Если передан, пути будут считаться относительно него.
+     * @param {string} [currentScriptUrl] - Optional URL. If exists set direction to indicated folder.
      */
-    constructor(currentScriptUrl) {
+    constructor({ currentScriptUrl }) {
         this.#basePath = this.#calculateBasePath(currentScriptUrl);
     }
 
@@ -16,16 +16,8 @@ class ProjectAssetLoader {
         this.#basePath = path;
     }
 
-    getNormalizedPath(path) {
-        if (!path.includes('/')) {
-            return this.#basePath + path;
-        }
-
-        return path;
-    }
-
     loadJavaScript(path) {
-        const normalizedPath = this.getNormalizedPath(path);
+        const normalizedPath = this.#getNormalizedPath(path);
         
         if (this.#cache.has(normalizedPath)) {
             return this.#cache.get(normalizedPath);
@@ -54,7 +46,7 @@ class ProjectAssetLoader {
         return new Promise((resolve, reject) => {
             const link = document.createElement('link');
             link.rel = 'stylesheet';
-            link.href = this.getNormalizedPath(path); 
+            link.href = this.#getNormalizedPath(path); 
 
             // Разрешаем Promise, когда браузер полностью загрузил CSS
             link.onload = () => {
@@ -71,7 +63,7 @@ class ProjectAssetLoader {
     async loadMustacheHtmlToDomElementById({ targetId, pathHtml, data }) {
         await this.loadJavaScript('https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js');
 
-        const normalizedPath = this.getNormalizedPath(pathHtml);
+        const normalizedPath = this.#getNormalizedPath(pathHtml);
         const response = await fetch(normalizedPath);
 
 
@@ -106,5 +98,13 @@ class ProjectAssetLoader {
             return url.substring(0, url.lastIndexOf('/') + 1);
         }
         return '';
+    }
+    
+    #getNormalizedPath(path) {
+        if (!path.includes('/')) {
+            return this.#basePath + path;
+        }
+
+        return path;
     }
 }

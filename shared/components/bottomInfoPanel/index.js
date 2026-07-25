@@ -6,17 +6,17 @@
      * Returns controller in async.
      */
     class BottomInfoPanelManager {
-        constructor({ projectAssetLoader, targetId }) {
-            // Return promise.
-            return this.init({ projectAssetLoader, targetId });
-        }
+        // constructor({ projectAssetLoader, targetId }) {
+        //     // Return promise.
+        //     return this.init({ projectAssetLoader, targetId });
+        // }
 
         /**
          * 
          * @param {class, string, object} - targetid - id of the main html code. 
          * @returns 
          */
-        async init({ projectAssetLoader, targetId }) {
+        static async create({ projectAssetLoader, targetId }) {
             // const projectAssetLoader = new projectAssetLoader(FEATURE_BASE_PATH);
             projectAssetLoader.setBasePath({path: FEATURE_BASE_PATH});
 

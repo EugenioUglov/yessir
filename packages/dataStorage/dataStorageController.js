@@ -1,6 +1,6 @@
 class DataStorageController {
-    constructor(actionBlockService, dataStorageService, hashHandler) {
-        this.actionBlockService = actionBlockService;
+    constructor(actionBlockController, dataStorageService, hashHandler) {
+        this.actionBlockController = actionBlockController;
         this.dataStorageService = dataStorageService;
         this.hashHandler = hashHandler;
 
@@ -36,7 +36,7 @@ class DataStorageController {
             $('#authorization_form').hide();
             that.dataStorageService.setUserStorage(that.dataStorageService.getStorageNameEnum().database);
             window.scrollTo(0, 0);
-            that.actionBlockService.showActionBlocksFromStorage();
+            that.actionBlockController.showActionBlocksFromStorage();
         });
 
         // Selected radiobutton LocalStorage.
@@ -54,14 +54,14 @@ class DataStorageController {
 
         function onClickBtnRewriteOnDialogDatabaseManger() {
             $(".black_background").hide();
-            that.actionBlockService.rewriteActionBlocks();
+            that.actionBlockController.rewriteActionBlocks();
             that.hashHandler.openMainPage();
         }
 
         this.dataStorageService.view.bindClickBtnUploadActionBlocksToDatabase(onClickBtnUploadActionBlocksToDatabase);
         
         function onClickBtnUploadActionBlocksToDatabase() {
-            that.actionBlockService.save();
+            that.actionBlockController.save();
             that.hashHandler.openMainPage();
         }
 
@@ -70,7 +70,7 @@ class DataStorageController {
         function onClickBtnCancelDialogDatabase() {
             $('#rb_storage_localStorage')[0].checked = true;
             that.#onRbLocalStorageChoosed();
-            that.actionBlockService.showActionBlocksFromStorage();
+            that.actionBlockController.showActionBlocksFromStorage();
             that.hashHandler.openMainPage();
         }
     }

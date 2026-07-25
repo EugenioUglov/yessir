@@ -8,11 +8,12 @@ class NoteController {
         this.bindViewEvents();
     }
 
-    actionBlockService;
+    actionBlockController;
     openNoteHandler;
     closeHandler;
 
     #view;
+    #displayedElements = [];
 
 
     setCommandInputFieldWithCommandObjects() {
@@ -32,7 +33,7 @@ class NoteController {
                         .find(".title")
                         .text();
 
-                        this.actionBlockService.openActionBlockSettings(title);
+                        this.actionBlockController.openActionBlockSettings(title);
                     }, 
                     tags: ['Action-Block', 'settings', 'setting', 'update', 'edit'], icon: 'https://cdn.onlinewebfonts.com/svg/img_120429.png'
             },
@@ -74,13 +75,18 @@ class NoteController {
         setCommandInputFiled(commandObjects);
     }
 
+    getDisplayedElements() {
+        return this.#displayedElements;
+    }
+
     openNote(content, title, isHTML) {
         const that = this;
 
         const elementsToShow = this.#view.showInfo(content, title, isHTML);
 
         elementsToShow.forEach((elementToShow) => {
-            that.hashHandler.showElement(elementToShow);
+            elementToShow.show();
+            that.#displayedElements.push(elementToShow);
         });
 
         if (this.openNoteHandler) this.openNoteHandler();

@@ -1,15 +1,18 @@
 class YesSir {
   constructor({ onEnd }) {
     (async () => {
-      const projectAssetLoader = new ProjectAssetLoader();
+      $("#advancedSearcherByTags").load("packages/advancedSearchearByTags/index.html");
+
+
+      const projectAssetLoader = new ProjectAssetLoader({});
       
       const inputDeviceManager = new InputDeviceManager();
       
-      this.topInfoPanelController = await new TopInfoPanelManager({ projectAssetLoader: projectAssetLoader, targetId: 'topInfoBar' });
+      this.topInfoPanelController = await TopInfoPanelManager.create({ projectAssetLoader: projectAssetLoader, targetId: 'topInfoBar' });
 
-      this.loginPanelController = await new LoginManager({ projectAssetLoader: projectAssetLoader, targetId: 'loginContainer' });
+      this.loginPanelController = await LoginManager.create({ projectAssetLoader: projectAssetLoader, targetId: 'loginContainer' });
 
-      this.centeredAlertManager = await new CenteredAlertManager({ projectAssetLoader: projectAssetLoader, targetId: 'alertCenterContainer' });
+      this.centeredAlertManager = await CenteredAlertManager.create({ projectAssetLoader: projectAssetLoader, targetId: 'alertCenterContainer' });
 
       
       this.googleSpeechRecognition = new GoogleSpeechRecognition();
@@ -39,7 +42,7 @@ class YesSir {
         }
       );
 
-      this.modalBoxController = await new ModalBoxManager({ 
+      this.modalBoxController = await ModalBoxManager.create({ 
         projectAssetLoader: projectAssetLoader, 
         targetId: 'modalBoxContainer', 
         data: {} 
@@ -59,7 +62,7 @@ class YesSir {
         this.voiceRecognitionManager,
         this.hashHandler
       );
-      this.loaderController = await new LoaderManager(
+      this.loaderController = await LoaderManager.create(
         { 
           projectAssetLoader: projectAssetLoader,
           targetId: 'multiColorCircleLoaderContainer', 
@@ -71,14 +74,19 @@ class YesSir {
         this.noteSpeakerService
       );
 
-      this.bottomInfoPanel = await new BottomInfoPanelManager(
+      this.bottomInfoPanel = await BottomInfoPanelManager.create(
         {
           projectAssetLoader: projectAssetLoader, 
           targetId: 'bottomInfoPanelContainer'
         }
       );
 
-      this.actionBlockService = new ActionBlockService(
+      this.actionBlockController = new ActionBlockController(
+        this.loaderController,
+        this.dialogWindow,
+        this.searchController,
+        this.hashHandler,
+        this.noteController,
         this.dbManager,
         this.fileManager,
         this.textManager,
@@ -86,23 +94,17 @@ class YesSir {
         this.dataStorageService,
         this.mapDataStructure,
         this.logsController,
-        this.dialogWindow,
         this.keyCodeByKeyName,
         this.scrollController,
-        this.searchController,
-        this.hashHandler,
-        this.noteController,
         this.dateManager,
         this.modalLoadingController,
         this.bottomInfoPanel,
         this.loginPanelController,
         this.topInfoPanelController,
         this.modalBoxController,
-        this.centeredAlertManager
+        this.centeredAlert
       );
 
-     
-      
       if (onEnd) onEnd();
     })();
   }
@@ -111,8 +113,6 @@ class YesSir {
 let yesSir;
 
 (function () {
-  // new LoaderManager('.multiColorCircleLoader');
-
   window.addEventListener("load", function () {
     onPageLoaded();
   });
@@ -141,35 +141,11 @@ let yesSir;
     const dataStorageService = yesSir.dataStorageService;
     const hashHandler = yesSir.hashHandler;
     const scrollController = yesSir.scrollController;
+    const actionBlockController = yesSir.actionBlockController;
 
 
 
-    
-    const actionBlockController = new ActionBlockController(
-      loaderController,
-      dialogWindow,
-      yesSir.searchController,
-      hashHandler,
-      yesSir. noteController,
-      dbManager,
-      fileManager,
-      textManager,
-      dropdownManager,
-      dataStorageService,
-      mapDataStructure,
-      yesSir.logsController,
-      keyCodeByKeyName,
-      scrollController,
-      dateManager,
-      yesSir.modalLoadingController,
-      yesSir.bottomInfoPanel,
-      yesSir.loginPanelController,
-      yesSir.topInfoPanelController,
-      yesSir.modalBoxController,
-      yesSir.centeredAlert
-    );
-
-    yesSir.noteController.actionBlockService = actionBlockController;
+    yesSir.noteController.actionBlockController = actionBlockController;
 
     yesSir.noteController.setCommandInputFieldWithCommandObjects();
 

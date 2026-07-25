@@ -1103,7 +1103,7 @@ class ActionBlockController {
     const firebaseData = new FirebaseData();
        
     if (actionBlocksMapString === undefined) {
-        actionBlocksMapString = yesSir.mapDataStructure.getStringified(yesSir.actionBlockService.getActionBlocks());
+        actionBlocksMapString = yesSir.mapDataStructure.getStringified(this.getActionBlocks());
     }
 
     // $('.login-panel').show();

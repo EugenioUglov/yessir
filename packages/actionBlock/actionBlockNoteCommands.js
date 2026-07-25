@@ -18,7 +18,7 @@ class ActionBlockNoteCommands {
                     .find(".title")
                     .text();
                 
-                yesSir.actionBlockService.openActionBlockSettings(title);
+                yesSir.actionBlockController.openActionBlockSettings(title);
                 
                 this.#onCommandEntered();
             }

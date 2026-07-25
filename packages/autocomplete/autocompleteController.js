@@ -1,5 +1,5 @@
 class AutocompleteController {
-  constructor(hashHandler, actionBlockService, autocompleteService) {
+  constructor(hashHandler, actionBlockController, autocompleteService) {
     this.autocompleteService = autocompleteService;
     this.view = new AutocompleteView();
   }
@@ -34,10 +34,10 @@ class AutocompleteController {
       ) {
         window.scrollTo(0, 0);
         const actionBlocksToShow =
-          that.actionBlockService.getActionBlocksByPhrase(
+          that.actionBlockController.getActionBlocksByPhrase(
             $("#input_field_request").val()
           );
-        that.actionBlockService.showActionBlocks(actionBlocksToShow);
+        that.actionBlockController.showActionBlocks(actionBlocksToShow);
       }
     }
   }

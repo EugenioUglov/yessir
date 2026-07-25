@@ -24,7 +24,7 @@ class DefaultActionBlocks {
             title: 'Create Action-Block',
             tags: 'Create Action-Block, default',
             action: 'showHTML',
-            content: '<script>yesSir.actionBlockService.showSettingsToCreateActionBlock()</script>',
+            content: '<script>yesSir.actionBlockController.showSettingsToCreateActionBlock()</script>',
             imageURL: 'https://i.ibb.co/K6kqJQc/plus.png'
         };
 
@@ -48,7 +48,7 @@ class DefaultActionBlocks {
             title: 'Save Action-Blocks to file',
             tags: 'Save Action-Blocks to file, download',
             action: 'showHTML',
-            content: '<script>yesSir.actionBlockService.downloadFileWithActionBlocks();</script>',
+            content: '<script>yesSir.actionBlockController.downloadFileWithActionBlocks();</script>',
             imageURL: 'https://www.clipartmax.com/png/full/468-4684948_floppy-disk-comments-floppy-disk-comments.png'
         };
     
@@ -184,7 +184,7 @@ class DefaultActionBlocks {
                     yesSir.fileManager.uploadFile(onFileLoaded);
             
                     function onFileLoaded(content_of_file) {
-                        yesSir.actionBlockService.saveActionBlocksFromFile(content_of_file);
+                        yesSir.actionBlockController.saveActionBlocksFromFile(content_of_file);
             
                         // Give possibility to load the same file again.
                         $('.btn_upload_actionBlocks').value = '';
@@ -194,7 +194,7 @@ class DefaultActionBlocks {
                 });
             
                 $('.btn_download_actionBlocks')[0].addEventListener('click', () => {
-                    yesSir.actionBlockService.downloadFileWithActionBlocks();
+                    yesSir.actionBlockController.downloadFileWithActionBlocks();
                 });
                 </script>
             `;
@@ -595,12 +595,12 @@ class DefaultActionBlocks {
         function getContentActionBlockCreateNote() {
             return `
                 <script>
-                yesSir.actionBlockService.showSettingsToCreateActionBlock('showInfo');
+                yesSir.actionBlockController.showSettingsToCreateActionBlock('showInfo');
                 yesSir.hashHandler.setHashCreateNote();
 
                 // const dropdown_select_action = $('#settings_actionBlock_container').find('.dropdown_select_action');
                 // dropdown_select_action.val('showInfo');
-                // $('#title_action_descritption').text(yesSir.actionBlockService.model.getContentTypeDescriptionByActionEnum()[dropdown_select_action.val()]);
+                // $('#title_action_descritption').text(yesSir.actionBlockController.model.getContentTypeDescriptionByActionEnum()[dropdown_select_action.val()]);
                 
                 voiceRecognitionForContent();
                 
@@ -715,7 +715,7 @@ class DefaultActionBlocks {
 
         function getContentActionBlockDeleteAllActionBlocks() {
             return `<script>
-                yesSir.actionBlockService.deleteAllActionBlocks();
+                yesSir.actionBlockController.deleteAllActionBlocks();
             </script>`;
         }
 

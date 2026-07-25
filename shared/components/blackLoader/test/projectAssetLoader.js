@@ -25,25 +25,27 @@ class ProjectAssetLoader {
     }
 
     loadJavaScript(path) {
-        if (this.#cache.has(path)) {
-            return this.#cache.get(path);
+        const normalizedPath = this.getNormalizedPath(path);
+        
+        if (this.#cache.has(normalizedPath)) {
+            return this.#cache.get(normalizedPath);
         }
 
         const promise = new Promise((resolve, reject) => {
             const script = document.createElement('script');
-            script.src = this.getNormalizedPath(path);
+            script.src = normalizedPath;
             script.onload = () => {
                 console.log("📦 AssetLoader: Loaded JS ->", script.src);
                 resolve();
             };
             script.onerror = () => {
-                this.#cache.delete(path);
-                reject(new Error(`Failed to load script: ${path}`))
+                this.#cache.delete(normalizedPath);
+                reject(new Error(`Failed to load script: ${normalizedPath}`))
             };
             document.body.appendChild(script);
         });
 
-        this.#cache.set(path, promise);
+        this.#cache.set(normalizedPath, promise);
 
         return promise;
     }
@@ -72,8 +74,9 @@ class ProjectAssetLoader {
         const normalizedPath = this.getNormalizedPath(pathHtml);
         const response = await fetch(normalizedPath);
 
+
         if (!response.ok) {
-            throw new Error(`AssetLoader: Failed to load HTML -> ${response.statusText}`);
+            throw new Error(`AssetLoader: Failed to load HTML -> ${response.statusText} , Path: ${normalizedPath}`);
         }
         
         const templateText = await response.text();

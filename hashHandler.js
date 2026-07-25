@@ -1,22 +1,3 @@
-/*
- !!! Change constants
- // Константа живет отдельно и создается ОДИН раз
-export const PAGE_NAME_ENUM = Object.freeze({
-  main: "main",
-  request: "request",
-  actionBlock: "action-block",
-  publicActionBlocks: "public-action-blocks",
-  createActionBlock: "create-action-block",
-  createNote: "create-note",
-  createLink: "create-link",
-  editActionBlock: "edit-action-block",
-  speechRecognition: "speech-assistant", // Если значение принципиально другое, это ок, но пусть будет читаемым
-  contentActionBlock: "content-action-block",
-  login: "login",
-  saveToDatabase: "save-to-database", // Исправили camelCase в ключе
-  getFromDatabase: "get-from-database",
-});
-*/
 class HashHandler {
   constructor(textManager, searchService, scrollController) {
     this.textManager = textManager;
@@ -31,7 +12,7 @@ class HashHandler {
   handleHashHandler;
 
   #hashPrevious;
-  #actionBlockService;
+  #actionBlockController;
   #isHashChangeListenerActiveStateEnabled = false;
   #currentPageName;
   #view;
@@ -206,7 +187,7 @@ class HashHandler {
   }
 
   setActionBlockService(actionBlockServiceToSet) {
-    this.#actionBlockService = actionBlockServiceToSet;
+    this.#actionBlockController = actionBlockServiceToSet;
   }
 
   setPageName(newPageName) {
@@ -318,14 +299,14 @@ class HashHandler {
       this.setPageName(this.PAGE_NAME_ENUM.main);
       this.searchService.clearInputField();
 
-      if (that.#actionBlockService.model.getActionBlocks().size > 0) {
-        that.#actionBlockService.view.onOpenMainPageWithActionBlocks();
-        that.#actionBlockService.showActionBlocks();
+      if (that.#actionBlockController.model.getActionBlocks().size > 0) {
+        that.#actionBlockController.view.onOpenMainPageWithActionBlocks();
+        that.#actionBlockController.showActionBlocks();
       } else {
-        that.#actionBlockService.view.onOpenMainPageWithoutActionBlocks();
+        that.#actionBlockController.view.onOpenMainPageWithoutActionBlocks();
       }
 
-      that.#actionBlockService.view.onShowMainPage();
+      that.#actionBlockController.view.onShowMainPage();
       this.scrollController.setPositionTop();
     } else if (this.getNormalizedCurrentHash() === "#testfirebase") {
       // var actionBlocks_to_save = this.mapDataStructure.getStringified(actionBlocks_map_to_save);
@@ -366,7 +347,7 @@ class HashHandler {
         yesSir.fileManager.uploadFile(onFileLoaded);
 
         function onFileLoaded(content_of_file) {
-          yesSir.actionBlockService.saveActionBlocksFromFile(content_of_file);
+          yesSir.actionBlockController.saveActionBlocksFromFile(content_of_file);
 
           // Give possibility to load the same file again.
           $(".btn_upload_actionBlocks").value = "";
@@ -376,7 +357,7 @@ class HashHandler {
       });
 
       $(".btn_download_actionBlocks")[0].addEventListener("click", () => {
-        yesSir.actionBlockService.downloadFileWithActionBlocks();
+        yesSir.actionBlockController.downloadFileWithActionBlocks();
       });
 
       $("#elements_for_file_manager").show();
@@ -387,7 +368,7 @@ class HashHandler {
     ) {
         const idFromUrl = hashParamsInLowerCase.get(this.PAGE_NAME_ENUM.actionBlock.toLowerCase());
 
-        that.#actionBlockService.executeActionBlockById(idFromUrl);
+        that.#actionBlockController.executeActionBlockById(idFromUrl);
     } else if (
       hashParamsInLowerCase.has(this.PAGE_NAME_ENUM.request)
     ) {
@@ -436,7 +417,7 @@ class HashHandler {
       }
 
       request = decodeURIComponent(request);
-      that.#actionBlockService.showActionBlocksByRequest(
+      that.#actionBlockController.showActionBlocksByRequest(
         request,
         isExecuteActionBlockByTitle
       );
@@ -447,7 +428,7 @@ class HashHandler {
         this.PAGE_NAME_ENUM.createActionBlock
       )
     ) {
-      this.#actionBlockService.showSettingsToCreateAdvancedActionBlock();
+      this.#actionBlockController.showSettingsToCreateAdvancedActionBlock();
 
       this.scrollController.setPositionTop();
     } else if (
@@ -455,14 +436,14 @@ class HashHandler {
         this.PAGE_NAME_ENUM.createNote
       )
     ) {
-      this.#actionBlockService.showSettingsToCreateNote();
+      this.#actionBlockController.showSettingsToCreateNote();
       this.scrollController.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
         this.PAGE_NAME_ENUM.createLink
       )
     ) {
-      this.#actionBlockService.showSettingsToCreateLink();
+      this.#actionBlockController.showSettingsToCreateLink();
       this.scrollController.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
@@ -480,21 +461,21 @@ class HashHandler {
       );
 
       title = decodeURIComponent(title);
-      this.#actionBlockService.openActionBlockSettings(title);
+      this.#actionBlockController.openActionBlockSettings(title);
       this.scrollController.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
         this.PAGE_NAME_ENUM.savetodatabase
       )
     ) {
-      yesSir.actionBlockService.saveToDatabase();
+      yesSir.actionBlockController.saveToDatabase();
       this.scrollController.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
         this.PAGE_NAME_ENUM.getfromdatabase
       )
     ) {
-      this.#actionBlockService.getFromDatabase();
+      this.#actionBlockController.getFromDatabase();
       this.scrollController.setPositionTop();
     } else if (this.getNormalizedCurrentHash() === "#mainprevious") {
       $("#content_executed_from_actionBlock").css("display", "none");
@@ -504,11 +485,11 @@ class HashHandler {
       $("#btn_back").css("display", "none");
 
       // $('#actionBlocks_page').css('display', 'block');
-      this.#actionBlockService.showActionBlocksContainer();
+      this.#actionBlockController.showActionBlocksContainer();
       const scrollPositionOnExecuteActionBlock =
-        yesSir.actionBlockService.getScrollPositionOnExecuteBlock();
+        yesSir.actionBlockController.getScrollPositionOnExecuteBlock();
       const indexLastShowedActionBlock =
-        this.#actionBlockService.getIndexLastShowedActionBlock();
+        this.#actionBlockController.getIndexLastShowedActionBlock();
 
       if (indexLastShowedActionBlock === 0) {
         this.openPreviousPage();
