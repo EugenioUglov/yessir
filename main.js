@@ -62,7 +62,6 @@ class YesSir {
             main: "main",
             request: "request",
             actionBlock: "actionBlock",
-            publicActionBlocks: "publicActionBlocks",
             createActionBlock: "createactionblock",
             createNote: "createnote",
             createLink: "createlink",
@@ -90,7 +89,7 @@ class YesSir {
           data: {} 
         }
       );
-      this.noteController = await new NoteInitializer(
+      this.noteController = await NoteInitializer.create(
         this.hashHandler,
         this.noteSpeakerService
       );
@@ -254,7 +253,7 @@ let yesSir;
 
 
 
-    hashHandler.handleHashHandler = () => {
+    hashHandler.onHandleHashHandler = () => {
       yesSir.domElementManager.hideShowedElements();
       yesSir.domElementManager.hideElement("#elements_for_file_manager");
       yesSir.domElementManager.showElement(".content");

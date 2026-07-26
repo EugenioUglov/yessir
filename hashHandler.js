@@ -11,7 +11,7 @@ class HashHandler {
     this.#setListeners();
   }
 
-  handleHashHandler;
+  onHandleHashHandler;
 
   #hashPrevious;
   #actionBlockController;
@@ -182,10 +182,6 @@ class HashHandler {
     }
   }
 
-  openPublicActionBlocksPage() {
-    window.location.hash = this.PAGE_NAME_ENUM.publicActionBlocks;
-  }
-
   openActionBlockPage(title) {
     this.#hashPrevious = window.location.hash;
 
@@ -266,7 +262,7 @@ class HashHandler {
 
     hideCommandInput();
 
-    if (this.handleHashHandler) this.handleHashHandler();
+    if (this.onHandleHashHandler) this.onHandleHashHandler();
 
     this.hideShowedElements();
     if (this.getHashChangeListenerActiveState() === false) return;
