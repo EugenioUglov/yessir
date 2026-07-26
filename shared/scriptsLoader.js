@@ -20,3 +20,32 @@ export function loadScriptsSequence(scripts, onComplete) {
 
     loadNext(0);
 }
+
+export function loadScriptsAsModulesSequence(scripts, onComplete) {
+    function loadNext(index) {
+        if (index < scripts.length) {
+            const script = document.createElement('script');
+            script.src = scripts[index];
+            
+            // 👇 Явно указываем, что это модуль
+            script.type = "module"; 
+            
+            // Примечание: у динамически созданных модулей async по умолчанию true, 
+            // но т.к. мы вставляем их строго по очереди в onload, порядок сохранится.
+            script.async = false; 
+            
+            script.onload = () => loadNext(index + 1);
+            script.onerror = () => {
+                console.error(`Ошибка загрузки скрипта: ${scripts[index]}`);
+                loadNext(index + 1);
+            };
+            document.body.appendChild(script);
+        } else {
+            if (typeof onComplete === 'function') {
+                onComplete();
+            }
+        }
+    }
+
+    loadNext(0);
+}

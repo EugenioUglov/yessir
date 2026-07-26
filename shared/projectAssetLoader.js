@@ -27,7 +27,7 @@ class ProjectAssetLoader {
             const script = document.createElement('script');
             script.src = normalizedPath;
             script.onload = () => {
-                console.log("📦 AssetLoader: Loaded JS ->", script.src);
+                // console.log("📦 AssetLoader: Loaded JS ->", script.src);
                 resolve();
             };
             script.onerror = () => {
@@ -50,7 +50,7 @@ class ProjectAssetLoader {
 
             // Разрешаем Promise, когда браузер полностью загрузил CSS
             link.onload = () => {
-                console.log("📦 AssetLoader: Loaded CSS ->", link.href);
+                // console.log("📦 AssetLoader: Loaded CSS ->", link.href);
                 resolve();
             };
 
@@ -88,7 +88,7 @@ class ProjectAssetLoader {
             throw new Error(`AssetLoader: Failed to load HTML -> Element with id ${targetId} doesn't exist.`);
         }
 
-        console.log("📦 AssetLoader: Loaded HTML ->", normalizedPath);
+        // console.log("📦 AssetLoader: Loaded HTML ->", normalizedPath);
 
         return renderedHtml;
     }

@@ -3,7 +3,6 @@ class ActionBlockController {
     loaderController,
     dialogWindow,
     searchController,
-    hashHandler,
     noteController,
     dbManager,
     fileManager,
@@ -18,14 +17,12 @@ class ActionBlockController {
     modalLoadingController,
     bottomInfoPanel,
     loginPanelController,
-    topInfoPanelController,
     modalBoxController,
     centeredAlert
   ) {
     this.loaderController = loaderController;
     this.dialogWindow = dialogWindow;
     this.searchService = searchController;
-    this.hashHandler = hashHandler;
     this.noteController = noteController;
     this.fileManager = fileManager;
     this.textManager = textManager;
@@ -37,7 +34,6 @@ class ActionBlockController {
     this.modalLoadingController = modalLoadingController;
     this.#bottomInfoPanel = bottomInfoPanel;
     this.#loginPanelController = loginPanelController;
-    this.#topInfoPanelController = topInfoPanelController;
     this.#modalBoxController = modalBoxController;
 
     this.#dateManager = dateManager;
@@ -60,20 +56,18 @@ class ActionBlockController {
       centeredAlert
     );
 
-    hashHandler.setActionBlockService(this);
-
     this.#bindViewEvenets();
   }
 
   #bottomInfoPanel;
   #loginPanelController;
-  #topInfoPanelController;
   #modalBoxController;
   #dateManager;
   #indexLastShowedActionBlock = 0;
   #scrollPositionOnExecuteBlock = 0;
   #loadingHandler;
   #stopLoadingHandler;
+
 
   bindLoadingHandler(handler) {
     this.#loadingHandler = handler;
@@ -125,7 +119,7 @@ class ActionBlockController {
           return false;
         }
 
-        this.hashHandler.openMainPage();
+        yesSir.hashHandler.openMainPage();
       }
     );
   };
@@ -196,7 +190,7 @@ class ActionBlockController {
 
   closeActionBlockSettings = () => {
     yesSir.voiceRecognitionService.stopRecognizing();
-    this.hashHandler.openPreviousPage();
+    yesSir.hashHandler.openPreviousPage();
   };
 
   
@@ -550,7 +544,7 @@ class ActionBlockController {
 
     this.view.closeSettings();
     this.view.clearAllSettingsFields();
-    this.hashHandler.openPreviousPage();
+    yesSir.hashHandler.openPreviousPage();
     yesSir.loaderController.stopLoading();
     this.updatePage();
     this.#onActionBlocksStorageUpdated();
@@ -699,7 +693,7 @@ class ActionBlockController {
     that.view.showActionBlocksContainer();
 
     // elements_to_show.forEach(element => {
-    //     this.hashHandler.showElement(element);
+    //     yesSir.hashHandler.showElement(element);
     // });
 
     updateLogMessage();
@@ -769,7 +763,7 @@ class ActionBlockController {
     );
 
     function onSetActionBlocks() {
-      that.hashHandler.init();
+      yesSir.hashHandler.init();
       const time = new Date() - start;
       // console.log("time:" + time);
     }
@@ -778,7 +772,7 @@ class ActionBlockController {
       that.downloadFileWithActionBlocks(
         that.model.getActionBlocksFromLocalStorageAsync()
       );
-      that.hashHandler.init();
+      yesSir.hashHandler.init();
     }
   };
 
@@ -918,7 +912,7 @@ class ActionBlockController {
 
     const viewElementsToShow = this.view.showSettingsToCreateActionBlock();
     viewElementsToShow.forEach((element) => {
-      // that.hashHandler.showElement(element);
+      // yesSir.hashHandler.showElement(element);
     });
   }
 
@@ -1150,7 +1144,7 @@ class ActionBlockController {
     this.#loginPanelController.bindClickBtnClose({ 
       handler: () => {
         // that.#loginPanelController.hide();
-        window.location.hash = that.hashHandler.PAGE_NAME_ENUM.main;
+        window.location.hash = yesSir.hashHandler.PAGE_NAME_ENUM.main;
       }
     });
   }
@@ -1192,7 +1186,7 @@ class ActionBlockController {
               that.#loginPanelController.hide();
             }
     
-            that.hashHandler.openMainPage();
+            yesSir.hashHandler.openMainPage();
           },
           onError: error => {
             yesSir.modalBoxController.hide();
@@ -1205,7 +1199,7 @@ class ActionBlockController {
     this.#loginPanelController.bindClickBtnClose({ handler: () => {
       that.#loginPanelController.hide();
 
-      window.location.hash = that.hashHandler.PAGE_NAME_ENUM.main;
+      window.location.hash = yesSir.hashHandler.PAGE_NAME_ENUM.main;
     }});
   }
 
@@ -1368,7 +1362,7 @@ class ActionBlockController {
   };
 
   #onActionBlockUpdated = () => {
-    this.hashHandler.openPreviousPage();
+    yesSir.hashHandler.openPreviousPage();
     yesSir.loaderController.stopLoading();
     this.view.closeSettings();
     this.view.setDefaultValuesForSettingsElementsActionBlock();
@@ -1469,7 +1463,7 @@ class ActionBlockController {
   deleteActionBlock = (title) => {
     const that = this;
 
-    this.hashHandler.openPreviousPage();
+    yesSir.hashHandler.openPreviousPage();
     // yesSir.loaderController.stopLoading();
     this.view.closeSettings();
 
@@ -1558,7 +1552,7 @@ class ActionBlockController {
         location.href = url;
       }
     } else {
-      this.hashHandler.openActionBlockPage(title);
+      yesSir.hashHandler.openActionBlockPage(title);
     }
 
     if (this.model.isMenuCreateTypeActionBlockOpen)
@@ -1569,7 +1563,7 @@ class ActionBlockController {
     this.#scrollPositionOnExecuteBlock =
       this.scrollController.getScrollXY()[1];
 
-    this.hashHandler.openSettingsActionBlockPage(title);
+    yesSir.hashHandler.openSettingsActionBlockPage(title);
   };
 
   showSettingsToCreateActionBlock = (actionName) => {
@@ -1582,7 +1576,7 @@ class ActionBlockController {
   };
 
   openActionBlockSettings = (title) => {
-    this.hashHandler.hideShowedElements();
+    yesSir.hashHandler.hideShowedElements();
     const that = this;
     /// !!!
     // OLD
@@ -1590,15 +1584,15 @@ class ActionBlockController {
     // const actionBlock = actionBlocks.get(title);
     // NEW
     const actionBlock = this.model.getActionBlockByTitle(title);
-    this.hashHandler.openSettingsActionBlockPage(title);
+    yesSir.hashHandler.openSettingsActionBlockPage(title);
     this.model.actionBlockTitleBeforeUpdate = title;
     this.onPageContentChange();
     const elementsToShow =
       this.view.showElementsToEditActionBlock(actionBlock);
-    that.hashHandler.hideShowedElements();
+    yesSir.hashHandler.hideShowedElements();
 
     elementsToShow.forEach((element) => {
-      that.hashHandler.showElement(element);
+      yesSir.hashHandler.showElement(element);
     });
   };
 

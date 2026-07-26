@@ -1,11 +1,12 @@
 class HashHandler {
-  constructor({ textManager, searchService, scrollController, PAGE_NAME_ENUM, PAGE_OPTION_NAME_ENUM }) {
+  constructor({ textManager, searchService, scrollController, PAGE_NAME_ENUM, PAGE_OPTION_NAME_ENUM, routesMap, defaultPage }) {
     this.textManager = textManager;
     this.searchService = searchService;
     this.scrollController = scrollController;
     this.PAGE_NAME_ENUM = PAGE_NAME_ENUM;
     this.PAGE_OPTION_NAME_ENUM = PAGE_OPTION_NAME_ENUM;
-
+    this.#routesMap = routesMap;
+    this.#defaultPage = defaultPage;
     this.#view = new PageElementView();
     
     this.#setListeners();
@@ -14,10 +15,11 @@ class HashHandler {
   onHandleHashHandler;
 
   #hashPrevious;
-  #actionBlockController;
   #isHashChangeListenerActiveStateEnabled = false;
   #currentPageName;
   #view;
+  #routesMap;
+  #defaultPage;
 
   #setListeners() {
     const that = this;
@@ -29,9 +31,28 @@ class HashHandler {
 
   init() {
     this.setHashChangeListenerActiveState(true);
-    this.handleHash();
-  }
 
+    // Обрабатываем текущий хеш при загрузке страницы
+    if ( ! window.location.hash) {
+        this.openPage(this.#defaultPage);
+    } else {
+        this.handleHash();
+    }
+  }
+  
+  // Open page by name and optional query parameters.
+  openPage(pageName, queryParams = {}) {
+    let hash = "#" + pageName;
+    
+    // Если переданы параметры, собираем их в строку (например: ?id=5&sort=asc)
+    const queryString = new URLSearchParams(queryParams).toString();
+
+    if (queryString) {
+      hash += "?" + queryString;
+    }
+
+    window.location.hash = hash;
+  }
 
   getCurrentPageName() {
     return this.#currentPageName;
@@ -166,9 +187,6 @@ class HashHandler {
     this.#view.hideShowedElements();
   }
 
-  setActionBlockService(actionBlockServiceToSet) {
-    this.#actionBlockController = actionBlockServiceToSet;
-  }
 
   setPageName(newPageName) {
     this.#currentPageName = newPageName;
@@ -255,6 +273,33 @@ class HashHandler {
     return this.#isHashChangeListenerActiveStateEnabled;
   }
 
+  // !!!
+  handleHashNew() {
+
+    // Убираем '#'
+    const rawHash = window.location.hash.replace('#', '');
+    
+    // Разделяем страницу и параметры по знаку '?'
+    const [pageName, queryString] = rawHash.split('?');
+
+    const action = this.#routesMap[pageName];
+
+    if (typeof action === 'function') {
+      this.setPageName(pageName);
+      // Превращаем query-строку в удобный объект (например: { id: "5", sort: "asc" })
+      const queryParams = Object.fromEntries(new URLSearchParams(queryString || ''));
+      
+      // Передаем параметры в действие!
+      action(queryParams);
+    } else {
+      this.setPageName(this.#defaultPage);
+
+      console.warn(`Нет обработчика для страницы: ${pageName}. Открываем страницу по умолчанию.`);
+
+      this.openPage(this.#defaultPage);
+    }
+  }
+
   handleHash() {
     const that = this;
     
@@ -265,6 +310,7 @@ class HashHandler {
     if (this.onHandleHashHandler) this.onHandleHashHandler();
 
     this.hideShowedElements();
+
     if (this.getHashChangeListenerActiveState() === false) return;
 
     if (
@@ -275,14 +321,14 @@ class HashHandler {
       this.setPageName(this.PAGE_NAME_ENUM.main);
       this.searchService.clearInputField();
 
-      if (that.#actionBlockController.model.getActionBlocks().size > 0) {
-        that.#actionBlockController.view.onOpenMainPageWithActionBlocks();
-        that.#actionBlockController.showActionBlocks();
+      if (yesSir.actionBlockController.model.getActionBlocks().size > 0) {
+        yesSir.actionBlockController.view.onOpenMainPageWithActionBlocks();
+        yesSir.actionBlockController.showActionBlocks();
       } else {
-        that.#actionBlockController.view.onOpenMainPageWithoutActionBlocks();
+        yesSir.actionBlockController.view.onOpenMainPageWithoutActionBlocks();
       }
 
-      that.#actionBlockController.view.onShowMainPage();
+      yesSir.actionBlockController.view.onShowMainPage();
       this.scrollController.setPositionTop();
     } else if (this.getNormalizedCurrentHash() === "#testfirebase") {
       // var actionBlocks_to_save = this.mapDataStructure.getStringified(actionBlocks_map_to_save);
@@ -344,7 +390,7 @@ class HashHandler {
     ) {
         const idFromUrl = hashParamsInLowerCase.get(this.PAGE_NAME_ENUM.actionBlock.toLowerCase());
 
-        that.#actionBlockController.executeActionBlockById(idFromUrl);
+        yesSir.actionBlockController.executeActionBlockById(idFromUrl);
     } else if (
       hashParamsInLowerCase.has(this.PAGE_NAME_ENUM.request)
     ) {
@@ -393,7 +439,7 @@ class HashHandler {
       }
 
       request = decodeURIComponent(request);
-      that.#actionBlockController.showActionBlocksByRequest(
+      yesSir.actionBlockController.showActionBlocksByRequest(
         request,
         isExecuteActionBlockByTitle
       );
@@ -404,7 +450,7 @@ class HashHandler {
         this.PAGE_NAME_ENUM.createActionBlock
       )
     ) {
-      this.#actionBlockController.showSettingsToCreateAdvancedActionBlock();
+      yesSir.actionBlockController.showSettingsToCreateAdvancedActionBlock();
 
       this.scrollController.setPositionTop();
     } else if (
@@ -412,14 +458,14 @@ class HashHandler {
         this.PAGE_NAME_ENUM.createNote
       )
     ) {
-      this.#actionBlockController.showSettingsToCreateNote();
+      yesSir.actionBlockController.showSettingsToCreateNote();
       this.scrollController.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
         this.PAGE_NAME_ENUM.createLink
       )
     ) {
-      this.#actionBlockController.showSettingsToCreateLink();
+      yesSir.actionBlockController.showSettingsToCreateLink();
       this.scrollController.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
@@ -437,7 +483,7 @@ class HashHandler {
       );
 
       title = decodeURIComponent(title);
-      this.#actionBlockController.openActionBlockSettings(title);
+      yesSir.actionBlockController.openActionBlockSettings(title);
       this.scrollController.setPositionTop();
     } else if (
       this.getNormalizedCurrentHash().includes(
@@ -451,7 +497,7 @@ class HashHandler {
         this.PAGE_NAME_ENUM.getfromdatabase
       )
     ) {
-      this.#actionBlockController.getFromDatabase();
+      yesSir.actionBlockController.getFromDatabase();
       this.scrollController.setPositionTop();
     } else if (this.getNormalizedCurrentHash() === "#mainprevious") {
       $("#content_executed_from_actionBlock").css("display", "none");
@@ -461,11 +507,11 @@ class HashHandler {
       $("#btn_back").css("display", "none");
 
       // $('#actionBlocks_page').css('display', 'block');
-      this.#actionBlockController.showActionBlocksContainer();
+      yesSir.actionBlockController.showActionBlocksContainer();
       const scrollPositionOnExecuteActionBlock =
         yesSir.actionBlockController.getScrollPositionOnExecuteBlock();
       const indexLastShowedActionBlock =
-        this.#actionBlockController.getIndexLastShowedActionBlock();
+        yesSir.actionBlockController.getIndexLastShowedActionBlock();
 
       if (indexLastShowedActionBlock === 0) {
         this.openPreviousPage();

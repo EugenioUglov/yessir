@@ -1,7 +1,6 @@
 class VoiceRecognitionService {
-    constructor(voiceRecognitionManager, hashHandler) {
+    constructor(voiceRecognitionManager) {
         this.voiceRecognitionManager = voiceRecognitionManager;
-        this.hashHandler = hashHandler;
     }
 
     #view = new VoiceRecognitionView();
@@ -21,8 +20,7 @@ class VoiceRecognitionService {
         that.#view.showProgressRecognition();
 
         function onInterimTranscript(interimTranscript) {
-            
-            that.hashHandler.setHashRequest({
+            yesSir.hashHandler.setHashRequest({
                 requestValue: interimTranscript, 
                 isExecuteActionBlockByTitle: false
             });
@@ -36,7 +34,7 @@ class VoiceRecognitionService {
                 finalTranscript = finalTranscript.substr(0, finalTranscript.length - 1);
             }
 
-            that.hashHandler.setHashRequest({
+            yesSir.hashHandler.setHashRequest({
                 requestValue: finalTranscript,
                 isExecuteActionBlockByTitle: true,
                 isListenText: true

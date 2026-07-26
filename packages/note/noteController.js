@@ -1,6 +1,5 @@
 class NoteController {
-    constructor(view, hashHandler, noteSpeakerService) {
-        this.hashHandler = hashHandler;
+    constructor(view, noteSpeakerService) {
         this.noteSpeakerService = noteSpeakerService;
 
         this.#view = view;
@@ -99,7 +98,7 @@ class NoteController {
     close = () => {
         this.#view.close();
 
-        this.hashHandler.setHashMainPrevious();
+        yesSir.hashHandler.setHashMainPrevious();
     };
 
     bindViewEvents() {

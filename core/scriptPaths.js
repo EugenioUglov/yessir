@@ -100,6 +100,8 @@ export const scripts = [
     "./shared/components/blackLoader/index.js",
 
     "./core/searchControllerEventBinder.js",
+    "./core/routesConfig.js",
+    "./core/pageHandlers.js",
     
 
     // Точка входа

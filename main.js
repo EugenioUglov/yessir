@@ -3,18 +3,15 @@ class YesSir {
     (async () => {
       $("#advancedSearcherByTags").load("packages/advancedSearchearByTags/index.html");
 
-
       const projectAssetLoader = new ProjectAssetLoader({});
-      
+
       const inputDeviceManager = new InputDeviceManager();
-      
-      this.topInfoPanelController = await TopInfoPanelManager.create({ projectAssetLoader: projectAssetLoader, targetId: 'topInfoBar' });
 
       this.loginPanelController = await LoginManager.create({ projectAssetLoader: projectAssetLoader, targetId: 'loginContainer' });
 
       this.centeredAlertManager = await CenteredAlertManager.create({ projectAssetLoader: projectAssetLoader, targetId: 'alertCenterContainer' });
 
-      
+
       this.googleSpeechRecognition = new GoogleSpeechRecognition();
       this.googleTextToSpeech = new GoogleTextToSpeech();
       this.textManager = new TextManager();
@@ -34,27 +31,88 @@ class YesSir {
       this.observable = new Observable();
 
       this.searchController = await new SearchManager(
-        { 
-          projectAssetLoader: projectAssetLoader, 
-          textManager: this.textManager, 
-          keyCodeByKeyName: this.keyCodeByKeyName, 
-          targetId: 'request_container' 
+        {
+          projectAssetLoader: projectAssetLoader,
+          textManager: this.textManager,
+          keyCodeByKeyName: this.keyCodeByKeyName,
+          targetId: 'request_container'
         }
       );
 
-      this.modalBoxController = await ModalBoxManager.create({ 
-        projectAssetLoader: projectAssetLoader, 
-        targetId: 'modalBoxContainer', 
-        data: {} 
+      this.modalBoxController = await ModalBoxManager.create({
+        projectAssetLoader: projectAssetLoader,
+        targetId: 'modalBoxContainer',
+        data: {}
       });
+
       this.modalLoadingController = new ModalLoadingController(this.modalBoxController);
+
       this.noteSpeakerService = new NoteSpeakerService(this.speakerManager);
+
       this.dataStorageService = new DataStorageService(this.dialogWindow);
+
       this.scrollController = await new ScrollManager({ projectAssetLoader: projectAssetLoader, targetId: 'scrollContainer' });
+
       this.logsController = new LogsManager(this.fileManager, this.dateManager);
+
       this.autocompleteService = new AutocompleteService(this.textManager);
+
+
+      this.voiceRecognitionService = new VoiceRecognitionService(
+        this.voiceRecognitionManager
+      );
+
+      this.loaderController = await LoaderManager.create(
+        {
+          projectAssetLoader: projectAssetLoader,
+          targetId: 'multiColorCircleLoaderContainer',
+          data: {}
+        }
+      );
+
+      this.noteController = await NoteInitializer.create(
+        this.noteSpeakerService
+      );
+
+      this.bottomInfoPanel = await BottomInfoPanelManager.create(
+        {
+          projectAssetLoader: projectAssetLoader,
+          targetId: 'bottomInfoPanelContainer'
+        }
+      );
+
+      this.actionBlockController = new ActionBlockController(
+        this.loaderController,
+        this.dialogWindow,
+        this.searchController,
+        this.noteController,
+        this.dbManager,
+        this.fileManager,
+        this.textManager,
+        this.dropdownManager,
+        this.dataStorageService,
+        this.mapDataStructure,
+        this.logsController,
+        this.keyCodeByKeyName,
+        this.scrollController,
+        this.dateManager,
+        this.modalLoadingController,
+        this.bottomInfoPanel,
+        this.loginPanelController,
+        this.modalBoxController,
+        this.centeredAlert
+      );
+
+      const pageHandlers = new PageHandlers(
+        this.searchController,
+        this.actionBlockController,
+        this.scrollController
+      );
+
+      const routesConfig = new RoutesConfig(pageHandlers);
+
       this.hashHandler = new HashHandler(
-        { 
+        {
           textManager: this.textManager,
           searchService: this.searchController,
           scrollController: this.scrollController,
@@ -75,54 +133,10 @@ class YesSir {
             executebytitle: "executebytitle",
             listen: "listen",
             fileManager: "filemanager",
-          })
+          }),
+          routesMap: routesConfig.getRoutesMap(),
+          defaultPage: routesConfig.DEFAULT_PAGE
         }
-      );
-      this.voiceRecognitionService = new VoiceRecognitionService(
-        this.voiceRecognitionManager,
-        this.hashHandler
-      );
-      this.loaderController = await LoaderManager.create(
-        { 
-          projectAssetLoader: projectAssetLoader,
-          targetId: 'multiColorCircleLoaderContainer', 
-          data: {} 
-        }
-      );
-      this.noteController = await NoteInitializer.create(
-        this.hashHandler,
-        this.noteSpeakerService
-      );
-
-      this.bottomInfoPanel = await BottomInfoPanelManager.create(
-        {
-          projectAssetLoader: projectAssetLoader, 
-          targetId: 'bottomInfoPanelContainer'
-        }
-      );
-
-      this.actionBlockController = new ActionBlockController(
-        this.loaderController,
-        this.dialogWindow,
-        this.searchController,
-        this.hashHandler,
-        this.noteController,
-        this.dbManager,
-        this.fileManager,
-        this.textManager,
-        this.dropdownManager,
-        this.dataStorageService,
-        this.mapDataStructure,
-        this.logsController,
-        this.keyCodeByKeyName,
-        this.scrollController,
-        this.dateManager,
-        this.modalLoadingController,
-        this.bottomInfoPanel,
-        this.loginPanelController,
-        this.topInfoPanelController,
-        this.modalBoxController,
-        this.centeredAlert
       );
 
       if (onEnd) onEnd();
@@ -169,7 +183,7 @@ let yesSir;
 
     yesSir.noteController.setCommandInputFieldWithCommandObjects();
 
-    yesSir.noteController.openNoteHandler = function() {
+    yesSir.noteController.openNoteHandler = function () {
       const BTN_SPEAKER = yesSir.noteSpeakerService.showBtnSpeaker();
 
       hashHandler.showElement(BTN_SPEAKER);
@@ -192,7 +206,7 @@ let yesSir;
       yesSir.noteSpeakerService,
       yesSir.noteController
     );
-    
+
 
     const voiceRecognitionController = new VoiceRecognitionController(
       voiceRecognitionService,
@@ -214,7 +228,7 @@ let yesSir;
     scrollController.bindScrollEndPage({
       onScrollEndPage: function onScrollEndPage() {
         if (actionBlockController.view.isActionBlocksPageActive()) {
-            actionBlockController.addOnPageNextActionBlocks();
+          actionBlockController.addOnPageNextActionBlocks();
         }
       }
     });
@@ -233,7 +247,7 @@ let yesSir;
       loaderController.stopLoading();
     });
 
-    yesSir.noteController.closeHandler = function() {
+    yesSir.noteController.closeHandler = function () {
       $('.inputFieldWithSuggestions').hide();
       voiceRecognitionService.stopRecognizing();
       this.noteSpeakerService.removeFromPage();
@@ -246,8 +260,8 @@ let yesSir;
     };
 
     const searchControllerEventBinder = new SearchControllerEventBinder({
-      searchController: yesSir.searchController, 
-      hashHandler: hashHandler, 
+      searchController: yesSir.searchController,
+      hashHandler: hashHandler,
       actionBlockController: actionBlockController
     });
 
@@ -264,6 +278,6 @@ let yesSir;
   }
 
   function onPageLoaded() {
-    yesSir = new YesSir({ onEnd: () => { onYesSirLoaded(); }});
-  }  
+    yesSir = new YesSir({ onEnd: () => { onYesSirLoaded(); } });
+  }
 })();
