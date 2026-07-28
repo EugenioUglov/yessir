@@ -52,6 +52,7 @@ export const scripts = [
     "./core/modalLoadingController.js",
 
 
+    "./shared/domElementVisibilityManager.js",
 
     // Модели
     "./packages/noteSpeaker/noteSpeakerModel.js",
@@ -61,7 +62,6 @@ export const scripts = [
 
     // Представления (Views)
     "./packages/note/noteView.js",
-    "./views/pageElementView.js",
     "./packages/noteSpeaker/noteSpeakerView.js",
     "./packages/voiceRecognition/voiceRecognitionView.js",
     "./packages/actionBlock/actionBlockView.js",
@@ -101,7 +101,8 @@ export const scripts = [
 
     "./core/searchControllerEventBinder.js",
     "./core/routesConfig.js",
-    "./core/pageHandlers.js",
+    "./core/hashHandlers.js",
+    "./core/hashNameStrings.js",
     
 
     // Точка входа

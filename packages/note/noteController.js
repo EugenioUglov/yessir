@@ -98,7 +98,7 @@ class NoteController {
     close = () => {
         this.#view.close();
 
-        yesSir.hashHandler.setHashMainPrevious();
+        yesSir.hashHandlers.setHashMainPrevious();
     };
 
     bindViewEvents() {

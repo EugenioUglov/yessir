@@ -1144,7 +1144,7 @@ class ActionBlockController {
     this.#loginPanelController.bindClickBtnClose({ 
       handler: () => {
         // that.#loginPanelController.hide();
-        window.location.hash = yesSir.hashHandler.PAGE_NAME_ENUM.main;
+        window.location.hash = yesSir.hashHandler.HASH_NAME_ENUM.main;
       }
     });
   }
@@ -1199,7 +1199,7 @@ class ActionBlockController {
     this.#loginPanelController.bindClickBtnClose({ handler: () => {
       that.#loginPanelController.hide();
 
-      window.location.hash = yesSir.hashHandler.PAGE_NAME_ENUM.main;
+      window.location.hash = yesSir.hashHandler.HASH_NAME_ENUM.main;
     }});
   }
 

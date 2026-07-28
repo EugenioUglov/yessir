@@ -14,14 +14,18 @@ class SearchControllerEventBinder {
             // });
             let isExecuteActionBlockByTitle = true;
 
-            hashHandler.setHashRequest({
+            hashHandler.setPreviousHash(window.location.hash);
+
+            yesSir.hashHandlers.setHashRequest({
                 requestValue: request, 
                 isExecuteActionBlockByTitle: isExecuteActionBlockByTitle
             });
         };
 
         searchController.changeInputFieldHandler = function(request) {
-            hashHandler.setHashRequest({
+            hashHandler.setPreviousHash(window.location.hash);
+
+            yesSir.hashHandlers.setHashRequest({
                 requestValue: request, 
                 isExecuteActionBlockByTitle: false
             });
@@ -30,7 +34,9 @@ class SearchControllerEventBinder {
         searchController.keyUpRequestFieldHandler = function(request, clickedKeyCode) {
             const isExecuteActionBlockByTitle = clickedKeyCode === yesSir.keyCodeByKeyName.enter ? true : false;
 
-            hashHandler.setHashRequest({
+            hashHandler.setPreviousHash(window.location.hash);
+
+            yesSir.hashHandlers.setHashRequest({
                 requestValue: request, 
                 isExecuteActionBlockByTitle: isExecuteActionBlockByTitle
             });

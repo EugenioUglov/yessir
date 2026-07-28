@@ -1,8 +1,4 @@
-class PageElementView {
-    constructor() {
-
-    }
-
+class DomElementVisibilityManager {
     #displayedElements = [];
 
     showElement(element) {

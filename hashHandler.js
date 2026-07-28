@@ -1,14 +1,14 @@
 class HashHandler {
-  constructor({ textManager, searchService, scrollController, PAGE_NAME_ENUM, PAGE_OPTION_NAME_ENUM, routesMap, defaultPage }) {
+  constructor({ textManager, searchService, scrollController, HASH_NAME_ENUM, PAGE_OPTION_NAME_ENUM, routesMap, defaultPage }) {
     this.textManager = textManager;
     this.searchService = searchService;
     this.scrollController = scrollController;
-    this.PAGE_NAME_ENUM = PAGE_NAME_ENUM;
+    this.#HASH_NAME_ENUM = HASH_NAME_ENUM;
     this.PAGE_OPTION_NAME_ENUM = PAGE_OPTION_NAME_ENUM;
     this.#routesMap = routesMap;
     this.#defaultPage = defaultPage;
-    this.#view = new PageElementView();
-    
+    this.#view = new DomElementVisibilityManager();
+
     this.#setListeners();
   }
 
@@ -20,12 +20,13 @@ class HashHandler {
   #view;
   #routesMap;
   #defaultPage;
+  #HASH_NAME_ENUM;
 
   #setListeners() {
     const that = this;
 
-    window.onhashchange = function() {
-        that.handleHash();
+    window.onhashchange = function () {
+      that.#handleHash();
     }
   }
 
@@ -33,17 +34,22 @@ class HashHandler {
     this.setHashChangeListenerActiveState(true);
 
     // Обрабатываем текущий хеш при загрузке страницы
-    if ( ! window.location.hash) {
-        this.openPage(this.#defaultPage);
+    if (!window.location.hash) {
+      this.openPage(this.#defaultPage);
     } else {
-        this.handleHash();
+      this.#handleHash();
     }
   }
-  
+
   // Open page by name and optional query parameters.
   openPage(pageName, queryParams = {}) {
+    this.#hashPrevious = window.location.hash;
+
+    console.log('openPage', pageName, queryParams);
+    this.#setCurrentPageName(pageName);
+
     let hash = "#" + pageName;
-    
+
     // Если переданы параметры, собираем их в строку (например: ?id=5&sort=asc)
     const queryString = new URLSearchParams(queryParams).toString();
 
@@ -62,63 +68,6 @@ class HashHandler {
     return window.location.hash.toLowerCase();
   }
 
-  setHashMain() {
-    this.#hashPrevious = this.getNormalizedCurrentHash();
-    this.#setCurrentPageName(this.PAGE_NAME_ENUM.main);
-    window.location.hash = this.PAGE_NAME_ENUM.main;
-  }
-
-  setHashMainPrevious() {
-    window.location.hash = "mainprevious";
-  }
-
-  setHashRequest = (
-    parameter = {
-      requestValue: "",
-      isExecuteActionBlockByTitle: false,
-      isListenText: false,
-    }
-  ) => {
-    const DEFAULT_PARAMETER = {
-      requestValue: "",
-      isExecuteActionBlockByTitle: false,
-      isListenText: false,
-    };
-
-    const requestValue =
-      parameter.requestValue != undefined
-        ? parameter.requestValue
-        : DEFAULT_PARAMETER.requestValue;
-
-    const isExecuteActionBlockByTitle =
-      parameter.isExecuteActionBlockByTitle != undefined
-        ? parameter.isExecuteActionBlockByTitle
-        : DEFAULT_PARAMETER.isExecuteActionBlockByTitle;
-
-    const isListenText =
-      parameter.isListenText != undefined
-        ? parameter.isListenText
-        : DEFAULT_PARAMETER.isListenText;
-
-    this.#hashPrevious = this.getNormalizedCurrentHash();
-
-    if (requestValue === undefined || requestValue === "") {
-      this.openMainPage();
-    }
-
-    this.#setCurrentPageName(this.PAGE_NAME_ENUM.request);
-
-    const newHash =
-      this.PAGE_NAME_ENUM.request +
-      "=" +
-      requestValue +
-      (isExecuteActionBlockByTitle
-        ? "&" + this.PAGE_OPTION_NAME_ENUM.executebytitle
-        : "") +
-      (isListenText ? "&" + this.PAGE_OPTION_NAME_ENUM.listen : "");
-
-    window.location.hash = newHash;
-  };
 
   setPreviousHash(newHashPrevious) {
     this.#hashPrevious =
@@ -128,55 +77,57 @@ class HashHandler {
   setHashCreateActionBlock() {
     this.#hashPrevious = this.getNormalizedCurrentHash();
 
-    this.#setCurrentPageName(this.PAGE_NAME_ENUM.createActionBlock);
-    window.location.hash = this.PAGE_NAME_ENUM.createActionBlock;
+    console.log("create");
+
+    this.#setCurrentPageName(this.#HASH_NAME_ENUM.createActionBlock);
+    window.location.hash = this.#HASH_NAME_ENUM.createActionBlock;
   }
 
   setHashCreateNote() {
     this.#hashPrevious = this.getNormalizedCurrentHash();
 
-    this.#setCurrentPageName(this.PAGE_NAME_ENUM.createNote);
-    window.location.hash = this.PAGE_NAME_ENUM.createNote;
+    this.#setCurrentPageName(this.#HASH_NAME_ENUM.createNote);
+    window.location.hash = this.#HASH_NAME_ENUM.createNote;
   }
 
   setHashCreateLink() {
     this.#hashPrevious = this.getNormalizedCurrentHash();
 
-    this.#setCurrentPageName(this.PAGE_NAME_ENUM.createLink);
-    window.location.hash = this.PAGE_NAME_ENUM.createLink;
+    this.#setCurrentPageName(this.#HASH_NAME_ENUM.createLink);
+    window.location.hash = this.#HASH_NAME_ENUM.createLink;
   }
 
 
   setHashGetFromDatabase() {
     // this.#hash_previous = this.getNormalizedCurrentHash();
-    this.#hashPrevious = this.PAGE_NAME_ENUM.main;
+    this.#hashPrevious = this.#HASH_NAME_ENUM.main;
 
 
-    this.#setCurrentPageName(this.PAGE_NAME_ENUM.getfromdatabase);
-    // window.location.hash = this.PAGE_NAME_ENUM.getfromdatabase;
-    window.location.replace('#' + this.PAGE_NAME_ENUM.getfromdatabase);
+    this.#setCurrentPageName(this.#HASH_NAME_ENUM.getfromdatabase);
+    // window.location.hash = this.#HASH_NAME_ENUM.getfromdatabase;
+    window.location.replace('#' + this.#HASH_NAME_ENUM.getfromdatabase);
   }
 
   setHashSaveToDatabase() {
     this.#hashPrevious = this.getNormalizedCurrentHash();
 
-    this.#setCurrentPageName(this.PAGE_NAME_ENUM.savetodatabase);
-    window.location.hash = this.PAGE_NAME_ENUM.savetodatabase;
+    this.#setCurrentPageName(this.#HASH_NAME_ENUM.savetodatabase);
+    window.location.hash = this.#HASH_NAME_ENUM.savetodatabase;
   }
 
   setHashLogin() {
     // this.#hash_previous = this.getNormalizedCurrentHash();
-    this.#hashPrevious = this.PAGE_NAME_ENUM.main;
+    this.#hashPrevious = this.#HASH_NAME_ENUM.main;
 
-    this.#setCurrentPageName(this.PAGE_NAME_ENUM.login);
-    window.location.hash = this.PAGE_NAME_ENUM.login;
+    this.#setCurrentPageName(this.#HASH_NAME_ENUM.login);
+    window.location.hash = this.#HASH_NAME_ENUM.login;
   }
 
   // setHashEditActionBlock(title) {
   //     this.#hash_previous = this.getNormalizedCurrentHash();
   //     console.log("hash_previous = " + this.#hash_previous);
-  //     this.#setCurrenPageName(this.PAGE_NAME_ENUM.editActionBlock);
-  //     window.location.hash = this.PAGE_NAME_ENUM.editActionBlock + '=' + title;
+  //     this.#setCurrenPageName(this.#HASH_NAME_ENUM.editActionBlock);
+  //     window.location.hash = this.#HASH_NAME_ENUM.editActionBlock + '=' + title;
   // }
 
   showElement(element) {
@@ -193,18 +144,14 @@ class HashHandler {
   }
 
   openMainPage() {
-    if (window.location.hash === "#" + this.PAGE_NAME_ENUM.main) {
-      this.handleHash();
-    } else {
-      window.location.hash = this.PAGE_NAME_ENUM.main;
-    }
+    this.openPage(this.#HASH_NAME_ENUM.main);
   }
 
   openActionBlockPage(title) {
     this.#hashPrevious = window.location.hash;
 
     window.location.hash =
-      this.PAGE_NAME_ENUM.request +
+      this.#HASH_NAME_ENUM.request +
       "=" +
       title +
       "&" +
@@ -214,16 +161,16 @@ class HashHandler {
 
   openSettingsActionBlockPage(title) {
     this.#hashPrevious = window.location.hash;
-    this.#setCurrentPageName(this.PAGE_NAME_ENUM.editActionBlock);
-    window.location.hash = this.PAGE_NAME_ENUM.editActionBlock + "=" + title;
-    this.setPageName(this.PAGE_NAME_ENUM.settingsActionBlock);
+    this.#setCurrentPageName(this.#HASH_NAME_ENUM.editActionBlock);
+    window.location.hash = this.#HASH_NAME_ENUM.editActionBlock + "=" + title;
+    this.setPageName(this.#HASH_NAME_ENUM.settingsActionBlock);
   }
 
   openPreviousPage() {
     if (
       this.#hashPrevious &&
-      this.#hashPrevious.includes(this.PAGE_NAME_ENUM.editActionBlock) ===
-        false
+      this.#hashPrevious.includes(this.#HASH_NAME_ENUM.editActionBlock) ===
+      false
     ) {
       let hashToOpen = this.#hashPrevious;
 
@@ -251,15 +198,12 @@ class HashHandler {
     }
   }
 
-  openPageSettingsToCreateLink() {
-    window.location.hash = this.PAGE_NAME_ENUM.createLink;
-    this.#setCurrentPageName(this.PAGE_NAME_ENUM.createLink);
-  }
+  // openPageSettingsToCreateLink() {
+  //   window.location.hash = this.#HASH_NAME_ENUM.createLink;
+  //   this.#setCurrentPageName(this.#HASH_NAME_ENUM.createLink);
+  // }
 
-  openPageSettingsToCreateNote() {
-    window.location.hash = this.PAGE_NAME_ENUM.createNote;
-    this.#setCurrentPageName(this.PAGE_NAME_ENUM.createNote);
-  }
+
 
   openPreviousBrowserPage() {
     history.back();
@@ -273,36 +217,7 @@ class HashHandler {
     return this.#isHashChangeListenerActiveStateEnabled;
   }
 
-  // !!!
-  handleHashNew() {
-
-    // Убираем '#'
-    const rawHash = window.location.hash.replace('#', '');
-    
-    // Разделяем страницу и параметры по знаку '?'
-    const [pageName, queryString] = rawHash.split('?');
-
-    const action = this.#routesMap[pageName];
-
-    if (typeof action === 'function') {
-      this.setPageName(pageName);
-      // Превращаем query-строку в удобный объект (например: { id: "5", sort: "asc" })
-      const queryParams = Object.fromEntries(new URLSearchParams(queryString || ''));
-      
-      // Передаем параметры в действие!
-      action(queryParams);
-    } else {
-      this.setPageName(this.#defaultPage);
-
-      console.warn(`Нет обработчика для страницы: ${pageName}. Открываем страницу по умолчанию.`);
-
-      this.openPage(this.#defaultPage);
-    }
-  }
-
-  handleHash() {
-    const that = this;
-    
+  #handleHash() {
     const hashParamsInLowerCase = yesSir.hashHelper.getHashParamsInLowerCase();
 
     hideCommandInput();
@@ -311,221 +226,73 @@ class HashHandler {
 
     this.hideShowedElements();
 
+
     if (this.getHashChangeListenerActiveState() === false) return;
 
-    if (
-      this.getNormalizedCurrentHash() === "#" + this.PAGE_NAME_ENUM.main ||
-      this.getNormalizedCurrentHash() === "" ||
-      this.getNormalizedCurrentHash() === "#undefined"
-    ) {
-      this.setPageName(this.PAGE_NAME_ENUM.main);
-      this.searchService.clearInputField();
+    // Убираем '#'
+    const rawHash = window.location.hash.replace('#', '');
 
-      if (yesSir.actionBlockController.model.getActionBlocks().size > 0) {
-        yesSir.actionBlockController.view.onOpenMainPageWithActionBlocks();
-        yesSir.actionBlockController.showActionBlocks();
+    let pageName = '';
+    let queryString = '';
+
+    // Проверяем: есть ли знак '=' и где он находится
+    if (rawHash.includes('=')) {
+      // Случай вида: actionblock=1 или notes?id=5&edit=true
+      const equalIndex = rawHash.indexOf('=');
+      const questionIndex = rawHash.indexOf('?');
+
+      // Если знака '?' нет вообще ИЛИ знак '=' идет раньше '?' 
+      // Значит, перед нами формат "страница=значение" (например, #actionblock=1)
+      if (questionIndex === -1 || equalIndex < questionIndex) {
+        // Разделяем по первому знаку '='
+        // Всё до '=' — это имя страницы, всё после '=' — значение параметра
+        const firstEqual = rawHash.indexOf('=');
+        pageName = rawHash.substring(0, firstEqual); // "actionblock"
+
+        // Превращаем "1" в стандартный параметр (например, с ключом по умолчанию или id)
+        // Или сохраняем значение. Давайте сделаем универсально: { id: "1" } или передадим как есть
+        const value = rawHash.substring(firstEqual + 1);
+
+        // Если вам нужно, чтобы значение шло как конкретный параметр (например, id):
+        // Можно решить, что для таких коротких записей параметр получает имя страницы или стандартный ключ 'id'
+        queryString = `id=${value}`;
       } else {
-        yesSir.actionBlockController.view.onOpenMainPageWithoutActionBlocks();
-      }
-
-      yesSir.actionBlockController.view.onShowMainPage();
-      this.scrollController.setPositionTop();
-    } else if (this.getNormalizedCurrentHash() === "#testfirebase") {
-      // var actionBlocks_to_save = this.mapDataStructure.getStringified(actionBlocks_map_to_save);
-      // var dbRef = firebase.database().ref();
-      // var databaseTable = dbRef.child('actionBlocks');
-
-      // const newdata = {
-      //     0: actionBlocks_to_save
-      // };
-
-      // databaseTable.update(newdata);
-
-      const that = this;
-      const dbRef = firebase.database().ref();
-      const actionBlocksDatabase = dbRef.child("actionBlocks");
-      let actionBlocks = "";
-
-      // get(child(dbRef, "yesSir/actionBlocks")).then((snapshot)=> {
-      //     console.log(snapshot.val());
-      // });
-
-      actionBlocksDatabase.on("value", (snapshot) => {
-        const databaseObject = snapshot.val();
-        // console.log("get from firebase database completed:");
-        // console.log(actionBlocks);
-
-        console.log(databaseObject);
-      });
-    } else if (
-      this.getNormalizedCurrentHash().includes(
-        "#" + this.PAGE_NAME_ENUM.main
-      ) &&
-      window.location.hash.includes(this.PAGE_OPTION_NAME_ENUM.fileManager)
-    ) {
-      yesSir.domElementManager.hideShowedElements();
-
-      $(".btn_upload_actionBlocks").on("change", (event) => {
-        yesSir.fileManager.uploadFile(onFileLoaded);
-
-        function onFileLoaded(content_of_file) {
-          yesSir.actionBlockController.saveActionBlocksFromFile(content_of_file);
-
-          // Give possibility to load the same file again.
-          $(".btn_upload_actionBlocks").value = "";
-
-          window.location.hash = "main";
-        }
-      });
-
-      $(".btn_download_actionBlocks")[0].addEventListener("click", () => {
-        yesSir.actionBlockController.downloadFileWithActionBlocks();
-      });
-
-      $("#elements_for_file_manager").show();
-
-      this.scrollController.setPositionTop();
-    } else if (
-      hashParamsInLowerCase.has(this.PAGE_NAME_ENUM.actionBlock.toLowerCase())
-    ) {
-        const idFromUrl = hashParamsInLowerCase.get(this.PAGE_NAME_ENUM.actionBlock.toLowerCase());
-
-        yesSir.actionBlockController.executeActionBlockById(idFromUrl);
-    } else if (
-      hashParamsInLowerCase.has(this.PAGE_NAME_ENUM.request)
-    ) {
-      let request = "";
-      const textToCut = window.location.hash;
-      const fromCharacterRequest = "=";
-
-      let isExecuteActionBlockByTitle = false;
-
-      if (
-        hashParamsInLowerCase.get(this.PAGE_OPTION_NAME_ENUM.executebytitle) == false
-      ) {
-        const toCharacterRequest =
-          "&" + this.PAGE_OPTION_NAME_ENUM.executebytitle;
-
-        request = that.textManager.getCuttedText(
-          textToCut,
-          fromCharacterRequest,
-          toCharacterRequest
-        );
-        request = decodeURIComponent(request);
-        this.searchService.setTextToInputField(request);
-      } else if (
-        window.location.hash.includes(
-          this.PAGE_OPTION_NAME_ENUM.executebytitle + "=true"
-        ) ||
-        window.location.hash.includes(
-          this.PAGE_OPTION_NAME_ENUM.executebytitle
-        )
-      ) {
-        isExecuteActionBlockByTitle = true;
-        const toCharacterRequest =
-          "&" + this.PAGE_OPTION_NAME_ENUM.executebytitle;
-        request = that.textManager.getCuttedText(
-          textToCut,
-          fromCharacterRequest,
-          toCharacterRequest
-        );
-      } else {
-        request = that.textManager.getCuttedText(
-          textToCut,
-          fromCharacterRequest
-        );
-        request = decodeURIComponent(request);
-        this.searchService.setTextToInputField(request);
-      }
-
-      request = decodeURIComponent(request);
-      yesSir.actionBlockController.showActionBlocksByRequest(
-        request,
-        isExecuteActionBlockByTitle
-      );
-
-      this.scrollController.setPositionTop();
-    } else if (
-      this.getNormalizedCurrentHash().includes(
-        this.PAGE_NAME_ENUM.createActionBlock
-      )
-    ) {
-      yesSir.actionBlockController.showSettingsToCreateAdvancedActionBlock();
-
-      this.scrollController.setPositionTop();
-    } else if (
-      this.getNormalizedCurrentHash().includes(
-        this.PAGE_NAME_ENUM.createNote
-      )
-    ) {
-      yesSir.actionBlockController.showSettingsToCreateNote();
-      this.scrollController.setPositionTop();
-    } else if (
-      this.getNormalizedCurrentHash().includes(
-        this.PAGE_NAME_ENUM.createLink
-      )
-    ) {
-      yesSir.actionBlockController.showSettingsToCreateLink();
-      this.scrollController.setPositionTop();
-    } else if (
-      this.getNormalizedCurrentHash().includes(
-        this.PAGE_NAME_ENUM.editActionBlock
-      )
-    ) {
-      const textToCut = window.location.hash;
-      const fromCharacterActionBlockSettings = "=";
-      const toCharacterRequestActionBlockSettings = "";
-
-      let title = this.textManager.getCuttedText(
-        textToCut,
-        fromCharacterActionBlockSettings,
-        toCharacterRequestActionBlockSettings
-      );
-
-      title = decodeURIComponent(title);
-      yesSir.actionBlockController.openActionBlockSettings(title);
-      this.scrollController.setPositionTop();
-    } else if (
-      this.getNormalizedCurrentHash().includes(
-        this.PAGE_NAME_ENUM.savetodatabase
-      )
-    ) {
-      yesSir.actionBlockController.saveToDatabase();
-      this.scrollController.setPositionTop();
-    } else if (
-      this.getNormalizedCurrentHash().includes(
-        this.PAGE_NAME_ENUM.getfromdatabase
-      )
-    ) {
-      yesSir.actionBlockController.getFromDatabase();
-      this.scrollController.setPositionTop();
-    } else if (this.getNormalizedCurrentHash() === "#mainprevious") {
-      $("#content_executed_from_actionBlock").css("display", "none");
-      $("#btn_close").css("display", "none");
-      $(".btn_open_settings_actionBlock").css("display", "none");
-      $(".btn_open_command_palette").css("display", "none");
-      $("#btn_back").css("display", "none");
-
-      // $('#actionBlocks_page').css('display', 'block');
-      yesSir.actionBlockController.showActionBlocksContainer();
-      const scrollPositionOnExecuteActionBlock =
-        yesSir.actionBlockController.getScrollPositionOnExecuteBlock();
-      const indexLastShowedActionBlock =
-        yesSir.actionBlockController.getIndexLastShowedActionBlock();
-
-      if (indexLastShowedActionBlock === 0) {
-        this.openPreviousPage();
-      } else {
-        this.scrollController.setPosition(
-          0,
-          scrollPositionOnExecuteActionBlock
-        );
+        // Обычный формат с '?' (например, #notes?id=1)
+        const parts = rawHash.split('?');
+        pageName = parts[0];
+        queryString = parts[1];
       }
     } else {
-      // window.location.hash === this.PAGE_NAME_ENUM.main;
+      // Обычный формат без параметров (например, #main или #notes)
+      pageName = rawHash;
     }
 
-    new EditActionBlockDataHolder(this);
+    const lowerCasePageName = pageName ? pageName.toLowerCase() : '';
+
+    const action = this.#routesMap[lowerCasePageName];
+
+    if (typeof action === 'function') {
+      this.setPageName(lowerCasePageName);
+      // Превращаем query-строку в удобный объект (например: { id: "5", sort: "asc" })
+      const queryParams = Object.fromEntries(new URLSearchParams(queryString || ''));
+
+      const queryParamsInLowerCase = {};
+
+      for (const key in queryParams) {
+        queryParamsInLowerCase[key.toLowerCase()] = queryParams[key].toLowerCase();
+      }
+
+      // Передаем параметры в действие!
+      action(queryParamsInLowerCase);
+    } else {
+      this.setPageName(this.#defaultPage);
+
+      console.warn(`Нет обработчика для страницы: ${lowerCasePageName}. Открываем страницу по умолчанию.`);
+
+      this.openPage(this.#defaultPage);
+    }
+
+    new EditActionBlockDataHolder(HASH_NAME_ENUM, this);
   }
 
   #setCurrentPageName(newPageName) {

@@ -103,39 +103,30 @@ class YesSir {
         this.centeredAlert
       );
 
-      const pageHandlers = new PageHandlers(
+      this.hashHandlers = new HashHandlers(
+        HASH_NAME_ENUM,
         this.searchController,
         this.actionBlockController,
-        this.scrollController
+        this.scrollController,
+        this.textManager
       );
 
-      const routesConfig = new RoutesConfig(pageHandlers);
+      this.routesConfig = new RoutesConfig(HASH_NAME_ENUM, this.hashHandlers);
+
 
       this.hashHandler = new HashHandler(
         {
           textManager: this.textManager,
           searchService: this.searchController,
           scrollController: this.scrollController,
-          PAGE_NAME_ENUM: Object.freeze({
-            main: "main",
-            request: "request",
-            actionBlock: "actionBlock",
-            createActionBlock: "createactionblock",
-            createNote: "createnote",
-            createLink: "createlink",
-            editActionBlock: "editactionblock",
-            contentActionBlock: "contentactionblock",
-            login: "login",
-            savetodatabase: "savetodatabase",
-            getfromdatabase: "getfromdatabase",
-          }),
+          HASH_NAME_ENUM: HASH_NAME_ENUM,
           PAGE_OPTION_NAME_ENUM: Object.freeze({
             executebytitle: "executebytitle",
             listen: "listen",
             fileManager: "filemanager",
           }),
-          routesMap: routesConfig.getRoutesMap(),
-          defaultPage: routesConfig.DEFAULT_PAGE
+          routesMap: this.routesConfig.getRoutesMap(),
+          defaultPage: HASH_NAME_ENUM.main
         }
       );
 
@@ -233,11 +224,14 @@ let yesSir;
       }
     });
 
-    actionBlockController.bindClickBtnShowSettingsToCreateAdvancedActionBlock(() => { hashHandler.setHashCreateActionBlock(); });
+    // actionBlockController.bindClickBtnShowSettingsToCreateAdvancedActionBlock(() => { hashHandler.setHashCreateActionBlock(); });
+    actionBlockController.bindClickBtnShowSettingsToCreateAdvancedActionBlock(() => {
+      yesSir.hashHandlers.openPageCreateActionBlock();
+    });
 
-    actionBlockController.bindClickBtnShowSettingsToCreateNote(() => { hashHandler.openPageSettingsToCreateNote(); });
+    actionBlockController.bindClickBtnShowSettingsToCreateNote(() => { yesSir.hashHandlers.openPageSettingsToCreateNote(); });
 
-    actionBlockController.bindClickBtnShowSettingsToCreateLink(() => { hashHandler.openPageSettingsToCreateLink(); });
+    actionBlockController.bindClickBtnShowSettingsToCreateLink(() => { yesSir.hashHandlers.openPageSettingsToCreateLink(); });
 
     actionBlockController.bindLoadingHandler(() => {
       loaderController.startLoading();

@@ -1,0 +1,29 @@
+// From HashHandler.js - handleHash() method.
+else if (this.getNormalizedCurrentHash() === "#testfirebase") {
+      // var actionBlocks_to_save = this.mapDataStructure.getStringified(actionBlocks_map_to_save);
+      // var dbRef = firebase.database().ref();
+      // var databaseTable = dbRef.child('actionBlocks');
+
+      // const newdata = {
+      //     0: actionBlocks_to_save
+      // };
+
+      // databaseTable.update(newdata);
+
+      const that = this;
+      const dbRef = firebase.database().ref();
+      const actionBlocksDatabase = dbRef.child("actionBlocks");
+      let actionBlocks = "";
+
+      // get(child(dbRef, "yesSir/actionBlocks")).then((snapshot)=> {
+      //     console.log(snapshot.val());
+      // });
+
+      actionBlocksDatabase.on("value", (snapshot) => {
+        const databaseObject = snapshot.val();
+        // console.log("get from firebase database completed:");
+        // console.log(actionBlocks);
+
+        console.log(databaseObject);
+      });
+    }
