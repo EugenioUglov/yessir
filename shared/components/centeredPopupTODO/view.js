@@ -1,14 +1,12 @@
 const dialogUploadCommands = {};
 
-dialogUploadCommands.show = function(title_text) {
-    $(".black_background").show();
-
+dialogUploadCommands.show = function({title, content}) {
     // .START (Set text for title)
     let dialogUploadActionBloksFromFile = {};
     dialogUploadActionBloksFromFile.elem = $("#dialog_upload_actionBloks_from_file");
     dialogUploadActionBloksFromFile.title = dialogUploadActionBloksFromFile.elem.find(".title")[0];
     dialogUploadActionBloksFromFile.title.innerText = "";
-    if (title_text) dialogUploadActionBloksFromFile.title.innerText = title_text;
+    if (title) dialogUploadActionBloksFromFile.title.innerText = title;
     // .END (Set text for title)
 
 

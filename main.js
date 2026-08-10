@@ -9,7 +9,7 @@ class YesSir {
 
       this.loginPanelController = await LoginManager.create({ projectAssetLoader: projectAssetLoader, targetId: 'loginContainer' });
 
-      this.centeredAlertManager = await CenteredAlertManager.create({ projectAssetLoader: projectAssetLoader, targetId: 'alertCenterContainer' });
+      this.centeredAlertController = await CenteredAlertManager.create({ projectAssetLoader: projectAssetLoader, targetId: 'alertCenterContainer' });
 
 
       this.googleSpeechRecognition = new GoogleSpeechRecognition();
@@ -99,7 +99,7 @@ class YesSir {
         this.bottomInfoPanel,
         this.loginPanelController,
         this.modalBoxController,
-        this.centeredAlert
+        this.centeredAlertController
       );
 
       this.hashHandlers = new HashHandlers(

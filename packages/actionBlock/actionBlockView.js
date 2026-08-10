@@ -288,9 +288,9 @@ class ActionBlockView {
       that.#onDropdownActionValueChange();
     };
 
-    $("#dialog_upload_actionBloks_from_file")
-      .find(".btn_cancel")[0]
-      .addEventListener("click", function () {});
+    // $("#dialog_upload_actionBloks_from_file")
+    //   .find(".btn_cancel")[0]
+    //   .addEventListener("click", function () {});
   }
 
   bindClickBtnCancelSettings(handler) {
@@ -342,11 +342,11 @@ class ActionBlockView {
   }
 
   bindClickBtnRewriteActionBlocks(handler) {
-    $("#dialog_upload_actionBloks_from_file")
-      .find(".btn_rewrite_actionBlocks")[0]
-      .addEventListener("click", function () {
-        handler();
-      });
+    // $("#dialog_upload_actionBloks_from_file")
+    //   .find(".btn_rewrite_actionBlocks")[0]
+    //   .addEventListener("click", function () {
+    //     handler();
+    //   });
   }
 
   bindClickBtnFixedPlus(handler) {
