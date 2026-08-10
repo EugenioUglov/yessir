@@ -20,7 +20,6 @@ export const scripts = [
     // Библиотеки (Core)
     "./libraries/inputFieldWithSuggestions.js",
     "./libraries/mapDataStructure.js",
-    "./libraries/domElementManager.js",
     "./libraries/dateManager.js",
     "./libraries/firebaseManager.js",
     "./libraries/textManager.js",
@@ -32,7 +31,6 @@ export const scripts = [
     "./libraries/inputDeviceManger.js",
     "./packages/voiceRecognition/voiceRecognitionManager.js",
     "./libraries/textToSpeechSynthesizer.js",
-    "./libraries/hashHelper.js",
     "./libraries/elementsVisibility.js",
     "./libraries/defaultActionBlocks.js",
     "./libraries/googleSpeechRecognition.js",
@@ -47,12 +45,12 @@ export const scripts = [
     "./packages/noteSpeaker/noteSpeakerService.js",
     "./packages/voiceRecognition/voiceRecognitionService.js",
     "./packages/autocomplete/autocompleteService.js",
-    "./hashHandler.js",
+    "./hashObserver.js",
     "./packages/dataStorage/dataStorageService.js",
     "./core/modalLoadingController.js",
 
 
-    "./shared/domElementVisibilityManager.js",
+    "./shared/domElementVisibility.js",
 
     // Модели
     "./packages/noteSpeaker/noteSpeakerModel.js",

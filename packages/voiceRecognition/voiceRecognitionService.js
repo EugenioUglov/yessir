@@ -20,7 +20,7 @@ class VoiceRecognitionService {
         that.#view.showProgressRecognition();
 
         function onInterimTranscript(interimTranscript) {
-            yesSir.hashHandler.setPreviousHash(window.location.hash);
+            yesSir.hashObserver.setPreviousHash(window.location.hash);
 
             yesSir.hashHandlers.setHashRequest({
                 requestValue: interimTranscript, 
@@ -36,7 +36,7 @@ class VoiceRecognitionService {
                 finalTranscript = finalTranscript.substr(0, finalTranscript.length - 1);
             }
 
-            yesSir.hashHandler.setPreviousHash(window.location.hash);
+            yesSir.hashObserver.setPreviousHash(window.location.hash);
 
             yesSir.hashHandlers.setHashRequest({
                 requestValue: finalTranscript,

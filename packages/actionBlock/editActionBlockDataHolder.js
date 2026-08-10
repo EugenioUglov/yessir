@@ -1,12 +1,12 @@
 class EditActionBlockDataHolder {
-    constructor(HASH_NAME_ENUM, hashHandler) {
+    constructor(HASH_NAME_ENUM, hashObserver) {
         // createActionBlock: 'createactionblock',
         // createNote: 'createnote',
         // createLink: 'createlink',
-        if (hashHandler.getNormalizedCurrentHash().includes(HASH_NAME_ENUM.editActionBlock) ||
-        hashHandler.getNormalizedCurrentHash().includes(HASH_NAME_ENUM.createActionBlock) ||
-        hashHandler.getNormalizedCurrentHash().includes(HASH_NAME_ENUM.createNote) ||
-        hashHandler.getNormalizedCurrentHash().includes(HASH_NAME_ENUM.createlink) ) {
+        if (hashObserver.getNormalizedCurrentHash().includes(HASH_NAME_ENUM.editActionBlock) ||
+        hashObserver.getNormalizedCurrentHash().includes(HASH_NAME_ENUM.createActionBlock) ||
+        hashObserver.getNormalizedCurrentHash().includes(HASH_NAME_ENUM.createNote) ||
+        hashObserver.getNormalizedCurrentHash().includes(HASH_NAME_ENUM.createlink) ) {
             this.#restoreLastSavedInputValues();
             this.#setInputDataHandler();
         }

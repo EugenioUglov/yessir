@@ -596,7 +596,7 @@ class DefaultActionBlocks {
             return `
                 <script>
                 yesSir.actionBlockController.showSettingsToCreateActionBlock('showInfo');
-                yesSir.hashHandler.setHashCreateNote();
+                yesSir.hashHandlers.setHashCreateNote();
 
                 // const dropdown_select_action = $('#settings_actionBlock_container').find('.dropdown_select_action');
                 // dropdown_select_action.val('showInfo');
@@ -609,7 +609,7 @@ class DefaultActionBlocks {
                     yesSir.speakerManager.speak('Please, tell the text of the note', onEndSpeak);
                 
                     function onEndSpeak() {
-                        if (yesSir.hashHandler.getCurrentPageName() != yesSir.getPageNameEnum().createNote) return;
+                        if (yesSir.hashObserver.getCurrentPageName() != yesSir.getPageNameEnum().createNote) return;
 
                         // Начинаем слушать микрофон и распознавать голос
                         yesSir.voiceRecognitionService.startRecognizing({
@@ -640,7 +640,7 @@ class DefaultActionBlocks {
                     yesSir.speakerManager.speak('Please, tell the command that opens this note', onEndSpeak);
                 
                     function onEndSpeak() {
-                        if (yesSir.hashHandler.getCurrentPageName() != yesSir.getPageNameEnum().createNote) return;
+                        if (yesSir.hashObserver.getCurrentPageName() != yesSir.getPageNameEnum().createNote) return;
 
                         yesSir.voiceRecognitionService.startRecognizing({
                             callbackInterimTranscript: onInterimTranscript, 
@@ -668,7 +668,7 @@ class DefaultActionBlocks {
                     yesSir.speakerManager.speak('Do you want to save this note?', onEndSpeak);
                 
                     function onEndSpeak() {
-                        if (yesSir.hashHandler.getCurrentPageName() != yesSir.getPageNameEnum().createNote) return;
+                        if (yesSir.hashObserver.getCurrentPageName() != yesSir.getPageNameEnum().createNote) return;
                         
                         yesSir.voiceRecognitionService.startRecognizing({
                             callbackInterimTranscript: onInterimTranscript, 
@@ -727,19 +727,19 @@ class DefaultActionBlocks {
 
         function getContentActionBlockLogin() {
             return `<script>
-                yesSir.hashHandler.setHashLogin();
+                yesSir.hashHandlers.setHashLogin();
             </script>`;
         }
 
         function getContentActionBlockGetFromDatabase() {
             return `<script>
-                yesSir.hashHandler.setHashGetFromDatabase();
+                yesSir.hashHandlers.setHashGetFromDatabase();
             </script>`;
         }
         
         function getContentActionBlockSaveToDatabase() {
             return `<script>
-                yesSir.hashHandler.setHashSaveToDatabase();
+                yesSir.hashHandlers.setHashSaveToDatabase();
             </script>`;
         }
         

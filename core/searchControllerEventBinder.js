@@ -1,8 +1,8 @@
 class SearchControllerEventBinder {
-    constructor({ searchController, hashHandler, actionBlockController }) {
+    constructor({ searchController, hashObserver, actionBlockController }) {
          
         searchController.clickBtnClearHandler = function() {
-            hashHandler.openMainPage();
+            yesSir.hashHandlers.openMain();
         };
 
         searchController.inputFieldEnterHandler = () => {
@@ -14,7 +14,7 @@ class SearchControllerEventBinder {
             // });
             let isExecuteActionBlockByTitle = true;
 
-            hashHandler.setPreviousHash(window.location.hash);
+            hashObserver.setPreviousHash(window.location.hash);
 
             yesSir.hashHandlers.setHashRequest({
                 requestValue: request, 
@@ -23,7 +23,7 @@ class SearchControllerEventBinder {
         };
 
         searchController.changeInputFieldHandler = function(request) {
-            hashHandler.setPreviousHash(window.location.hash);
+            hashObserver.setPreviousHash(window.location.hash);
 
             yesSir.hashHandlers.setHashRequest({
                 requestValue: request, 
@@ -34,7 +34,7 @@ class SearchControllerEventBinder {
         searchController.keyUpRequestFieldHandler = function(request, clickedKeyCode) {
             const isExecuteActionBlockByTitle = clickedKeyCode === yesSir.keyCodeByKeyName.enter ? true : false;
 
-            hashHandler.setPreviousHash(window.location.hash);
+            hashObserver.setPreviousHash(window.location.hash);
 
             yesSir.hashHandlers.setHashRequest({
                 requestValue: request, 

@@ -1,4 +1,4 @@
-// From HashHandler.js - handleHash() method.
+// From HashObserver.js - handleHash() method.
 else if (this.getNormalizedCurrentHash() === "#testfirebase") {
       // var actionBlocks_to_save = this.mapDataStructure.getStringified(actionBlocks_map_to_save);
       // var dbRef = firebase.database().ref();

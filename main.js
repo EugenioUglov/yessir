@@ -23,8 +23,7 @@ class YesSir {
       this.mapDataStructure = new MapDataStructure();
       this.dbManager = new DBManager();
       this.arrayManager = new ArrayManager();
-      this.hashHelper = new HashHelper();
-      this.domElementManager = new DOMElementManager();
+      this.domElementVisibility = new DomElementVisibility();
 
       this.keyCodeByKeyName = inputDeviceManager.getKeyCodeByKeyName();
       this.dialogWindow = new DialogWindow();
@@ -114,21 +113,20 @@ class YesSir {
       this.routesConfig = new RoutesConfig(HASH_NAME_ENUM, this.hashHandlers);
 
 
-      this.hashHandler = new HashHandler(
+      this.hashObserver = new HashObserver(
         {
-          textManager: this.textManager,
-          searchService: this.searchController,
-          scrollController: this.scrollController,
-          HASH_NAME_ENUM: HASH_NAME_ENUM,
-          PAGE_OPTION_NAME_ENUM: Object.freeze({
-            executebytitle: "executebytitle",
-            listen: "listen",
-            fileManager: "filemanager",
-          }),
           routesMap: this.routesConfig.getRoutesMap(),
           defaultPage: HASH_NAME_ENUM.main
         }
       );
+
+      this.hashObserver.onStartHandleHash = () => {
+        hideCommandInput();
+      };
+
+      this.hashObserver.onEndHandleHash = () => {
+        new EditActionBlockDataHolder(HASH_NAME_ENUM, this.hashObserver);
+      }
 
       if (onEnd) onEnd();
     })();
@@ -164,7 +162,7 @@ let yesSir;
     const loaderController = yesSir.loaderController;
     // const noteController = yesSir.noteController;
     const dataStorageService = yesSir.dataStorageService;
-    const hashHandler = yesSir.hashHandler;
+    const hashObserver = yesSir.hashObserver;
     const scrollController = yesSir.scrollController;
     const actionBlockController = yesSir.actionBlockController;
 
@@ -177,7 +175,7 @@ let yesSir;
     yesSir.noteController.openNoteHandler = function () {
       const BTN_SPEAKER = yesSir.noteSpeakerService.showBtnSpeaker();
 
-      hashHandler.showElement(BTN_SPEAKER);
+      yesSir.domElementVisibility.showElement(BTN_SPEAKER);
 
       if (window.location.hash.includes("&listen")) {
         yesSir.noteSpeakerService.speak();
@@ -202,14 +200,14 @@ let yesSir;
     const voiceRecognitionController = new VoiceRecognitionController(
       voiceRecognitionService,
       observable,
-      hashHandler
+      hashObserver
     );
 
 
     const dataStorageController = new DataStorageController(
       actionBlockController,
       dataStorageService,
-      hashHandler
+      hashObserver
     );
 
     actionBlockController.showActionBlocksFromStorage();
@@ -224,7 +222,7 @@ let yesSir;
       }
     });
 
-    // actionBlockController.bindClickBtnShowSettingsToCreateAdvancedActionBlock(() => { hashHandler.setHashCreateActionBlock(); });
+    // actionBlockController.bindClickBtnShowSettingsToCreateAdvancedActionBlock(() => { yesSir.hashHandlers.setHashCreateActionBlock(); });
     actionBlockController.bindClickBtnShowSettingsToCreateAdvancedActionBlock(() => {
       yesSir.hashHandlers.openPageCreateActionBlock();
     });
@@ -255,17 +253,17 @@ let yesSir;
 
     const searchControllerEventBinder = new SearchControllerEventBinder({
       searchController: yesSir.searchController,
-      hashHandler: hashHandler,
+      hashObserver: hashObserver,
       actionBlockController: actionBlockController
     });
 
 
 
-    hashHandler.onHandleHashHandler = () => {
-      yesSir.domElementManager.hideShowedElements();
-      yesSir.domElementManager.hideElement("#elements_for_file_manager");
-      yesSir.domElementManager.showElement(".content");
-      yesSir.domElementManager.showElement(".fixed_elements");
+    hashObserver.onHandleHashObserver = () => {
+      yesSir.domElementVisibility.hideShowedElements();
+      yesSir.domElementVisibility.hideElement("#elements_for_file_manager");
+      yesSir.domElementVisibility.showElement(".content");
+      yesSir.domElementVisibility.showElement(".fixed_elements");
 
       if (yesSir.noteSpeakerService.isSpeaking) yesSir.noteSpeakerService.stopSpeak();
     };

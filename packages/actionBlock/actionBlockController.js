@@ -119,7 +119,7 @@ class ActionBlockController {
           return false;
         }
 
-        yesSir.hashHandler.openMainPage();
+        yesSir.hashHandlers.openMain();
       }
     );
   };
@@ -190,7 +190,7 @@ class ActionBlockController {
 
   closeActionBlockSettings = () => {
     yesSir.voiceRecognitionService.stopRecognizing();
-    yesSir.hashHandler.openPreviousPage();
+    yesSir.hashHandlers.openPreviousPage();
   };
 
   
@@ -544,7 +544,7 @@ class ActionBlockController {
 
     this.view.closeSettings();
     this.view.clearAllSettingsFields();
-    yesSir.hashHandler.openPreviousPage();
+    yesSir.hashHandlers.openPreviousPage();
     yesSir.loaderController.stopLoading();
     this.updatePage();
     this.#onActionBlocksStorageUpdated();
@@ -693,7 +693,7 @@ class ActionBlockController {
     that.view.showActionBlocksContainer();
 
     // elements_to_show.forEach(element => {
-    //     yesSir.hashHandler.showElement(element);
+    //     yesSir.hashObserver.showElement(element);
     // });
 
     updateLogMessage();
@@ -763,7 +763,7 @@ class ActionBlockController {
     );
 
     function onSetActionBlocks() {
-      yesSir.hashHandler.init();
+      yesSir.hashObserver.init();
       const time = new Date() - start;
       // console.log("time:" + time);
     }
@@ -772,7 +772,7 @@ class ActionBlockController {
       that.downloadFileWithActionBlocks(
         that.model.getActionBlocksFromLocalStorageAsync()
       );
-      yesSir.hashHandler.init();
+      yesSir.hashObserver.init();
     }
   };
 
@@ -912,7 +912,7 @@ class ActionBlockController {
 
     const viewElementsToShow = this.view.showSettingsToCreateActionBlock();
     viewElementsToShow.forEach((element) => {
-      // yesSir.hashHandler.showElement(element);
+      // yesSir.hashObserver.showElement(element);
     });
   }
 
@@ -1131,7 +1131,7 @@ class ActionBlockController {
                     yesSir.modalBoxController.hide();
                 }, "3000");
     
-                yesSir.hashHandler.openMainPage();
+                yesSir.hashHandlers.openMain();
             },
             onError: error => {
                 alert("Error! Data could not be saved. " + error);
@@ -1144,7 +1144,7 @@ class ActionBlockController {
     this.#loginPanelController.bindClickBtnClose({ 
       handler: () => {
         // that.#loginPanelController.hide();
-        window.location.hash = yesSir.hashHandler.HASH_NAME_ENUM.main;
+        window.location.hash = HASH_NAME_ENUM.main;
       }
     });
   }
@@ -1186,7 +1186,7 @@ class ActionBlockController {
               that.#loginPanelController.hide();
             }
     
-            yesSir.hashHandler.openMainPage();
+            yesSir.hashHandlers.openMain();
           },
           onError: error => {
             yesSir.modalBoxController.hide();
@@ -1199,7 +1199,7 @@ class ActionBlockController {
     this.#loginPanelController.bindClickBtnClose({ handler: () => {
       that.#loginPanelController.hide();
 
-      window.location.hash = yesSir.hashHandler.HASH_NAME_ENUM.main;
+      window.location.hash = HASH_NAME_ENUM.main;
     }});
   }
 
@@ -1362,7 +1362,7 @@ class ActionBlockController {
   };
 
   #onActionBlockUpdated = () => {
-    yesSir.hashHandler.openPreviousPage();
+    yesSir.hashHandlers.openPreviousPage();
     yesSir.loaderController.stopLoading();
     this.view.closeSettings();
     this.view.setDefaultValuesForSettingsElementsActionBlock();
@@ -1463,7 +1463,7 @@ class ActionBlockController {
   deleteActionBlock = (title) => {
     const that = this;
 
-    yesSir.hashHandler.openPreviousPage();
+    yesSir.hashHandlers.openPreviousPage();
     // yesSir.loaderController.stopLoading();
     this.view.closeSettings();
 
@@ -1552,7 +1552,7 @@ class ActionBlockController {
         location.href = url;
       }
     } else {
-      yesSir.hashHandler.openActionBlockPage(title);
+      yesSir.hashHandlers.openActionBlockPage(title);
     }
 
     if (this.model.isMenuCreateTypeActionBlockOpen)
@@ -1563,7 +1563,7 @@ class ActionBlockController {
     this.#scrollPositionOnExecuteBlock =
       this.scrollController.getScrollXY()[1];
 
-    yesSir.hashHandler.openSettingsActionBlockPage(title);
+    yesSir.hashHandlers.openSettingsActionBlockPage(title);
   };
 
   showSettingsToCreateActionBlock = (actionName) => {
@@ -1576,7 +1576,6 @@ class ActionBlockController {
   };
 
   openActionBlockSettings = (title) => {
-    yesSir.hashHandler.hideShowedElements();
     const that = this;
     /// !!!
     // OLD
@@ -1584,15 +1583,14 @@ class ActionBlockController {
     // const actionBlock = actionBlocks.get(title);
     // NEW
     const actionBlock = this.model.getActionBlockByTitle(title);
-    yesSir.hashHandler.openSettingsActionBlockPage(title);
+    yesSir.hashHandlers.openSettingsActionBlockPage(title);
     this.model.actionBlockTitleBeforeUpdate = title;
     this.onPageContentChange();
     const elementsToShow =
       this.view.showElementsToEditActionBlock(actionBlock);
-    yesSir.hashHandler.hideShowedElements();
 
     elementsToShow.forEach((element) => {
-      yesSir.hashHandler.showElement(element);
+      yesSir.domElementVisibility.showElement(element);
     });
   };
 

@@ -1,5 +1,5 @@
 class AutocompleteController {
-  constructor(hashHandler, actionBlockController, autocompleteService) {
+  constructor(hashObserver, actionBlockController, autocompleteService) {
     this.autocompleteService = autocompleteService;
     this.view = new AutocompleteView();
   }
@@ -29,8 +29,8 @@ class AutocompleteController {
 
     function onSelect() {
       if (
-        that.hashHandler.getCurrentPageName() ===
-        that.hashHandler.HASH_NAME_ENUM.main
+        that.hashObserver.getCurrentPageName() ===
+        HASH_NAME_ENUM.main
       ) {
         window.scrollTo(0, 0);
         const actionBlocksToShow =
@@ -43,7 +43,6 @@ class AutocompleteController {
   }
 
   applyTagsAutocomplete(inputField, tags, callbackSelect) {
-    const that = this;
     this.autocompleteService.applyTagsAutocomplete(
       inputField,
       tags,

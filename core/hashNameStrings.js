@@ -12,3 +12,9 @@ const HASH_NAME_ENUM = Object.freeze({
     getFromDatabase: "getfromdatabase",
     mainPrevious: "mainprevious",
 });
+
+const HASH_PARAM_NAME_ENUM = Object.freeze({
+    executeByTitle: "executebytitle",
+    listen: "listen",
+    fileManager: "filemanager",
+});

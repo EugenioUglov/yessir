@@ -1,8 +1,8 @@
 class DataStorageController {
-    constructor(actionBlockController, dataStorageService, hashHandler) {
+    constructor(actionBlockController, dataStorageService, hashObserver) {
         this.actionBlockController = actionBlockController;
         this.dataStorageService = dataStorageService;
-        this.hashHandler = hashHandler;
+        this.hashObserver = hashObserver;
 
         this.#setListeners();
     }
@@ -55,14 +55,14 @@ class DataStorageController {
         function onClickBtnRewriteOnDialogDatabaseManger() {
             $(".black_background").hide();
             that.actionBlockController.rewriteActionBlocks();
-            that.hashHandler.openMainPage();
+            yesSir.hashHandlers.openMain();
         }
 
         this.dataStorageService.view.bindClickBtnUploadActionBlocksToDatabase(onClickBtnUploadActionBlocksToDatabase);
         
         function onClickBtnUploadActionBlocksToDatabase() {
             that.actionBlockController.save();
-            that.hashHandler.openMainPage();
+            yesSir.hashHandlers.openMain();
         }
 
         this.dataStorageService.view.bindClickBtnCancelGetActionBlocksFromDatabase(onClickBtnCancelDialogDatabase);
@@ -71,7 +71,7 @@ class DataStorageController {
             $('#rb_storage_localStorage')[0].checked = true;
             that.#onRbLocalStorageChoosed();
             that.actionBlockController.showActionBlocksFromStorage();
-            that.hashHandler.openMainPage();
+            yesSir.hashHandlers.openMain();
         }
     }
 }

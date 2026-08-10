@@ -60,9 +60,7 @@ class HashHandlers {
     };
 
     openMain = (queryParams) => {
-        if ('filemanager' in queryParams) {
-            yesSir.domElementManager.hideShowedElements();
-
+        if (queryParams && 'filemanager' in queryParams) {
             $(".btn_upload_actionBlocks").on("change", (event) => {
                 yesSir.fileManager.uploadFile(onFileLoaded);
 
@@ -99,7 +97,7 @@ class HashHandlers {
     }
 
     executeActionBlock = (queryParams) => {
-        const hashParamsInLowerCase = yesSir.hashHelper.getHashParamsInLowerCase();
+        const hashParamsInLowerCase = yesSir.hashObserver.getHashParamsInLowerCase();
 
         const idFromUrl = hashParamsInLowerCase.get('actionblock');
 
@@ -107,7 +105,7 @@ class HashHandlers {
     }
 
     openByRequest = (queryParams) => {
-        const hashParamsInLowerCase = yesSir.hashHelper.getHashParamsInLowerCase();
+        const hashParamsInLowerCase = yesSir.hashObserver.getHashParamsInLowerCase();
 
         let request = "";
         const textToCut = window.location.hash;
@@ -222,7 +220,7 @@ class HashHandlers {
             this.#actionBlockController.getIndexLastShowedActionBlock();
 
         if (indexLastShowedActionBlock === 0) {
-            yesSir.hashHandler.openPreviousPage();
+            this.openPreviousPage();
         } else {
             this.#scrollController.setPosition(
                 0,
@@ -246,4 +244,92 @@ class HashHandlers {
     openPageCreateActionBlock() {
         window.location.hash = this.#HASH_NAME_ENUM.createActionBlock;
     }
+
+    openActionBlockPage(title) {
+        window.location.hash =
+            "request" +
+            "=" +
+            title +
+            "&" +
+            "executebytitle" +
+            "=true";
+    }
+
+    openPreviousPage() {
+        const hashPrevious = yesSir.hashObserver.getPreviousHash();
+
+        if (
+            hashPrevious &&
+            hashPrevious.includes(this.#HASH_NAME_ENUM.editActionBlock) === false
+        ) {
+            let hashToOpen = hashPrevious;
+
+            const isPreviousHashIncludesExecuteByTitle =
+                hashPrevious.includes(
+                    "&" + HASH_PARAM_NAME_ENUM.executeByTitle
+                ) &&
+                hashPrevious.includes(
+                    "&" + HASH_PARAM_NAME_ENUM.executeByTitle + "=false"
+                ) === false;
+
+            if (isPreviousHashIncludesExecuteByTitle) {
+                const indexStartWordExecuteByTitle = hashPrevious.indexOf(
+                    "&" + HASH_PARAM_NAME_ENUM.executeByTitle
+                );
+
+                hashToOpen = hashPrevious.substring(
+                    0,
+                    indexStartWordExecuteByTitle
+                );
+            }
+
+            window.location.hash = hashToOpen;
+        } else {
+            this.openMain();
+        }
+    }
+
+    setHashCreateNote() {
+        window.location.hash = this.#HASH_NAME_ENUM.createNote;
+    }
+
+    setHashCreateActionBlock() {
+        window.location.hash = this.#HASH_NAME_ENUM.createActionBlock;
+    }
+
+    setHashLogin() {
+        window.location.hash = this.#HASH_NAME_ENUM.login;
+    }
+
+    setHashGetFromDatabase() {
+        // this.#setCurrentPageName(this.#HASH_NAME_ENUM.getFromDatabase);
+        // window.location.hash = this.#HASH_NAME_ENUM.getFromDatabase;
+        window.location.replace('#' + this.#HASH_NAME_ENUM.getFromDatabase);
+    }
+
+    setHashSaveToDatabase() {
+        window.location.hash = this.#HASH_NAME_ENUM.saveToDatabase;
+    }
+
+    openSettingsActionBlockPage(title) {
+        // this.#hashPrevious = window.location.hash;
+        // this.#setCurrentPageName(this.#HASH_NAME_ENUM.editActionBlock);
+        window.location.hash = this.#HASH_NAME_ENUM.editActionBlock + "=" + title;
+        // this.setPageName(this.#HASH_NAME_ENUM.settingsActionBlock);
+    }
+
+    // setHashEditActionBlock(title) {
+    //     this.#hash_previous = this.getNormalizedCurrentHash();
+    //     console.log("hash_previous = " + this.#hash_previous);
+    //     this.#setCurrenPageName(this.#HASH_NAME_ENUM.editActionBlock);
+    //     window.location.hash = this.#HASH_NAME_ENUM.editActionBlock + '=' + title;
+    // }
+
+    
+
+
+    // openPageSettingsToCreateLink() {
+    //   window.location.hash = this.#HASH_NAME_ENUM.createLink;
+    //   this.#setCurrentPageName(this.#HASH_NAME_ENUM.createLink);
+    // }
 }
