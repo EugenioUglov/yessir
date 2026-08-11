@@ -1,19 +1,52 @@
 class DataStorageController {
-    constructor(actionBlockController, dataStorageService, hashObserver) {
+    constructor(actionBlockController, hashObserver, dialogWindow) {
         this.actionBlockController = actionBlockController;
-        this.dataStorageService = dataStorageService;
         this.hashObserver = hashObserver;
+        this.view = new DataStorageView(dialogWindow);
 
         this.#setListeners();
     }
 
+    #userStorage = localStorage['storage'];
+
+    showDataStorageSettings() {
+        this.view.showDataStorageSettings();
+    }
+    
+    getStorageNameEnum() {
+        const STORAGE_NAME_ENUM = {
+            localStorage : 'localStorage',
+            database : 'database'
+        };
+
+        return STORAGE_NAME_ENUM;
+    }
+
+    getUserStorage() {
+        if (this.#userStorage === undefined) {
+            this.#userStorage = this.getStorageNameEnum().localStorage;
+        }
+        
+        return this.#userStorage;
+    }
+
+    setUserStorage(storage) {
+        this.#userStorage = storage;
+        localStorage['storage'] = storage;
+
+        if (storage === this.getStorageNameEnum().database) {
+            $('#rb_storage_database')[0].checked = true;
+            $('#authorization_form').show();
+        }
+    }
+
     #onRbStorageDatabaseChecked() {
-        this.dataStorageService.setUserStorage(this.dataStorageService.getStorageNameEnum().database);
+        this.setUserStorage(this.getStorageNameEnum().database);
     }
 
     #onRbLocalStorageChoosed() {
         $('#autorization_log').text('');
-        this.dataStorageService.setUserStorage(this.dataStorageService.getStorageNameEnum().localStorage);
+        this.setUserStorage(this.getStorageNameEnum().localStorage);
         $('#authorization_form').hide();
     }
 
@@ -34,7 +67,7 @@ class DataStorageController {
             $('#autorization_log').text('');
             // $('#btn_authorization')[0].disabled = true;
             $('#authorization_form').hide();
-            that.dataStorageService.setUserStorage(that.dataStorageService.getStorageNameEnum().database);
+            that.setUserStorage(that.getStorageNameEnum().database);
             window.scrollTo(0, 0);
             that.actionBlockController.showActionBlocksFromStorage();
         });
@@ -50,7 +83,7 @@ class DataStorageController {
             //that.#onRbStorageDatabaseChecked();
         });
 
-        this.dataStorageService.view.bindClickBtnGetActionBlocksFromDatabase(onClickBtnRewriteOnDialogDatabaseManger);
+        this.view.bindClickBtnGetActionBlocksFromDatabase(onClickBtnRewriteOnDialogDatabaseManger);
 
         function onClickBtnRewriteOnDialogDatabaseManger() {
             $(".black_background").hide();
@@ -58,14 +91,14 @@ class DataStorageController {
             yesSir.hashHandlers.openMain();
         }
 
-        this.dataStorageService.view.bindClickBtnUploadActionBlocksToDatabase(onClickBtnUploadActionBlocksToDatabase);
+        this.view.bindClickBtnUploadActionBlocksToDatabase(onClickBtnUploadActionBlocksToDatabase);
         
         function onClickBtnUploadActionBlocksToDatabase() {
             that.actionBlockController.save();
             yesSir.hashHandlers.openMain();
         }
 
-        this.dataStorageService.view.bindClickBtnCancelGetActionBlocksFromDatabase(onClickBtnCancelDialogDatabase);
+        this.view.bindClickBtnCancelGetActionBlocksFromDatabase(onClickBtnCancelDialogDatabase);
 
         function onClickBtnCancelDialogDatabase() {
             $('#rb_storage_localStorage')[0].checked = true;

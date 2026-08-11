@@ -699,16 +699,10 @@ class ActionBlockController {
     updateLogMessage();
 
     function updateLogMessage() {
-      const data_storage =
-        that.dataStorageService.getStorageNameEnum()[
-          that.dataStorageService.getUserStorage()
-        ];
+      const data_storage = that.dataStorageService.getStorageNameEnum()[that.dataStorageService.getUserStorage()];
       const storageForLog = {};
-      storageForLog[that.dataStorageService.getStorageNameEnum().database] =
-        "database";
-      storageForLog[
-        that.dataStorageService.getStorageNameEnum().localStorage
-      ] = "browser";
+      storageForLog[that.dataStorageService.getStorageNameEnum().database] = "database";
+      storageForLog[that.dataStorageService.getStorageNameEnum().localStorage] = "browser";
 
       let log = "Found " + actionBlocksToShow.length + " results";
 
