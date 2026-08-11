@@ -5,7 +5,7 @@ class CenteredPopupController {
     
     #view;
 
-    show({ title, content }) {
-        this.#view.show({ title, content });
+    show({ title, content, buttons }) {
+        this.#view.show({ title, content, buttons });
     }
 }

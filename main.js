@@ -8,7 +8,7 @@ class YesSir {
       const inputDeviceManager = new InputDeviceManager();
 
       this.loginPanelController = await LoginManager.create({ projectAssetLoader: projectAssetLoader, targetId: 'loginContainer' });
-      
+
       
       this.centeredAlertController = await CenteredAlertManager.create({ projectAssetLoader: projectAssetLoader, targetId: 'alertCenterContainer' });
 

@@ -1,3 +1,6 @@
+<h2>About</h2>
+This is a popup that displays in the center of the sreen and includes Title, Content and Buttons.
+
 <h2>Usage<h2>
 1. Add path to this folder /index.js.
    For example:
