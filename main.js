@@ -7,6 +7,8 @@ class YesSir {
 
       const inputDeviceManager = new InputDeviceManager();
 
+      this.commandInputField = new CommandInputField();
+
       this.loginPanelController = await LoginManager.create({ projectAssetLoader: projectAssetLoader, targetId: 'loginContainer' });
 
       
@@ -122,7 +124,7 @@ class YesSir {
       );
 
       this.hashObserver.onStartHandleHash = () => {
-        hideCommandInput();
+        yesSir.commandInputField.hideCommandInput();
       };
 
       this.hashObserver.onEndHandleHash = () => {

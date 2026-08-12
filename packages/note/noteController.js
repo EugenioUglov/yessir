@@ -71,7 +71,7 @@ class NoteController {
             
         ];
 
-        setCommandInputFiled(commandObjects);
+        yesSir.commandInputField.setCommandInputFiled(commandObjects);
     }
 
     getDisplayedElements() {

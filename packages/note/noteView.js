@@ -85,7 +85,7 @@ class NoteView {
         for (const buttonClose of buttonsClose) {
             $(buttonClose).on('click', () => {
                 that.close();
-                hideCommandInput();
+                yesSir.commandInputField.hideCommandInput();
                 $('.btn_open_settings_actionBlock').hide();
                 $('.btn_open_command_palette').hide();
                 handler(); 

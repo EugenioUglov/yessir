@@ -13,7 +13,6 @@ export const scripts = [
     "./shared/components/bottomInfoPanel/index.js",
 
     // Основные компоненты
-    "./commandInputField.js",
     "./packages/actionBlock/actionBlockNoteCommands.js",
     "./packages/firebase/firebaseData.js",
 
@@ -45,7 +44,7 @@ export const scripts = [
     "./packages/noteSpeaker/noteSpeakerService.js",
     "./packages/voiceRecognition/voiceRecognitionService.js",
     "./packages/autocomplete/autocompleteService.js",
-    "./hashObserver.js",
+    "./shared/hashObserver.js",
     "./packages/dataStorage/dataStorageService.js",
     "./core/modalLoadingController.js",
 
@@ -96,6 +95,8 @@ export const scripts = [
     "./shared/components/loginPanel/index.js",
     "./shared/components/centeredAlert/index.js",
     "./shared/components/blackLoader/index.js",
+    "./shared/components/commandInputField.js",
+
 
     "./core/searchControllerEventBinder.js",
     "./core/routesConfig.js",
