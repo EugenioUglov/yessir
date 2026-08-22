@@ -12,6 +12,10 @@ class DataStorageController {
     showDataStorageSettings() {
         this.view.showDataStorageSettings();
     }
+
+    hideDatabaseDialog() {
+        this.view.hideDatabaseDialog();
+    }
     
     getStorageNameEnum() {
         const STORAGE_NAME_ENUM = {

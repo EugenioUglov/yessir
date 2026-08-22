@@ -1,3 +1,14 @@
+For new code.
+When I save file with Action-Blocks from old site and load it to the new one, it display incorrect Action-Blocks. I recognize that action-blocks with the repeating ids are skipped and other that include id set it as a key for Action-Block instead of creating hash for id. 
+
+My idea has been comfirmed. I have deleted all ids from the file and its imported correctly.
+
+
+
+
+
+
+
 // From HashObserver.js - handleHash() method.
 else if (this.getNormalizedCurrentHash() === "#testfirebase") {
       // var actionBlocks_to_save = this.mapDataStructure.getStringified(actionBlocks_map_to_save);

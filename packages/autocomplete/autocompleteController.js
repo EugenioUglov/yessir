@@ -2,6 +2,8 @@ class AutocompleteController {
   constructor(hashObserver, actionBlockController, autocompleteService) {
     this.autocompleteService = autocompleteService;
     this.view = new AutocompleteView();
+    this.hashObserver = hashObserver;
+    this.actionBlockController = actionBlockController;
   }
 
   bindApplyTags() {

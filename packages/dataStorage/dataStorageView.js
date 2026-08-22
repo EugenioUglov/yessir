@@ -87,4 +87,9 @@ class DataStorageView {
             alert("WARNING! The <dialog> API is not supported by this browser");
         }
     }
+
+    hideDatabaseDialog() {
+        $(".black_background").hide();
+        $("#dialog_database_manager")[0].close();
+    }
 }

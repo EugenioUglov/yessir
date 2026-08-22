@@ -3,7 +3,7 @@ class AutocompleteService {
         this.textManager = textManager;
     }
 
-    applyTagsAutocomplete(input_field, tags, callbackSelect) {
+    applyTagsAutocomplete(inputField, tags, callbackSelect) {
         const that = this;
         
         function split(val) {
@@ -13,9 +13,8 @@ class AutocompleteService {
             return split(term).pop();
         }
 
-        input_field
         // don't navigate away from the field on tab when selecting an item.
-        .on('keydown', function(event) {
+        inputField.on('keydown', function(event) {
             if (
                 event.keyCode === 17 || 
                 event.keyCode === 18 ||
