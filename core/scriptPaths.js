@@ -56,14 +56,12 @@ export const scripts = [
     "./libraries/voiceRecognition/voiceRecognitionModel.js",
 
     // Представления (Views)
-    "./libraries/note/noteView.js",
     "./libraries/noteSpeaker/noteSpeakerView.js",
     "./libraries/voiceRecognition/voiceRecognitionView.js",
     "./core/actionBlock/actionBlockView.js",
     "./libraries/dataStorage/dataStorageView.js",
 
     // Контроллеры
-    "./libraries/note/noteController.js",
     "./libraries/noteSpeaker/noteSpeakerController.js",
     "./libraries/voiceRecognition/voiceRecognitionController.js",
     "./libraries/dataStorage/dataStorageController.js",
@@ -81,7 +79,7 @@ export const scripts = [
     
     "./libraries/scroll/index.js",
     "./libraries/components/multiColorCircleLoader/index.js",
-    "./libraries/note/index.js",
+    "./modules/note/index.js",
     "./libraries/components/modalBox/index.js",
     "./libraries/components/topInfoPanel/index.js",
     "./modules/logs/index.js",

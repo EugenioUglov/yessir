@@ -1,9 +1,4 @@
 class NoteView {
-    constructor() {
-
-    }
-    
-
     showInfo(content, title, isHTML) {
  
         // $('.btn_open_settings_actionBlock').show();

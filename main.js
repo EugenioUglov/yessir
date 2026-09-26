@@ -71,8 +71,11 @@ class YesSir {
         }
       );
 
-      this.noteController = await NoteInitializer.create(
-        this.noteSpeakerService
+      this.noteController = await NoteBootstrapper.create(
+        {
+          projectAssetLoader: projectAssetLoader,
+          noteSpeakerService: this.noteSpeakerService
+        }
       );
 
       this.bottomInfoPanel = await BottomInfoPanelManager.create(
@@ -228,7 +231,7 @@ let yesSir;
       yesSir.hashHandlers.openPageCreateActionBlock();
     });
 
-    actionBlockController.bindClickBtnShowSettingsToCreateNote(() => { yesSir.hashHandlers.openPageSettingsToCreateNote(); });
+    actionBlockController.bindClickBtnShowSettingsToCreateNote(() => { yesSir.hashHandlers.openPageSettingsToCreateNote(); actionBlockController.setDefaultValuesForSettingsElementsActionBlock(); });
 
     actionBlockController.bindClickBtnShowSettingsToCreateLink(() => { yesSir.hashHandlers.openPageSettingsToCreateLink(); });
 

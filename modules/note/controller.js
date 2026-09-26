@@ -1,5 +1,5 @@
 class NoteController {
-    constructor(view, noteSpeakerService) {
+    constructor({ view, noteSpeakerService }) {
         this.noteSpeakerService = noteSpeakerService;
 
         this.#view = view;
