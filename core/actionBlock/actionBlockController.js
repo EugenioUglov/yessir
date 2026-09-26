@@ -4,7 +4,6 @@ class ActionBlockController {
     dialogWindow,
     searchController,
     noteController,
-    dbManager,
     fileManager,
     textManager,
     dropdownManager,
@@ -39,7 +38,6 @@ class ActionBlockController {
     this.#dateManager = dateManager;
 
     this.model = new ActionBlockModel(
-      dbManager,
       textManager,
       dataStorageService,
       mapDataStructure,

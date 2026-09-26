@@ -25,7 +25,6 @@ class YesSir {
       this.speakerManager = new TextToSpeechSynthesizer();
       this.dropdownManager = new DropdownManager();
       this.mapDataStructure = new MapDataStructure();
-      this.dbManager = new DBManager();
       this.arrayManager = new ArrayManager();
       this.domElementVisibility = new DomElementVisibility();
 
@@ -90,7 +89,6 @@ class YesSir {
         this.dialogWindow,
         this.searchController,
         this.noteController,
-        this.dbManager,
         this.fileManager,
         this.textManager,
         this.dropdownManager,
@@ -158,7 +156,6 @@ let yesSir;
     const fileManager = yesSir.fileManager;
     dropdownManager = yesSir.dropdownManager;
     mapDataStructure = yesSir.mapDataStructure;
-    dbManager = yesSir.dbManager;
     arrayManager = yesSir.arrayManager;
 
     // Initialize Services.

@@ -22,7 +22,6 @@ export const scripts = [
     "./libraries/dateManager.js",
     "./libraries/firebaseManager.js",
     "./libraries/textManager.js",
-    "./libraries/dbManager.js",
     "./libraries/fileManager.js",
     "./libraries/dialogWindow.js",
     "./libraries/dropdownManager.js",

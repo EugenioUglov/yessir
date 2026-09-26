@@ -1,7 +1,6 @@
 class ActionBlockModel {
-    constructor(dbManager, textManager, dataStorageService, mapDataStructure, fileManager) {
+    constructor(textManager, dataStorageService, mapDataStructure, fileManager) {
         this.actionBlockTitleBeforeUpdate = '';
-        this.dbManager = dbManager;
         this.dataStorageService = dataStorageService;
         this.mapDataStructure = mapDataStructure;
         this.fileManager = fileManager;
@@ -524,7 +523,7 @@ class ActionBlockModel {
         // Upload data to user field
         const userId = authorization_data.id;
         const dataToSend = userDataToDBString;
-        that.dbManager.setUserData(userId, dataToSend, onUpdatedUserData, onFailSaveUserData);
+        // that.dbManager.setUserData(userId, dataToSend, onUpdatedUserData, onFailSaveUserData);
         
         function onFailSaveUserData() {
             return false;
