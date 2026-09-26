@@ -104,26 +104,26 @@ if (!('webkitSpeechRecognition' in window)) {
 
 	recognition.onstart = function() {
 		recognizing = true;
-		label_help.innerText = "Speak recognition: Speak now";
+		// label_help.innerText = "Speak recognition: Speak now";
 		img_voice_recognition.src = './icons/mic-animate.gif';
 	};
 
 	recognition.onerror = function(event) {
 		if (event.error == 'no-speech') {
 			img_voice_recognition.src = './icons/mic.gif';
-			label_help.innerText = "Speak recognition: Speech error";
+			// label_help.innerText = "Speak recognition: Speech error";
 			ignore_onend = true;
 		}
 		if (event.error == 'audio-capture') {
 			img_voice_recognition.src = './icons/mic.gif';
-			label_help.innerText = "Speak recognition: No microphone";
+			// label_help.innerText = "Speak recognition: No microphone";
 			ignore_onend = true;
 		}
 		if (event.error == 'not-allowed') {
 		if (event.timeStamp - start_timestamp < 100) {
-			label_help.innerText = "Speak recognition: info blocked";
+			// label_help.innerText = "Speak recognition: info blocked";
 		} else {
-			label_help.innerText = "Speak recognition: info denied";
+			// label_help.innerText = "Speak recognition: info denied";
 		}
 		ignore_onend = true;
 		}
@@ -136,7 +136,7 @@ if (!('webkitSpeechRecognition' in window)) {
 		}
 		img_voice_recognition.src = './icons/mic.gif';
 		if ( ! final_transcript) {
-			label_help.innerText = "Speak recognition: Speak start";
+			// label_help.innerText = "Speak recognition: Speak start";
 			return;
 		}
 		if (window.getSelection) {
@@ -200,7 +200,7 @@ function onClickSpeakButton(event) {
 	recognition.start();
 	ignore_onend = false;
 	img_voice_recognition.src = './icons/mic-slash.gif';
-	label_help.innerText = "Speak recognition: Speak now";
+	// label_help.innerText = "Speak recognition: Speak now";
 	start_timestamp = event.timeStamp;
 }
 

@@ -54,18 +54,15 @@ export const scripts = [
     "./libraries/noteSpeaker/noteSpeakerModel.js",
     "./core/actionBlock/actionBlockWithIdModel.js",
     "./libraries/voiceRecognition/voiceRecognitionModel.js",
-    "./libraries/logs/logsModel.js",
 
     // Представления (Views)
     "./libraries/note/noteView.js",
     "./libraries/noteSpeaker/noteSpeakerView.js",
     "./libraries/voiceRecognition/voiceRecognitionView.js",
     "./core/actionBlock/actionBlockView.js",
-    "./libraries/logs/logsView.js",
     "./libraries/dataStorage/dataStorageView.js",
 
     // Контроллеры
-    "./libraries/logs/logsController.js",
     "./libraries/note/noteController.js",
     "./libraries/noteSpeaker/noteSpeakerController.js",
     "./libraries/voiceRecognition/voiceRecognitionController.js",
@@ -87,7 +84,7 @@ export const scripts = [
     "./libraries/note/index.js",
     "./libraries/components/modalBox/index.js",
     "./libraries/components/topInfoPanel/index.js",
-    "./libraries/logs/index.js",
+    "./modules/logs/index.js",
     "./libraries/search/index.js",
     "./libraries/components/loginPanel/index.js",
     "./libraries/components/centeredAlert/index.js",

@@ -1,10 +1,11 @@
 class LogsView {
-    constructor() {
+    constructor({ container }) {
         this.setListener();
 
-        this.logs_container = $('.logs_text')[0];
+        this.#container = container;
     }
 
+    #container;
     #onClickDownloadLogs;
 
     setLogForLabelHelp(log) {
@@ -23,16 +24,16 @@ class LogsView {
     
     // Show log with red text.
     showErrorLog() {
-        this.logs_container.innerHTML += '<div style="color:#e85894;">' + '* ERROR! ' + text + '</div><br><br>';
+        this.#container.innerHTML += '<div style="color:#e85894;">' + '* ERROR! ' + text + '</div><br><br>';
     }
 
     // Show log with grey text.
     addWarningLog() {
-        this.logs_container.innerHTML += '<div style="color:#A36A00;">' + '* Warning! ' + text + '</div><br><br>';
+        this.#container.innerHTML += '<div style="color:#A36A00;">' + '* Warning! ' + text + '</div><br><br>';
     }
 
     clear() {
-        this.logs_container.innerHTML = '';
+        this.#container.innerHTML = '';
     }
 
     bindClickDownloadLogs(handler) {

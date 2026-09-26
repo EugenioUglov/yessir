@@ -56,7 +56,7 @@ class YesSir {
 
       this.scrollController = await new ScrollManager({ projectAssetLoader: projectAssetLoader, targetId: 'scrollContainer' });
 
-      this.logsController = new LogsManager(this.fileManager, this.dateManager);
+      this.logsController = await LogsBootstrapper.create({ projectAssetLoader: projectAssetLoader, fileManager: this.fileManager, dateManager: this.dateManager });
 
 
       this.voiceRecognitionService = new VoiceRecognitionService(
