@@ -6,7 +6,7 @@ This is a popup that displays in the center of the sreen and includes Title, Con
    For example:
 
 ```
-"./shared/components/centeredPopup/index.js",
+"./libraries/components/centeredPopup/index.js",
 ```
 
 2. Create the class CenteredPopupManager and indicate where to display it in your html.

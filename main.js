@@ -1,7 +1,8 @@
 class YesSir {
   constructor({ onEnd }) {
     (async () => {
-      $("#advancedSearcherByTags").load("packages/advancedSearchearByTags/index.html");
+      // !!! Probably doesnt work.
+      $("#advancedSearcherByTags").load("core/advancedSearchearByTags/index.html");
 
       const projectAssetLoader = new ProjectAssetLoader({});
 
@@ -56,8 +57,6 @@ class YesSir {
       this.scrollController = await new ScrollManager({ projectAssetLoader: projectAssetLoader, targetId: 'scrollContainer' });
 
       this.logsController = new LogsManager(this.fileManager, this.dateManager);
-
-      this.autocompleteService = new AutocompleteService(this.textManager);
 
 
       this.voiceRecognitionService = new VoiceRecognitionService(
@@ -161,7 +160,6 @@ let yesSir;
 
     // Initialize Services.
     const voiceRecognitionService = yesSir.voiceRecognitionService;
-    const autocompleteService = yesSir.autocompleteService;
     const loaderController = yesSir.loaderController;
     // const noteController = yesSir.noteController;
     const dataStorageService = yesSir.dataStorageService;

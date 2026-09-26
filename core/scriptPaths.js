@@ -7,14 +7,14 @@ export const scripts = [
     "./libraries/opensource/observable.js",
     "./libraries/opensource/md5.min.js",
 
-    "./shared/utils/urlValidator.js",
-    "./shared/utils/moduleLoader.js",
-    "./shared/projectAssetLoader.js",
-    "./shared/components/bottomInfoPanel/index.js",
+    "./libraries/utils/urlValidator.js",
+    "./libraries/utils/moduleLoader.js",
+    "./libraries/projectAssetLoader.js",
+    "./libraries/components/bottomInfoPanel/index.js",
 
     // Основные компоненты
-    "./packages/actionBlock/actionBlockNoteCommands.js",
-    "./packages/firebase/firebaseData.js",
+    "./core/actionBlock/actionBlockNoteCommands.js",
+    "./libraries/firebase/firebaseData.js",
 
     // Библиотеки (Core)
     "./libraries/inputFieldWithSuggestions.js",
@@ -28,7 +28,7 @@ export const scripts = [
     "./libraries/dropdownManager.js",
     "./libraries/arrayManager.js",
     "./libraries/inputDeviceManger.js",
-    "./packages/voiceRecognition/voiceRecognitionManager.js",
+    "./libraries/voiceRecognition/voiceRecognitionManager.js",
     "./libraries/textToSpeechSynthesizer.js",
     "./libraries/elementsVisibility.js",
     "./libraries/defaultActionBlocks.js",
@@ -41,61 +41,58 @@ export const scripts = [
     "./libraries/idGenerator.js",
 
     // Сервисы
-    "./packages/noteSpeaker/noteSpeakerService.js",
-    "./packages/voiceRecognition/voiceRecognitionService.js",
-    "./packages/autocomplete/autocompleteService.js",
-    "./shared/hashObserver.js",
-    "./packages/dataStorage/dataStorageService.js",
+    "./libraries/noteSpeaker/noteSpeakerService.js",
+    "./libraries/voiceRecognition/voiceRecognitionService.js",
+    "./libraries/hashObserver.js",
+    "./libraries/dataStorage/dataStorageService.js",
     "./core/modalLoadingController.js",
 
 
-    "./shared/domElementVisibility.js",
+    "./libraries/domElementVisibility.js",
 
     // Модели
-    "./packages/noteSpeaker/noteSpeakerModel.js",
-    "./packages/actionBlock/actionBlockWithIdModel.js",
-    "./packages/voiceRecognition/voiceRecognitionModel.js",
-    "./packages/logs/logsModel.js",
+    "./libraries/noteSpeaker/noteSpeakerModel.js",
+    "./core/actionBlock/actionBlockWithIdModel.js",
+    "./libraries/voiceRecognition/voiceRecognitionModel.js",
+    "./libraries/logs/logsModel.js",
 
     // Представления (Views)
-    "./packages/note/noteView.js",
-    "./packages/noteSpeaker/noteSpeakerView.js",
-    "./packages/voiceRecognition/voiceRecognitionView.js",
-    "./packages/actionBlock/actionBlockView.js",
-    "./packages/logs/logsView.js",
-    "./packages/autocomplete/autocompleteView.js",
-    "./packages/dataStorage/dataStorageView.js",
+    "./libraries/note/noteView.js",
+    "./libraries/noteSpeaker/noteSpeakerView.js",
+    "./libraries/voiceRecognition/voiceRecognitionView.js",
+    "./core/actionBlock/actionBlockView.js",
+    "./libraries/logs/logsView.js",
+    "./libraries/dataStorage/dataStorageView.js",
 
     // Контроллеры
-    "./packages/logs/logsController.js",
-    "./packages/note/noteController.js",
-    "./packages/noteSpeaker/noteSpeakerController.js",
-    "./packages/voiceRecognition/voiceRecognitionController.js",
-    "./packages/dataStorage/dataStorageController.js",
-    "./packages/actionBlock/actionBlockController.js",
-    "./packages/autocomplete/autocompleteController.js",
+    "./libraries/logs/logsController.js",
+    "./libraries/note/noteController.js",
+    "./libraries/noteSpeaker/noteSpeakerController.js",
+    "./libraries/voiceRecognition/voiceRecognitionController.js",
+    "./libraries/dataStorage/dataStorageController.js",
+    "./core/actionBlock/actionBlockController.js",
 
-    "./packages/actionBlock/editActionBlockDataHolder.js",
+    "./core/actionBlock/editActionBlockDataHolder.js",
     
 
     // Firebase & Дополнения
     "https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js",
     "https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js",
-    "./packages/firebase/firebaseConfig.js",
+    "./libraries/firebase/firebaseConfig.js",
     "./libraries/unspashImageSearcher.js",
 
     
-    "./packages/scroll/index.js",
-    "./shared/components/multiColorCircleLoader/index.js",
-    "./packages/note/index.js",
-    "./shared/components/modalBox/index.js",
-    "./shared/components/topInfoPanel/index.js",
-    "./packages/logs/index.js",
-    "./packages/search/index.js",
-    "./shared/components/loginPanel/index.js",
-    "./shared/components/centeredAlert/index.js",
-    "./shared/components/blackLoader/index.js",
-    "./shared/components/commandInputField.js",
+    "./libraries/scroll/index.js",
+    "./libraries/components/multiColorCircleLoader/index.js",
+    "./libraries/note/index.js",
+    "./libraries/components/modalBox/index.js",
+    "./libraries/components/topInfoPanel/index.js",
+    "./libraries/logs/index.js",
+    "./libraries/search/index.js",
+    "./libraries/components/loginPanel/index.js",
+    "./libraries/components/centeredAlert/index.js",
+    "./libraries/components/blackLoader/index.js",
+    "./libraries/components/commandInputField.js",
 
 
     "./core/searchControllerEventBinder.js",

@@ -1,4 +1,3 @@
-// shared/scriptsLoader.js
 export function loadScriptsSequence(scripts, onComplete) {
     function loadNext(index) {
         if (index < scripts.length) {

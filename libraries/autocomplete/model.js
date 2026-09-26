@@ -1,9 +1,9 @@
-class AutocompleteService {
+class AutocompleteModel {
     constructor(textManager) {
         this.textManager = textManager;
     }
 
-    applyTagsAutocomplete(inputField, tags, callbackSelect) {
+    applyAutocompleteItems(inputField, items, callbackSelect) {
         const that = this;
         
         function split(val) {
@@ -37,7 +37,7 @@ class AutocompleteService {
             minLength: 0,
             source: function(request, response) {
                 request.term = that.textManager.getLastWord(request.term);
-                let tags_for_autocomplete = $.ui.autocomplete.filter(tags, extractLast(request.term));
+                let tags_for_autocomplete = $.ui.autocomplete.filter(items, extractLast(request.term));
                 const i_first_tag = 0;
                 const i_last_tag = 10;
                 tags_for_autocomplete = tags_for_autocomplete.splice(i_first_tag, i_last_tag);

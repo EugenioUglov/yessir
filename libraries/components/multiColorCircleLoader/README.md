@@ -7,7 +7,7 @@ And load script projectAssetLoader.js
 
 ```html
 <script src="./features/multiColorCircleLoader/index.js"></script>
-<script src="./shared/projectAssetLoader.js"></script>
+<script src="./libraries/projectAssetLoader.js"></script>
 ```
 
 Then create an object in async.

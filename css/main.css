@@ -42,10 +42,7 @@ body {
     overflow: hidden;*/
 }
 
-div#advancedSearcherByTags,
-div#advanced_settings {
-  color: #999999;
-}
+
 
 .inputFieldWithSuggestions {
   padding: 10px;
@@ -410,10 +407,6 @@ div#welcome_page {
 .resize_field {
   border-radius: 8px;
   resize: vertical;
-}
-
-.interactive_field {
-  border-radius: 8px;
 }
 
 #search_by_tags_container {
