@@ -5,7 +5,7 @@
      * It builds the module. 
      * Returns controller in async.
      */
-    class TopInfoPanelManager {
+    class TopInfoPanelBootstrapper {
         // constructor({ projectAssetLoader, targetId }) {
         //     // Return promise.
         //     return this.init({ projectAssetLoader, targetId });
@@ -40,5 +40,5 @@
         }
     }
 
-    window.TopInfoPanelManager = TopInfoPanelManager;
+    window.TopInfoPanelBootstrapper = TopInfoPanelBootstrapper;
 })();

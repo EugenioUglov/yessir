@@ -1,7 +1,7 @@
 (function() {
     const FEATURE_BASE_PATH = document.currentScript ? document.currentScript.src.substring(0, document.currentScript.src.lastIndexOf('/') + 1) : '';
 
-    class LoaderManager {
+    class MultiColorCircleLoaderBootstrapper {
         // constructor({ projectAssetLoader, targetId, data }) {
         //     // Return promise.
         //     return this.init({ projectAssetLoader,targetId, data });;
@@ -33,5 +33,5 @@
         }
     }
 
-    window.LoaderManager = LoaderManager;
+    window.MultiColorCircleLoaderBootstrapper = MultiColorCircleLoaderBootstrapper;
 })();

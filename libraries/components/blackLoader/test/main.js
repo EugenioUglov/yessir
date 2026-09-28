@@ -1,6 +1,6 @@
 const projectAssetLoader = new ProjectAssetLoader();
 (async function () {
-    const blackLoaderManager = await BlackLoaderManager.create({ projectAssetLoader , targetId: 'blackLoader' });
+    const blackLoaderBootstrapper = await BlackLoaderBootstrapper.create({ projectAssetLoader , targetId: 'blackLoader' });
 
     document.body.addEventListener('click', (event) => {
         // Проверяем, кликнули ли мы по интерактивному элементу.
@@ -8,12 +8,12 @@ const projectAssetLoader = new ProjectAssetLoader();
         
         if (target) {
             // Включаем лоадер и блокировку
-            blackLoaderManager.startLoading();
+            blackLoaderBootstrapper.startLoading();
             
             // ИМИТАЦИЯ ЗАПРОСА (для теста): убираем лоадер через 3 секунды.
             // В реальном коде вы вызовите этот метод в resolve вашего Promise или колбэке аякса.
             setTimeout(() => {
-                blackLoaderManager.stopLoading();
+                blackLoaderBootstrapper.stopLoading();
             }, 3000);
         }
     });

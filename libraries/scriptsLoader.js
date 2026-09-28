@@ -26,7 +26,7 @@ export function loadScriptsAsModulesSequence(scripts, onComplete) {
             const script = document.createElement('script');
             script.src = scripts[index];
             
-            // 👇 Явно указываем, что это модуль
+            // Явно указываем, что это модуль
             script.type = "module"; 
             
             // Примечание: у динамически созданных модулей async по умолчанию true, 

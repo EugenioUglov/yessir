@@ -9,10 +9,10 @@ This is a popup that displays in the center of the sreen and includes Title, Con
 "./libraries/components/centeredPopup/index.js",
 ```
 
-2. Create the class CenteredPopupManager and indicate where to display it in your html.
+2. Create the class CenteredPopupBootstrapper and indicate where to display it in your html.
    
 ```js
-const centeredPopup = await CenteredPopupManager.create({ projectAssetLoader: projectAssetLoader, targetId: 'yourId' });
+const centeredPopup = await CenteredPopupBootstrapper.create({ projectAssetLoader: projectAssetLoader, targetId: 'yourId' });
 ```
 
 In this example id is yourId so element in html is <div id="yourId"></div>

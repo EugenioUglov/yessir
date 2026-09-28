@@ -5,7 +5,7 @@
      * It builds the module. 
      * Returns controller in async.
      */
-    class CenteredAlertManager {
+    class CenteredAlertBootstrapper {
         // constructor({ projectAssetLoader, targetId }) {
         //     // Return promise.
         //     return this.init({ projectAssetLoader, targetId });
@@ -29,5 +29,5 @@
         }
     }
     
-    window.CenteredAlertManager = CenteredAlertManager;
+    window.CenteredAlertBootstrapper = CenteredAlertBootstrapper;
 })();

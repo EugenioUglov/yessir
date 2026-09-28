@@ -1,7 +1,7 @@
 (function() {
     const FEATURE_BASE_PATH = document.currentScript ? document.currentScript.src.substring(0, document.currentScript.src.lastIndexOf('/') + 1) : '';
 
-    class SearchManager {
+    class SearchBootstrapper {
         constructor({ projectAssetLoader, textManager, keyCodeByKeyName, targetId, data }) {
             // Return promise.
             return this.init({ projectAssetLoader, textManager, keyCodeByKeyName, targetId, data });
@@ -26,5 +26,5 @@
         }
     }
 
-    window.SearchManager = SearchManager;
+    window.SearchBootstrapper = SearchBootstrapper;
 })();

@@ -5,7 +5,7 @@
      * It builds the module. 
      * Returns controller in async.
      */
-    class LoginManager {
+    class LoginBootstrapper {
         // constructor({ projectAssetLoader, targetId }) {
         //     // Return promise.
         //     return this.init({ projectAssetLoader, targetId });
@@ -29,5 +29,5 @@
         }
     }
 
-    window.LoginManager = LoginManager;
+    window.LoginBootstrapper = LoginBootstrapper;
 })();

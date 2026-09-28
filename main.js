@@ -10,10 +10,10 @@ class YesSir {
 
       this.commandInputField = new CommandInputField();
 
-      this.loginPanelController = await LoginManager.create({ projectAssetLoader: projectAssetLoader, targetId: 'loginContainer' });
+      this.loginPanelController = await LoginBootstrapper.create({ projectAssetLoader: projectAssetLoader, targetId: 'loginContainer' });
 
       
-      this.centeredAlertController = await CenteredAlertManager.create({ projectAssetLoader: projectAssetLoader, targetId: 'alertCenterContainer' });
+      this.centeredAlertController = await CenteredAlertBootstrapper.create({ projectAssetLoader: projectAssetLoader, targetId: 'alertCenterContainer' });
 
 
       this.googleSpeechRecognition = new GoogleSpeechRecognition();
@@ -32,7 +32,7 @@ class YesSir {
       this.dialogWindow = new DialogWindow();
       this.observable = new Observable();
 
-      this.searchController = await new SearchManager(
+      this.searchController = await new SearchBootstrapper(
         {
           projectAssetLoader: projectAssetLoader,
           textManager: this.textManager,
@@ -41,7 +41,7 @@ class YesSir {
         }
       );
 
-      this.modalBoxController = await ModalBoxManager.create({
+      this.modalBoxController = await ModalBoxBootstrapper.create({
         projectAssetLoader: projectAssetLoader,
         targetId: 'modalBoxContainer',
         data: {}
@@ -53,7 +53,7 @@ class YesSir {
 
       this.dataStorageService = new DataStorageService(this.dialogWindow);
 
-      this.scrollController = await new ScrollManager({ projectAssetLoader: projectAssetLoader, targetId: 'scrollContainer' });
+      this.scrollController = await new ScrollBootstrapper({ projectAssetLoader: projectAssetLoader, targetId: 'scrollContainer' });
 
       this.logsController = await LogsBootstrapper.create({ projectAssetLoader: projectAssetLoader, fileManager: this.fileManager, dateManager: this.dateManager });
 
@@ -62,7 +62,7 @@ class YesSir {
         this.voiceRecognitionManager
       );
 
-      this.loaderController = await LoaderManager.create(
+      this.loaderController = await MultiColorCircleLoaderBootstrapper.create(
         {
           projectAssetLoader: projectAssetLoader,
           targetId: 'multiColorCircleLoaderContainer',
@@ -77,7 +77,7 @@ class YesSir {
         }
       );
 
-      this.bottomInfoPanel = await BottomInfoPanelManager.create(
+      this.bottomInfoPanel = await BottomInfoPanelBootstrapper.create(
         {
           projectAssetLoader: projectAssetLoader,
           targetId: 'bottomInfoPanelContainer'
@@ -183,7 +183,7 @@ let yesSir;
       }
     }
 
-    // const searchController = new SearchManager(
+    // const searchController = new SearchBootstrapper(
     //   { 
     //     projectAssetLoaderClass: ProjectAssetLoaderClass, 
     //     textManager: textManager, 

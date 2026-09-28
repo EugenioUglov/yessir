@@ -5,7 +5,7 @@
      * It builds the module. 
      * Returns controller in async.
      */
-    class CenteredPopupManager {
+    class CenteredPopupBootstrapper {
         static async create({ projectAssetLoader, targetId }) {
             projectAssetLoader.setBasePath({path: FEATURE_BASE_PATH});
 
@@ -24,5 +24,5 @@
         }
     }
     
-    window.CenteredPopupManager = CenteredPopupManager;
+    window.CenteredPopupBootstrapper = CenteredPopupBootstrapper;
 })();
