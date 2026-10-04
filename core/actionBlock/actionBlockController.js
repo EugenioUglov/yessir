@@ -774,75 +774,35 @@ class ActionBlockController {
 
     let actionBlocksToShow;
 
-    console.log(getStringWithAdditionalStringWithoutSymbols(request));
-
-    request = getStringWithAdditionalStringWithoutSymbols(request);
+    const userRequest = request;
     request = request.toLowerCase().trim();
-    console.log('request:', request);
 
-
-    // // Get plus strings (array) in quotes from request, e.g. "phrase1" "phrase2".
-    // const plusStrings = [...request.matchAll(/(?<!-)"([^"]*)"/g)]
-    //   .map(match => match[1])
-    //   .filter(str => str.length > 0);
-    // console.log('plusStrings:', plusStrings);
-
-    // // Get minus strings (array) in minus quotes from request, e.g. -"phrase1" -"phrase2".
-    // const minusStrings = [...request.matchAll(/-"([^"]*)"/g)]
-    //   .map(match => match[1])
-    //   .filter(str => str.length > 0);
-    // console.log('minusStrings:', minusStrings);
-
-    // 1. Сначала находим все минус-теги и сохраняем их
-    const minusStrings = [...request.matchAll(/-"([^"]*)"/g)]
-        .map(match => match[1])
-        .filter(str => str.length > 0);
-
-    // 2. Удаляем из строки все минус-теги вместе с их минусами
-    const cleanRequest = request.replace(/-"[^"]*"/g, '');
-
-    // 3. Теперь в очищенной строке ищем абсолютно безопасно только плюс-теги
-    const plusStrings = [...cleanRequest.matchAll(/"([^"]*)"/g)]
-        .map(match => match[1])
-        .filter(str => str.length > 0);
-
-
-    plusTags = plusStrings;
-    minusTags = minusStrings;
-
+    // If request is empty THEN show all action blocks.
     if (request === undefined || request === null || request === "") {
       // Show all action blocks or handle the empty request case
       this.showActionBlocks();
       return;
     }
 
-    // if (isExecuteActionBlockByTitle === false) {
-      // Convert strings "tag1, tag2" into arrays of lowercase, trimmed strings
-      // Get raw strings and split by spaces OR commas
-      // if (this.searchService.view.getPlusTags() != undefined) {
-      //   plusTags = this.searchService.view.getPlusTags()
-      //       .toLowerCase()
-      //       .split(/[\s,]+/)
-      //       .filter(t => t.length > 0); // Remove empty strings from extra spaces
-      // }
+    const { plusStrings, minusStrings } = getTagsFromRequest(request);
 
-      // if (this.searchService.view.getMinusTags() != undefined) {
-      //   minusTags = this.searchService.view.getMinusTags()
-      //       .toLowerCase()
-      //       .split(/[\s,]+/)
-      //       .filter(t => t.length > 0);
-      // }
+    plusTags = plusStrings;
+    minusTags = minusStrings;
 
-    //   if (request === "" && plusTags.length === 0 && minusTags.length === 0) {
-    //     // Show data in images.
-    //     that.showActionBlocks();
 
-    //     return;
-    //   }
-    // }
+    // Add to request string with no symbols.
+    request = getStringWithAdditionalStringWithoutSymbols(getRequestWithoutTags(request));
+
+    console.log("request: " + request);
+    
 
     // Get request text from input field and find possible search data.
-    actionBlocksToShow = this.model.getByPhrase(request);
+    if (getRequestWithoutTags(request).trim() === "") {
+      actionBlocksToShow = [...this.model.getActionBlocks().values()];
+    } else {
+      actionBlocksToShow = this.model.getByPhrase(request);
+    }
+    
 
     // Set Action-Block by title at the beginning. And remove this Action-Block from position where it was before.
     const actionBlockByTitle = this.model.getActionBlockByTitle(request);
@@ -855,49 +815,34 @@ class ActionBlockController {
     }
     //
 
-    function getStringWithAdditionalStringWithoutSymbols(str) {
-      // Разбиваем строку на слова и оставляем только те, в которых есть спецсимволы
-      const cleanedWords = str
-        .split(' ')
-        .filter(word => /[^\p{L}\p{N}]/u.test(word)) // Оставляем слова со спецсимволами
-        .map(word => word.replace(/[^\p{L}\p{N}]/gu, ' ')); // Удаляем из них спецсимволы
 
-      // Если были слова со спецсимволами, добавляем их в конец исходной строки
-      if (cleanedWords.length > 0) {
-        return `${str} ${cleanedWords.join(' ')}`;
-      }
+    // Filter the array before rendering.
+    actionBlocksToShow = actionBlocksToShow.filter(block => {
+        // Flatten block.tags: ["urgent", "work project"] -> ["urgent", "work", "project"]
+        const individualBlockTags = (block.tags || [])
+            .flatMap(tag => tag.toLowerCase().split(/[\s,]+/))
+            .filter(tag => tag.length > 0);
 
-      return str;
-    }
+        // Logic: All plusTags must be present in the flattened block tags
+        const matchesPlus = plusTags.every(plusTag => 
+            individualBlockTags.includes(plusTag)
+        );
 
-    // Filter the array before rendering
-    // if (plusTags.length > 0 || minusTags.length > 0) {
-        actionBlocksToShow = actionBlocksToShow.filter(block => {
-            // Flatten block.tags: ["urgent", "work project"] -> ["urgent", "work", "project"]
-            const individualBlockTags = (block.tags || [])
-                .flatMap(tag => tag.toLowerCase().split(/[\s,]+/))
-                .filter(tag => tag.length > 0);
+        // Logic: None of the minusTags should be present in the flattened block tags
+        const matchesMinus = minusTags.some(minusTag => 
+            individualBlockTags.includes(minusTag)
+        );
 
-            // Logic: All plusTags must be present in the flattened block tags
-            const matchesPlus = plusTags.every(plusTag => 
-                individualBlockTags.includes(plusTag)
-            );
-
-            // Logic: None of the minusTags should be present in the flattened block tags
-            const matchesMinus = minusTags.some(minusTag => 
-                individualBlockTags.includes(minusTag)
-            );
-
-            return (plusTags.length === 0 || matchesPlus) && !matchesMinus;
-        });
-    // }
+        return (plusTags.length === 0 || matchesPlus) && !matchesMinus;
+    });
     
     if (isExecuteActionBlockByTitle) {
       let isActionBlockExist = false;
-
+    
       // IF ActionBlock has been found with the same title THEN execute action.
-      for (const actionBlock of actionBlocksToShow) {
-        if (that.textManager.isSame(actionBlock.title, request)) {
+      for (const actionBlock of actionBlocksToShow) {          
+        console.log('ActionBlock has been found with the same title. Execute action. Title: ' + actionBlock.title + ' | request: ' + request);
+        if (that.textManager.isSame(actionBlock.title.toLowerCase(), userRequest.toLowerCase())) {
           isActionBlockExist = true;
           that.executeActionBlockByTitle(actionBlock.title);
           that.view.hidePage();
@@ -924,6 +869,45 @@ class ActionBlockController {
         actionBlockController.executeActionBlock(infoObj);
     }
     */
+    
+    function getStringWithAdditionalStringWithoutSymbols(str) {
+      // Разбиваем строку на слова и оставляем только те, в которых есть спецсимволы
+      const cleanedWords = str
+        .split(' ')
+        .filter(word => /[^\p{L}\p{N}]/u.test(word)) // Оставляем слова со спецсимволами
+        .map(word => word.replace(/[^\p{L}\p{N}]/gu, ' ')); // Удаляем из них спецсимволы
+
+      // Если были слова со спецсимволами, добавляем их в конец исходной строки
+      if (cleanedWords.length > 0) {
+        return `${str} ${cleanedWords.join(' ')}`;
+      }
+
+      return str;
+    }
+
+    function getTagsFromRequest(request) { 
+      // 1. Сначала находим все минус-теги и сохраняем их.
+      const minusStrings = [...request.matchAll(/-"([^"]*)"/g)]
+          .map(match => match[1])
+          .filter(str => str.length > 0);
+
+      // 2. Удаляем из строки все минус-теги вместе с их минусами.
+      const requestWithoutMinusTags = request.replace(/-"[^"]*"/g, '');
+
+      // 3. Теперь в очищенной строке ищем только плюс-теги.
+      const plusStrings = [...requestWithoutMinusTags.matchAll(/"([^"]*)"/g)]
+          .map(match => match[1])
+          .filter(str => str.length > 0);
+
+      return { plusStrings, minusStrings };
+    }
+
+    function getRequestWithoutTags(request) {
+      return request
+        .replace(/-?"[^"]*"/g, '') // Удаляет и -"tag", и "tag"
+        .trim()                    // Убирает пробелы в начале и конце
+        .replace(/\s+/g, ' ');     // Заменяет несколько пробелов подряд на один
+    }
   }
 
   getIndexLastShowedActionBlock() {

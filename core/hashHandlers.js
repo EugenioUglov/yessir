@@ -53,8 +53,7 @@ class HashHandlers {
             "=" +
             requestValue +
             (isExecuteActionBlockByTitle
-                ? "&" + "executebytitle" : "") +
-            (isListenText ? "&" + "listen" : "");
+                ? "&" + "executebytitle" : "");
 
         window.location.hash = newHash;
     };
