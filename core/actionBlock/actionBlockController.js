@@ -728,21 +728,6 @@ class ActionBlockController {
     this.view.showActionBlocksContainer();
   }
 
-  showActionBlocksByTags(userPlusTags, userMinusTags) {
-    // Get command text from input field and find possible search data.
-    let actionBlocksToShow = this.model.getActionBlocksByTags(
-      userPlusTags,
-      userMinusTags
-    );
-
-    if (!actionBlocksToShow) {
-      actionBlocksToShow = [];
-    }
-
-    // Show Action-Blocks separated by pages.
-    this.showActionBlocks(actionBlocksToShow);
-  }
-
   showActionBlocksFromStorage = () => {
     const that = this;
     let start = new Date();
@@ -813,26 +798,31 @@ class ActionBlockController {
     //
 
 
-    // Filter the array before rendering.
-    actionBlocksToShow = actionBlocksToShow.filter(block => {
-        // Flatten block.tags: ["urgent", "work project"] -> ["urgent", "work", "project"]
-        const individualBlockTags = (block.tags || [])
-            .flatMap(tag => tag.toLowerCase().split(/[\s,]+/))
-            .filter(tag => tag.length > 0);
-
-        // Logic: All plusTags must be present in the flattened block tags
-        const matchesPlus = plusTags.every(plusTag => 
-            individualBlockTags.includes(plusTag)
-        );
-
-        // Logic: None of the minusTags should be present in the flattened block tags
-        const matchesMinus = minusTags.some(minusTag => 
-            individualBlockTags.includes(minusTag)
-        );
-
-        return (plusTags.length === 0 || matchesPlus) && !matchesMinus;
-    });
     
+    // Filter the array before rendering.
+    // actionBlocksToShow = actionBlocksToShow.filter(block => {
+    //     // Flatten block.tags: ["urgent", "work project"] -> ["urgent", "work", "project"]
+    //     const individualBlockTags = (block.tags || [])
+    //         .flatMap(tag => tag.toLowerCase().split(/[\s,]+/))
+    //         .filter(tag => tag.length > 0);
+
+    //     // Logic: All plusTags must be present in the flattened block tags.
+    //     const matchesPlus = plusTags.every(plusTag => 
+    //         individualBlockTags.includes(plusTag)
+    //     );
+
+    //     // Logic: None of the minusTags should be present in the flattened block tags.
+    //     const matchesMinus = minusTags.some(minusTag => 
+    //         individualBlockTags.includes(minusTag)
+    //     );
+
+    //     return (plusTags.length === 0 || matchesPlus) && !matchesMinus;
+    // });
+
+    actionBlocksToShow = getFilteredActionBlocksByTags({ actionBlocksToShow, plusTags, minusTags });
+    
+
+
     if (isExecuteActionBlockByTitle) {
       let isActionBlockExist = false;
     
@@ -865,6 +855,40 @@ class ActionBlockController {
         actionBlockController.executeActionBlock(infoObj);
     }
     */
+
+    function getFilteredActionBlocksByTags({ actionBlocksToShow, plusTags = [], minusTags = [], exactMatch = false }) {
+      // Хелпер для экранирования спецсимволов RegExp
+      const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+      // Хелпер для проверки совпадения искомой фразы/тега с тегом блока
+      const isMatch = (targetTag, searchTag) => {
+        if (exactMatch) {
+          const escaped = escapeRegExp(searchTag);
+          const regex = new RegExp(`\\b${escaped}\\b`, 'i');
+          return regex.test(targetTag);
+        }
+        return targetTag.includes(searchTag);
+      };
+
+      return actionBlocksToShow.filter(block => {
+        // 1. Приводим все теги блока к нижнему регистру
+        const blockTags = (block.tags || []).map(tag => tag.toLowerCase().trim());
+
+        // 2. Все plusTags должны совпасть хотя бы с одним тегом блока
+        const matchesPlus = plusTags.every(plusTag => {
+          const cleanPlus = plusTag.toLowerCase().trim();
+          return blockTags.some(tag => isMatch(tag, cleanPlus));
+        });
+
+        // 3. Ни один из minusTags не должен совпасть ни с одним тегом блока
+        const matchesMinus = minusTags.some(minusTag => {
+          const cleanMinus = minusTag.toLowerCase().trim();
+          return blockTags.some(tag => isMatch(tag, cleanMinus));
+        });
+
+        return (plusTags.length === 0 || matchesPlus) && !matchesMinus;
+      });
+    }
     
     function getStringWithAdditionalStringWithoutSymbols(str) {
       // Разбиваем строку на слова и оставляем только те, в которых есть спецсимволы
@@ -936,6 +960,7 @@ class ActionBlockController {
 
   executeActionBlockById(id) {
     const actionBlock = this.model.getActionBlockById(id);
+    console.log('executeActionBlockById', actionBlock);
     if (actionBlock) {
       this.executeActionBlockByTitle(actionBlock.title);
 
