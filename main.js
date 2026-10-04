@@ -1,9 +1,6 @@
 class YesSir {
   constructor({ onEnd }) {
     (async () => {
-      // !!! Probably doesnt work.
-      $("#advancedSearcherByTags").load("core/advancedSearchearByTags/index.html");
-
       const projectAssetLoader = new ProjectAssetLoader({});
 
       const inputDeviceManager = new InputDeviceManager();
@@ -36,7 +33,6 @@ class YesSir {
         {
           projectAssetLoader: projectAssetLoader,
           textManager: this.textManager,
-          keyCodeByKeyName: this.keyCodeByKeyName,
           targetId: 'request_container'
         }
       );
@@ -95,7 +91,6 @@ class YesSir {
         this.dataStorageService,
         this.mapDataStructure,
         this.logsController,
-        this.keyCodeByKeyName,
         this.scrollController,
         this.dateManager,
         this.modalLoadingController,
@@ -149,8 +144,6 @@ let yesSir;
     // Initialize Libraries.
     const observable = yesSir.observable;
     const dateManager = yesSir.dateManager;
-
-    const keyCodeByKeyName = yesSir.keyCodeByKeyName;
     const textManager = yesSir.textManager;
     const dialogWindow = yesSir.dialogWindow;
     const fileManager = yesSir.fileManager;

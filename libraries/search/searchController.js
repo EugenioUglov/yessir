@@ -1,7 +1,6 @@
 class SearchController {
-    constructor(view, textManager, keyCodeByKeyName) {
+    constructor(view, textManager) {
         this.textManager = textManager;
-        this.keyCodeByKeyName = keyCodeByKeyName;
 
         this.view = view;
 
@@ -15,7 +14,6 @@ class SearchController {
     keyUpRequestFieldHandler;
     keypressInputFieldPlusTagsHandler;
     keypressInputFieldMinusTagsHandler;
-    clickBtnSearchByTagsHandler;
 
     
     #onEnter = () => {
@@ -62,15 +60,12 @@ class SearchController {
         };
 
         function onClickBtnSearchByTags(userPlusTags, userMinusTags) {
-            that.clickBtnSearchByTagsHandler(userPlusTags, userMinusTags);
         }
 
         this.view.bindClickBtnClearRequestField(this.#onClickBtnClear);
         this.view.bindClickBtnEnterRequest(this.#onEnter);
         this.view.bindKeyUpRequestField(onKeyUpRequestField);
         this.view.bindChangeInputRequestField(onChangeInputRequestField);
-        this.view.bindKeypressInputFieldPlusTags(this.keypressInputFieldPlusTagsHandler);
-        this.view.bindKeypressInputFieldMinusTags(this.keypressInputFieldMinusTagsHandler);
         this.view.bindClickBtnSearchByTags((userPlusTags, userMinusTags) => onClickBtnSearchByTags(userPlusTags, userMinusTags));
     }
 

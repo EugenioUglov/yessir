@@ -20,17 +20,9 @@ class SearchView {
     }
 
     getPlusTags() {
-        const inputFieldPlusTags = $("#search_by_tags_container").find(".input_field_plus_tags");
-        const userPlusTags = inputFieldPlusTags.val();
-
-        return userPlusTags;
     }
 
     getMinusTags() {
-        const inputFieldMinusTags = $("#search_by_tags_container").find(".input_field_minus_tags");
-        const userMinusTags = inputFieldMinusTags.val();
-
-        return userMinusTags;
     }
 
     getRequest() {
@@ -44,14 +36,6 @@ class SearchView {
 
     clear() {
         $('#input_field_request')[0].value = '';
-    }
-
-    focusInputFieldPlusTags() {
-        $('.input_field_plus_tags').focus();
-    }
-
-    focusInputFieldMinusTags() {
-        $('.input_field_minus_tags').focus();
     }
 
     bindClickBtnEnterRequest(handler) {
@@ -90,49 +74,7 @@ class SearchView {
 
     bindClickBtnSearchByTags(handler) {
         $('#btn_search_by_tags').click(() => {
-            window.scrollTo(0, 0);
             handler(this.getPlusTags(), this.getMinusTags());
-        });
-
-        // $('.input_field_minus_tags').keypress((event) => {
-        //     // Enter.
-        //     if (event.keyCode == 13) {
-        //         event.preventDefault();
-        //         handler(this.getPlusTags(), this.getMinusTags());
-        //     }
-        // });
-    }
-
-
-    bindKeypressInputFieldPlusTags(handler) {
-        const that = this;
-
-        $('.input_field_plus_tags').on('keyup', function(event) {
-            if (event.keyCode == 13)  {
-                event.preventDefault();
-    
-                // that.focusInputFieldMinusTags();
-            }
-            else {
-                window.scrollTo(0, 0);
-                handler(event);
-            }
-        });
-    }
-
-    bindKeypressInputFieldMinusTags(handler) {
-        const that = this;
-
-        $('.input_field_minus_tags').on('keyup', function(event) {
-            if (event.keyCode == 13)  {
-                event.preventDefault();
-    
-                // that.focusInputFieldPlusTags();  
-            }
-            else {
-                window.scrollTo(0, 0);
-                handler(event);
-            }
         });
     }
 
@@ -146,27 +88,11 @@ class SearchView {
             $('#input_field_request')[0].style.color = 'gray';
             return;
         });
-        
-        $('#btn_advanced_settings_for_search').click(function() {
-            if ($('#search_by_tags_container').is(':visible')) {
-                // console.log('#advanced_settings hide');
-                $('#search_by_tags_container').hide();
-            }
-            else {
-                // console.log('#advanced_settings show');
-                $('#search_by_tags_container').show();
-            }
-        });
 
         $("#rb_search_by_request").on("click", function() {
-            $("#search_by_tags_container").hide();
             $("#autocomplete").show();
         });
         
-        $("#rb_search_by_tags").on("click", function() {
-            // $("#autocomplete").hide();
-            $("#search_by_tags_container").show();
-        });
 
         $("#input_field_request")[0].onfocus = () => {
             $("#autocomplete")[0].style.boxShadow = "0px 0px 5px 1px #4285f4"; 

@@ -283,10 +283,6 @@ div#welcome_page {
   #btn_voice_recognition {
     width: 20%;
   }
-
-  #btn_advanced_settings_for_search {
-    width: 20%;
-  }
 }
 
 .forms {
@@ -407,15 +403,6 @@ div#welcome_page {
 .resize_field {
   border-radius: 8px;
   resize: vertical;
-}
-
-#search_by_tags_container {
-  position: relative;
-  padding: 10px;
-  margin: auto;
-  top: 80px;
-  height: 300px;
-  max-width: 680px;
 }
 
 #autocomplete {

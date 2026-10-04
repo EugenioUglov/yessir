@@ -2,12 +2,12 @@
     const FEATURE_BASE_PATH = document.currentScript ? document.currentScript.src.substring(0, document.currentScript.src.lastIndexOf('/') + 1) : '';
 
     class SearchBootstrapper {
-        constructor({ projectAssetLoader, textManager, keyCodeByKeyName, targetId, data }) {
+        constructor({ projectAssetLoader, textManager, targetId, data }) {
             // Return promise.
-            return this.init({ projectAssetLoader, textManager, keyCodeByKeyName, targetId, data });
+            return this.init({ projectAssetLoader, textManager, targetId, data });
         }
         
-        async init({ projectAssetLoader, textManager, keyCodeByKeyName, targetId, data }) {
+        async init({ projectAssetLoader, textManager, targetId, data }) {
             // const projectAssetLoader = new projectAssetLoader(FEATURE_BASE_PATH);
             projectAssetLoader.setBasePath({path: FEATURE_BASE_PATH});
 
@@ -20,7 +20,7 @@
             await Promise.all([cssPromise, htmlPromise, sarchControllerPromise, sarchViewPromise]);
 
             const view = new SearchView();
-            const controller = new SearchController(view, textManager, keyCodeByKeyName);
+            const controller = new SearchController(view, textManager);
 
             return controller;
         }

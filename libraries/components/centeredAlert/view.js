@@ -1,9 +1,14 @@
 class CenteredAlertView {
-    show({ title, content }) {
-        let dialogInfoElem = $("#alert_center");
-        $(".black_background").show();
-        // Hide search area with Action-Blocks.
+    constructor({ domContainer }) {
+        this.#domContainer = domContainer;
+    }
 
+    #domContainer;
+
+    show({ title, content }) {
+        let dialogInfoElem = this.#domContainer.find("#alert_center");
+        this.#domContainer.find(".black_background").show();
+        
         if (typeof dialogInfoElem[0].showModal === "function") {
             dialogInfoElem[0].showModal();
 

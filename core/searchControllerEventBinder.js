@@ -63,9 +63,5 @@ class SearchControllerEventBinder {
                 }
             );
         };
-
-        searchController.clickBtnSearchByTagsHandler = (userPlusTags, userMinusTags) => {
-            actionBlockController.showActionBlocksByTags(userPlusTags, userMinusTags);
-        }   
     }
 }

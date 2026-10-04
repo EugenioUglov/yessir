@@ -10,7 +10,6 @@ class ActionBlockController {
     dataStorageService,
     mapDataStructure,
     logsController,
-    keyCodeByKeyName,
     scrollController,
     dateManager,
     modalLoadingController,
@@ -27,7 +26,6 @@ class ActionBlockController {
     this.textManager = textManager;
     this.dataStorageService = dataStorageService;
     this.logsController = logsController;
-    this.keyCodeByKeyName = keyCodeByKeyName;
     this.mapDataStructure = mapDataStructure;
     this.scrollController = scrollController;
     this.modalLoadingController = modalLoadingController;
@@ -776,38 +774,75 @@ class ActionBlockController {
 
     let actionBlocksToShow;
 
-    if (isExecuteActionBlockByTitle === false) {
-      // Convert strings "tag1, tag2" into arrays of lowercase, trimmed strings
-      // Get raw strings and split by spaces OR commas
-      if (this.searchService.view.getPlusTags() != undefined) {
-        plusTags = this.searchService.view.getPlusTags()
-            .toLowerCase()
-            .split(/[\s,]+/)
-            .filter(t => t.length > 0); // Remove empty strings from extra spaces
-      }
+    console.log(getStringWithAdditionalStringWithoutSymbols(request));
 
-      if (this.searchService.view.getMinusTags() != undefined) {
-        minusTags = this.searchService.view.getMinusTags()
-            .toLowerCase()
-            .split(/[\s,]+/)
-            .filter(t => t.length > 0);
-      }
+    request = getStringWithAdditionalStringWithoutSymbols(request);
+    request = request.toLowerCase().trim();
+    console.log('request:', request);
 
-      if (request === "" && plusTags.length === 0 && minusTags.length === 0) {
-        // Show data in images.
-        that.showActionBlocks();
 
-        return;
-      }
+    // // Get plus strings (array) in quotes from request, e.g. "phrase1" "phrase2".
+    // const plusStrings = [...request.matchAll(/(?<!-)"([^"]*)"/g)]
+    //   .map(match => match[1])
+    //   .filter(str => str.length > 0);
+    // console.log('plusStrings:', plusStrings);
+
+    // // Get minus strings (array) in minus quotes from request, e.g. -"phrase1" -"phrase2".
+    // const minusStrings = [...request.matchAll(/-"([^"]*)"/g)]
+    //   .map(match => match[1])
+    //   .filter(str => str.length > 0);
+    // console.log('minusStrings:', minusStrings);
+
+    // 1. Сначала находим все минус-теги и сохраняем их
+    const minusStrings = [...request.matchAll(/-"([^"]*)"/g)]
+        .map(match => match[1])
+        .filter(str => str.length > 0);
+
+    // 2. Удаляем из строки все минус-теги вместе с их минусами
+    const cleanRequest = request.replace(/-"[^"]*"/g, '');
+
+    // 3. Теперь в очищенной строке ищем абсолютно безопасно только плюс-теги
+    const plusStrings = [...cleanRequest.matchAll(/"([^"]*)"/g)]
+        .map(match => match[1])
+        .filter(str => str.length > 0);
+
+
+    plusTags = plusStrings;
+    minusTags = minusStrings;
+
+    if (request === undefined || request === null || request === "") {
+      // Show all action blocks or handle the empty request case
+      this.showActionBlocks();
+      return;
     }
 
+    // if (isExecuteActionBlockByTitle === false) {
+      // Convert strings "tag1, tag2" into arrays of lowercase, trimmed strings
+      // Get raw strings and split by spaces OR commas
+      // if (this.searchService.view.getPlusTags() != undefined) {
+      //   plusTags = this.searchService.view.getPlusTags()
+      //       .toLowerCase()
+      //       .split(/[\s,]+/)
+      //       .filter(t => t.length > 0); // Remove empty strings from extra spaces
+      // }
 
+      // if (this.searchService.view.getMinusTags() != undefined) {
+      //   minusTags = this.searchService.view.getMinusTags()
+      //       .toLowerCase()
+      //       .split(/[\s,]+/)
+      //       .filter(t => t.length > 0);
+      // }
 
+    //   if (request === "" && plusTags.length === 0 && minusTags.length === 0) {
+    //     // Show data in images.
+    //     that.showActionBlocks();
+
+    //     return;
+    //   }
+    // }
 
     // Get request text from input field and find possible search data.
     actionBlocksToShow = this.model.getByPhrase(request);
-
-
 
     // Set Action-Block by title at the beginning. And remove this Action-Block from position where it was before.
     const actionBlockByTitle = this.model.getActionBlockByTitle(request);
@@ -820,36 +855,43 @@ class ActionBlockController {
     }
     //
 
-    if (!actionBlocksToShow) {
-      // actionBlocks_to_show = [];
-      actionBlocksToShow = that.getAllActionBlocksInArray();
-    }
+    function getStringWithAdditionalStringWithoutSymbols(str) {
+      // Разбиваем строку на слова и оставляем только те, в которых есть спецсимволы
+      const cleanedWords = str
+        .split(' ')
+        .filter(word => /[^\p{L}\p{N}]/u.test(word)) // Оставляем слова со спецсимволами
+        .map(word => word.replace(/[^\p{L}\p{N}]/gu, ' ')); // Удаляем из них спецсимволы
 
-    if (isExecuteActionBlockByTitle === false) {
-      // Filter the array before rendering
-      if (plusTags.length > 0 || minusTags.length > 0) {
-          actionBlocksToShow = actionBlocksToShow.filter(block => {
-              // Flatten block.tags: ["urgent", "work project"] -> ["urgent", "work", "project"]
-              const individualBlockTags = (block.tags || [])
-                  .flatMap(tag => tag.toLowerCase().split(/[\s,]+/))
-                  .filter(tag => tag.length > 0);
-
-              // Logic: All plusTags must be present in the flattened block tags
-              const matchesPlus = plusTags.every(searchTag => 
-                  individualBlockTags.includes(searchTag)
-              );
-
-              // Logic: None of the minusTags should be present in the flattened block tags
-              const matchesMinus = minusTags.some(searchTag => 
-                  individualBlockTags.includes(searchTag)
-              );
-
-              return (plusTags.length === 0 || matchesPlus) && !matchesMinus;
-          });
+      // Если были слова со спецсимволами, добавляем их в конец исходной строки
+      if (cleanedWords.length > 0) {
+        return `${str} ${cleanedWords.join(' ')}`;
       }
+
+      return str;
     }
 
+    // Filter the array before rendering
+    // if (plusTags.length > 0 || minusTags.length > 0) {
+        actionBlocksToShow = actionBlocksToShow.filter(block => {
+            // Flatten block.tags: ["urgent", "work project"] -> ["urgent", "work", "project"]
+            const individualBlockTags = (block.tags || [])
+                .flatMap(tag => tag.toLowerCase().split(/[\s,]+/))
+                .filter(tag => tag.length > 0);
 
+            // Logic: All plusTags must be present in the flattened block tags
+            const matchesPlus = plusTags.every(plusTag => 
+                individualBlockTags.includes(plusTag)
+            );
+
+            // Logic: None of the minusTags should be present in the flattened block tags
+            const matchesMinus = minusTags.some(minusTag => 
+                individualBlockTags.includes(minusTag)
+            );
+
+            return (plusTags.length === 0 || matchesPlus) && !matchesMinus;
+        });
+    // }
+    
     if (isExecuteActionBlockByTitle) {
       let isActionBlockExist = false;
 

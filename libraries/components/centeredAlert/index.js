@@ -6,11 +6,6 @@
      * Returns controller in async.
      */
     class CenteredAlertBootstrapper {
-        // constructor({ projectAssetLoader, targetId }) {
-        //     // Return promise.
-        //     return this.init({ projectAssetLoader, targetId });
-        // }
-
         static async create({ projectAssetLoader, targetId }) {
             projectAssetLoader.setBasePath({path: FEATURE_BASE_PATH});
 
