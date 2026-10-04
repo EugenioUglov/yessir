@@ -793,9 +793,6 @@ class ActionBlockController {
     // Add to request string with no symbols.
     request = getStringWithAdditionalStringWithoutSymbols(getRequestWithoutTags(request));
 
-    console.log("request: " + request);
-    
-
     // Get request text from input field and find possible search data.
     if (getRequestWithoutTags(request).trim() === "") {
       actionBlocksToShow = [...this.model.getActionBlocks().values()];
@@ -840,8 +837,7 @@ class ActionBlockController {
       let isActionBlockExist = false;
     
       // IF ActionBlock has been found with the same title THEN execute action.
-      for (const actionBlock of actionBlocksToShow) {          
-        console.log('ActionBlock has been found with the same title. Execute action. Title: ' + actionBlock.title + ' | request: ' + request);
+      for (const actionBlock of actionBlocksToShow) {
         if (that.textManager.isSame(actionBlock.title.toLowerCase(), userRequest.toLowerCase())) {
           isActionBlockExist = true;
           that.executeActionBlockByTitle(actionBlock.title);
@@ -1023,6 +1019,7 @@ class ActionBlockController {
       
 
       this.noteController.openNote(content, actionBlock.title, isHTML);
+
       
       this.model.actionBlockTitleBeforeUpdate = $('.note_title').text();
 
@@ -1554,11 +1551,14 @@ class ActionBlockController {
   }
 
   #onClickActionBlock = (title) => {
+        console.log(title);
+
     let actionBlock = this.model.getActionBlockByTitle(title);
     if (
       actionBlock.action === this.model.getActionNameEnum().openURL ||
       actionBlock.action === this.model.getActionNameEnum().openUrl
     ) {
+
       const url = UrlValidator.getValidUrl(actionBlock.content);
 
       
@@ -1570,7 +1570,8 @@ class ActionBlockController {
         location.href = url;
       }
     } else {
-      yesSir.hashHandlers.openActionBlockPage(title);
+      // yesSir.hashHandlers.openActionBlockPage(title);
+      yesSir.hashHandlers.openActionBlockPageById(actionBlock.id);
     }
 
     if (this.model.isMenuCreateTypeActionBlockOpen)

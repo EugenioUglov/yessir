@@ -254,6 +254,12 @@ class HashHandlers {
             "=true";
     }
 
+    openActionBlockPageById(id) {
+        window.location.hash = 'actionblock=' + id;
+    }
+
+
+
     openPreviousPage() {
         const hashPrevious = yesSir.hashObserver.getPreviousHash();
 
