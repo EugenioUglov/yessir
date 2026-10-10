@@ -79,14 +79,6 @@ class DefaultActionBlocks {
             "https://www.sostechgroup.com/wp-content/uploads/2016/08/ThinkstockPhotos-176551504.jpg",
         };
     
-        const actionBlock_facebook_of_developer = {
-            title: 'Open Facebook page of developer',
-            tags: 'Open Facebook page of developer, account, contact, message, default',
-            action: 'openURL',
-            content: 'https://www.facebook.com/eugeniouglov',
-            imageURL: 'https://i.ibb.co/QJ4y5v3/DEVELOPER-facebook.png'
-        };
-    
         const actionBlock_email_of_developer = {
           title: "Write email to developer - eugeniouglovsupport@gmail.com",
           tags: "Write email to developer, contact, message, gmail, mail, default",
@@ -142,7 +134,6 @@ class DefaultActionBlocks {
             // actionBlock_create_note,
             actionBlock_set_synonym_tags,
             actionBlock_set_children_tags,
-            actionBlock_facebook_of_developer, 
             actionBlock_email_of_developer,
             actionBlock_open_file_manager,
             actionBlock_save_to_file,
