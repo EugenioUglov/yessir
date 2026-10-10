@@ -1572,8 +1572,6 @@ class ActionBlockController {
   }
 
   #onClickActionBlock = (title) => {
-        console.log(title);
-
     let actionBlock = this.model.getActionBlockByTitle(title);
     if (
       actionBlock.action === this.model.getActionNameEnum().openURL ||

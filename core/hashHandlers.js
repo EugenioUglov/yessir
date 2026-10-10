@@ -261,7 +261,6 @@ class HashHandlers {
 
 
     openPreviousPage() {
-        console.log("openPreviousPage()", yesSir.hashObserver.getPreviousHash());
         const hashPrevious = yesSir.hashObserver.getPreviousHash();
 
         if (

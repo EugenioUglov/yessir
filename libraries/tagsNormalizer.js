@@ -12,7 +12,6 @@ class TagsNormalizer {
         handledTags = this.#getNormalizedTags(initialTags);
        
         handledTags = this.#getNormalizedTags([...handledTags, ...this.#getAdditionalTags(handledTags)]);
-        console.log("Handled tags after normalization and additional tags:", handledTags);
 
         // 1. Загружаем данные
         const synonymGroups = JSON.parse(localStorage.getItem('synonymTags')) || []; // [[s1, s2], [s3, s4]]
