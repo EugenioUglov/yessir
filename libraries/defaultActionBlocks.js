@@ -88,10 +88,10 @@ class DefaultActionBlocks {
         };
     
         const actionBlock_email_of_developer = {
-          title: "Write email to developer - eugeniouglov@gmail.com",
+          title: "Write email to developer - eugeniouglovsupport@gmail.com",
           tags: "Write email to developer, contact, message, gmail, mail, default",
           action: "openURL",
-          content: "mailto:eugeniouglov@gmail.com",
+          content: "mailto:eugeniouglovsupport@gmail.com",
           imageURL: "https://i.ibb.co/dMHPk78/DEVELOPER-gmail.png",
         };
     
@@ -203,9 +203,15 @@ class DefaultActionBlocks {
         function getContentActionBlockSetSynonymTags() {
             return `
                 <style>
+                    .synonyms-outer-wrapper {
+                        display: flex;
+                        justify-content: center;
+                        width: 100%;
+                    }
                     .synonyms-wrapper {
                         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-                        max-width: 500px;
+                        width: 100%;
+                        max-width: 550px;
                         color: #243b53;
                     }
                     .group-container {
@@ -297,14 +303,15 @@ class DefaultActionBlocks {
                     }
                 </style>
 
-                <div class="synonyms-wrapper">
-                    <div id="groups-list"></div>
-                    <button class="btn-add-group" onclick="addGroup()">+ Добавить группу синонимов</button>
+                <div class="synonyms-outer-wrapper">
+                    <div class="synonyms-wrapper">
+                        <div id="groups-list"></div>
+                        <button class="btn-add-group" onclick="addGroup()">+ Add synonym group</button>
+                    </div>
                 </div>
 
                 <script>
                     (function() {
-                        // Загружаем массив массивов
                         let synonymGroups = JSON.parse(localStorage.getItem('synonymTags')) || [[]];
 
                         function save() {
@@ -321,20 +328,19 @@ class DefaultActionBlocks {
                                 
                                 groupDiv.innerHTML = \`
                                     <div class="group-header">
-                                        <span>Группа #\${gIndex + 1}</span>
-                                        <button class="btn-remove-group" onclick="removeGroup(\${gIndex})">Удалить группу</button>
+                                        <span>Group #\${gIndex + 1}</span>
+                                        <button class="btn-remove-group" onclick="removeGroup(\${gIndex})">Delete group</button>
                                     </div>
                                     <div class="tag-container">
                                         <div id="tags-\${gIndex}" style="display: contents;"></div>
                                         <input type="text" class="tag-input" 
-                                            placeholder="Введите синонимы через запятую..." 
+                                            placeholder="Enter synonyms separated by comma..." 
                                             onkeydown="handleKey(event, \${gIndex})"
                                             onblur="processInput(this.value, \${gIndex})">
                                     </div>
                                 \`;
                                 container.appendChild(groupDiv);
 
-                                // Отрисовка тегов внутри группы
                                 const list = groupDiv.querySelector(\`#tags-\${gIndex}\`);
                                 group.forEach((tag, tIndex) => {
                                     const span = document.createElement('div');
@@ -393,8 +399,14 @@ class DefaultActionBlocks {
         function getContentActionBlockSetChildrenTags() {
             return `
                 <style>
+                    .children-outer-wrapper {
+                        display: flex;
+                        justify-content: center;
+                        width: 100%;
+                    }
                     .children-tags-wrapper {
                         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                        width: 100%;
                         max-width: 550px;
                         color: #1a202c;
                     }
@@ -407,7 +419,30 @@ class DefaultActionBlocks {
                         box-shadow: 0 2px 4px rgba(0,0,0,0.04);
                         animation: fadeIn 0.2s ease-out;
                     }
-                    /* Секция главного тега */
+                    .group-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 8px;
+                        font-size: 12px;
+                        font-weight: 600;
+                        color: #64748b;
+                        text-transform: uppercase;
+                        letter-spacing: 0.025em;
+                    }
+                    .btn-remove-group {
+                        background: #fee2e2;
+                        color: #ef4444;
+                        border: none;
+                        border-radius: 6px;
+                        padding: 2px 8px;
+                        cursor: pointer;
+                        font-size: 11px;
+                        transition: background 0.2s;
+                    }
+                    .btn-remove-group:hover { background: #fecaca; }
+
+                    /* Parent tag section */
                     .parent-section {
                         display: flex;
                         align-items: center;
@@ -429,7 +464,7 @@ class DefaultActionBlocks {
                     .parent-input:focus { border-color: #6366f1; }
                     .parent-label { font-size: 11px; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; }
 
-                    /* Секция дочерних тегов */
+                    /* Children tags section */
                     .children-container {
                         display: flex;
                         flex-wrap: wrap;
@@ -469,15 +504,6 @@ class DefaultActionBlocks {
                         min-width: 150px;
                     }
 
-                    .btn-delete-group {
-                        color: #a0aec0;
-                        background: none;
-                        border: none;
-                        cursor: pointer;
-                        font-size: 12px;
-                    }
-                    .btn-delete-group:hover { color: #e53e3e; }
-
                     .btn-add-main {
                         background: #1a202c;
                         color: white;
@@ -494,14 +520,15 @@ class DefaultActionBlocks {
                     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
                 </style>
 
-                <div class="children-tags-wrapper">
-                    <div id="children-groups-list"></div>
-                    <button class="btn-add-main" onclick="addChildGroup()">+ Создать новую структуру тегов</button>
+                <div class="children-outer-wrapper">
+                    <div class="children-tags-wrapper">
+                        <div id="children-groups-list"></div>
+                        <button class="btn-add-main" onclick="addChildGroup()">+ Create new tag structure</button>
+                    </div>
                 </div>
 
                 <script>
                     (function() {
-                        // Структура: [{ parent: string, children: string[] }]
                         let childGroups = JSON.parse(localStorage.getItem('childrenTags')) || [];
 
                         function save() {
@@ -516,21 +543,21 @@ class DefaultActionBlocks {
                                 const card = document.createElement('div');
                                 card.className = 'parent-group';
                                 card.innerHTML = \`
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                        <span class="parent-label">Родительский тег</span>
-                                        <button class="btn-delete-group" onclick="removeChildGroup(\${gIndex})">Удалить группу</button>
+                                    <div class="group-header">
+                                        <span>Parent tags (comma separated)</span>
+                                        <button class="btn-remove-group" onclick="removeChildGroup(\${gIndex})">Delete group</button>
                                     </div>
                                     <div class="parent-section">
                                         <input type="text" class="parent-input" 
-                                            placeholder="Напр: Животные" 
+                                            placeholder="e.g. lion, dog, tiger" 
                                             value="\${group.parent}" 
                                             oninput="updateParent(\${gIndex}, this.value)">
                                     </div>
-                                    <span class="parent-label">Дочерние теги (через запятую)</span>
+                                    <span class="parent-label">Children tags (comma separated)</span>
                                     <div class="children-container">
                                         <div id="child-list-\${gIndex}" style="display: contents;"></div>
                                         <input type="text" class="child-input" 
-                                            placeholder="собака, кошка, лев..."
+                                            placeholder="animals, four-legged..." 
                                             onkeydown="handleChildKey(event, \${gIndex})">
                                     </div>
                                 \`;
@@ -560,7 +587,7 @@ class DefaultActionBlocks {
 
                         window.updateParent = (index, value) => {
                             childGroups[index].parent = value;
-                            save(); // Сохраняем текст родителя при вводе
+                            save();
                         };
 
                         window.handleChildKey = (e, gIndex) => {
@@ -715,7 +742,7 @@ class DefaultActionBlocks {
 
         function getContentActionBlockDeleteAllActionBlocks() {
             return `<script>
-                yesSir.actionBlockController.deleteAllActionBlocks();
+            yesSir.actionBlockController.deleteAllActionBlocks();
             </script>`;
         }
 

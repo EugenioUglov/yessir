@@ -12,35 +12,70 @@ class TagsNormalizer {
         handledTags = this.#getNormalizedTags(initialTags);
        
         handledTags = this.#getNormalizedTags([...handledTags, ...this.#getAdditionalTags(handledTags)]);
+        console.log("Handled tags after normalization and additional tags:", handledTags);
 
         // 1. Загружаем данные
         const synonymGroups = JSON.parse(localStorage.getItem('synonymTags')) || []; // [[s1, s2], [s3, s4]]
         const childrenGroups = JSON.parse(localStorage.getItem('childrenTags')) || []; // [{parent, children: []}]  
 
         function syncUserSynonymsWithChildren() {
-            // 1. Сначала расширяем handledTags всеми синонимами, которые в нем уже есть
-            // Если в handledTags есть "автомобиль", а в синонимах ["автомобиль", "машина"], 
-            // добавляем "машина" в handledTags.
+            // Вспомогательная функция для нормализации и разделения строки по запятым и пробелам
+            function parseTagString(str) {
+                if (!str) return [];
+                return str.split(/[,]+/) // Сначала разделяем по запятым
+                    .flatMap(part => part.split(/\s+/)) // Затем разделяем по пробелам
+                    .map(t => t.trim().toLowerCase())
+                    .filter(t => t !== '');
+            }
+
+            // Создаем расширенный набор всех уникальных токенов/тегов из handledTags
+            let flatHandledTags = [];
+            handledTags.forEach(t => {
+                flatHandledTags.push(...parseTagString(t));
+                if (!flatHandledTags.includes(t.toLowerCase())) {
+                    flatHandledTags.push(t.toLowerCase());
+                }
+            });
+
+            // 1. Расширяем handledTags синонимами
             synonymGroups.forEach(group => {
-                const hasMatch = group.some(synonym => 
-                    handledTags.map(t => t.toLowerCase()).includes(synonym.toLowerCase())
+                const groupNormalized = group.map(s => s.toLowerCase());
+                const hasMatch = groupNormalized.some(synonym => 
+                    flatHandledTags.includes(synonym)
                 );
                 
                 if (hasMatch) {
                     group.forEach(synonym => {
-                        if (!handledTags.includes(synonym)) handledTags.push(synonym);
+                        if (!handledTags.includes(synonym)) {
+                            handledTags.push(synonym);
+                        }
                     });
                 }
             });
 
-            // 2. Теперь проверяем каждый тег из обновленного handledTags 
-            // на наличие дочерних элементов в childrenGroups
-            const tagsToProcess = [...handledTags]; // Копия для итерации
+            // Обновляем плоский список после добавления синонимов
+            flatHandledTags = [];
+            handledTags.forEach(t => {
+                flatHandledTags.push(...parseTagString(t));
+                if (!flatHandledTags.includes(t.toLowerCase())) {
+                    flatHandledTags.push(t.toLowerCase());
+                }
+            });
+
+            // 2. Проверяем соответствие с дочерними группами
+            const tagsToProcess = [...handledTags];
             
             tagsToProcess.forEach(tag => {
-                const foundChildGroup = childrenGroups.find(cGroup => 
-                    cGroup.parent.toLowerCase() === tag.toLowerCase()
-                );
+                const foundChildGroup = childrenGroups.find(cGroup => {
+                    // Разбиваем родительские теги группы по запятым и пробелам
+                    const parentsList = parseTagString(cGroup.parent);
+                    
+                    // Также разбиваем текущий обрабатываемый тег на случай, если там несколько слов через пробел
+                    const currentTagParts = parseTagString(tag);
+
+                    // Проверяем, есть ли пересечение хотя бы по одному слову/тегу
+                    return currentTagParts.some(part => parentsList.includes(part));
+                });
 
                 if (foundChildGroup) {
                     foundChildGroup.children.forEach(child => {

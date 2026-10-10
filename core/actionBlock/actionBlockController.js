@@ -115,7 +115,7 @@ class ActionBlockController {
           return false;
         }
 
-        yesSir.hashHandlers.openMain();
+        yesSir.hashHandlers.setHashMain();
       }
     );
   };
@@ -1269,6 +1269,9 @@ class ActionBlockController {
     function onClickOkConfirm() {
       // Clear model variable with Action-Blocks and show it.
       that.model.deleteActionBlocks();
+      yesSir.hashHandlers.setHashMain();
+      window.location.reload();
+      
       that.#onActionBlocksStorageUpdated();
       return;
     }
