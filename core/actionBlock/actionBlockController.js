@@ -756,6 +756,7 @@ class ActionBlockController {
 
     let plusTags = [];
     let minusTags = [];
+    let exactTags = [];
 
     let actionBlocksToShow;
 
@@ -769,11 +770,11 @@ class ActionBlockController {
       return;
     }
 
-    const { plusStrings, minusStrings } = getTagsFromRequest(request);
+    const { plusStrings, minusStrings, exactStrings } = getTagsFromRequest(request);
 
     plusTags = plusStrings;
     minusTags = minusStrings;
-
+    exactTags = exactStrings;
 
     // Add to request string with no symbols.
     request = getStringWithAdditionalStringWithoutSymbols(getRequestWithoutTags(request));
@@ -797,31 +798,7 @@ class ActionBlockController {
     }
     //
 
-
-    
-    // Filter the array before rendering.
-    // actionBlocksToShow = actionBlocksToShow.filter(block => {
-    //     // Flatten block.tags: ["urgent", "work project"] -> ["urgent", "work", "project"]
-    //     const individualBlockTags = (block.tags || [])
-    //         .flatMap(tag => tag.toLowerCase().split(/[\s,]+/))
-    //         .filter(tag => tag.length > 0);
-
-    //     // Logic: All plusTags must be present in the flattened block tags.
-    //     const matchesPlus = plusTags.every(plusTag => 
-    //         individualBlockTags.includes(plusTag)
-    //     );
-
-    //     // Logic: None of the minusTags should be present in the flattened block tags.
-    //     const matchesMinus = minusTags.some(minusTag => 
-    //         individualBlockTags.includes(minusTag)
-    //     );
-
-    //     return (plusTags.length === 0 || matchesPlus) && !matchesMinus;
-    // });
-
-    actionBlocksToShow = getFilteredActionBlocksByTags({ actionBlocksToShow, plusTags, minusTags });
-    
-
+    actionBlocksToShow = getFilteredActionBlocksByTags({ actionBlocksToShow, plusTags, minusTags, exactTags });
 
     if (isExecuteActionBlockByTitle) {
       let isActionBlockExist = false;
@@ -855,14 +832,13 @@ class ActionBlockController {
         actionBlockController.executeActionBlock(infoObj);
     }
     */
-
-    function getFilteredActionBlocksByTags({ actionBlocksToShow, plusTags = [], minusTags = [], exactMatch = false }) {
+    function getFilteredActionBlocksByTags({ actionBlocksToShow, plusTags = [], minusTags = [], exactTags = [], isExactWordMatch = false }) {
       // Хелпер для экранирования спецсимволов RegExp
       const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-      // Хелпер для проверки совпадения искомой фразы/тега с тегом блока
+      // Хелпер для проверки совпадения обычного тега
       const isMatch = (targetTag, searchTag) => {
-        if (exactMatch) {
+        if (isExactWordMatch) {
           const escaped = escapeRegExp(searchTag);
           const regex = new RegExp(`\\b${escaped}\\b`, 'i');
           return regex.test(targetTag);
@@ -880,13 +856,23 @@ class ActionBlockController {
           return blockTags.some(tag => isMatch(tag, cleanPlus));
         });
 
-        // 3. Ни один из minusTags не должен совпасть ни с одним тегом блока
+
+        // 3. Все exactTags должны полностью совпадать хотя бы с одним тегом блока
+        const matchesExact = exactTags.every(exactTag => {
+          const cleanExact = exactTag.toLowerCase().trim();
+
+          return blockTags.some(tag => tag === cleanExact);
+        });
+
+        // 4. Ни один из minusTags не должен совпасть ни с одним тегом блока
         const matchesMinus = minusTags.some(minusTag => {
           const cleanMinus = minusTag.toLowerCase().trim();
           return blockTags.some(tag => isMatch(tag, cleanMinus));
         });
 
-        return (plusTags.length === 0 || matchesPlus) && !matchesMinus;
+        return (plusTags.length === 0 || matchesPlus) && 
+              (exactTags.length === 0 || matchesExact) && 
+              !matchesMinus;
       });
     }
     
@@ -905,28 +891,36 @@ class ActionBlockController {
       return str;
     }
 
-    function getTagsFromRequest(request) { 
-      // 1. Сначала находим все минус-теги и сохраняем их.
-      const minusStrings = [...request.matchAll(/-"([^"]*)"/g)]
+    function getTagsFromRequest(request) {
+      // 1. Находим все exact-теги вида ="tag"
+      const exactStrings = [...request.matchAll(/="([^"]*)"/g)]
           .map(match => match[1])
           .filter(str => str.length > 0);
 
-      // 2. Удаляем из строки все минус-теги вместе с их минусами.
-      const requestWithoutMinusTags = request.replace(/-"[^"]*"/g, '');
+      // Удаляем exact-теги из строки, чтобы они не перехватились обычными кавычками
+      let remainingRequest = request.replace(/="[^"]*"/g, '');
 
-      // 3. Теперь в очищенной строке ищем только плюс-теги.
-      const plusStrings = [...requestWithoutMinusTags.matchAll(/"([^"]*)"/g)]
+      // 2. Находим все минус-теги и сохраняем их.
+      const minusStrings = [...remainingRequest.matchAll(/-"([^"]*)"/g)]
           .map(match => match[1])
           .filter(str => str.length > 0);
 
-      return { plusStrings, minusStrings };
+      // 3. Удаляем из строки все минус-теги вместе с их минусами.
+      remainingRequest = remainingRequest.replace(/-"[^"]*"/g, '');
+
+      // 4. Теперь в оставшейся строке ищем обычные плюс-теги в кавычках.
+      const plusStrings = [...remainingRequest.matchAll(/"([^"]*)"/g)]
+          .map(match => match[1])
+          .filter(str => str.length > 0);
+
+      return { plusStrings, minusStrings, exactStrings };
     }
-
+    // Функция для удаления тегов из запроса.
     function getRequestWithoutTags(request) {
       return request
-        .replace(/-?"[^"]*"/g, '') // Удаляет и -"tag", и "tag"
-        .trim()                    // Убирает пробелы в начале и конце
-        .replace(/\s+/g, ' ');     // Заменяет несколько пробелов подряд на один
+        .replace(/(?:=|-)?"[^"]*"/g, '') // Удаляет ="tag", -"tag" и "tag"
+        .trim()                          // Убирает пробелы в начале и конце
+        .replace(/\s+/g, ' ');           // Заменяет несколько пробелов подряд на один
     }
   }
 
@@ -960,7 +954,7 @@ class ActionBlockController {
 
   executeActionBlockById(id) {
     const actionBlock = this.model.getActionBlockById(id);
-    console.log('executeActionBlockById', actionBlock);
+
     if (actionBlock) {
       this.executeActionBlockByTitle(actionBlock.title);
 
