@@ -1,8 +1,14 @@
-class DomElementVisibility {
+class DomElementsVisibility {
     #showedElements = [];
+    #instance = null;
+
 
     constructor() {
+        if (this.#instance) {
+            return this.#instance;
+        }
 
+        this.#instance = this;
     }
 
     showElement(elementCssSelector) {
@@ -27,7 +33,7 @@ class DomElementVisibility {
     }
 }
 
-// class DomElementVisibility {
+// class DomElementsVisibility {
 //     #displayedElements = [];
 
 //     showElement(element) {

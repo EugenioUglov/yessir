@@ -47,7 +47,7 @@ export const scripts = [
     "./core/modalLoadingController.js",
 
 
-    "./libraries/domElementVisibility.js",
+    "./libraries/domElementsVisibility.js",
 
     // Модели
     "./libraries/noteSpeaker/noteSpeakerModel.js",

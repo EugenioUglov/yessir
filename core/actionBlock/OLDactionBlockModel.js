@@ -511,6 +511,8 @@ class ActionBlockModel {
             return false;
         }
 
+        console.log(tags);
+
         return true;
         
 

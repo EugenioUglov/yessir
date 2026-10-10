@@ -185,7 +185,6 @@ class ActionBlockController {
   }
 
   closeActionBlockSettings = () => {
-    yesSir.voiceRecognitionService.stopRecognizing();
     yesSir.hashHandlers.openPreviousPage();
   };
 
@@ -1396,7 +1395,7 @@ class ActionBlockController {
   };
 
   #onActionBlockUpdated = () => {
-    yesSir.hashHandlers.openPreviousPage();
+    yesSir.hashHandlers.setHashMain();
     yesSir.loaderController.stopLoading();
     this.view.closeSettings();
     this.view.setDefaultValuesForSettingsElementsActionBlock();
@@ -1628,7 +1627,7 @@ class ActionBlockController {
       this.view.showElementsToEditActionBlock(actionBlock);
 
     elementsToShow.forEach((element) => {
-      yesSir.domElementVisibility.showElement(element);
+      yesSir.domElementsVisibility.showElement(element);
     });
   };
 

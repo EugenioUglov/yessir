@@ -261,6 +261,7 @@ class HashHandlers {
 
 
     openPreviousPage() {
+        console.log("openPreviousPage()", yesSir.hashObserver.getPreviousHash());
         const hashPrevious = yesSir.hashObserver.getPreviousHash();
 
         if (
@@ -314,6 +315,10 @@ class HashHandlers {
 
     setHashSaveToDatabase() {
         window.location.hash = this.#HASH_NAME_ENUM.saveToDatabase;
+    }
+
+    setHashMain() {
+        window.location.hash = this.#HASH_NAME_ENUM.main;
     }
 
     openSettingsActionBlockPage(title) {

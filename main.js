@@ -23,7 +23,7 @@ class YesSir {
       this.dropdownManager = new DropdownManager();
       this.mapDataStructure = new MapDataStructure();
       this.arrayManager = new ArrayManager();
-      this.domElementVisibility = new DomElementVisibility();
+      this.domElementsVisibility = new DomElementsVisibility();
 
       this.keyCodeByKeyName = inputDeviceManager.getKeyCodeByKeyName();
       this.dialogWindow = new DialogWindow();
@@ -169,7 +169,7 @@ let yesSir;
     yesSir.noteController.openNoteHandler = function () {
       const BTN_SPEAKER = yesSir.noteSpeakerService.showBtnSpeaker();
 
-      yesSir.domElementVisibility.showElement(BTN_SPEAKER);
+      yesSir.domElementsVisibility.showElement(BTN_SPEAKER);
 
       if (window.location.hash.includes("&listen")) {
         yesSir.noteSpeakerService.speak();
@@ -254,10 +254,10 @@ let yesSir;
 
 
     hashObserver.onHandleHashObserver = () => {
-      yesSir.domElementVisibility.hideShowedElements();
-      yesSir.domElementVisibility.hideElement("#elements_for_file_manager");
-      yesSir.domElementVisibility.showElement(".content");
-      yesSir.domElementVisibility.showElement(".fixed_elements");
+      yesSir.domElementsVisibility.hideShowedElements();
+      yesSir.domElementsVisibility.hideElement("#elements_for_file_manager");
+      yesSir.domElementsVisibility.showElement(".content");
+      yesSir.domElementsVisibility.showElement(".fixed_elements");
 
       if (yesSir.noteSpeakerService.isSpeaking) yesSir.noteSpeakerService.stopSpeak();
     };

@@ -8,6 +8,7 @@ class HashObserver {
   constructor({ routesMap, defaultPage }) {
     this.#routesMap = routesMap;
     this.#defaultPage = defaultPage;
+    this.#hashPrevious = defaultPage;
 
     this.#setListeners();
   }
@@ -47,7 +48,6 @@ class HashObserver {
   openPage(pageName, queryParams = {}) {
     this.#hashPrevious = window.location.hash;
 
-    console.log('openPage', pageName, queryParams);
     this.#setCurrentPageName(pageName);
 
     let hash = this.#hashSymbol + pageName;
@@ -91,6 +91,10 @@ class HashObserver {
   }
 
   getPreviousHash() {
+    if (this.#hashPrevious === undefined || this.#hashPrevious === null || this.#hashPrevious === '') {
+      this.#hashPrevious = this.#defaultPage;
+    }
+
     return this.#hashPrevious;
   }
 
