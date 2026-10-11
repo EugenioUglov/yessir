@@ -114,6 +114,25 @@ class HashObserver {
     return this.#isHashChangeListenerActiveStateEnabled;
   }
 
+
+  /**
+   * Returns the hash parameters in lower case as a URLSearchParams object.
+   * You can access parameters like: getHashParamsInLowerCase().get('paramname');
+   * @returns {URLSearchParams} - An object containing the hash parameters in lower case.
+   */
+  getHashParamsInLowerCase() {
+    const hashParams = this.#getHashParams();
+
+    // Create a new empty URLSearchParams object.
+    const lowerCaseHashParams = new URLSearchParams();
+
+    hashParams.forEach((value, key) => {
+      lowerCaseHashParams.append(key.toLowerCase(), value);
+    });
+
+    return lowerCaseHashParams;
+  }
+
   #handleHash() {
     const hashParamsInLowerCase = this.getHashParamsInLowerCase();
 
@@ -187,20 +206,6 @@ class HashObserver {
   #setCurrentPageName(newPageName) {
     this.#currentPageName = newPageName;
   }
-
-  getHashParamsInLowerCase() {
-    const hashParams = this.#getHashParams();
-
-    // Create a new empty URLSearchParams object.
-    const lowerCaseHashParams = new URLSearchParams();
-
-    hashParams.forEach((value, key) => {
-      lowerCaseHashParams.append(key.toLowerCase(), value);
-    });
-
-    return lowerCaseHashParams;
-  }
-
   
   #getHashParams() {
       // Get hash and remove '#'.

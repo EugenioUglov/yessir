@@ -6,7 +6,7 @@
    justify-content: center;  
 }
 
-.infoBlock {
+.actionBlock {
    position: relative;
    /* Text go to new line if word very long */
    word-wrap: break-word;
@@ -56,7 +56,7 @@
    box-shadow: 5px 5px 15px rgb(0 0 0 / 90%);
 }
 
-.infoBlock img {
+.actionBlock img {
    width:100%; 
    /*height:250px;*/
    height: 11.11rem;
@@ -69,7 +69,7 @@
    box-shadow: 2px 2px 50px rgba(0, 0, 0, 0.2);
 }
 
-.infoBlock:hover {
+.actionBlock:hover {
 
    box-shadow: 0 0 3pt 2pt blueviolet;
     -webkit-box-shadow: 0 0 3pt 2pt blueviolet;
@@ -86,7 +86,7 @@
    -moz-box-shadow: 10px 20px 30px lightblue; */
 } 
 
-.infoBlock:active {
+.actionBlock:active {
    /* Set outline light around block with image */
    box-shadow: 0px 0px 1px 1px #4285f4; 
    -webkit-box-shadow: 0px 0px 5px 2px #4285f4;
@@ -108,7 +108,7 @@
 }
 
 
-.infoBlock .block_resizer {
+.actionBlock .block_resizer {
    position: absolute;
    bottom: 0;
    left: 0;
@@ -126,7 +126,7 @@
    transform: scale(1);
 }
 
-.infoBlock .settings {
+.actionBlock .settings {
    position: absolute;
    top: 0;
    right: 0;
@@ -146,7 +146,7 @@
    margin: 3px;
 }
 
-.infoBlock .settings:hover {
+.actionBlock .settings:hover {
    box-shadow: 0 0 3pt 2pt blueviolet;
    -webkit-box-shadow: 0 0 3pt 2pt blueviolet;
    -moz-box-shadow: 0 0 3pt 2pt blueviolet;
@@ -158,7 +158,7 @@
    transition: 0s linear;
 }
 
-.infoBlock .settings .icon {
+.actionBlock .settings .icon {
    content:url('../icons/settings-white.png');
    color: white;
    font-size: 100px;
@@ -204,13 +204,13 @@
    .actionBlocks_container {
       grid-template-columns: repeat(auto-fit, 100px);
    }
-   .infoBlock {
+   .actionBlock {
       width: 100px;
       margin: 0px;
       (comment) Speed of animation 
       transition: 0.1s linear;
    }
-   .infoBlock img {
+   .actionBlock img {
       width:100%;
       height:100px;
    }
@@ -230,11 +230,11 @@
       padding-left: 0px;
       padding-right: 0px;
    }
-   .infoBlock img {
+   .actionBlock img {
       height: 6rem;
       /*height: 143px;*/
    }
-   .infoBlock {
+   .actionBlock {
       width: 7rem; 
        /* width: 143px;*/
       margin: 5px;

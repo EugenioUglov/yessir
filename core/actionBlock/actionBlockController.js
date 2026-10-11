@@ -928,8 +928,8 @@ class ActionBlockController {
   }
 
   showActionBlock(actionBlock) {
-    const actionBlock_html = this.view.addOnPage(
-      actionBlock.title,
+    const actionBlockHTML = this.view.addOnPage(
+      actionBlock.id,
       actionBlock
     );
   }
@@ -1549,10 +1549,6 @@ class ActionBlockController {
     // Get command text from input field and find possible search data.
     actionBlocksToShow = this.model.getByPhrase(tagsToSearch);
 
-    // Delete a folder from array. In order to don't show a folder with Action-Blocks.
-    // if (i_actionBlock >= 0) {
-    //     actionBlocks_to_show.splice(i_actionBlock, 1);
-    // }
 
     this.scrollController.setPositionTop();
     this.showActionBlocks(actionBlocksToShow);
@@ -1589,7 +1585,6 @@ class ActionBlockController {
         location.href = url;
       }
     } else {
-      // yesSir.hashHandlers.openActionBlockPage(title);
       yesSir.hashHandlers.openActionBlockPageById(actionBlock.id);
     }
 
@@ -1597,11 +1592,13 @@ class ActionBlockController {
       this.switchStateMenuTypeActionBlocksToCreate();
   };
 
-  #onClickBtnShowSettingsActionBlock = (title) => {
+  #onClickBtnShowSettingsActionBlock = (actionBlockId) => {
     this.#scrollPositionOnExecuteBlock =
       this.scrollController.getScrollXY()[1];
 
-    yesSir.hashHandlers.openSettingsActionBlockPage(title);
+    // const actionBlock = this.model.getActionBlockById(actionBlockId);
+    // yesSir.hashHandlers.openActionBlockSettingsById(actionBlockId);
+    this.openActionBlockSettingsById(actionBlockId);
   };
 
   showSettingsToCreateActionBlock = (actionName) => {
@@ -1613,6 +1610,21 @@ class ActionBlockController {
     this.onPageContentChange();
   };
 
+  openActionBlockSettingsById = (id) => {
+    const that = this;
+
+    const actionBlock = this.model.getActionBlockById(id);
+    yesSir.hashHandlers.openSettingsActionBlockPage(id);
+    this.model.actionBlockTitleBeforeUpdate = actionBlock.title;
+    this.onPageContentChange();
+    const elementsToShow =
+      this.view.showElementsToEditActionBlock(actionBlock);
+
+    elementsToShow.forEach((element) => {
+      yesSir.domElementsVisibility.showElement(element);
+    });
+  };
+
   openActionBlockSettings = (title) => {
     const that = this;
     /// !!!
@@ -1621,7 +1633,7 @@ class ActionBlockController {
     // const actionBlock = actionBlocks.get(title);
     // NEW
     const actionBlock = this.model.getActionBlockByTitle(title);
-    yesSir.hashHandlers.openSettingsActionBlockPage(title);
+    yesSir.hashHandlers.openSettingsActionBlockPage(actionBlock.id);
     this.model.actionBlockTitleBeforeUpdate = title;
     this.onPageContentChange();
     const elementsToShow =

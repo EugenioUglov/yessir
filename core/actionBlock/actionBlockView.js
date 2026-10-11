@@ -135,7 +135,6 @@ class ActionBlockView {
     $("#btn_close").show();
     $("#elements_to_edit_actionBlock").show();
     settingsActionBlockContainer.show();
-    $("#elements_for_delete_infoBlock").show();
     settingsActionBlockContainer.find(".input_field_title")[0].focus();
 
     $(".btn_open_command_palette").hide();
@@ -251,7 +250,7 @@ class ActionBlockView {
   }
 
   clear() {
-    // Clear infoblocks.
+    // Clear Action Blocks.
     $(".actionBlocks_container")[0].innerHTML = "";
   }
 
@@ -310,7 +309,7 @@ class ActionBlockView {
   ) {
     let is_mouse_enter_settings = false;
 
-    const settings_container = $(".infoBlock").find(".settings");
+    const settings_container = $(".actionBlock").find(".settings");
 
     if (settings_container) {
       settings_container.mouseenter(function () {
@@ -322,19 +321,16 @@ class ActionBlockView {
       settings_container.on("click", onClickBtnShowSettings);
 
       function onClickBtnShowSettings(e) {
-        // var title = $(this).closest('.infoBlock').attr('value');
-        // var title = $(this).closest('.infoBlock').closest('.title').val();
-        const title = $(this).closest(".infoBlock").find(".title").text();
-        // console.log('onClickBtnShowSettings', title);
-        settingsActionBlockClickHandler(title);
+        const title = $(this).closest(".actionBlock").find(".title").text();
+        const actionBlockId = $(this).closest(".actionBlock").attr("id");
+        settingsActionBlockClickHandler(actionBlockId);
       }
     }
 
-    $(".infoBlock").unbind("click");
+    $(".actionBlock").unbind("click");
 
-    $(".infoBlock").on("click", function () {
+    $(".actionBlock").on("click", function () {
       if (is_mouse_enter_settings) return false;
-      // const title = $(this).attr('value');
       const title = $(this).text();
 
       actionBlockClickHandler(title);
@@ -769,7 +765,7 @@ class ActionBlockView {
     //   dialogInfoElem[0].showModal();
 
     //   if (title) {
-    //     // Set title of infoBlock.
+    //     // Set title of actionBlock.
     //     dialogInfoElem.find(".title")[0].innerText = title;
     //   }
 
@@ -803,12 +799,9 @@ class ActionBlockView {
     const isFolder = actionBlock.action === this.actionNameEnum.openFolder;
     let imageURL = actionBlock.imageURL;
 
-    this.infoBlock_container;
-
     let titleHTML = "";
 
     if (!id) {
-      // console.log('ERROR! Id must be defined to create infoBlock');
       return;
     }
 
@@ -818,7 +811,6 @@ class ActionBlockView {
 
     let imgDivHtml = "";
     let folderElem = "";
-    let isPaddingTop = false;
     const settingsHTML =
       '<div class="settings"><div class="icon"></div></div>';
 
@@ -828,17 +820,12 @@ class ActionBlockView {
       imageURL = "";
       imgDivHtml = '<img class="img">';
     }
-    /*
-        else {
-            isPaddingTop = true;
-        }
-        */
 
     if (isFolder) {
       folderElem = '<div class="folder"></div>';
     }
 
-    const idHTML = "infoBlock" + id; // title.replaceAll(' ', '_');
+    const idHTML = id; // title.replaceAll(' ', '_');
 
     let perspectiveContainerHTML =
       '<div id="' + idHTML + '" class="perspective_img_effect_container">';
@@ -848,21 +835,10 @@ class ActionBlockView {
     firstPartActionBlockHTML =
       '<div id="' +
       idHTML +
-      '" name="' +
-      title +
-      '" class="infoBlock" value="' +
+      '" class="actionBlock" value="' +
       id +
-      '">';
-
-    // Set padding from settings button.
-    /*
-        if (isPaddingTop) {
-            firstPartActionBlockHTML = '<div id="' + idHTML +  '" class="infoBlock" style="padding-top:30px">';
-        }
-        else {
-            firstPartActionBlockHTML = '<div id="' + idHTML +  '" class="infoBlock">';
-        }
-        */
+      '">'
+    ;
 
     if (isEditable) {
       this.actionBlockHTML =

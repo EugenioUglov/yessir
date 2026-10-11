@@ -100,7 +100,15 @@ class HashHandlers {
 
         const idFromUrl = hashParamsInLowerCase.get('actionblock');
 
-        yesSir.actionBlockController.executeActionBlockById(idFromUrl);
+        const actionBlock = yesSir.actionBlockController.executeActionBlockById(idFromUrl);
+
+        if (!actionBlock) {
+            console.error(`Action block with ID ${idFromUrl} not found.`);
+
+            window.location.hash = this.#HASH_NAME_ENUM.main;
+
+            return;
+        }
     }
 
     openByRequest = (queryParams) => {
@@ -177,19 +185,31 @@ class HashHandlers {
     }
 
     editActionBlock = (queryParams) => {
-        const textToCut = window.location.hash;
-        const fromCharacterActionBlockSettings = "=";
-        const toCharacterRequestActionBlockSettings = "";
+        const hashParamsInLowerCase = yesSir.hashObserver.getHashParamsInLowerCase();
+        const actionBlockId = hashParamsInLowerCase.get('editactionblock');
 
-        let title = this.#textManager.getCuttedText(
-            textToCut,
-            fromCharacterActionBlockSettings,
-            toCharacterRequestActionBlockSettings
-        );
 
-        title = decodeURIComponent(title);
-        this.#actionBlockController.openActionBlockSettings(title);
-        this.#scrollController.setPositionTop();
+        this.#actionBlockController.openActionBlockSettingsById(actionBlockId);
+
+            this.#scrollController.setPositionTop();
+
+            return
+        // const textToCut = window.location.hash;
+        // const fromCharacterActionBlockSettings = "=";
+        // const toCharacterRequestActionBlockSettings = "";
+
+        // let title = this.#textManager.getCuttedText(
+        //     textToCut,
+        //     fromCharacterActionBlockSettings,
+        //     toCharacterRequestActionBlockSettings
+        // );
+
+
+        // title = decodeURIComponent(title);
+        // this.#actionBlockController.openActionBlockSettings(title);
+        // const hashParamsInLowerCase = yesSir.hashObserver.getHashParamsInLowerCase();
+
+        // this.#scrollController.setPositionTop();
     }
 
     saveToDatabase = (queryParams) => {
@@ -320,10 +340,10 @@ class HashHandlers {
         window.location.hash = this.#HASH_NAME_ENUM.main;
     }
 
-    openSettingsActionBlockPage(title) {
+    openSettingsActionBlockPage(id) {
         // this.#hashPrevious = window.location.hash;
         // this.#setCurrentPageName(this.#HASH_NAME_ENUM.editActionBlock);
-        window.location.hash = this.#HASH_NAME_ENUM.editActionBlock + "=" + title;
+        window.location.hash = this.#HASH_NAME_ENUM.editActionBlock + "=" + id;
         // this.setPageName(this.#HASH_NAME_ENUM.settingsActionBlock);
     }
 
