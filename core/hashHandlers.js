@@ -191,25 +191,9 @@ class HashHandlers {
 
         this.#actionBlockController.openActionBlockSettingsById(actionBlockId);
 
-            this.#scrollController.setPositionTop();
+        this.#scrollController.setPositionTop();
 
-            return
-        // const textToCut = window.location.hash;
-        // const fromCharacterActionBlockSettings = "=";
-        // const toCharacterRequestActionBlockSettings = "";
-
-        // let title = this.#textManager.getCuttedText(
-        //     textToCut,
-        //     fromCharacterActionBlockSettings,
-        //     toCharacterRequestActionBlockSettings
-        // );
-
-
-        // title = decodeURIComponent(title);
-        // this.#actionBlockController.openActionBlockSettings(title);
-        // const hashParamsInLowerCase = yesSir.hashObserver.getHashParamsInLowerCase();
-
-        // this.#scrollController.setPositionTop();
+        return true;
     }
 
     saveToDatabase = (queryParams) => {

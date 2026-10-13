@@ -6,19 +6,19 @@ class CenteredAlertView {
     #domContainer;
 
     show({ title, content }) {
-        let dialogInfoElem = this.#domContainer.find("#alert_center");
-        this.#domContainer.find(".black_background").show();
+        console.log(this.#domContainer);
+        let dialogInfoElem = this.#domContainer.querySelector("#alert_center");
         
-        if (typeof dialogInfoElem[0].showModal === "function") {
-            dialogInfoElem[0].showModal();
+        if (dialogInfoElem && typeof dialogInfoElem.showModal === "function") {
+            dialogInfoElem.showModal();
 
             if (title) {
                 // Set title.
-                dialogInfoElem.find(".title")[0].innerText = title;
+                dialogInfoElem.querySelector(".title").innerText = title;
             }
 
             // Set content.
-            dialogInfoElem.find(".text_info")[0].innerText = content;
+            dialogInfoElem.querySelector(".text_info").innerText = content;
         } else {
             alert(content);
             // console.log('WARNING! The <dialog> API is not supported by this browser');

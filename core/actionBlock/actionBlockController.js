@@ -48,8 +48,7 @@ class ActionBlockController {
       this.model.actionDescriptionByActionName,
       fileManager,
       textManager,
-      dropdownManager,
-      centeredAlert
+      dropdownManager
     );
 
     this.#bindViewEvenets();
@@ -99,7 +98,7 @@ class ActionBlockController {
     content,
     imageURL
   ) => {
-    this.view.startLoading();
+    this.view.disableAllButtons();
     this.#loadingHandler();
     this.createActionBlock(
       title,
@@ -108,7 +107,7 @@ class ActionBlockController {
       content,
       imageURL,
       (isActionBlockCreated) => {
-        this.view.stopLoading();
+        this.view.enableAllButtons();
         this.#stopLoadingHandler();
 
         if (isActionBlockCreated === false) {
@@ -127,8 +126,9 @@ class ActionBlockController {
     content,
     imageURL
   ) => {
-    this.view.startLoading();
+    this.view.disableAllButtons();
     this.#loadingHandler();
+    yesSir.loaderController.startLoading();
     this.createActionBlockWithOptimizedAutomationAsync(
       title,
       tagsPlusTitle,
@@ -136,7 +136,7 @@ class ActionBlockController {
       content,
       imageURL,
       (isActionBlockCreated) => {
-        this.view.stopLoading();
+        this.view.enableAllButtons();
         this.#stopLoadingHandler();
 
         if (isActionBlockCreated === false) {
@@ -198,7 +198,6 @@ class ActionBlockController {
     onEnd
   ) {
     const that = this;
-    yesSir.loaderController.startLoading();
     const nounNumber = new NounNumber();
 
     if (this.model.isActionBlockExist(title)) {
@@ -240,7 +239,7 @@ class ActionBlockController {
     document.body.appendChild(cancelButton);
     //
 
-    const autmationInProgressText =
+    const automationInProgressText =
       'Automation in progress. It can take a while.\n\nYou can click "Cancel" button to skip automation works.';
 
     showLoadingElmenets();
@@ -320,7 +319,7 @@ class ActionBlockController {
       });
 
     function showLoadingElmenets() {
-      this.#modalBoxController.show({ bodyText: autmationInProgressText });
+      this.#modalBoxController.show({ bodyText: automationInProgressText });
     }
 
     function hideLoadingElmenets() {
@@ -339,7 +338,7 @@ class ActionBlockController {
     onEnd
   ) {
     const that = this;
-    yesSir.loaderController.startLoading();
+    
     
     if (this.model.isActionBlockExist(title)) {
       alert('Action-Block with current title already exists. Title: ' + title);
@@ -522,26 +521,18 @@ class ActionBlockController {
       imageURL: image_URL,
     };
 
-    const is_created = this.model.add(actionBlock);
+    const isCreated = this.model.add(actionBlock);
 
-
-    if (is_created === false) {
+    if (isCreated === false) {
       if (onEnd != undefined) onEnd(false);
       return false;
-    }
-
-
-    if (window.location.href.includes("#main&speechrecognition")) {
-      yesSir.loaderController.stopLoading();
-      if (onEnd != undefined) onEnd(true);
-      return true;
     }
 
     this.view.closeSettings();
     this.view.clearAllSettingsFields();
     yesSir.hashHandlers.openPreviousPage();
     yesSir.loaderController.stopLoading();
-    this.updatePage();
+    this.clearRequestInputField();
     this.#onActionBlocksStorageUpdated();
     if (onEnd != undefined) onEnd(true);
 
@@ -640,7 +631,6 @@ class ActionBlockController {
 
     const timeStartShowActionBlocks = new Date();
     yesSir.loaderController.startLoading();
-    // yesSir.loaderController.startLoading();
     this.view.hideActionBlocksContainer();
 
     this.#indexLastShowedActionBlock = 0;
@@ -1116,7 +1106,7 @@ class ActionBlockController {
   }
 
   updatePage() {
-    this.view.updatePage();
+    this.view.clearRequestInputField();
 
     // Refresh Action-Blocks on page.
     this.showActionBlocks();
@@ -1402,7 +1392,7 @@ class ActionBlockController {
     yesSir.loaderController.stopLoading();
     this.view.closeSettings();
     this.view.setDefaultValuesForSettingsElementsActionBlock();
-    this.view.updatePage();
+    this.view.clearRequestInputField();
     // Refresh Action-Blocks on page.
     this.scrollController.setPositionTop();
     this.showActionBlocks();
@@ -1500,7 +1490,6 @@ class ActionBlockController {
     const that = this;
 
     yesSir.hashHandlers.openPreviousPage();
-    // yesSir.loaderController.stopLoading();
     this.view.closeSettings();
 
     const textConfirmWindow =
@@ -1510,7 +1499,7 @@ class ActionBlockController {
       that.modalLoadingController.show();
       that.model.deleteActionBlockByTitle(title);
 
-      that.updatePage();
+      that.clearRequestInputField();
       that.modalLoadingController.hide();
 
       return;
@@ -1596,8 +1585,6 @@ class ActionBlockController {
     this.#scrollPositionOnExecuteBlock =
       this.scrollController.getScrollXY()[1];
 
-    // const actionBlock = this.model.getActionBlockById(actionBlockId);
-    // yesSir.hashHandlers.openActionBlockSettingsById(actionBlockId);
     this.openActionBlockSettingsById(actionBlockId);
   };
 

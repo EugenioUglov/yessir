@@ -5,10 +5,8 @@ class ActionBlockView {
     actionDescriptionByActionName,
     fileManager,
     textManager,
-    dropdownManager,
-    centeredAlert
+    dropdownManager
   ) {
-    this.#centeredAlert = centeredAlert;
     this.actionNameEnum = actionNameEnum;
     this.contentTypeDescriptionByAction = contentTypeDescriptionByAction;
     this.actionDescriptionByActionName = actionDescriptionByActionName;
@@ -34,8 +32,6 @@ class ActionBlockView {
 
     this.setEventListeners();
   }
-
-  #centeredAlert;
 
   
   addOnPage(
@@ -222,7 +218,7 @@ class ActionBlockView {
     this.showPage();
   }
 
-  updatePage() {
+  clearRequestInputField() {
     $("#input_field_request")[0].value = "";
   }
 
@@ -254,16 +250,12 @@ class ActionBlockView {
     $(".actionBlocks_container")[0].innerHTML = "";
   }
 
-  startLoading() {
-    // Disable all buttons.
+  disableAllButtons() {
     $(":submit, :button").attr("disabled", "disabled");
-    // yesSir.loaderController.startLoading();
   }
 
-  stopLoading() {
-    // Enable all buttons.
+  enableAllButtons() {
     $(":submit, :button").attr("disabled", false);
-    // yesSir.loaderController.stopLoading();
   }
 
   setEventListeners() {
@@ -751,31 +743,6 @@ class ActionBlockView {
     return $("#actionBlocks_page").is(":visible");
   }
 
-  showAlert(content, title) {
-    // Hide search area with Action-Blocks.
-    this.hidePage();
-
-    this.#centeredAlert.show({ title: title, content: content })
-
-    // let dialogInfoElem = $("#alert_center");
-    // $(".black_background").show();
-
-
-    // if (typeof dialogInfoElem[0].showModal === "function") {
-    //   dialogInfoElem[0].showModal();
-
-    //   if (title) {
-    //     // Set title of actionBlock.
-    //     dialogInfoElem.find(".title")[0].innerText = title;
-    //   }
-
-    //   // Set content.
-    //   dialogInfoElem.find(".text_info")[0].innerText = content;
-    // } else {
-    //   alert(content);
-    //   // console.log('WARNING! The <dialog> API is not supported by this browser');
-    // }
-  }
 
   hidePage() {
     $("#actionBlocks_page").hide();
