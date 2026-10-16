@@ -6,8 +6,8 @@ class ActionBlockWrapper {
         this.#mapDataStructure = mapDataStructure;
         this.#logsController = logsController;
 
-        this.#actionBlockController.bindOnActionBlockShowedHandler(() => {
-            this.#updateLogMessage();
+        this.#actionBlockController.bindOnActionBlockShowedHandler((actionBlocks) => {
+            this.#updateLogMessage(actionBlocks);
         });
     }
 
@@ -142,13 +142,13 @@ class ActionBlockWrapper {
     }
 
     
-    #updateLogMessage() {
+    #updateLogMessage(actionBlocksToShow) {
         let log = "Found " + actionBlocksToShow.length + " results";
 
         if (navigator.onLine === false) {
             log += " | Offline";
         }
 
-        that.#logsController.showLog(log);
+        this.#logsController.showLog(log);
     }
 }

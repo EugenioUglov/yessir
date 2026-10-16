@@ -678,7 +678,7 @@ class ActionBlockController {
 
     this.#onEndActionBlockOperationHandler();
 
-    this.#onActionBlockShowedHandler?.();
+    this.#onActionBlockShowedHandler?.(actionBlocksToShow);
 
     return actionBlocksToShow;
   }
