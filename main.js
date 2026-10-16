@@ -5,6 +5,7 @@ class YesSir {
 
       const inputDeviceManager = new InputDeviceManager();
 
+
       this.commandInputField = new CommandInputField();
 
       this.loginPanelController = await LoginBootstrapper.create({ projectAssetLoader: projectAssetLoader, targetId: 'loginContainer' });
@@ -81,7 +82,6 @@ class YesSir {
       );
 
       this.actionBlockController = new ActionBlockController(
-        this.loaderController,
         this.dialogWindow,
         this.searchController,
         this.noteController,
@@ -96,17 +96,21 @@ class YesSir {
         this.modalLoadingController,
         this.bottomInfoPanel,
         this.loginPanelController,
-        this.modalBoxController,
-        this.centeredAlertController
+        this.modalBoxController
       );
+
+      
+      const actionBlockWrapper = new ActionBlockWrapper({ actionBlockController: this.actionBlockController, loginPanelController: this.loginPanelController, modalBoxController: this.modalBoxController });
 
       this.hashHandlers = new HashHandlers(
         HASH_NAME_ENUM,
         this.searchController,
         this.actionBlockController,
         this.scrollController,
-        this.textManager
+        this.textManager,
+        actionBlockWrapper
       );
+
 
       this.routesConfig = new RoutesConfig(HASH_NAME_ENUM, this.hashHandlers);
 
@@ -139,6 +143,7 @@ let yesSir;
   });
 
   function onYesSirLoaded() {
+    const buttonActivityView = new ButtonActivityView();
     yesSir.loaderController.startLoading();
 
     // Initialize Libraries.
@@ -204,6 +209,20 @@ let yesSir;
       yesSir.dialogWindow
     );
 
+    
+    actionBlockController.bindOnStartActionBlockOperationHandler(() => {
+      buttonActivityView.disableAllButtons();
+      loaderController.startLoading();
+    });
+
+    actionBlockController.bindOnEndActionBlockOperationHandler(() => {
+      buttonActivityView.enableAllButtons();
+      loaderController.stopLoading();
+
+      yesSir.hashHandlers.setHashMain();
+    });
+
+
     actionBlockController.showActionBlocksFromStorage();
     yesSir.loaderController.stopLoading();
 
@@ -228,6 +247,7 @@ let yesSir;
     actionBlockController.bindLoadingHandler(() => {
       loaderController.startLoading();
     });
+
 
     actionBlockController.bindStopLoadingHandler(() => {
       loaderController.stopLoading();

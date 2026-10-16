@@ -1,6 +1,5 @@
 class ActionBlockController {
   constructor(
-    loaderController,
     dialogWindow,
     searchController,
     noteController,
@@ -15,10 +14,8 @@ class ActionBlockController {
     modalLoadingController,
     bottomInfoPanel,
     loginPanelController,
-    modalBoxController,
-    centeredAlert
+    modalBoxController
   ) {
-    this.loaderController = loaderController;
     this.dialogWindow = dialogWindow;
     this.searchService = searchController;
     this.noteController = noteController;
@@ -62,7 +59,17 @@ class ActionBlockController {
   #scrollPositionOnExecuteBlock = 0;
   #loadingHandler;
   #stopLoadingHandler;
+  #onStartActionBlockOperationHandler;
+  #onEndActionBlockOperationHandler;
 
+
+  bindOnStartActionBlockOperationHandler(handler) {
+    this.#onStartActionBlockOperationHandler = handler;
+  }
+
+  bindOnEndActionBlockOperationHandler(handler) {
+    this.#onEndActionBlockOperationHandler = handler;
+  }
 
   bindLoadingHandler(handler) {
     this.#loadingHandler = handler;
@@ -98,8 +105,7 @@ class ActionBlockController {
     content,
     imageURL
   ) => {
-    this.view.disableAllButtons();
-    this.#loadingHandler();
+    this.#onStartActionBlockOperationHandler();
     this.createActionBlock(
       title,
       tagsPlusTitle,
@@ -107,14 +113,7 @@ class ActionBlockController {
       content,
       imageURL,
       (isActionBlockCreated) => {
-        this.view.enableAllButtons();
-        this.#stopLoadingHandler();
-
-        if (isActionBlockCreated === false) {
-          return false;
-        }
-
-        yesSir.hashHandlers.setHashMain();
+        this.#onEndActionBlockOperationHandler(isActionBlockCreated);
       }
     );
   };
@@ -126,9 +125,7 @@ class ActionBlockController {
     content,
     imageURL
   ) => {
-    this.view.disableAllButtons();
-    this.#loadingHandler();
-    yesSir.loaderController.startLoading();
+    this.#onStartActionBlockOperationHandler();
     this.createActionBlockWithOptimizedAutomationAsync(
       title,
       tagsPlusTitle,
@@ -136,12 +133,7 @@ class ActionBlockController {
       content,
       imageURL,
       (isActionBlockCreated) => {
-        this.view.enableAllButtons();
-        this.#stopLoadingHandler();
-
-        if (isActionBlockCreated === false) {
-          return false;
-        }
+        this.#onEndActionBlockOperationHandler(isActionBlockCreated);
       }
     );
   };
@@ -496,8 +488,7 @@ class ActionBlockController {
       const statusBar = document.getElementById('status-bar');
       console.log("Вся автоматизация завершена", results);
       
-      // Скрываем глобальную индикацию загрузки
-      yesSir.loaderController.stopLoading();
+      this.#onEndActionBlockOperationHandler();
       if (typeof hideLoadingElements === 'function') {
           hideLoadingElements(); 
       }
@@ -531,8 +522,8 @@ class ActionBlockController {
     this.view.closeSettings();
     this.view.clearAllSettingsFields();
     yesSir.hashHandlers.openPreviousPage();
-    yesSir.loaderController.stopLoading();
-    this.clearRequestInputField();
+    
+    this.view.clearRequestInputField();
     this.#onActionBlocksStorageUpdated();
     if (onEnd != undefined) onEnd(true);
 
@@ -629,8 +620,7 @@ class ActionBlockController {
   ) {
     const that = this;
 
-    const timeStartShowActionBlocks = new Date();
-    yesSir.loaderController.startLoading();
+    this.#onStartActionBlockOperationHandler();
     this.view.hideActionBlocksContainer();
 
     this.#indexLastShowedActionBlock = 0;
@@ -705,12 +695,7 @@ class ActionBlockController {
       that.logsController.showLog(log);
     }
 
-    const timeEndShowActionBlocks = new Date();
-
-    const timeSpentShowActionBlocks =
-      timeEndShowActionBlocks - timeStartShowActionBlocks;
-
-    yesSir.loaderController.stopLoading();
+    this.#onEndActionBlockOperationHandler();
   }
 
   showActionBlocksContainer() {
@@ -984,20 +969,10 @@ class ActionBlockController {
     ) {
       const url = UrlValidator.getValidUrl(content);
 
-      // var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-
-      // if (isSafari) {
-      //     location.href = url;
-      // }
-      // else {
-      //     let newTab = window.open(url, '_blank');
-      // }
-
       let newTab = window.open(url, "_blank");
 
+      // If Popup is blocked then open url in the same tab.
       if (!newTab || newTab.closed || typeof newTab.closed == "undefined") {
-        // Popup is blocked.
-
         location.href = url;
       }
 
@@ -1013,7 +988,7 @@ class ActionBlockController {
       this.view.showContentOfActionBlock();
       this.noteController.openNote(content, actionBlock.title, isHTML);
 
-      this.model.actionBlockTitleBeforeUpdate = $('.note_title').text();
+      this.model.actionBlockTitleBeforeUpdate = this.view.getNoteTitle();
 
       this.view.hidePage();
       // that.scrollController.setPositionTop();
@@ -1029,11 +1004,11 @@ class ActionBlockController {
       this.noteController.openNote(content, actionBlock.title, isHTML);
 
       
-      this.model.actionBlockTitleBeforeUpdate = $('.note_title').text();
+      this.model.actionBlockTitleBeforeUpdate = this.view.getNoteTitle();
 
       onNoteOpened();
 
-      $("#content_executed_from_actionBlock").show();
+      this.view.showContentOfActionBlock();
 
       // Set position top.
       that.scrollController.setPosition(0, 0);
@@ -1079,7 +1054,7 @@ class ActionBlockController {
 
     let i;
 
-    yesSir.loaderController.startLoading();
+    this.#onStartActionBlockOperationHandler();
 
     // console.log('this.#index_last_showed_actionBlock', this.#index_last_showed_actionBlock);
 
@@ -1102,7 +1077,8 @@ class ActionBlockController {
       this.#onClickActionBlock,
       this.#onClickBtnShowSettingsActionBlock
     );
-    yesSir.loaderController.stopLoading();
+
+    this.#onEndActionBlockOperationHandler();
   }
 
   updatePage() {
@@ -1115,62 +1091,78 @@ class ActionBlockController {
     // this.scrollController.scrollTo();
   }
 
-  saveToDatabase(actionBlocksMapString) {
-    const that = this;
-    const firebaseData = new FirebaseData();
-       
-    if (actionBlocksMapString === undefined) {
-        actionBlocksMapString = yesSir.mapDataStructure.getStringified(this.getActionBlocks());
-    }
-
-    // $('.login-panel').show();
-    this.#loginPanelController.show();
-
-    // $(".btn-submit").click(function(e) {
-    this.#loginPanelController.bindClickBtnSubmit({ 
-      handler: () => {
-        yesSir.modalBoxController.show({
-            headerText:'Loading', 
-            bodyText:'Data is being verified..'
-        });
-
-        const inputUsername = $('.input-username').val();
-        const inputPassword = $('.input-password').val();
-    
-        that.model.saveActionBlocksToDatabaseAsync({
-            inputUsername: inputUsername, 
-            inputPassword: inputPassword,
-            database: firebaseData,
-            actionBlocksMapString: actionBlocksMapString,
-            onSuccess: () => {
-                that.#loginPanelController.hide();
-    
-                yesSir.modalBoxController.show({
-                    headerText:'Success', 
-                    bodyText:'Data saved successfully to firebase database.'
-                });
-        
-                setTimeout(() => {
-                    yesSir.modalBoxController.hide();
-                }, "3000");
-    
-                yesSir.hashHandlers.openMain();
-            },
-            onError: error => {
-                alert("Error! Data could not be saved. " + error);
-                yesSir.modalBoxController.hide();
-            }
-        });
-      }
-    });
-
-    this.#loginPanelController.bindClickBtnClose({ 
-      handler: () => {
-        // that.#loginPanelController.hide();
-        window.location.hash = HASH_NAME_ENUM.main;
-      }
-    });
+  saveActionBlocksToDatabaseAsync({
+        inputUsername, 
+        inputPassword,
+        dbData,
+        actionBlocksMapString,
+        onSuccess,
+        onError
+    }) {
+      this.model.saveActionBlocksToDatabaseAsync({
+        inputUsername: inputUsername, 
+        inputPassword: inputPassword,
+        database: dbData,
+        actionBlocksMapString: actionBlocksMapString,
+        onSuccess: onSuccess,
+        onError: onError
+      });
   }
+
+  // saveToDatabase(actionBlocksMapString) {
+  //   const that = this;
+  //   const firebaseData = new FirebaseData();
+       
+  //   if (actionBlocksMapString === undefined) {
+  //       actionBlocksMapString = yesSir.mapDataStructure.getStringified(this.getActionBlocks());
+  //   }
+
+  //   this.#loginPanelController.show();
+
+  //   // $(".btn-submit").click(function(e) {
+  //   this.#loginPanelController.bindClickBtnSubmit({ 
+  //     handler: () => {
+  //       yesSir.modalBoxController.show({
+  //           headerText:'Loading', 
+  //           bodyText:'Data is being verified..'
+  //       });
+
+  //       const inputUsername = $('.input-username').val();
+  //       const inputPassword = $('.input-password').val();
+    
+  //       that.model.saveActionBlocksToDatabaseAsync({
+  //           inputUsername: inputUsername, 
+  //           inputPassword: inputPassword,
+  //           database: firebaseData,
+  //           actionBlocksMapString: actionBlocksMapString,
+  //           onSuccess: () => {
+  //               that.#loginPanelController.hide();
+    
+  //               yesSir.modalBoxController.show({
+  //                   headerText:'Success', 
+  //                   bodyText:'Data saved successfully to firebase database.'
+  //               });
+        
+  //               setTimeout(() => {
+  //                   yesSir.modalBoxController.hide();
+  //               }, "3000");
+    
+  //               yesSir.hashHandlers.openMain();
+  //           },
+  //           onError: error => {
+  //               alert("Error! Data could not be saved. " + error);
+  //               yesSir.modalBoxController.hide();
+  //           }
+  //       });
+  //     }
+  //   });
+
+  //   this.#loginPanelController.bindClickBtnClose({ 
+  //     handler: () => {
+  //       window.location.hash = HASH_NAME_ENUM.main;
+  //     }
+  //   });
+  // }
 
   getFromDatabase() {
     const that = this;
@@ -1359,14 +1351,14 @@ class ActionBlockController {
 
   rewriteActionBlocks = function () {
     const that = this;
-    const text_confirm_window =
+    const textConfirmWindow =
       "All current Action-Blocks will be deleted " +
       "and replaced with Action-Blocks retrieved from the database." +
       "\n" +
       "Are you sure you want to replace it now?";
 
     this.dialogWindow.confirmAlert(
-      text_confirm_window,
+      textConfirmWindow,
       onClickOkConfirm,
       onClickCancelConfirm
     );
@@ -1387,21 +1379,8 @@ class ActionBlockController {
     }
   };
 
-  #onActionBlockUpdated = () => {
-    yesSir.hashHandlers.setHashMain();
-    yesSir.loaderController.stopLoading();
-    this.view.closeSettings();
-    this.view.setDefaultValuesForSettingsElementsActionBlock();
-    this.view.clearRequestInputField();
-    // Refresh Action-Blocks on page.
-    this.scrollController.setPositionTop();
-    this.showActionBlocks();
-    this.modalLoadingController.hide();
-    this.#onActionBlocksStorageUpdated();
-  }
-
   updateActionBlock = (title, tags, selectedAction, content, imageURL) => {
-    this.modalLoadingController.show();
+    this.#onStartActionBlockOperationHandler();
 
     const isUpdated = this.model.updateActionBlock(
       title,
@@ -1417,12 +1396,12 @@ class ActionBlockController {
       return false;
     }
 
-    this.#onActionBlockUpdated();
+    this.#onEndActionBlockOperationHandler();
   };
 
   
   updateQuicklyEditedActionBlock = ({title, content}) => {
-    this.modalLoadingController.show();
+    this.#onStartActionBlockOperationHandler();
 
     const actionBlockBeforeUpdate = this.model.getActionBlockByTitle(this.model.actionBlockTitleBeforeUpdate);
 
@@ -1438,16 +1417,25 @@ class ActionBlockController {
       imageURL
     );
 
+
     if (isUpdated === false) {
-      this.modalLoadingController.hide();
+      this.#onEndActionBlockOperationHandler();
 
       return false;
     }
 
-    $('#btn_quick_update_actionBlock').hide();
-    $('.inputFieldWithSuggestions').val('')
+    this.view.hideElementsOnUpdateQuicklyEditedActionBlock();
 
-    this.#onActionBlockUpdated();
+    yesSir.hashHandlers.setHashMain();
+    this.view.closeSettings();
+    this.view.setDefaultValuesForSettingsElementsActionBlock();
+    this.view.clearRequestInputField();
+    // Refresh Action-Blocks on page.
+    this.scrollController.setPositionTop();
+    this.showActionBlocks();
+    this.#onActionBlocksStorageUpdated();
+
+    this.#onEndActionBlockOperationHandler();
   };
 
   updateDefaultActionBlocks = () => {
@@ -1470,8 +1458,6 @@ class ActionBlockController {
     this.scrollController.setPositionTop();
     this.showActionBlocks();
 
-    return;
-
     function createDefaultActionBlocks() {
       actionBlocksToCreate.forEach((actionBlock) => {
         that.createActionBlock(
@@ -1484,6 +1470,8 @@ class ActionBlockController {
         );
       });
     }
+
+    return true;
   };
 
   deleteActionBlock = (title) => {
@@ -1499,7 +1487,7 @@ class ActionBlockController {
       that.modalLoadingController.show();
       that.model.deleteActionBlockByTitle(title);
 
-      that.clearRequestInputField();
+      that.view.clearRequestInputField();
       that.modalLoadingController.hide();
 
       return;

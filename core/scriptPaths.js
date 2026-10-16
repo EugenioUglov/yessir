@@ -7,13 +7,15 @@ export const scripts = [
     "./libraries/opensource/observable.js",
     "./libraries/opensource/md5.min.js",
 
+    "./views/buttonActivityView.js",
+
     "./libraries/utils/urlValidator.js",
     "./libraries/utils/moduleLoader.js",
     "./libraries/projectAssetLoader.js",
     "./libraries/components/bottomInfoPanel/index.js",
 
     // Основные компоненты
-    "./core/actionBlock/actionBlockNoteCommands.js",
+    "./libraries/actionblock/actionBlockNoteCommands.js",
     "./libraries/firebase/firebaseData.js",
 
     // Библиотеки (Core)
@@ -50,22 +52,23 @@ export const scripts = [
 
     // Модели
     "./libraries/noteSpeaker/noteSpeakerModel.js",
-    "./core/actionBlock/actionBlockWithIdModel.js",
+    "./libraries/actionblock/actionBlockWithIdModel.js",
     "./libraries/voiceRecognition/voiceRecognitionModel.js",
 
     // Представления (Views)
     "./libraries/noteSpeaker/noteSpeakerView.js",
     "./libraries/voiceRecognition/voiceRecognitionView.js",
-    "./core/actionBlock/actionBlockView.js",
+    "./libraries/actionblock/actionBlockView.js",
     "./libraries/dataStorage/dataStorageView.js",
 
     // Контроллеры
     "./libraries/noteSpeaker/noteSpeakerController.js",
     "./libraries/voiceRecognition/voiceRecognitionController.js",
     "./libraries/dataStorage/dataStorageController.js",
-    "./core/actionBlock/actionBlockController.js",
+    "./libraries/actionblock/actionBlockController.js",
 
-    "./core/actionBlock/editActionBlockDataHolder.js",
+    "./libraries/actionblock/editActionBlockDataHolder.js",
+    "./libraries/actionblock/actionBlockWrapper.js",
     
 
     // Firebase & Дополнения

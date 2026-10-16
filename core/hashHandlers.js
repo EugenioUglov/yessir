@@ -1,10 +1,11 @@
 class HashHandlers {
-    constructor(HASH_NAME_ENUM, searchController, actionBlockController, scrollController, textManager) {
+    constructor(HASH_NAME_ENUM, searchController, actionBlockController, scrollController, textManager, actionBlockWrapper) {
         this.#HASH_NAME_ENUM = HASH_NAME_ENUM;
         this.#searchController = searchController;
         this.#actionBlockController = actionBlockController;
         this.#scrollController = scrollController;
         this.#textManager = textManager;
+        this.#actionBlockWrapper = actionBlockWrapper;
     }
 
     #searchController;
@@ -12,6 +13,7 @@ class HashHandlers {
     #scrollController;
     #textManager;
     #HASH_NAME_ENUM;
+    #actionBlockWrapper;
 
 
     setHashRequest = (
@@ -197,8 +199,7 @@ class HashHandlers {
     }
 
     saveToDatabase = (queryParams) => {
-        this.#actionBlockController.saveToDatabase();
-        this.#scrollController.setPositionTop();
+        this.#actionBlockWrapper.saveActionBlocksToDatabase();
     }
 
     getFromDatabase = (queryParams) => {

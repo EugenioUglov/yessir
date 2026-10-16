@@ -8,10 +8,6 @@ class SearchControllerEventBinder {
         searchController.inputFieldEnterHandler = () => {
             const request = searchController.getTextFromMainInputField();
 
-            // this.searchController.setHashRequest({
-            //     requestValue: user_request, 
-            //     isExecuteActionBlockByTitle: true
-            // });
             let isExecuteActionBlockByTitle = true;
 
             hashObserver.setPreviousHash(window.location.hash);

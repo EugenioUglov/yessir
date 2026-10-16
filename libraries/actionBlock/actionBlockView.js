@@ -284,6 +284,10 @@ class ActionBlockView {
     //   .addEventListener("click", function () {});
   }
 
+  getNoteTitle() {
+    return $('.note_title').text();
+  }
+
   bindClickBtnCancelSettings(handler) {
     const btn_cancel_settings = $("#settings_actionBlock_container").find(
       "#btn_cancel"
@@ -755,6 +759,11 @@ class ActionBlockView {
   rotateFixedBtnPlus() {
     const iconPlus = document.querySelector(".ico-btn");
     iconPlus.classList.toggle("is-active");
+  }
+
+  hideElementsOnUpdateQuicklyEditedActionBlock() {
+    $('#btn_quick_update_actionBlock').hide();
+    $('.inputFieldWithSuggestions').val('')
   }
 
   #createHTMLContainerActionBlock = function (
