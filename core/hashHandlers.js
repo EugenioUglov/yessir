@@ -76,7 +76,7 @@ class HashHandlers {
             });
 
             $(".btn_download_actionBlocks")[0].addEventListener("click", () => {
-                yesSir.actionBlockController.downloadFileWithActionBlocks();
+                yesSir.actionBlockWrapper.downloadFileWithActionBlocks();
             });
 
             $("#elements_for_file_manager").show();

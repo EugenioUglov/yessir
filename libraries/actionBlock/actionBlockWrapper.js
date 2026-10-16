@@ -1,10 +1,12 @@
 class ActionBlockWrapper {
-    constructor({actionBlockController, loginPanelController, modalBoxController, mapDataStructure, logsController}) {
+    constructor({actionBlockController, loginPanelController, modalBoxController, mapDataStructure, logsController, dialogWindow, dateManager}) {
         this.#actionBlockController = actionBlockController;
         this.#loginPanelController = loginPanelController;
         this.#modalBoxController = modalBoxController;
         this.#mapDataStructure = mapDataStructure;
         this.#logsController = logsController;
+        this.#dialogWindow = dialogWindow;
+        this.#dateManager = dateManager;
 
         this.#actionBlockController.bindOnActionBlockShowedHandler((actionBlocks) => {
             this.#updateLogMessage(actionBlocks);
@@ -16,6 +18,8 @@ class ActionBlockWrapper {
     #modalBoxController;
     #mapDataStructure;
     #logsController;
+    #dialogWindow;
+    #dateManager;
 
     saveActionBlocksToDatabase(actionBlocksMapString) {
       const that = this;
@@ -124,7 +128,6 @@ class ActionBlockWrapper {
             window.location.hash = HASH_NAME_ENUM.main;
         }});
     }
-
     
     showActionBlocks(
         actionBlocksToShow,
@@ -141,6 +144,66 @@ class ActionBlockWrapper {
 
     }
 
+    downloadFileWithActionBlocks = (actionBlocks) => {
+        if (!actionBlocks) actionBlocks = this.#actionBlockController.getActionBlocks();
+        const content = this.#mapDataStructure.getStringified(actionBlocks);
+        const dateNow = this.#dateManager.getDateNow();
+        const timeNow = this.#dateManager.getTimeNow();
+
+        const dateText = dateNow + "-" + timeNow;
+
+        // Set variable for name of the saving file with date and time.
+        const fileName = "Action-Blocks " + dateText;
+        const extension = ".json";
+
+        download(content, fileName, extension);
+
+        // Function to download data to a file
+        function download(data, filename, type) {
+            var file = new Blob([data], {type: type});
+            if (window.navigator.msSaveOrOpenBlob) // IE10+
+                window.navigator.msSaveOrOpenBlob(file, filename);
+            else { // Others
+                var a = document.createElement("a"),
+                        url = URL.createObjectURL(file);
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(function() {
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                }, 0);
+            }
+        }
+    
+        // !!!
+        // this.fileManager.downloadFile(content, file_name, extension);
+    };
+
+    deleteAllActionBlocks() {
+        const that = this;
+        const textConfirmWindow =
+            "Are you sure you want to delete ALL Action-Blocks?";
+
+        function onClickOkConfirm() {
+            this.#actionBlockController.deleteAllActionBlocks();
+            yesSir.hashHandlers.setHashMain();
+            window.location.reload();
+            
+            return;
+        }
+
+        function onClickCancelConfirm() {
+            return;
+        }
+
+        this.#dialogWindow.confirmAlert(
+            textConfirmWindow,
+            onClickOkConfirm,
+            onClickCancelConfirm
+        );
+    }
     
     #updateLogMessage(actionBlocksToShow) {
         let log = "Found " + actionBlocksToShow.length + " results";

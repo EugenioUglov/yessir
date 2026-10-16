@@ -48,7 +48,7 @@ class DefaultActionBlocks {
             title: 'Save Action-Blocks to file',
             tags: 'Save Action-Blocks to file, download',
             action: 'showHTML',
-            content: '<script>yesSir.actionBlockController.downloadFileWithActionBlocks();</script>',
+            content: '<script>yesSir.actionBlockWrapper.downloadFileWithActionBlocks();</script>',
             imageURL: 'https://www.clipartmax.com/png/full/468-4684948_floppy-disk-comments-floppy-disk-comments.png'
         };
     
@@ -185,7 +185,7 @@ class DefaultActionBlocks {
                 });
             
                 $('.btn_download_actionBlocks')[0].addEventListener('click', () => {
-                    yesSir.actionBlockController.downloadFileWithActionBlocks();
+                    yesSir.actionBlockWrapper.downloadFileWithActionBlocks();
                 });
                 </script>
             `;
@@ -733,7 +733,7 @@ class DefaultActionBlocks {
 
         function getContentActionBlockDeleteAllActionBlocks() {
             return `<script>
-            yesSir.actionBlockController.deleteAllActionBlocks();
+            yesSir.actionBlockWrapper.deleteAllActionBlocks();
             </script>`;
         }
 

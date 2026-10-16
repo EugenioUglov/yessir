@@ -99,7 +99,7 @@ class YesSir {
       );
 
       
-      const actionBlockWrapper = new ActionBlockWrapper({ actionBlockController: this.actionBlockController, loginPanelController: this.loginPanelController, modalBoxController: this.modalBoxController, mapDataStructure: this.mapDataStructure, logsController: this.logsController });
+      this.actionBlockWrapper = new ActionBlockWrapper({ actionBlockController: this.actionBlockController, loginPanelController: this.loginPanelController, modalBoxController: this.modalBoxController, mapDataStructure: this.mapDataStructure, logsController: this.logsController, dialogWindow: this.dialogWindow, dateManager: this.dateManager });
 
       this.hashHandlers = new HashHandlers(
         HASH_NAME_ENUM,
@@ -107,7 +107,7 @@ class YesSir {
         this.actionBlockController,
         this.scrollController,
         this.textManager,
-        actionBlockWrapper
+        this.actionBlockWrapper
       );
 
 
