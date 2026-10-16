@@ -8,7 +8,6 @@ class ActionBlockController {
     dropdownManager,
     dataStorageService,
     mapDataStructure,
-    logsController,
     scrollController,
     dateManager,
     modalLoadingController,
@@ -22,7 +21,6 @@ class ActionBlockController {
     this.fileManager = fileManager;
     this.textManager = textManager;
     this.dataStorageService = dataStorageService;
-    this.logsController = logsController;
     this.mapDataStructure = mapDataStructure;
     this.scrollController = scrollController;
     this.modalLoadingController = modalLoadingController;
@@ -61,6 +59,7 @@ class ActionBlockController {
   #stopLoadingHandler;
   #onStartActionBlockOperationHandler;
   #onEndActionBlockOperationHandler;
+  #onActionBlockShowedHandler;
 
 
   bindOnStartActionBlockOperationHandler(handler) {
@@ -97,6 +96,10 @@ class ActionBlockController {
       handler
     );
   };
+
+  bindOnActionBlockShowedHandler(handler) {
+    this.#onActionBlockShowedHandler = handler;
+  }
 
   #onClickBtnCreateActionBlock = (
     title,
@@ -671,31 +674,13 @@ class ActionBlockController {
     //     yesSir.hashObserver.showElement(element);
     // });
 
-    updateLogMessage();
 
-    function updateLogMessage() {
-      const data_storage = that.dataStorageService.getStorageNameEnum()[that.dataStorageService.getUserStorage()];
-      const storageForLog = {};
-      storageForLog[that.dataStorageService.getStorageNameEnum().database] = "database";
-      storageForLog[that.dataStorageService.getStorageNameEnum().localStorage] = "browser";
-
-      let log = "Found " + actionBlocksToShow.length + " results";
-
-      // if (localStorage[localStorage.usernameIndex] != undefined) {
-      //     log += ' | Storage: browser';
-      // }
-      // else {
-      //     log += ' | Storage: database (firebase)';
-      // }
-
-      if (navigator.onLine === false) {
-        log += " | Offline";
-      }
-
-      that.logsController.showLog(log);
-    }
 
     this.#onEndActionBlockOperationHandler();
+
+    this.#onActionBlockShowedHandler?.();
+
+    return actionBlocksToShow;
   }
 
   showActionBlocksContainer() {
@@ -704,7 +689,6 @@ class ActionBlockController {
 
   showActionBlocksFromStorage = () => {
     const that = this;
-    let start = new Date();
     
     this.model.setActionBlocksFromUserStorageAssync(
       onSetActionBlocks,
@@ -713,8 +697,6 @@ class ActionBlockController {
 
     function onSetActionBlocks() {
       yesSir.hashObserver.init();
-      const time = new Date() - start;
-      // console.log("time:" + time);
     }
 
     function onUserStorageDifferentFromLocal() {
@@ -1509,7 +1491,7 @@ class ActionBlockController {
 
   openActionBlockSettings = (title) => {
     const that = this;
-    
+
     const actionBlock = this.model.getActionBlockByTitle(title);
     yesSir.hashHandlers.openSettingsActionBlockPage(actionBlock.id);
     this.model.actionBlockTitleBeforeUpdate = title;

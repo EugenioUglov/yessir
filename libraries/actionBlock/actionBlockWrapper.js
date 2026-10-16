@@ -1,15 +1,21 @@
 class ActionBlockWrapper {
-    constructor({actionBlockController, loginPanelController, modalBoxController, mapDataStructure}) {
+    constructor({actionBlockController, loginPanelController, modalBoxController, mapDataStructure, logsController}) {
         this.#actionBlockController = actionBlockController;
         this.#loginPanelController = loginPanelController;
         this.#modalBoxController = modalBoxController;
         this.#mapDataStructure = mapDataStructure;
+        this.#logsController = logsController;
+
+        this.#actionBlockController.bindOnActionBlockShowedHandler(() => {
+            this.#updateLogMessage();
+        });
     }
 
     #actionBlockController;
     #loginPanelController;
     #modalBoxController;
     #mapDataStructure;
+    #logsController;
 
     saveActionBlocksToDatabase(actionBlocksMapString) {
       const that = this;
@@ -117,5 +123,32 @@ class ActionBlockWrapper {
 
             window.location.hash = HASH_NAME_ENUM.main;
         }});
+    }
+
+    
+    showActionBlocks(
+        actionBlocksToShow,
+        countActionBlocksToShowAtTime = 50
+    ) {
+        const that = this;
+
+        this.#actionBlockController.showActionBlocks(
+            actionBlocksToShow,
+            countActionBlocksToShowAtTime
+        );
+
+        this.#updateLogMessage();
+
+    }
+
+    
+    #updateLogMessage() {
+        let log = "Found " + actionBlocksToShow.length + " results";
+
+        if (navigator.onLine === false) {
+            log += " | Offline";
+        }
+
+        that.#logsController.showLog(log);
     }
 }

@@ -90,7 +90,6 @@ class YesSir {
         this.dropdownManager,
         this.dataStorageService,
         this.mapDataStructure,
-        this.logsController,
         this.scrollController,
         this.dateManager,
         this.modalLoadingController,
@@ -100,7 +99,7 @@ class YesSir {
       );
 
       
-      const actionBlockWrapper = new ActionBlockWrapper({ actionBlockController: this.actionBlockController, loginPanelController: this.loginPanelController, modalBoxController: this.modalBoxController, mapDataStructure: this.mapDataStructure });
+      const actionBlockWrapper = new ActionBlockWrapper({ actionBlockController: this.actionBlockController, loginPanelController: this.loginPanelController, modalBoxController: this.modalBoxController, mapDataStructure: this.mapDataStructure, logsController: this.logsController });
 
       this.hashHandlers = new HashHandlers(
         HASH_NAME_ENUM,
