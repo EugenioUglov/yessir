@@ -100,7 +100,7 @@ class YesSir {
       );
 
       
-      const actionBlockWrapper = new ActionBlockWrapper({ actionBlockController: this.actionBlockController, loginPanelController: this.loginPanelController, modalBoxController: this.modalBoxController });
+      const actionBlockWrapper = new ActionBlockWrapper({ actionBlockController: this.actionBlockController, loginPanelController: this.loginPanelController, modalBoxController: this.modalBoxController, mapDataStructure: this.mapDataStructure });
 
       this.hashHandlers = new HashHandlers(
         HASH_NAME_ENUM,

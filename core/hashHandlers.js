@@ -203,8 +203,7 @@ class HashHandlers {
     }
 
     getFromDatabase = (queryParams) => {
-        this.#actionBlockController.getFromDatabase();
-        this.#scrollController.setPositionTop();
+        this.#actionBlockWrapper.getFromDatabase();
     }
 
     openMainPrevious = (queryParams) => {

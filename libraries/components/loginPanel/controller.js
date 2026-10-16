@@ -13,6 +13,14 @@ class LoginController {
         this.#view.hide();
     }
 
+    getUsername() {
+        return this.#view.getUsernameInputValue();
+    }
+
+    getPassword() {
+        return this.#view.getPasswordInputValue();
+    }
+
     bindClickBtnSubmit({ handler }) {
         this.#view.bindClickBtnSubmit({ handler: handler })
     };

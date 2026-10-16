@@ -15,7 +15,7 @@ export const scripts = [
     "./libraries/components/bottomInfoPanel/index.js",
 
     // Основные компоненты
-    "./libraries/actionblock/actionBlockNoteCommands.js",
+    "./libraries/actionblock/internal/actionBlockNoteCommands.js",
     "./libraries/firebase/firebaseData.js",
 
     // Библиотеки (Core)
@@ -52,22 +52,22 @@ export const scripts = [
 
     // Модели
     "./libraries/noteSpeaker/noteSpeakerModel.js",
-    "./libraries/actionblock/actionBlockWithIdModel.js",
+    "./libraries/actionblock/internal/actionBlockWithIdModel.js",
     "./libraries/voiceRecognition/voiceRecognitionModel.js",
 
     // Представления (Views)
     "./libraries/noteSpeaker/noteSpeakerView.js",
     "./libraries/voiceRecognition/voiceRecognitionView.js",
-    "./libraries/actionblock/actionBlockView.js",
+    "./libraries/actionblock/internal/actionBlockView.js",
     "./libraries/dataStorage/dataStorageView.js",
 
     // Контроллеры
     "./libraries/noteSpeaker/noteSpeakerController.js",
     "./libraries/voiceRecognition/voiceRecognitionController.js",
     "./libraries/dataStorage/dataStorageController.js",
-    "./libraries/actionblock/actionBlockController.js",
+    "./libraries/actionblock/internal/actionBlockController.js",
 
-    "./libraries/actionblock/editActionBlockDataHolder.js",
+    "./libraries/actionblock/internal/editActionBlockDataHolder.js",
     "./libraries/actionblock/actionBlockWrapper.js",
     
 

@@ -1094,7 +1094,7 @@ class ActionBlockController {
   saveActionBlocksToDatabaseAsync({
         inputUsername, 
         inputPassword,
-        dbData,
+        database,
         actionBlocksMapString,
         onSuccess,
         onError
@@ -1102,120 +1102,27 @@ class ActionBlockController {
       this.model.saveActionBlocksToDatabaseAsync({
         inputUsername: inputUsername, 
         inputPassword: inputPassword,
-        database: dbData,
+        database: database,
         actionBlocksMapString: actionBlocksMapString,
         onSuccess: onSuccess,
         onError: onError
       });
   }
 
-  // saveToDatabase(actionBlocksMapString) {
-  //   const that = this;
-  //   const firebaseData = new FirebaseData();
-       
-  //   if (actionBlocksMapString === undefined) {
-  //       actionBlocksMapString = yesSir.mapDataStructure.getStringified(this.getActionBlocks());
-  //   }
-
-  //   this.#loginPanelController.show();
-
-  //   // $(".btn-submit").click(function(e) {
-  //   this.#loginPanelController.bindClickBtnSubmit({ 
-  //     handler: () => {
-  //       yesSir.modalBoxController.show({
-  //           headerText:'Loading', 
-  //           bodyText:'Data is being verified..'
-  //       });
-
-  //       const inputUsername = $('.input-username').val();
-  //       const inputPassword = $('.input-password').val();
-    
-  //       that.model.saveActionBlocksToDatabaseAsync({
-  //           inputUsername: inputUsername, 
-  //           inputPassword: inputPassword,
-  //           database: firebaseData,
-  //           actionBlocksMapString: actionBlocksMapString,
-  //           onSuccess: () => {
-  //               that.#loginPanelController.hide();
-    
-  //               yesSir.modalBoxController.show({
-  //                   headerText:'Success', 
-  //                   bodyText:'Data saved successfully to firebase database.'
-  //               });
-        
-  //               setTimeout(() => {
-  //                   yesSir.modalBoxController.hide();
-  //               }, "3000");
-    
-  //               yesSir.hashHandlers.openMain();
-  //           },
-  //           onError: error => {
-  //               alert("Error! Data could not be saved. " + error);
-  //               yesSir.modalBoxController.hide();
-  //           }
-  //       });
-  //     }
-  //   });
-
-  //   this.#loginPanelController.bindClickBtnClose({ 
-  //     handler: () => {
-  //       window.location.hash = HASH_NAME_ENUM.main;
-  //     }
-  //   });
-  // }
-
-  getFromDatabase() {
-    const that = this;
-
-    this.#loginPanelController.show();
-
-    this.#loginPanelController.bindClickBtnSubmit({ 
-      handler: () => {
-        yesSir.modalBoxController.show({headerText:'Loading', bodyText:'Data is being verified..'});
-
-        const inputUsername = $('.input-username').val();
-        const inputPassword = $('.input-password').val();
-
-        that.model.getActionBlocksFromDatabaseAsync({
-          inputUsername: inputUsername,
-          inputPassword: inputPassword,
-          database: new FirebaseData(),
-          onGetActionBlocks: receivedActionBlocksMapString => {
-            if (receivedActionBlocksMapString) {
-              const actionBlocks = that.mapDataStructure.getParsed(receivedActionBlocksMapString);
-
-              localStorage['username'] = inputUsername;
-
-              that.model.setActionBlocks(actionBlocks);
-
-              yesSir.modalBoxController.show({
-                headerText:'Success', 
-                bodyText:'Receiving data from firebase database has been completed.'
-              });
-    
-              setTimeout(() => {
-                yesSir.modalBoxController.hide();
-              }, "3000");
-              
-    
-              that.#loginPanelController.hide();
-            }
-    
-            yesSir.hashHandlers.openMain();
-          },
-          onError: error => {
-            yesSir.modalBoxController.hide();
-            alert(error); 
-          }
-        });
-      }
-    });
-
-    this.#loginPanelController.bindClickBtnClose({ handler: () => {
-      that.#loginPanelController.hide();
-
-      window.location.hash = HASH_NAME_ENUM.main;
-    }});
+  getFromDatabase({
+      inputUsername,
+      inputPassword,
+      database,
+      onGetActionBlocks,
+      onError
+    }) {
+      this.model.getActionBlocksFromDatabaseAsync({
+        inputUsername: inputUsername,
+        inputPassword: inputPassword,
+        database: database,
+        onGetActionBlocks,
+        onError
+      });
   }
 
   save(actionBlocks) {
@@ -1602,11 +1509,7 @@ class ActionBlockController {
 
   openActionBlockSettings = (title) => {
     const that = this;
-    /// !!!
-    // OLD
-    // const actionBlocks = this.model.getActionBlocks();
-    // const actionBlock = actionBlocks.get(title);
-    // NEW
+    
     const actionBlock = this.model.getActionBlockByTitle(title);
     yesSir.hashHandlers.openSettingsActionBlockPage(actionBlock.id);
     this.model.actionBlockTitleBeforeUpdate = title;

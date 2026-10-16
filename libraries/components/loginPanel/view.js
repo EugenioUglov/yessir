@@ -29,4 +29,12 @@ class LoginView {
     hide() {
         this.#domContainer.querySelector('.login-panel').style.display = 'none';
     }
+
+    getUsernameInputValue() {
+        return this.#domContainer.querySelector('.input-username').value;
+    }
+
+    getPasswordInputValue() {
+        return this.#domContainer.querySelector('.input-password').value;
+    }
 }
