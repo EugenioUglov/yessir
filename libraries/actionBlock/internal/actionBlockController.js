@@ -166,7 +166,7 @@ class ActionBlockController {
       this.updateQuicklyEditedActionBlock
     );
     this.view.bindClickBtnDeleteActionBlock(
-      this.#onClickBtnDeleteActionBlockHandler
+      (title) => { this.#onClickBtnDeleteActionBlockHandler ? this.#onClickBtnDeleteActionBlockHandler(title) : this.deleteActionBlock(title); }
     );
     this.view.bindClickBtnRewriteActionBlocks(
       this.rewriteActionBlocks
@@ -921,11 +921,7 @@ class ActionBlockController {
   executeActionBlockByTitle(title) {
     const that = this;
 
-    // if (this.is_actionBlock_executed) return;
-
     const actionBlock = this.model.getActionBlockByTitle(title);
-    // console.log('I took action block by title ' + title);
-    // console.log(actionBlock);
 
     let actionNameOfActionBlock = actionBlock.action;
 
@@ -1263,6 +1259,9 @@ class ActionBlockController {
       return false;
     }
 
+    yesSir.hashHandlers.setHashMain();
+    this.view.closeSettings();
+
     this.#onEndActionBlockOperationHandler();
   };
 
@@ -1342,11 +1341,12 @@ class ActionBlockController {
   };
 
   deleteActionBlock = (title) => {
+    console.log("Delete Action-Block with title: " + title);
     this.view.closeSettings();
 
-    that.model.deleteActionBlockByTitle(title);
+    this.model.deleteActionBlockByTitle(title);
 
-    that.view.clearRequestInputField();
+    this.view.clearRequestInputField();
     this.#onActionBlocksStorageUpdated();
   };
 

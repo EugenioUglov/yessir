@@ -5,12 +5,10 @@ class YesSir {
 
       const inputDeviceManager = new InputDeviceManager();
 
-
       this.commandInputField = new CommandInputField();
 
       this.loginPanelController = await LoginBootstrapper.create({ projectAssetLoader: projectAssetLoader, targetId: 'loginContainer' });
 
-      
       this.centeredAlertController = await CenteredAlertBootstrapper.create({ projectAssetLoader: projectAssetLoader, targetId: 'alertCenterContainer' });
 
 
@@ -148,10 +146,7 @@ let yesSir;
 
     // Initialize Libraries.
     const observable = yesSir.observable;
-    const dateManager = yesSir.dateManager;
     const textManager = yesSir.textManager;
-    const dialogWindow = yesSir.dialogWindow;
-    const fileManager = yesSir.fileManager;
     dropdownManager = yesSir.dropdownManager;
     mapDataStructure = yesSir.mapDataStructure;
     arrayManager = yesSir.arrayManager;

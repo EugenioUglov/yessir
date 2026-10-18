@@ -555,7 +555,6 @@ class ActionBlockModel {
     updateActionBlock(newTitle, tags, action, content, image_URL) {
         const originalTitle = this.actionBlockTitleBeforeUpdate;
 
-  
         // Check new title validation.
         if (originalTitle.toUpperCase() != newTitle.toUpperCase()) {
             const isActionBlockExistsByTitle = this.getActionBlockByTitle(newTitle);
@@ -567,7 +566,6 @@ class ActionBlockModel {
 
             addTitleToTags();
         }
-
 
         const isDeleted = this.deleteActionBlockByTitle(originalTitle);
 
