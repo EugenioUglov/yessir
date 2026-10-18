@@ -217,8 +217,6 @@ let yesSir;
     actionBlockController.bindOnEndActionBlockOperationHandler(() => {
       buttonActivityView.enableAllButtons();
       loaderController.stopLoading();
-
-      yesSir.hashHandlers.setHashMain();
     });
 
 
