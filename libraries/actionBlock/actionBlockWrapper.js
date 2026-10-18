@@ -1,5 +1,5 @@
 class ActionBlockWrapper {
-    constructor({actionBlockController, loginPanelController, modalBoxController, mapDataStructure, logsController, dialogWindow, dateManager}) {
+    constructor({actionBlockController, loginPanelController, modalBoxController, mapDataStructure, logsController, dialogWindow, dateManager, modalLoadingController}) {
         this.#actionBlockController = actionBlockController;
         this.#loginPanelController = loginPanelController;
         this.#modalBoxController = modalBoxController;
@@ -7,9 +7,14 @@ class ActionBlockWrapper {
         this.#logsController = logsController;
         this.#dialogWindow = dialogWindow;
         this.#dateManager = dateManager;
+        this.#modalLoadingController = modalLoadingController;
 
         this.#actionBlockController.bindOnActionBlockShowedHandler((actionBlocks) => {
             this.#updateLogMessage(actionBlocks);
+        });
+
+        this.#actionBlockController.bindOnClickBtnDeleteActionBlockHandler((title) => {
+            this.deleteActionBlock(title);
         });
     }
 
@@ -20,6 +25,7 @@ class ActionBlockWrapper {
     #logsController;
     #dialogWindow;
     #dateManager;
+    #modalLoadingController;
 
     saveActionBlocksToDatabase(actionBlocksMapString) {
       const that = this;
@@ -204,6 +210,33 @@ class ActionBlockWrapper {
             onClickCancelConfirm
         );
     }
+
+    deleteActionBlock = (title) => {
+        const that = this;
+
+        yesSir.hashHandlers.openPreviousPage();
+
+        const textConfirmWindow =
+            "Are you sure you want to delete" + "\n" + ' "' + title + '" ?';
+
+        function onClickOkConfirm() {
+            that.#modalLoadingController.show();
+            that.#actionBlockController.deleteActionBlock(title);
+
+            that.#modalLoadingController.hide();
+            return;
+        }
+
+        function onClickCancelConfirm() {
+            return;
+        }
+
+        this.#dialogWindow.confirmAlert(
+            textConfirmWindow,
+            onClickOkConfirm,
+            onClickCancelConfirm
+        );
+    };
     
     #updateLogMessage(actionBlocksToShow) {
         let log = "Found " + actionBlocksToShow.length + " results";

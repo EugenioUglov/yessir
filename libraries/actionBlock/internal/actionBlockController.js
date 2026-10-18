@@ -60,7 +60,12 @@ class ActionBlockController {
   #onStartActionBlockOperationHandler;
   #onEndActionBlockOperationHandler;
   #onActionBlockShowedHandler;
+  #onClickBtnDeleteActionBlockHandler;
 
+
+  bindOnClickBtnDeleteActionBlockHandler(handler) {
+    this.#onClickBtnDeleteActionBlockHandler = handler;
+  }
 
   bindOnStartActionBlockOperationHandler(handler) {
     this.#onStartActionBlockOperationHandler = handler;
@@ -161,7 +166,7 @@ class ActionBlockController {
       this.updateQuicklyEditedActionBlock
     );
     this.view.bindClickBtnDeleteActionBlock(
-      this.deleteActionBlock
+      this.#onClickBtnDeleteActionBlockHandler
     );
     this.view.bindClickBtnRewriteActionBlocks(
       this.rewriteActionBlocks
@@ -1337,34 +1342,11 @@ class ActionBlockController {
   };
 
   deleteActionBlock = (title) => {
-    const that = this;
-
-    yesSir.hashHandlers.openPreviousPage();
     this.view.closeSettings();
 
-    const textConfirmWindow =
-      "Are you sure you want to delete" + "\n" + ' "' + title + '" ?';
+    that.model.deleteActionBlockByTitle(title);
 
-    function onClickOkConfirm() {
-      that.modalLoadingController.show();
-      that.model.deleteActionBlockByTitle(title);
-
-      that.view.clearRequestInputField();
-      that.modalLoadingController.hide();
-
-      return;
-    }
-
-    function onClickCancelConfirm() {
-      return;
-    }
-
-    this.dialogWindow.confirmAlert(
-      textConfirmWindow,
-      onClickOkConfirm,
-      onClickCancelConfirm
-    );
-
+    that.view.clearRequestInputField();
     this.#onActionBlocksStorageUpdated();
   };
 

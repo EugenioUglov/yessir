@@ -98,8 +98,9 @@ class YesSir {
         this.modalBoxController
       );
 
+
       
-      this.actionBlockWrapper = new ActionBlockWrapper({ actionBlockController: this.actionBlockController, loginPanelController: this.loginPanelController, modalBoxController: this.modalBoxController, mapDataStructure: this.mapDataStructure, logsController: this.logsController, dialogWindow: this.dialogWindow, dateManager: this.dateManager });
+      this.actionBlockWrapper = new ActionBlockWrapper({ actionBlockController: this.actionBlockController, loginPanelController: this.loginPanelController, modalBoxController: this.modalBoxController, mapDataStructure: this.mapDataStructure, logsController: this.logsController, dialogWindow: this.dialogWindow, dateManager: this.dateManager, modalLoadingController: this.modalLoadingController });
 
       this.hashHandlers = new HashHandlers(
         HASH_NAME_ENUM,
@@ -158,7 +159,6 @@ let yesSir;
     // Initialize Services.
     const voiceRecognitionService = yesSir.voiceRecognitionService;
     const loaderController = yesSir.loaderController;
-    // const noteController = yesSir.noteController;
     const dataStorageService = yesSir.dataStorageService;
     const hashObserver = yesSir.hashObserver;
     const scrollController = yesSir.scrollController;
