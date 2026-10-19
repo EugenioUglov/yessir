@@ -106,6 +106,10 @@ class ActionBlockController {
     this.#onActionBlockShowedHandler = handler;
   }
 
+  onClickBtnDeleteActionBlock(title) {
+    this.deleteActionBlock(title);
+  }
+
   #onClickBtnCreateActionBlock = (
     title,
     tagsPlusTitle,
@@ -165,9 +169,9 @@ class ActionBlockController {
     this.view.bindClickBtnSaveQuicklyEditedActionBlock(
       this.updateQuicklyEditedActionBlock
     );
-    this.view.bindClickBtnDeleteActionBlock(
-      (title) => { this.#onClickBtnDeleteActionBlockHandler ? this.#onClickBtnDeleteActionBlockHandler(title) : this.deleteActionBlock(title); }
-    );
+    this.view.bindClickBtnDeleteActionBlock((title) => {
+        this.onClickBtnDeleteActionBlock(title);
+    });
     this.view.bindClickBtnRewriteActionBlocks(
       this.rewriteActionBlocks
     );
@@ -1340,8 +1344,7 @@ class ActionBlockController {
     return true;
   };
 
-  deleteActionBlock = (title) => {
-    console.log("Delete Action-Block with title: " + title);
+  deleteActionBlock(title) {
     this.view.closeSettings();
 
     this.model.deleteActionBlockByTitle(title);

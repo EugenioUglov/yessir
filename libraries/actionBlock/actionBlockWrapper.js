@@ -13,9 +13,7 @@ class ActionBlockWrapper {
             this.#updateLogMessage(actionBlocks);
         });
 
-        this.#actionBlockController.bindOnClickBtnDeleteActionBlockHandler((title) => {
-            this.deleteActionBlock(title);
-        });
+        this.#redefineClickBtnDeleteActionBlockHandler();
     }
 
     #actionBlockController;
@@ -211,32 +209,35 @@ class ActionBlockWrapper {
         );
     }
 
-    deleteActionBlock = (title) => {
-        const that = this;
+    // On Click btn delete Action-Block, display the confirmation message. On confirm continue with origianl delete Action-Block logic from ActionBlockController.
+    #redefineClickBtnDeleteActionBlockHandler() {
+        const originalDeleteActionBlock = this.#actionBlockController.onClickBtnDeleteActionBlock;
 
-        yesSir.hashHandlers.openPreviousPage();
+        this.#actionBlockController.onClickBtnDeleteActionBlock = ((title) => {
+            const that = this;
 
-        const textConfirmWindow =
-            "Are you sure you want to delete" + "\n" + ' "' + title + '" ?';
+            const textConfirmWindow =
+                "Are you sure you want to delete" + "\n" + ' "' + title + '" ?';
 
-        function onClickOkConfirm() {
-            that.#modalLoadingController.show();
-            that.#actionBlockController.deleteActionBlock(title);
+            function onClickOkConfirm() {
+                that.#modalLoadingController.show();
+                originalDeleteActionBlock.call(that.#actionBlockController, title);
+                yesSir.hashHandlers.openPreviousPage();
+                that.#modalLoadingController.hide();
+                return;
+            }
 
-            that.#modalLoadingController.hide();
-            return;
-        }
+            function onClickCancelConfirm() {
+                return;
+            }
 
-        function onClickCancelConfirm() {
-            return;
-        }
-
-        this.#dialogWindow.confirmAlert(
-            textConfirmWindow,
-            onClickOkConfirm,
-            onClickCancelConfirm
-        );
-    };
+            this.#dialogWindow.confirmAlert(
+                textConfirmWindow,
+                onClickOkConfirm,
+                onClickCancelConfirm
+            );
+        });
+    }
     
     #updateLogMessage(actionBlocksToShow) {
         let log = "Found " + actionBlocksToShow.length + " results";
