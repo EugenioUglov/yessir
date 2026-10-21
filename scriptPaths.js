@@ -45,14 +45,14 @@ export const scripts = [
     "./libraries/voiceRecognition/voiceRecognitionService.js",
     "./libraries/hashObserver.js",
     "./libraries/dataStorage/dataStorageService.js",
-    "./core/modalLoadingController.js",
+    "./modalLoadingController.js",
 
 
     "./libraries/domElementsVisibility.js",
 
     // Модели
     "./libraries/noteSpeaker/noteSpeakerModel.js",
-    "./libraries/actionBlock/internal/actionBlockWithIdModel.js",
+    "./libraries/actionBlock/internal/actionBlockModel.js",
     "./libraries/voiceRecognition/voiceRecognitionModel.js",
 
     // Представления (Views)
@@ -91,10 +91,10 @@ export const scripts = [
     "./libraries/components/commandInputField.js",
 
 
-    "./core/searchControllerEventBinder.js",
-    "./core/routesConfig.js",
-    "./core/hashHandlers.js",
-    "./core/hashNameStrings.js",
+    "./searchControllerEventBinder.js",
+    "./routesConfig.js",
+    "./hashHandlers.js",
+    "./hashNameStrings.js",
     
 
     // Точка входа

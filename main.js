@@ -221,7 +221,7 @@ let yesSir;
 
     scrollController.bindScrollEndPage({
       onScrollEndPage: function onScrollEndPage() {
-        if (actionBlockController.view.isActionBlocksPageActive()) {
+        if (actionBlockController.isActionBlocksPageActive()) {
           actionBlockController.addOnPageNextActionBlocks();
         }
       }

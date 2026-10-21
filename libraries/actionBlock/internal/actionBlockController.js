@@ -62,17 +62,36 @@ class ActionBlockController {
   #onActionBlockShowedHandler;
   #onClickBtnDeleteActionBlockHandler;
 
-
+  /**
+   * Optional method. Set custom handler to delete Action-Block by title.
+   * @param {Function} [handler]
+   */
   bindOnClickBtnDeleteActionBlockHandler(handler) {
     this.#onClickBtnDeleteActionBlockHandler = handler;
   }
 
+  /**
+   * Optional method. Set custom handler that executes on start any Action-Block operation as create, update, delete etc.
+   * @param {Function} [handler]
+   */
   bindOnStartActionBlockOperationHandler(handler) {
     this.#onStartActionBlockOperationHandler = handler;
   }
 
+  /**
+   * Optional method. Set custom handler that executes on end any Action-Block operation as create, update, delete etc.
+   * @param {Function} [handler]
+   */
   bindOnEndActionBlockOperationHandler(handler) {
     this.#onEndActionBlockOperationHandler = handler;
+  }
+
+  /**
+   * Optional method. Set custom handler on show Action-Block.
+   * @param {Function} [handler]
+   */
+  bindOnActionBlockShowedHandler(handler) {
+    this.#onActionBlockShowedHandler = handler;
   }
 
   bindLoadingHandler(handler) {
@@ -82,7 +101,6 @@ class ActionBlockController {
   bindStopLoadingHandler(handler) {
     this.#stopLoadingHandler = handler;
   }
-
 
   bindClickBtnShowSettingsToCreateAdvancedActionBlock(handler) {
     this.view.bindClickBtnShowSettingsToCreateAdvancedActionBlock(
@@ -102,12 +120,15 @@ class ActionBlockController {
     );
   };
 
-  bindOnActionBlockShowedHandler(handler) {
-    this.#onActionBlockShowedHandler = handler;
-  }
 
-  onClickBtnDeleteActionBlock(title) {
-    this.deleteActionBlock(title);
+
+
+  #onClickBtnDeleteActionBlock(title) {
+    if (typeof this.#onClickBtnDeleteActionBlockHandler === 'function') {
+        this.#onClickBtnDeleteActionBlockHandler(title);
+      } else {
+        this.deleteActionBlock(title);
+    }
   }
 
   #onClickBtnCreateActionBlock = (
@@ -117,7 +138,7 @@ class ActionBlockController {
     content,
     imageURL
   ) => {
-    this.#onStartActionBlockOperationHandler();
+    this.#onStartActionBlockOperationHandler?.();
     this.createActionBlock(
       title,
       tagsPlusTitle,
@@ -125,7 +146,7 @@ class ActionBlockController {
       content,
       imageURL,
       (isActionBlockCreated) => {
-        this.#onEndActionBlockOperationHandler(isActionBlockCreated);
+        this.#onEndActionBlockOperationHandler?.(isActionBlockCreated);
       }
     );
   };
@@ -137,7 +158,7 @@ class ActionBlockController {
     content,
     imageURL
   ) => {
-    this.#onStartActionBlockOperationHandler();
+    this.#onStartActionBlockOperationHandler?.();
     this.createActionBlockWithOptimizedAutomationAsync(
       title,
       tagsPlusTitle,
@@ -145,7 +166,7 @@ class ActionBlockController {
       content,
       imageURL,
       (isActionBlockCreated) => {
-        this.#onEndActionBlockOperationHandler(isActionBlockCreated);
+        this.#onEndActionBlockOperationHandler?.(isActionBlockCreated);
       }
     );
   };
@@ -170,7 +191,11 @@ class ActionBlockController {
       this.updateQuicklyEditedActionBlock
     );
     this.view.bindClickBtnDeleteActionBlock((title) => {
-        this.onClickBtnDeleteActionBlock(title);
+      if (typeof this.#onClickBtnDeleteActionBlockHandler === 'function') {
+          this.#onClickBtnDeleteActionBlockHandler(title);
+        } else {
+          this.deleteActionBlock(title);
+      }
     });
     this.view.bindClickBtnRewriteActionBlocks(
       this.rewriteActionBlocks
@@ -411,7 +436,6 @@ class ActionBlockController {
               receivedImg
             );
 
-            // const infoPanel = new InfoPanel();
             that.#bottomInfoPanel.showPanel('Tags has been set');
           }
       });
@@ -437,7 +461,6 @@ class ActionBlockController {
           receivedImg
         );
 
-        // const infoPanel = new InfoPanel();
         that.#bottomInfoPanel.showPanel('Image has been set');
       });
     }
@@ -500,7 +523,7 @@ class ActionBlockController {
       const statusBar = document.getElementById('status-bar');
       console.log("Вся автоматизация завершена", results);
       
-      this.#onEndActionBlockOperationHandler();
+      this.#onEndActionBlockOperationHandler?.();
       if (typeof hideLoadingElements === 'function') {
           hideLoadingElements(); 
       }
@@ -626,13 +649,26 @@ class ActionBlockController {
     return Array.from(actionBlocks_to_show).reverse();
   }
 
+  onShowMainPage() {
+    this.view.onShowMainPage();
+  }
+
+  onOpenMainPageWithoutActionBlocks() {
+    this.view.onOpenMainPageWithoutActionBlocks();
+  }
+
+
+  onOpenMainPageWithActionBlocks() {
+    this.view.onOpenMainPageWithActionBlocks();
+  }
+
   showActionBlocks(
     actionBlocksToShow,
     countActionBlocksToShowAtTime = 50
   ) {
     const that = this;
 
-    this.#onStartActionBlockOperationHandler();
+    this.#onStartActionBlockOperationHandler?.();
     this.view.hideActionBlocksContainer();
 
     this.#indexLastShowedActionBlock = 0;
@@ -642,9 +678,9 @@ class ActionBlockController {
     }
 
     if (!actionBlocksToShow || actionBlocksToShow.size === 0) {
-      this.view.onOpenMainPageWithoutActionBlocks();
+      this.onOpenMainPageWithoutActionBlocks();
     } else {
-      this.view.onOpenMainPageWithActionBlocks();
+      this.onOpenMainPageWithActionBlocks();
     }
 
     this.view.onShowMainPage();
@@ -678,7 +714,7 @@ class ActionBlockController {
 
     that.view.showActionBlocksContainer();
 
-    this.#onEndActionBlockOperationHandler();
+    this.#onEndActionBlockOperationHandler?.();
 
     this.#onActionBlockShowedHandler?.(actionBlocksToShow);
 
@@ -897,14 +933,6 @@ class ActionBlockController {
   //     this.view.showElementsForVoiceRecognitionManager();
   // }
 
-  #showSettingsToCreateActionBlock() {
-    const that = this;
-
-    const viewElementsToShow = this.view.showSettingsToCreateActionBlock();
-    viewElementsToShow.forEach((element) => {
-      // yesSir.hashObserver.showElement(element);
-    });
-  }
 
   getScrollPositionOnExecuteBlock() {
     return this.#scrollPositionOnExecuteBlock;
@@ -1034,7 +1062,7 @@ class ActionBlockController {
 
     let i;
 
-    this.#onStartActionBlockOperationHandler();
+    this.#onStartActionBlockOperationHandler?.();
 
     // console.log('this.#index_last_showed_actionBlock', this.#index_last_showed_actionBlock);
 
@@ -1058,7 +1086,7 @@ class ActionBlockController {
       this.#onClickBtnShowSettingsActionBlock
     );
 
-    this.#onEndActionBlockOperationHandler();
+    this.#onEndActionBlockOperationHandler?.();
   }
 
   updatePage() {
@@ -1247,7 +1275,7 @@ class ActionBlockController {
   };
 
   updateActionBlock = (title, tags, selectedAction, content, imageURL) => {
-    this.#onStartActionBlockOperationHandler();
+    this.#onStartActionBlockOperationHandler?.();
 
     const isUpdated = this.model.updateActionBlock(
       title,
@@ -1266,12 +1294,12 @@ class ActionBlockController {
     yesSir.hashHandlers.setHashMain();
     this.view.closeSettings();
 
-    this.#onEndActionBlockOperationHandler();
+    this.#onEndActionBlockOperationHandler?.();
   };
 
   
   updateQuicklyEditedActionBlock = ({title, content}) => {
-    this.#onStartActionBlockOperationHandler();
+    this.#onStartActionBlockOperationHandler?.();
 
     const actionBlockBeforeUpdate = this.model.getActionBlockByTitle(this.model.actionBlockTitleBeforeUpdate);
 
@@ -1289,7 +1317,7 @@ class ActionBlockController {
 
 
     if (isUpdated === false) {
-      this.#onEndActionBlockOperationHandler();
+      this.#onEndActionBlockOperationHandler?.();
 
       return false;
     }
@@ -1305,7 +1333,7 @@ class ActionBlockController {
     this.showActionBlocks();
     this.#onActionBlocksStorageUpdated();
 
-    this.#onEndActionBlockOperationHandler();
+    this.#onEndActionBlockOperationHandler?.();
   };
 
   updateDefaultActionBlocks = () => {
@@ -1387,41 +1415,7 @@ class ActionBlockController {
         */
   }
 
-  #onActionBlocksStorageUpdated() {
-    // this.saveToDatabase();
-  }
 
-  #onClickActionBlock = (title) => {
-    let actionBlock = this.model.getActionBlockByTitle(title);
-    if (
-      actionBlock.action === this.model.getActionNameEnum().openURL ||
-      actionBlock.action === this.model.getActionNameEnum().openUrl
-    ) {
-
-      const url = UrlValidator.getValidUrl(actionBlock.content);
-
-      
-      let newTab = window.open(url, "_blank");
-
-      if (!newTab || newTab.closed || typeof newTab.closed == "undefined") {
-        // Popup is blocked.
-
-        location.href = url;
-      }
-    } else {
-      yesSir.hashHandlers.openActionBlockPageById(actionBlock.id);
-    }
-
-    if (this.model.isMenuCreateTypeActionBlockOpen)
-      this.switchStateMenuTypeActionBlocksToCreate();
-  };
-
-  #onClickBtnShowSettingsActionBlock = (actionBlockId) => {
-    this.#scrollPositionOnExecuteBlock =
-      this.scrollController.getScrollXY()[1];
-
-    this.openActionBlockSettingsById(actionBlockId);
-  };
 
   showSettingsToCreateActionBlock = (actionName) => {
     this.#scrollPositionOnExecuteBlock =
@@ -1472,5 +1466,50 @@ class ActionBlockController {
     }
     
     this.view.onPageContentChange();
+  }
+  
+  #onClickBtnShowSettingsActionBlock = (actionBlockId) => {
+    this.#scrollPositionOnExecuteBlock =
+      this.scrollController.getScrollXY()[1];
+
+    this.openActionBlockSettingsById(actionBlockId);
+  };
+
+    #onActionBlocksStorageUpdated() {
+    // this.saveToDatabase();
+  }
+
+  #onClickActionBlock = (title) => {
+    let actionBlock = this.model.getActionBlockByTitle(title);
+    if (
+      actionBlock.action === this.model.getActionNameEnum().openURL ||
+      actionBlock.action === this.model.getActionNameEnum().openUrl
+    ) {
+
+      const url = UrlValidator.getValidUrl(actionBlock.content);
+
+      
+      let newTab = window.open(url, "_blank");
+
+      if (!newTab || newTab.closed || typeof newTab.closed == "undefined") {
+        // Popup is blocked.
+
+        location.href = url;
+      }
+    } else {
+      yesSir.hashHandlers.openActionBlockPageById(actionBlock.id);
+    }
+
+    if (this.model.isMenuCreateTypeActionBlockOpen)
+      this.switchStateMenuTypeActionBlocksToCreate();
+  };
+  
+  #showSettingsToCreateActionBlock() {
+    const that = this;
+
+    const viewElementsToShow = this.view.showSettingsToCreateActionBlock();
+    viewElementsToShow.forEach((element) => {
+      // yesSir.hashObserver.showElement(element);
+    });
   }
 }

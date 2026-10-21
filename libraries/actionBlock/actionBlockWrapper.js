@@ -211,9 +211,7 @@ class ActionBlockWrapper {
 
     // On Click btn delete Action-Block, display the confirmation message. On confirm continue with origianl delete Action-Block logic from ActionBlockController.
     #redefineClickBtnDeleteActionBlockHandler() {
-        const originalDeleteActionBlock = this.#actionBlockController.onClickBtnDeleteActionBlock;
-
-        this.#actionBlockController.onClickBtnDeleteActionBlock = ((title) => {
+        this.#actionBlockController.bindOnClickBtnDeleteActionBlockHandler((title) => {
             const that = this;
 
             const textConfirmWindow =
@@ -221,7 +219,7 @@ class ActionBlockWrapper {
 
             function onClickOkConfirm() {
                 that.#modalLoadingController.show();
-                originalDeleteActionBlock.call(that.#actionBlockController, title);
+                that.#actionBlockController.deleteActionBlock(title);
                 yesSir.hashHandlers.openPreviousPage();
                 that.#modalLoadingController.hide();
                 return;

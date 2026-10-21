@@ -86,13 +86,13 @@ class HashHandlers {
             this.#searchController.clearInputField();
 
             if (this.#actionBlockController.model.getActionBlocks().size > 0) {
-                this.#actionBlockController.view.onOpenMainPageWithActionBlocks();
+                this.#actionBlockController.onOpenMainPageWithActionBlocks();
                 this.#actionBlockController.showActionBlocks();
             } else {
-                this.#actionBlockController.view.onOpenMainPageWithoutActionBlocks();
+                this.#actionBlockController.onOpenMainPageWithoutActionBlocks();
             }
 
-            this.#actionBlockController.view.onShowMainPage();
+            this.#actionBlockController.onShowMainPage();
             this.#scrollController.setPositionTop();
         }
     }
