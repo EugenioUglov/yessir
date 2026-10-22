@@ -151,6 +151,13 @@ class DefaultActionBlocks {
 
         function getContentActionBlockOpenFileManager() {
             return `
+                <style>
+                    #elements_for_file_manager p {
+                        font-size: 25px;
+                        font-weight: bold;
+                    }
+                </style>
+                
                 <div id="elements_for_file_manager" class="elements_for_executed_actionBlock" padding-top: 50px;">
                 <br><br>
             
