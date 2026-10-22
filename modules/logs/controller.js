@@ -2,7 +2,7 @@ class LogsController {
   #fileManager;
   #textManager;
 
-  constructor({ model, view, fileManager, dateManager}) {
+  constructor({ model, view, fileManager}) {
     this.fileManager = fileManager;
     this.#model = model;
     this.#view = view;

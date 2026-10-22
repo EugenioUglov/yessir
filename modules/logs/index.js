@@ -14,7 +14,7 @@
             const view = new LogsView({ container });
             const model = new LogsModel(dateManager);
 
-            const controller = new LogsController({ model, view, fileManager, dateManager });
+            const controller = new LogsController({ model, view, fileManager });
             
             return controller;
         }

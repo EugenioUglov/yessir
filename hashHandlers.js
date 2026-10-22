@@ -66,7 +66,7 @@ class HashHandlers {
                 yesSir.fileManager.uploadFile(onFileLoaded);
 
                 function onFileLoaded(content_of_file) {
-                    yesSir.actionBlockController.saveActionBlocksFromFile(content_of_file);
+                    yesSir.actionBlockWrapper.saveActionBlocksFromFile(content_of_file);
 
                     // Give possibility to load the same file again.
                     $(".btn_upload_actionBlocks").value = "";
