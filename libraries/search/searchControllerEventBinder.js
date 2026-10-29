@@ -6,7 +6,7 @@ class SearchControllerEventBinder {
         };
 
         searchController.inputFieldEnterHandler = () => {
-            const request = searchController.getTextFromMainInputField();
+            const request = searchController.getText();
 
             let isExecuteActionBlockByTitle = true;
 
@@ -27,7 +27,7 @@ class SearchControllerEventBinder {
             });
         };
 
-        searchController.keyUpRequestFieldHandler = function(request, clickedKeyCode) {
+        searchController.keyUpHandler = function(request, clickedKeyCode) {
             const isExecuteActionBlockByTitle = clickedKeyCode === yesSir.keyCodeByKeyName.enter ? true : false;
 
             hashObserver.setPreviousHash(window.location.hash);
@@ -36,28 +36,6 @@ class SearchControllerEventBinder {
                 requestValue: request, 
                 isExecuteActionBlockByTitle: isExecuteActionBlockByTitle
             });
-        };
-
-        searchController.keypressInputFieldPlusTagsHandler = (event) => {
-            const request = searchController.getTextFromMainInputField();
-
-            actionBlockController.showActionBlocksByRequest(
-                {
-                    request: request, 
-                    isExecuteActionBlockByTitle: false
-                }
-            );
-        };
-
-        searchController.keypressInputFieldMinusTagsHandler = (event) => {
-            const request = searchController.getTextFromMainInputField();
-
-            actionBlockController.showActionBlocksByRequest(
-                {
-                    request: request, 
-                    isExecuteActionBlockByTitle: false
-                }
-            );
         };
     }
 }

@@ -83,7 +83,7 @@ class HashHandlers {
 
             this.#scrollController.setPositionTop();
         } else {
-            this.#searchController.clearInputField();
+            this.#searchController.clear();
 
             if (this.#actionBlockController.model.getActionBlocks().size > 0) {
                 this.#actionBlockController.onOpenMainPageWithActionBlocks();
@@ -134,7 +134,7 @@ class HashHandlers {
         //         toCharacterRequest
         //     );
         //     request = decodeURIComponent(request);
-        //     this.#searchController.setTextToInputField(request);
+        //     this.#searchController.setText(request);
         // } else 
         if (
             window.location.hash.includes(
@@ -158,7 +158,7 @@ class HashHandlers {
                 fromCharacterRequest
             );
             request = decodeURIComponent(request);
-            this.#searchController.setTextToInputField(request);
+            this.#searchController.setText(request);
         }
 
         request = decodeURIComponent(request);

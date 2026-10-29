@@ -1,0 +1,47 @@
+<style>
+    #btnVoiceRecognition {
+        margin: 0px 10px;
+        height: 50px;
+        width: 50px;
+        border: 0;
+        border-radius: 50px;
+        /* background-color: transparent; */
+        /* padding: 0; */
+        /* margin-left: 20px; */
+        /* padding: 0; */
+        /* background-color: #9e9a9a2b; */
+    }
+
+    @media (max-width: 450px) {
+        #btnVoiceRecognition {
+            width: 20%;
+        }
+    }
+
+
+    #btnVoiceRecognition:active #imgVoiceRecognition{
+        /* Set outline light around block with image */
+        box-shadow: 0px 0px 1px 1px #4285f4; 
+        -webkit-box-shadow: 0px 0px 5px 2px #4285f4;
+        -moz-box-shadow: 0px 0px 5px 2px #4285f4;
+        /**/
+    }
+
+    .btn-icon {
+        cursor: pointer;
+        border-radius: 8px;
+        /* color: #274f99; */
+        background-color: transparent;
+        background-repeat: no-repeat;
+        color: #d1c4ac;    
+        transition: .1s;
+    }
+
+    .btn-icon:hover {
+        /* box-shadow: 0 0 3pt 2pt blueviolet; */
+    }
+</style>
+
+<div id="btnVoiceRecognition" class="inline btn-icon" title="Tell request using voice" style="">
+    <img id="imgVoiceRecognition" src="../icons/mic.gif" alt="Start">
+</div>

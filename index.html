@@ -41,18 +41,9 @@
 
 		<div class="container">
 			<div id="inputFieldWithSuggestionsModule"></div>
-			
-			<!--Make sure the form has the autocomplete function switched off:-->
-			<!--<form autocomplete="off" action="/action_page.php">	</form>-->
 		
 			<div id="actionBlocks_page" style="display: none; margin-top:10px;">
-				<div id="autocomplete">
-					<div id="request_container"></div>	
-
-					<div id="btn_voice_recognition" class="inline btn_icon" title="Tell request using voice" style="display:none">
-						<img id="img_voice_recognition" src="./icons/mic.gif" alt="Start">
-					</div>
-				</div>
+				<div id="searchContainer"></div>
 
 				<div style="height: 90px;"></div>
 				<div id="advanced_settings" style="display: none;">
@@ -71,28 +62,7 @@
 				</div>
 				<div id="version" style="position: relative;color: black; font-size: 13px;">v18</div>
 				<div id="label_help" style="position: relative; font-size: 13px; color: #312c31; pointer-events: none;"></div>
-
-				<!--
-					<div class="autoComplete_wrapper">
-						<input id="autoComplete" type="text" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off"
-							autocapitalize="off" maxlength="2048" tabindex="1">
-					</div>
 				
-					<div class="selection"></div>
-				-->
-				<!--
-					<div class="body" align="center">
-						<div class="autoComplete_wrapper">
-							<input id="autoComplete" type="text" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off"
-								autocapitalize="off" maxlength="2048" tabindex="1">
-						</div>
-					
-						<div class="selection"></div>
-					</div>
-				</div>
-				-->
-				
-
 				<!-- 
 					<h1 class="title_text areaText" id="sidebyside" title = "Select an image that include necessary info">IMAGE SELECTOR *</h1>
 				-->
@@ -136,17 +106,7 @@
 			</div>
 
 			<div id="elements_to_create_action-block" class="elements_for_executed_actionBlock" style="display: none; padding-top: 50px;" disabled>
-
-
-				<!--
-				<button class="home">
-					<div class="icon_tag"></div>
-					<span>HOME</span>
-				</button>
-				-->
-
 				<div class="center" style="font-size:30px; color: #404040;"><b><div class="title"><b> Create Action-Block </b></div></b></div>
-
 			</div>
 
 			<div id="elements_to_edit_actionBlock" class="elements_for_executed_actionBlock" style="display: none;" disabled>

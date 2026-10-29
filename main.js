@@ -32,7 +32,7 @@ class YesSir {
         {
           projectAssetLoader: projectAssetLoader,
           textManager: this.textManager,
-          targetId: 'request_container'
+          targetId: 'searchContainer'
         }
       );
 
@@ -174,16 +174,7 @@ let yesSir;
         yesSir.noteSpeakerService.speak();
       }
     }
-
-    // const searchController = new SearchBootstrapper(
-    //   { 
-    //     projectAssetLoaderClass: ProjectAssetLoaderClass, 
-    //     textManager: textManager, 
-    //     keyCodeByKeyName: keyCodeByKeyName, 
-    //     targetId: 'request_container' 
-    //   }
-    // );
-
+    
     const noteSpeakerController = new NoteSpeakerController(
       yesSir.noteSpeakerService,
       yesSir.noteController

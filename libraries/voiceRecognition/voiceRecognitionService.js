@@ -29,7 +29,7 @@ class VoiceRecognitionService {
         }
 
         function onFinalTranscript(finalTranscript) {                   
-            input_field_request.style.color = 'black';
+            searchInputField.style.color = 'black';
             const lastCharacterFinalTranscript = finalTranscript[finalTranscript.length - 1];
 
             if (lastCharacterFinalTranscript === '.') {

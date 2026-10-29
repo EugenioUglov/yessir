@@ -10,7 +10,7 @@ class VoiceRecognitionView {
     }
 
     bindClickBtnVoiceRecognition(handler) {
-        $('#btn_voice_recognition').on('click', (event) => {
+        $('#btnVoiceRecognition').on('click', (event) => {
             handler(event);
         });
     }
@@ -22,10 +22,10 @@ class VoiceRecognitionView {
     }
 
     showProgressRecognition() {
-        $('#img_voice_recognition').attr('src', './icons/mic-animate.gif');
+        $('#imgVoiceRecognition').attr('src', './icons/mic-animate.gif');
     }
 
     showStopRecognition() {
-        $('#img_voice_recognition').attr('src', './icons/mic.gif');
+        $('#imgVoiceRecognition').attr('src', './icons/mic.gif');
     }
 }

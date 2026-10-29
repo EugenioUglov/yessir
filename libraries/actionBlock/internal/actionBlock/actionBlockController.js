@@ -558,7 +558,8 @@ class ActionBlockController {
     this.view.clearAllSettingsFields();
     yesSir.hashHandlers.openPreviousPage();
     
-    this.view.clearRequestInputField();
+    this.searchService.clear();
+
     this.#onActionBlocksStorageUpdated();
     if (onEnd != undefined) onEnd(true);
 
@@ -1026,7 +1027,7 @@ class ActionBlockController {
       //console.log('open folder from actionblock');
       this.openFolder(i_actionBlock);
 
-      this.searchService.setTextToInputField(content);
+      this.searchService.setText(content);
       this.searchService.focusInputField();
     } else {
       /*
@@ -1090,7 +1091,7 @@ class ActionBlockController {
   }
 
   updatePage() {
-    this.view.clearRequestInputField();
+    this.searchService.clear();
 
     // Refresh Action-Blocks on page.
     this.showActionBlocks();
@@ -1226,7 +1227,7 @@ class ActionBlockController {
     this.model.setActionBlocks(actionBlocksFromFile);
     this.scrollController.setPositionTop();
     this.showActionBlocks();
-    this.searchService.clearInputField();
+    this.searchService.clear();
     this.modalLoadingController.hide();
   };
 
@@ -1327,7 +1328,7 @@ class ActionBlockController {
     yesSir.hashHandlers.setHashMain();
     this.view.closeSettings();
     this.view.setDefaultValuesForSettingsElementsActionBlock();
-    this.view.clearRequestInputField();
+    this.searchService.clear();
     // Refresh Action-Blocks on page.
     this.scrollController.setPositionTop();
     this.showActionBlocks();
@@ -1377,7 +1378,7 @@ class ActionBlockController {
 
     this.model.deleteActionBlockByTitle(title);
 
-    this.view.clearRequestInputField();
+    this.searchService.clear();
     this.#onActionBlocksStorageUpdated();
   };
 

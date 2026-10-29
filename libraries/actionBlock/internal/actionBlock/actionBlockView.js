@@ -214,12 +214,7 @@ class ActionBlockView {
 
   onOpenMainPageWithActionBlocks() {
     $("#welcome_page").hide();
-    // Show search area with Info-Blocks.
     this.showPage();
-  }
-
-  clearRequestInputField() {
-    $("#input_field_request")[0].value = "";
   }
 
   onPageContentChange() {

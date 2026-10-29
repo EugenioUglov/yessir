@@ -37,7 +37,7 @@ class VoiceRecognitionController {
             // }
 
             // function onFinalTranscript(final_transcript) {                   
-            //     input_field_request.style.color = 'black';
+            //     searchInputField.style.color = 'black';
             //     const last_character_final_transcript = final_transcript[final_transcript.length - 1];
 
             //     if (last_character_final_transcript === '.') {
@@ -132,14 +132,14 @@ class VoiceRecognitionController {
         } else {
             recognition = new webkitSpeechRecognition();
             
-            btn_voice_recognition.style.display = 'inline-block';
+            btnVoiceRecognition.style.display = 'inline-block';
 
             recognition.continuous = true;
             recognition.interimResults = true;
 
             recognition.onstart = function() {
                 recognizing = true;
-                img_voice_recognition.src = './icons/mic-animate.gif';
+                imgVoiceRecognition.src = './icons/mic-animate.gif';
 
                 const event_start = {
                     name: that.event.start,
@@ -151,7 +151,7 @@ class VoiceRecognitionController {
 
             recognition.onerror = function(event) {
                 if (event.error == 'no-speech') {
-                    img_voice_recognition.src = './icons/mic.gif';
+                    imgVoiceRecognition.src = './icons/mic.gif';
                     ignore_onend = true;
 
                     if (that.observable) {
@@ -164,7 +164,7 @@ class VoiceRecognitionController {
                     }
                 }
                 if (event.error == 'audio-capture') {
-                    img_voice_recognition.src = './icons/mic.gif';
+                    imgVoiceRecognition.src = './icons/mic.gif';
                     ignore_onend = true;
                     
                     if (that.observable) {
@@ -209,7 +209,7 @@ class VoiceRecognitionController {
                     return;
                 }
 
-                img_voice_recognition.src = './icons/mic.gif';
+                imgVoiceRecognition.src = './icons/mic.gif';
 
                 if ( ! final_transcript) {
                     // Speak recognition: Speak continue.
@@ -226,7 +226,7 @@ class VoiceRecognitionController {
             };
 
             recognition.onresult = function(event) {
-                let input_field_request = document.getElementById('input_field_request');
+                let searchInputField = document.getElementById('searchInputField');
                 let interim_transcript = '';
 
                 for (let i = event.resultIndex; i < event.results.length; ++i) {
@@ -276,7 +276,7 @@ class VoiceRecognitionController {
             recognition.lang = select_dialect.value;
             recognition.start();
             ignore_onend = false;
-            img_voice_recognition.src = './icons/mic-slash.gif';
+            imgVoiceRecognition.src = './icons/mic-slash.gif';
             start_timestamp = event.timeStamp;
         }
 

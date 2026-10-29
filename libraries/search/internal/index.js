@@ -8,7 +8,6 @@
         }
         
         async init({ projectAssetLoader, textManager, targetId, data }) {
-            // const projectAssetLoader = new projectAssetLoader(FEATURE_BASE_PATH);
             projectAssetLoader.setBasePath({path: FEATURE_BASE_PATH});
 
             const cssPromise = projectAssetLoader.loadStyle('style.css');
@@ -19,7 +18,9 @@
 
             await Promise.all([cssPromise, htmlPromise, sarchControllerPromise, sarchViewPromise]);
 
-            const view = new SearchView();
+            const domContainer = document.getElementById(targetId);
+
+            const view = new SearchView({ domContainer });
             const controller = new SearchController(view, textManager);
 
             return controller;

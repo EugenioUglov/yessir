@@ -19,19 +19,7 @@ button {
     font-size: 0.9rem;
 }
 
-.btn_icon {
-    cursor: pointer;
-    border-radius: 8px;
-    /* color: #274f99; */
-    background-color: transparent;
-    background-repeat: no-repeat;
-    color: #d1c4ac;    
-    transition: .1s;
-}
 
-.btn_icon:hover {
-    /* box-shadow: 0 0 3pt 2pt blueviolet; */
-}
 
 .btn:hover {
     /* box-shadow: 0 0 3pt 2pt blueviolet; */
@@ -100,43 +88,6 @@ button {
 li{position:relative;}
 li:not(.sidebar-brand):before{position:absolute; left:-20px;font-family: FontAwesome;color:red;width: 30px;}
 
-div#btn_clear_input_field_request {
-    /* width: 50%; */
-    /* margin-top: 1px; */
-    /* background-color: #6c6c6c87;  */
-    /* background-color: #828282;
-    background-color: #9e9a9a2b;
-    background-color: #ffffff; */
-    border-radius: 50px;
-    width: 30px;
-    height: 30px;
-    align-items: center;
-    align-content: center;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* outline: black solid 1px; */
-    margin-top: 5px;
-    margin-left: 5px;
-    margin-right: 10px;
-}
-
-#btn_accept_input_field_request {
-    margin-right: 15px; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    /* margin-right: 5px; */
-    /* background-color: #aca5a578; */
-    /* background-color: #9e9a9a2b; */
-    background-color: #ffffff;
-    border-radius: 50px;
-    cursor: pointer;
-}
-
 div#btn_search_by_tags {
     /* margin-right: 10px; */
     display: flex;
@@ -167,18 +118,6 @@ div#btn_search_by_tags {
     /* background-color: #1e1e1e03; */
 }
 
-#btn_voice_recognition {
-    margin: 0px 10px;
-    height: 50px;
-    width: 50px;
-    border: 0;
-    border-radius: 50px;
-    /* background-color: transparent; */
-    /* padding: 0; */
-    /* margin-left: 20px; */
-    /* padding: 0; */
-    /* background-color: #9e9a9a2b; */
-}
 
 #btn_download_actionBlocks, #btn_download_logs {
     width: 200px;
@@ -201,51 +140,7 @@ div#btn_search_by_tags {
 }
 
 
-/*
-#btn_clear_input_field_request {
-    display: inline-block;
-    width: 110px;
-    height: 60px;
-    margin-left: 5px;
-    margin-right: 5px;
-    align-items: center;
-    text-align: center;
 
-    cursor: pointer;
-    fill: currentColor;
-    background-color: transparent;
-    border: none;
-
-    border-radius: 50px;
-}
-*/
-
-#btn_clear_input_field_request:active #img_clear_input_field_request,
-#btn_voice_recognition:active #img_voice_recognition,
-#btn_accept_input_field_request:active #icon_accept_command {
-    /* Set outline light around block with image */
-    box-shadow: 0px 0px 1px 1px #4285f4; 
-    -webkit-box-shadow: 0px 0px 5px 2px #4285f4;
-    -moz-box-shadow: 0px 0px 5px 2px #4285f4;
-    /**/
-}
-
-
-
-
-
-#btn_clear_input_field_request:focus, #btn_accept_input_field_request:focus {
-  border: none;
-  outline: none; 
-}
-
-#btn_clear_input_field_request:hover, #btn_accept_input_field_request:hover {
-  /* Set outline light around block with image 
-  box-shadow: 0px 0px 5px 1px DodgerBlue; 
-  -webkit-box-shadow: 0px 0px 5px 1px DodgerBlue;
-  -moz-box-shadow: 0px 0px 5px 1px DodgerBlue;
-  */
-}
 
 
 .addBtn:hover {

@@ -94,9 +94,9 @@ function updateDialect() {
 
 
 if (!('webkitSpeechRecognition' in window)) {
-	btn_voice_recognition.style.visibility = 'hidden';
+	btnVoiceRecognition.style.visibility = 'hidden';
 } else {
-	btn_voice_recognition.style.display = 'inline-block';
+	btnVoiceRecognition.style.display = 'inline-block';
 	recognition = new webkitSpeechRecognition();
 
 	recognition.continuous = true;
@@ -105,17 +105,17 @@ if (!('webkitSpeechRecognition' in window)) {
 	recognition.onstart = function() {
 		recognizing = true;
 		// "Speak recognition: Speak now";
-		img_voice_recognition.src = './icons/mic-animate.gif';
+		imgVoiceRecognition.src = './icons/mic-animate.gif';
 	};
 
 	recognition.onerror = function(event) {
 		if (event.error == 'no-speech') {
-			img_voice_recognition.src = './icons/mic.gif';
+			imgVoiceRecognition.src = './icons/mic.gif';
 			// "Speak recognition: Speech error";
 			ignore_onend = true;
 		}
 		if (event.error == 'audio-capture') {
-			img_voice_recognition.src = './icons/mic.gif';
+			imgVoiceRecognition.src = './icons/mic.gif';
 			// "Speak recognition: No microphone";
 			ignore_onend = true;
 		}
@@ -134,7 +134,7 @@ if (!('webkitSpeechRecognition' in window)) {
 		if (ignore_onend) {
 			return;
 		}
-		img_voice_recognition.src = './icons/mic.gif';
+		imgVoiceRecognition.src = './icons/mic.gif';
 		if ( ! final_transcript) {
 			// "Speak recognition: Speak start";
 			return;
@@ -149,14 +149,14 @@ if (!('webkitSpeechRecognition' in window)) {
 	};
 
 	recognition.onresult = function(event) {
-		let input_field_request = document.getElementById("input_field_request");
+		let searchInputField = document.getElementById("searchInputField");
 		let interim_transcript = '';
 		
 		for (let i = event.resultIndex; i < event.results.length; ++i) {
 			if (event.results[i].isFinal) {
 				final_transcript += event.results[i][0].transcript;
 			} else {
-				//input_field_request.value += event.results[i][0].transcript;
+				//searchInputField.value += event.results[i][0].transcript;
 				interim_transcript += event.results[i][0].transcript;
 			}
 		}
@@ -199,7 +199,7 @@ function onClickSpeakButton(event) {
 	recognition.lang = select_dialect.value;
 	recognition.start();
 	ignore_onend = false;
-	img_voice_recognition.src = './icons/mic-slash.gif';
+	imgVoiceRecognition.src = './icons/mic-slash.gif';
 	// "Speak recognition: Speak now";
 	start_timestamp = event.timeStamp;
 }

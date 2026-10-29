@@ -11,9 +11,7 @@ class SearchController {
     clickBtnClearHandler;
     inputFieldEnterHandler;
     changeInputFieldHandler;
-    keyUpRequestFieldHandler;
-    keypressInputFieldPlusTagsHandler;
-    keypressInputFieldMinusTagsHandler;
+    keyUpHandler;
 
     
     #onEnter = () => {
@@ -22,16 +20,16 @@ class SearchController {
         if (this.inputFieldEnterHandler) this.inputFieldEnterHandler();
     }
 
-    clearInputField() {
+    clear() {
         this.view.clear();
     }
 
-    setTextToInputField(text) {
-        this.view.setTextToInputField(text)
+    setText(text) {
+        this.view.setText(text)
     }
 
-    getTextFromMainInputField() {
-        this.view.getTextFromMainInputField();
+    getText() {
+        this.view.getText();
     }
 
     focusInputField() {
@@ -52,21 +50,18 @@ class SearchController {
         const that = this;
 
         const onKeyUpRequestField = (request, clickedKeyCode) => {
-            that.keyUpRequestFieldHandler(request, clickedKeyCode);
+            that.keyUpHandler(request, clickedKeyCode);
         };
 
         const onChangeInputRequestField = (request) => {
             that.changeInputFieldHandler(request);
         };
 
-        function onClickBtnSearchByTags(userPlusTags, userMinusTags) {
-        }
-
         this.view.bindClickBtnClearRequestField(this.#onClickBtnClear);
         this.view.bindClickBtnEnterRequest(this.#onEnter);
         this.view.bindKeyUpRequestField(onKeyUpRequestField);
-        this.view.bindChangeInputRequestField(onChangeInputRequestField);
-        this.view.bindClickBtnSearchByTags((userPlusTags, userMinusTags) => onClickBtnSearchByTags(userPlusTags, userMinusTags));
+        this.view.bindInput(onChangeInputRequestField);
+
     }
 
     #onClickBtnClear = () => {

@@ -82,15 +82,15 @@ export const scripts = [
     "./modules/note/index.js",
     "./libraries/components/modalBox/index.js",
     "./libraries/components/topInfoPanel/index.js",
-    "./modules/logs/index.js",
-    "./libraries/search/index.js",
+    "./modules/logger/index.js",
+    "./libraries/search/internal/index.js",
     "./libraries/components/loginPanel/index.js",
     "./libraries/components/centeredAlert/index.js",
     "./libraries/components/blackLoader/index.js",
     "./libraries/components/commandInputField.js",
 
 
-    "./searchControllerEventBinder.js",
+    "./libraries/search/searchControllerEventBinder.js",
     "./routesConfig.js",
     "./hashHandlers.js",
     "./hashNameStrings.js",

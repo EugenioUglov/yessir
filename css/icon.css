@@ -48,14 +48,7 @@
 }
 
 
-#icon_accept_command {
-  content:url('../icons/search.png');
 
-  height: 25px;
-  width: 25px;
-  pointer-events: none;
-  color: #4285f4;
-}
 
 #icon_close {
   content:url('../icons/close-light.png');

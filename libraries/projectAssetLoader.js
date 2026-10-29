@@ -6,7 +6,8 @@ class ProjectAssetLoader {
      * @param {string} [currentScriptUrl] - Optional URL. If exists set direction to indicated folder.
      */
     constructor({ currentScriptUrl }) {
-        this.#basePath = this.#calculateBasePath(currentScriptUrl);
+        const scriptUrl = currentScriptUrl || (document.currentScript ? document.currentScript.src : '');
+        this.#basePath = this.#calculateBasePath(scriptUrl);
     }
 
     #basePath = "";
@@ -48,7 +49,7 @@ class ProjectAssetLoader {
             link.rel = 'stylesheet';
             link.href = this.#getNormalizedPath(path); 
 
-            // Разрешаем Promise, когда браузер полностью загрузил CSS
+            // Resolve the Promise when the browser has fully loaded the CSS
             link.onload = () => {
                 // console.log("📦 AssetLoader: Loaded CSS ->", link.href);
                 resolve();
