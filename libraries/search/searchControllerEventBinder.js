@@ -1,33 +1,20 @@
 class SearchControllerEventBinder {
     constructor({ searchController, hashObserver, actionBlockController }) {
          
-        searchController.clickBtnClearHandler = function() {
+        searchController.bindClickBtnClear (() => {
             yesSir.hashHandlers.openMain();
-        };
+        });
 
-        searchController.inputFieldEnterHandler = () => {
-            const request = searchController.getText();
-
-            let isExecuteActionBlockByTitle = true;
-
-            hashObserver.setPreviousHash(window.location.hash);
-
-            yesSir.hashHandlers.setHashRequest({
-                requestValue: request, 
-                isExecuteActionBlockByTitle: isExecuteActionBlockByTitle
-            });
-        };
-
-        searchController.changeInputFieldHandler = function(request) {
+        searchController.bindInput((request) => {
             hashObserver.setPreviousHash(window.location.hash);
 
             yesSir.hashHandlers.setHashRequest({
                 requestValue: request, 
                 isExecuteActionBlockByTitle: false
             });
-        };
+        });
 
-        searchController.keyUpHandler = function(request, clickedKeyCode) {
+        searchController.bindKeyUp((request, clickedKeyCode) => {
             const isExecuteActionBlockByTitle = clickedKeyCode === yesSir.keyCodeByKeyName.enter ? true : false;
 
             hashObserver.setPreviousHash(window.location.hash);
@@ -36,6 +23,6 @@ class SearchControllerEventBinder {
                 requestValue: request, 
                 isExecuteActionBlockByTitle: isExecuteActionBlockByTitle
             });
-        };
+        });
     }
 }

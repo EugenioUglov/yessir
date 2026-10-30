@@ -1,8 +1,4 @@
 class DefaultActionBlocks {
-    constructor() {
-
-    }
-
     getDefaultActionBlocks() {
         const actionBlock_set_synonym_tags  = {
             title: 'Set synonym tags',

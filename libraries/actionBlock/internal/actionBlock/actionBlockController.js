@@ -1028,7 +1028,6 @@ class ActionBlockController {
       this.openFolder(i_actionBlock);
 
       this.searchService.setText(content);
-      this.searchService.focusInputField();
     } else {
       /*
         else if (action_name_of_actionBlock === this.model.getActionNameEnum().showFileManager) {

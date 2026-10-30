@@ -5,23 +5,6 @@ class SearchController {
         this.view = view;
 
         this.#setEventListeners();
-        this.#bindViewEvenets();
-    }
-
-    clickBtnClearHandler;
-    inputFieldEnterHandler;
-    changeInputFieldHandler;
-    keyUpHandler;
-
-    
-    #onEnter = () => {
-        this.view.setTextColorInInputField('black');
-
-        if (this.inputFieldEnterHandler) this.inputFieldEnterHandler();
-    }
-
-    clear() {
-        this.view.clear();
     }
 
     setText(text) {
@@ -31,41 +14,33 @@ class SearchController {
     getText() {
         this.view.getText();
     }
-
-    focusInputField() {
-        this.view.focus();
+    
+    clear() {
+        this.view.clear();
     }
 
-    #setEventListeners() {
-        const that = this;
 
-        $(document).keyup(function(event) {
-            if (event.code == 'Slash') {
-                that.view.focus();
+    #setEventListeners() {
+        document.addEventListener('keyup', (event) => {
+            if (event.code === 'Slash') {
+                this.view.focus();
             }
         });
     }
 
-    #bindViewEvenets() {
-        const that = this;
-
-        const onKeyUpRequestField = (request, clickedKeyCode) => {
-            that.keyUpHandler(request, clickedKeyCode);
-        };
-
-        const onChangeInputRequestField = (request) => {
-            that.changeInputFieldHandler(request);
-        };
-
-        this.view.bindClickBtnClearRequestField(this.#onClickBtnClear);
-        this.view.bindClickBtnEnterRequest(this.#onEnter);
-        this.view.bindKeyUpRequestField(onKeyUpRequestField);
-        this.view.bindInput(onChangeInputRequestField);
-
+    bindKeyUp(handler) {
+        this.view.bindKeyUp(handler);
     }
 
-    #onClickBtnClear = () => {
-        this.view.clear();
-        this.clickBtnClearHandler();
+    bindInput(handler) {
+        this.view.bindInput(handler);
+    }
+
+    bindClickBtnClear(handler) {
+        this.view.bindClickBtnClear(handler);
+    }
+
+    bindEnter(handler) {
+        this.view.bindEnter(handler);
     }
 }
