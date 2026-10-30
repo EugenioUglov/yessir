@@ -190,7 +190,7 @@ class ActionBlockWrapper {
         const textConfirmWindow =
             "Are you sure you want to delete ALL Action-Blocks?";
 
-        function onClickOkConfirm() {
+        const onClickOkConfirm = () => {
             this.#actionBlockController.deleteAllActionBlocks();
             yesSir.hashHandlers.setHashMain();
             window.location.reload();
