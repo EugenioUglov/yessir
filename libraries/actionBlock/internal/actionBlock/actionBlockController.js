@@ -658,7 +658,6 @@ class ActionBlockController {
     this.view.onOpenMainPageWithoutActionBlocks();
   }
 
-
   onOpenMainPageWithActionBlocks() {
     this.view.onOpenMainPageWithActionBlocks();
   }
@@ -1375,9 +1374,11 @@ class ActionBlockController {
   deleteActionBlock(title) {
     this.view.closeSettings();
 
-    this.model.deleteActionBlockByTitle(title);
+    // this.model.deleteActionBlockByTitle(title);
+    this.model.deleteActionBlockById(this.model.actionBlockIdCurrent);
+    this.model.actionBlockIdCurrent = null;
 
-    this.searchService.clear();
+
     this.#onActionBlocksStorageUpdated();
   };
 
@@ -1432,6 +1433,7 @@ class ActionBlockController {
     const actionBlock = this.model.getActionBlockById(id);
     yesSir.hashHandlers.openSettingsActionBlockPage(id);
     this.model.actionBlockTitleBeforeUpdate = actionBlock.title;
+    this.model.actionBlockIdCurrent = id;
     this.onPageContentChange();
     const elementsToShow =
       this.view.showElementsToEditActionBlock(actionBlock);
@@ -1472,10 +1474,10 @@ class ActionBlockController {
     this.#scrollPositionOnExecuteBlock =
       this.scrollController.getScrollXY()[1];
 
-    this.openActionBlockSettingsById(actionBlockId);
+    yesSir.hashHandlers.setHashSettingsActionBlock({ isExecutehash: false, actionBlockId });
   };
 
-    #onActionBlocksStorageUpdated() {
+  #onActionBlocksStorageUpdated() {
     // this.saveToDatabase();
   }
 

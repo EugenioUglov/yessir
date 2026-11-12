@@ -76,6 +76,19 @@ class ActionBlockView {
       $("#actionBlock-preview")
         .find(".img")
         .attr("src", actionBlockPreview.imageURL);
+
+    // Select the target container element
+    const container = document.querySelector('.actionBlock_preview_container');
+
+    if (container) {
+      container.addEventListener('click', (event) => {
+        // Stop the event from bubbling up the DOM tree
+        event.stopPropagation();
+        
+        // Prevent the default browser behavior (e.g., following links)
+        event.preventDefault();
+      }, true); // Use capturing phase to intercept the click before it reaches inner elements
+    }
   }
 
   showActionBlocksContainer() {
@@ -677,6 +690,8 @@ class ActionBlockView {
     $(".btn_open_settings_actionBlock").on("click", () => {
       // Clear executed content.
       $("#content_executed_from_actionBlock").hide();
+      $(".btn_open_settings_actionBlock").css("display", "none");
+
 
       const title = $("#content_executed_from_actionBlock")
         .find(".title")

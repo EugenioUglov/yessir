@@ -12,7 +12,6 @@ class YesSir {
 
       this.centeredAlertController = await CenteredAlertBootstrapper.create({ projectAssetLoader, targetId: 'alertCenterContainer' });
 
-
       this.googleSpeechRecognition = new GoogleSpeechRecognition();
       this.googleTextToSpeech = new GoogleTextToSpeech();
       this.textManager = new TextManager();
@@ -35,7 +34,7 @@ class YesSir {
 
       await fixedSearchAssetLoader.loadJavaScript("libraries/fixedSearch/index.js");
 
-      this.searchController = await new FixedSearch({ projectAssetLoader, textManager: this.textManager, targetId: 'searchContainer' });
+      this.search = await new FixedSearch({ projectAssetLoader, textManager: this.textManager, targetId: 'searchContainer' });
 
 
       this.modalBoxController = await ModalBoxBootstrapper.create({
@@ -81,7 +80,7 @@ class YesSir {
 
       this.actionBlockController = new ActionBlockController(
         this.dialogWindow,
-        this.searchController,
+        this.search,
         this.noteController,
         this.fileManager,
         this.textManager,
@@ -102,7 +101,7 @@ class YesSir {
 
       this.hashHandlers = new HashHandlers(
         HASH_NAME_ENUM,
-        this.searchController,
+        this.search,
         this.actionBlockController,
         this.scrollController,
         this.textManager,
@@ -122,12 +121,12 @@ class YesSir {
 
       this.hashObserver.onStartHandleHash = () => {
         yesSir.commandInputField.hideCommandInput();
+        this.search.hide();
       };
 
       this.hashObserver.onEndHandleHash = () => {
         new EditActionBlockDataHolder(HASH_NAME_ENUM, this.hashObserver);
       }
-
       
       if (onEnd) onEnd();
 

@@ -1,6 +1,7 @@
 class ActionBlockModel {
     constructor(textManager, dataStorageService, mapDataStructure, fileManager) {
         this.actionBlockTitleBeforeUpdate = '';
+        this.actionBlockIdCurrent = null;
         this.dataStorageService = dataStorageService;
         this.mapDataStructure = mapDataStructure;
         this.fileManager = fileManager;
@@ -658,20 +659,47 @@ class ActionBlockModel {
     }
 
     deleteActionBlockByTitle(title) {
-        const normalizedTags = title.toUpperCase();
-        if (this.getActionBlockByTitle(normalizedTags) === undefined) {
+        const normalizedTitle = title.toUpperCase();
+
+        if (this.getActionBlockByTitle(normalizedTitle) === undefined) {
             return false;
         }
 
 
-        const actionBlockId = this.getActionBlockByTitle(normalizedTags).id;
+        const actionBlockId = this.getActionBlockByTitle(normalizedTitle).id;
 
-        const isActionBlockIdByTitleDeleted = this.#actionBlockIdByTitle.delete(normalizedTags);
+        const isActionBlockIdByTitleDeleted = this.#actionBlockIdByTitle.delete(normalizedTitle);
 
         const isDeleted = this.#actionBlockById.delete(actionBlockId);
 
         this.#onUpdateVarialbeWithActionBlocks();
     
+        return isDeleted;
+    }
+
+    /**
+     * Delete an Action-Block by its ID.
+     * @param {string} id - The ID of the action block to delete.
+     * @returns {boolean} - Returns true if successfully deleted, false otherwise.
+     */
+    deleteActionBlockById(id) {
+        const actionBlock = this.getActionBlockById(id);
+
+        if (!actionBlock) {
+            return false;
+        }
+
+        // Remove from title index map
+        if (actionBlock.title) {
+            this.#actionBlockIdByTitle.delete(actionBlock.title.toUpperCase());
+        }
+
+        // Remove from main storage map
+        const isDeleted = this.#actionBlockById.delete(id);
+
+        // Update storage and tags/indexes
+        this.#onUpdateVarialbeWithActionBlocks();
+
         return isDeleted;
     }
 

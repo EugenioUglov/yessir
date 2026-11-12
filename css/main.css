@@ -248,15 +248,6 @@ div#welcome_page {
   text-align: center;
 }
 
-#content_executed_from_actionBlock .content {
-  font-size: 15px;
-  text-align: center;
-  color: #858383;
-  display: none;
-  /*
-  white-space: pre-wrap;
-  */
-}
 
 @media (max-width: 1300px) {
   .content {

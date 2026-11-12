@@ -1,14 +1,14 @@
 class HashHandlers {
-    constructor(HASH_NAME_ENUM, searchController, actionBlockController, scrollController, textManager, actionBlockWrapper) {
+    constructor(HASH_NAME_ENUM, search, actionBlockController, scrollController, textManager, actionBlockWrapper) {
         this.#HASH_NAME_ENUM = HASH_NAME_ENUM;
-        this.#searchController = searchController;
+        this.#search = search;
         this.#actionBlockController = actionBlockController;
         this.#scrollController = scrollController;
         this.#textManager = textManager;
         this.#actionBlockWrapper = actionBlockWrapper;
     }
 
-    #searchController;
+    #search;
     #actionBlockController
     #scrollController;
     #textManager;
@@ -83,7 +83,8 @@ class HashHandlers {
 
             this.#scrollController.setPositionTop();
         } else {
-            this.#searchController.clear();
+            this.#search.clear();
+            this.#search.show();
 
             if (this.#actionBlockController.model.getActionBlocks().size > 0) {
                 this.#actionBlockController.onOpenMainPageWithActionBlocks();
@@ -134,7 +135,7 @@ class HashHandlers {
         //         toCharacterRequest
         //     );
         //     request = decodeURIComponent(request);
-        //     this.#searchController.setText(request);
+        //     this.#search.setText(request);
         // } else 
         if (
             window.location.hash.includes(
@@ -158,7 +159,7 @@ class HashHandlers {
                 fromCharacterRequest
             );
             request = decodeURIComponent(request);
-            this.#searchController.setText(request);
+            this.#search.setText(request);
         }
 
         request = decodeURIComponent(request);
@@ -213,6 +214,8 @@ class HashHandlers {
         $(".btn_open_command_palette").css("display", "none");
         $("#btn_back").css("display", "none");
 
+        this.#search.show();
+        
         // $('#actionBlocks_page').css('display', 'block');
         this.#actionBlockController.showActionBlocksContainer();
 
@@ -329,6 +332,17 @@ class HashHandlers {
         // this.#setCurrentPageName(this.#HASH_NAME_ENUM.editActionBlock);
         window.location.hash = this.#HASH_NAME_ENUM.editActionBlock + "=" + id;
         // this.setPageName(this.#HASH_NAME_ENUM.settingsActionBlock);
+    }
+
+    setHashSettingsActionBlock({ isExecuteHash = true, actionBlockId = null }) {
+        if (actionBlockId == null) {
+            console.error("Action block ID is required to open settings page.");
+            return false;
+        }
+
+        const newHash = this.#HASH_NAME_ENUM.editActionBlock + "=" + actionBlockId;
+
+        isExecuteHash ? window.location.hash = newHash : history.pushState(null, "", "#" + newHash);
     }
 
     openPreviousBrowserPage() {
