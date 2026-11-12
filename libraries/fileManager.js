@@ -27,17 +27,17 @@ class FileManager {
     
         // on file loaded.
         function handleFileLoad(event) {
-            const text_from_file = event.target.result;
+            const textFromFile = event.target.result;
             let fromSymbol = '%';
             let toSymbol = '<percentage>';
-            const text_from_file_with_encoded_percentage = that.textManager.replaceSymbols(text_from_file, fromSymbol, toSymbol);
-            let decoded_text_from_file = decodeURIComponent(text_from_file_with_encoded_percentage);
+            const textFromFileWithEncodedPercentage = that.textManager.replaceSymbols(textFromFile, fromSymbol, toSymbol);
+            let decodedTextFromFile = decodeURIComponent(textFromFileWithEncodedPercentage);
             
             fromSymbol = '<percentage>';
             toSymbol = '%';
-            decoded_text_from_file = that.textManager.replaceSymbols(decoded_text_from_file, fromSymbol, toSymbol);
+            decodedTextFromFile = that.textManager.replaceSymbols(decodedTextFromFile, fromSymbol, toSymbol);
     
-            onFileLoadedCallback(decoded_text_from_file);
+            onFileLoadedCallback(decodedTextFromFile);
         }
     }
 }

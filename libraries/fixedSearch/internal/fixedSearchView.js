@@ -1,4 +1,4 @@
-class SearchView {
+class FixedSearchView {
     constructor({ domContainer }) {
         this.#domContainer = domContainer;
 
@@ -9,6 +9,14 @@ class SearchView {
     }
 
     #domContainer;
+
+    show() {
+        this.#domContainer.style.display = 'block';
+    }
+
+    hide() {
+        this.#domContainer.style.display = 'none';
+    }
 
     getText() {
         const userPhrase = this.#domContainer.querySelector('#searchInputField').value;
@@ -95,22 +103,22 @@ class SearchView {
     #setEventListeners() {
         const container = this.#domContainer;
         const inputField = container.querySelector('#searchInputField');
-        const searchWrapper = container.querySelector('#searchWrapper');
+        const fixedSearchWrapper = container.querySelector('#fixedSearchWrapper');
 
         inputField.addEventListener('input', function(e) {
             inputField.style.color = 'gray';
         });
         
         inputField.onfocus = () => {
-            searchWrapper.style.boxShadow = "0px 0px 5px 1px #4285f4"; 
-            searchWrapper.style.webkitBoxShadow = "0px 0px 5px 2px #4285f4";
-            searchWrapper.style.mozBoxShadow = "0px 0px 5px 2px #4285f4";
+            fixedSearchWrapper.style.boxShadow = "0px 0px 5px 1px #4285f4"; 
+            fixedSearchWrapper.style.webkitBoxShadow = "0px 0px 5px 2px #4285f4";
+            fixedSearchWrapper.style.mozBoxShadow = "0px 0px 5px 2px #4285f4";
         };
         
         inputField.addEventListener('focusout', function() {
-            searchWrapper.style.boxShadow = null;
-            searchWrapper.style.webkitBoxShadow = null;
-            searchWrapper.style.mozBoxShadow = null;
+            fixedSearchWrapper.style.boxShadow = null;
+            fixedSearchWrapper.style.webkitBoxShadow = null;
+            fixedSearchWrapper.style.mozBoxShadow = null;
         });
 
         container.querySelector("#btnSearch").addEventListener('click', function() {

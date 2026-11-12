@@ -1,13 +1,11 @@
-class SearchControllerEventBinder {
-    constructor({ searchController, hashObserver, actionBlockController }) {
+class FixedSearchEventBinder {
+    constructor({ searchController }) {
          
         searchController.bindClickBtnClear (() => {
-            yesSir.hashHandlers.openMain();
+            yesSir.hashHandlers.setHashMain();
         });
 
         searchController.bindInput((request) => {
-            hashObserver.setPreviousHash(window.location.hash);
-
             yesSir.hashHandlers.setHashRequest({
                 requestValue: request, 
                 isExecuteActionBlockByTitle: false
@@ -16,8 +14,6 @@ class SearchControllerEventBinder {
 
         searchController.bindKeyUp((request, clickedKeyCode) => {
             const isExecuteActionBlockByTitle = clickedKeyCode === yesSir.keyCodeByKeyName.enter ? true : false;
-
-            hashObserver.setPreviousHash(window.location.hash);
 
             yesSir.hashHandlers.setHashRequest({
                 requestValue: request, 

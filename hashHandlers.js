@@ -331,6 +331,10 @@ class HashHandlers {
         // this.setPageName(this.#HASH_NAME_ENUM.settingsActionBlock);
     }
 
+    openPreviousBrowserPage() {
+        history.back();
+    }
+
     // setHashEditActionBlock(title) {
     //     this.#hash_previous = this.getNormalizedCurrentHash();
     //     console.log("hash_previous = " + this.#hash_previous);

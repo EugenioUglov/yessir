@@ -1,8 +1,4 @@
 class VoiceRecognitionModel {
-    constructor() {
-
-    }
-
     #event = {
         start: 'startVoiceRecognition',
         continuos: 'continuosVoiceRecognition',

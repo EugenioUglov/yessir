@@ -21,7 +21,6 @@ class NoteView {
             $('.btn_open_command_palette').show();
             $('#content_executed_from_actionBlock').show();
             
-            // Hide search area with Action-Blocks.
             //document.getElementById('actionBlocks_page').style.display = "none";
             
         

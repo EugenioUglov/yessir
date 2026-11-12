@@ -1,7 +1,7 @@
 (function() {
     const FEATURE_BASE_PATH = document.currentScript ? document.currentScript.src.substring(0, document.currentScript.src.lastIndexOf('/') + 1) : '';
 
-    class SearchBootstrapper {
+    class FixedSearchBootstrapper {
         constructor({ projectAssetLoader, textManager, targetId, data }) {
             // Return promise.
             return this.init({ projectAssetLoader, textManager, targetId, data });
@@ -13,19 +13,19 @@
             const cssPromise = projectAssetLoader.loadStyle('style.css');
             const htmlPromise = projectAssetLoader.loadMustacheHtmlToDomElementById({ targetId, pathHtml: 'index.mustache', data });
 
-            const sarchControllerPromise = projectAssetLoader.loadJavaScript("searchController.js");
-            const sarchViewPromise = projectAssetLoader.loadJavaScript("searchView.js");
+            const sarchControllerPromise = projectAssetLoader.loadJavaScript("fixedSearchController.js");
+            const sarchViewPromise = projectAssetLoader.loadJavaScript("fixedSearchView.js");
 
             await Promise.all([cssPromise, htmlPromise, sarchControllerPromise, sarchViewPromise]);
 
             const domContainer = document.getElementById(targetId);
 
-            const view = new SearchView({ domContainer });
-            const controller = new SearchController(view, textManager);
+            const view = new FixedSearchView({ domContainer });
+            const controller = new FixedSearchController({ view, textManager });
 
             return controller;
         }
     }
 
-    window.SearchBootstrapper = SearchBootstrapper;
+    window.FixedSearchBootstrapper = FixedSearchBootstrapper;
 })();

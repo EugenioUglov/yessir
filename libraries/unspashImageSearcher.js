@@ -20,9 +20,7 @@ class UnsplashImageSearcher {
   */
   async getImageByKeyword(keyword, page, onDone) {
     if (page === undefined) page = 1;
-    const url = `https://api.unsplash.com/search/photos?page=${page}&query=${keyword}&client_id=${
-      this.#ACCESS_KEY
-    }`;
+    const url = `https://api.unsplash.com/search/photos?page=${page}&query=${keyword}&client_id=${this.#ACCESS_KEY}`;
 
     let firstImage = "";
 

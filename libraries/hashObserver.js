@@ -102,9 +102,7 @@ class HashObserver {
     this.#currentPageName = newPageName;
   }
 
-  openPreviousBrowserPage() {
-    history.back();
-  }
+
 
   setHashChangeListenerActiveState(isActiveNew) {
     this.#isHashChangeListenerActiveStateEnabled = isActiveNew;

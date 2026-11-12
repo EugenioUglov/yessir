@@ -1,15 +1,16 @@
 class YesSir {
   constructor({ onEnd }) {
     (async () => {
+      console.time("Execution Time");
       const projectAssetLoader = new ProjectAssetLoader({});
 
       const inputDeviceManager = new InputDeviceManager();
 
       this.commandInputField = new CommandInputField();
 
-      this.loginPanelController = await LoginBootstrapper.create({ projectAssetLoader: projectAssetLoader, targetId: 'loginContainer' });
+      this.loginPanelController = await LoginBootstrapper.create({ projectAssetLoader, targetId: 'loginContainer' });
 
-      this.centeredAlertController = await CenteredAlertBootstrapper.create({ projectAssetLoader: projectAssetLoader, targetId: 'alertCenterContainer' });
+      this.centeredAlertController = await CenteredAlertBootstrapper.create({ projectAssetLoader, targetId: 'alertCenterContainer' });
 
 
       this.googleSpeechRecognition = new GoogleSpeechRecognition();
@@ -17,7 +18,6 @@ class YesSir {
       this.textManager = new TextManager();
       this.fileManager = new FileManager(this.textManager);
       this.dateManager = new DateManager();
-      this.voiceRecognitionManager = new VoiceRecognitionManager();
       this.speakerManager = new TextToSpeechSynthesizer();
       this.dropdownManager = new DropdownManager();
       this.mapDataStructure = new MapDataStructure();
@@ -28,13 +28,15 @@ class YesSir {
       this.dialogWindow = new DialogWindow();
       this.observable = new Observable();
 
-      this.searchController = await new SearchBootstrapper(
-        {
-          projectAssetLoader: projectAssetLoader,
-          textManager: this.textManager,
-          targetId: 'searchContainer'
-        }
-      );
+      const FEATURE_BASE_PATH = document.currentScript ? document.currentScript.src.substring(0, document.currentScript.src.lastIndexOf('/') + 1) : '';
+
+      const fixedSearchAssetLoader = new ProjectAssetLoader({});
+      fixedSearchAssetLoader.setBasePath({ path: FEATURE_BASE_PATH });
+
+      await fixedSearchAssetLoader.loadJavaScript("libraries/fixedSearch/index.js");
+
+      this.searchController = await new FixedSearch({ projectAssetLoader, textManager: this.textManager, targetId: 'searchContainer' });
+
 
       this.modalBoxController = await ModalBoxBootstrapper.create({
         projectAssetLoader: projectAssetLoader,
@@ -53,9 +55,7 @@ class YesSir {
       this.logsController = await LogsBootstrapper.create({ projectAssetLoader: projectAssetLoader, fileManager: this.fileManager, dateManager: this.dateManager });
 
 
-      this.voiceRecognitionService = new VoiceRecognitionService(
-        this.voiceRecognitionManager
-      );
+      this.voiceRecognitionService = new VoiceRecognitionService();
 
       this.loaderController = await MultiColorCircleLoaderBootstrapper.create(
         {
@@ -128,7 +128,10 @@ class YesSir {
         new EditActionBlockDataHolder(HASH_NAME_ENUM, this.hashObserver);
       }
 
+      
       if (onEnd) onEnd();
+
+      console.timeEnd("Execution Time");
     })();
   }
 }
@@ -140,13 +143,12 @@ let yesSir;
     onPageLoaded();
   });
 
-  function onYesSirLoaded() {
+  async function onYesSirLoaded() {
     const buttonActivityView = new ButtonActivityView();
     yesSir.loaderController.startLoading();
 
     // Initialize Libraries.
     const observable = yesSir.observable;
-    const textManager = yesSir.textManager;
     dropdownManager = yesSir.dropdownManager;
     mapDataStructure = yesSir.mapDataStructure;
     arrayManager = yesSir.arrayManager;
@@ -154,11 +156,10 @@ let yesSir;
     // Initialize Services.
     const voiceRecognitionService = yesSir.voiceRecognitionService;
     const loaderController = yesSir.loaderController;
-    const dataStorageService = yesSir.dataStorageService;
     const hashObserver = yesSir.hashObserver;
     const scrollController = yesSir.scrollController;
     const actionBlockController = yesSir.actionBlockController;
-
+    const textManager = yesSir.textManager;
 
 
     yesSir.noteController.actionBlockController = actionBlockController;
@@ -166,9 +167,9 @@ let yesSir;
     yesSir.noteController.setCommandInputFieldWithCommandObjects();
 
     yesSir.noteController.openNoteHandler = function () {
-      const BTN_SPEAKER = yesSir.noteSpeakerService.showBtnSpeaker();
+      const btnSpeaker = yesSir.noteSpeakerService.showBtnSpeaker();
 
-      yesSir.domElementsVisibility.showElement(BTN_SPEAKER);
+      yesSir.domElementsVisibility.showElement(btnSpeaker);
 
       if (window.location.hash.includes("&listen")) {
         yesSir.noteSpeakerService.speak();
@@ -193,6 +194,10 @@ let yesSir;
       hashObserver,
       yesSir.dialogWindow
     );
+
+    // new ActionBlockEventBinder({ actionBlockController, buttonActivityView, loaderController });
+    // const projectAssetLoader = new ProjectAssetLoader({});
+
 
     
     actionBlockController.bindOnStartActionBlockOperationHandler(() => {
@@ -247,14 +252,6 @@ let yesSir;
         yesSir.noteController.clearAllInputElements();
       }
     };
-
-    const searchControllerEventBinder = new SearchControllerEventBinder({
-      searchController: yesSir.searchController,
-      hashObserver: hashObserver,
-      actionBlockController: actionBlockController
-    });
-
-
 
     hashObserver.onHandleHashObserver = () => {
       yesSir.domElementsVisibility.hideShowedElements();

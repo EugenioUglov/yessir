@@ -13,21 +13,21 @@ class TagsNormalizer {
        
         handledTags = this.#getNormalizedTags([...handledTags, ...this.#getAdditionalTags(handledTags)]);
 
-        // 1. Загружаем данные
+        // 1. Loading data
         const synonymGroups = JSON.parse(localStorage.getItem('synonymTags')) || []; // [[s1, s2], [s3, s4]]
         const childrenGroups = JSON.parse(localStorage.getItem('childrenTags')) || []; // [{parent, children: []}]  
 
         function syncUserSynonymsWithChildren() {
-            // Вспомогательная функция для нормализации и разделения строки по запятым и пробелам
+            // Helper function for normalizing and splitting a string by commas and spaces
             function parseTagString(str) {
                 if (!str) return [];
-                return str.split(/[,]+/) // Сначала разделяем по запятым
-                    .flatMap(part => part.split(/\s+/)) // Затем разделяем по пробелам
+                return str.split(/[,]+/) // First, split by commas
+                    .flatMap(part => part.split(/\s+/)) // Then, split by spaces
                     .map(t => t.trim().toLowerCase())
                     .filter(t => t !== '');
             }
 
-            // Создаем расширенный набор всех уникальных токенов/тегов из handledTags
+            // Create an expanded set of all unique tokens/tags from handledTags
             let flatHandledTags = [];
             handledTags.forEach(t => {
                 flatHandledTags.push(...parseTagString(t));
@@ -36,7 +36,7 @@ class TagsNormalizer {
                 }
             });
 
-            // 1. Расширяем handledTags синонимами
+            // 1. Expand handledTags with synonyms
             synonymGroups.forEach(group => {
                 const groupNormalized = group.map(s => s.toLowerCase());
                 const hasMatch = groupNormalized.some(synonym => 
@@ -52,7 +52,7 @@ class TagsNormalizer {
                 }
             });
 
-            // Обновляем плоский список после добавления синонимов
+            // Update the flat list after adding synonyms
             flatHandledTags = [];
             handledTags.forEach(t => {
                 flatHandledTags.push(...parseTagString(t));
@@ -61,18 +61,18 @@ class TagsNormalizer {
                 }
             });
 
-            // 2. Проверяем соответствие с дочерними группами
+            // 2. Check matching with child groups
             const tagsToProcess = [...handledTags];
             
             tagsToProcess.forEach(tag => {
                 const foundChildGroup = childrenGroups.find(cGroup => {
-                    // Разбиваем родительские теги группы по запятым и пробелам
+                    // Split the parent group's tags by commas and spaces
                     const parentsList = parseTagString(cGroup.parent);
                     
-                    // Также разбиваем текущий обрабатываемый тег на случай, если там несколько слов через пробел
+                    // Also split the currently processed tag in case there are multiple words separated by spaces
                     const currentTagParts = parseTagString(tag);
 
-                    // Проверяем, есть ли пересечение хотя бы по одному слову/тегу
+                    // Check if there is an intersection in at least one word/tag
                     return currentTagParts.some(part => parentsList.includes(part));
                 });
 

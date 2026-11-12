@@ -41,10 +41,9 @@
 
 		<div class="container">
 			<div id="inputFieldWithSuggestionsModule"></div>
+			<div id="searchContainer"></div>
 		
 			<div id="actionBlocks_page" style="display: none; margin-top:10px;">
-				<div id="searchContainer"></div>
-
 				<div style="height: 90px;"></div>
 				<div id="version" style="position: relative;color: black; font-size: 13px;">v18</div>
 				<div id="label_help" style="position: relative; font-size: 13px; color: #312c31; pointer-events: none;"></div>
@@ -55,7 +54,7 @@
 
 				<div class="actionBlocks_container" style="display: none;"></div>
 
-				<img src="./icons/circle-notch-solid-fiolet.svg" class="icon_spinner" width="200" height="200" alt="Loading...">
+				<img src="./icons/circle-notch-solid-fiolet.svg" class="icon_spinner" width="200" height="200" alt="Loading..." style="display: none;">
 			</div>
 
 			<div class="modal_header">
@@ -351,7 +350,7 @@
 		import { scripts } from './scriptPaths.js';
 
 		loadScriptsSequence(scripts, () => {
-			// console.log("Всё загружено!");
+			// All scripts loaded
 		});
 	</script>
 	<!-- .END (Load scripts) -->

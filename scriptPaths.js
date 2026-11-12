@@ -29,7 +29,6 @@ export const scripts = [
     "./libraries/dropdownManager.js",
     "./libraries/arrayManager.js",
     "./libraries/inputDeviceManger.js",
-    "./libraries/voiceRecognition/voiceRecognitionManager.js",
     "./libraries/textToSpeechSynthesizer.js",
     "./libraries/actionBlock/defaultActionBlocks.js",
     "./libraries/googleSpeechRecognition.js",
@@ -68,6 +67,7 @@ export const scripts = [
 
     "./libraries/actionBlock/internal/actionBlock/editActionBlockDataHolder.js",
     "./libraries/actionBlock/actionBlockWrapper.js",
+    "./libraries/actionBlock/actionBlockEventBinder.js",
     
 
     // Firebase & Дополнения
@@ -79,18 +79,16 @@ export const scripts = [
     
     "./libraries/scroll/index.js",
     "./libraries/components/multiColorCircleLoader/index.js",
-    "./modules/note/index.js",
+    "./libraries/note/index.js",
     "./libraries/components/modalBox/index.js",
     "./libraries/components/topInfoPanel/index.js",
-    "./modules/logger/index.js",
-    "./libraries/search/internal/index.js",
+    "./libraries/logger/index.js",
+    // "./libraries/fixedSearch/internal/index.js",
     "./libraries/components/loginPanel/index.js",
     "./libraries/components/centeredAlert/index.js",
     "./libraries/components/blackLoader/index.js",
     "./libraries/components/commandInputField.js",
 
-
-    "./libraries/search/searchControllerEventBinder.js",
     "./routesConfig.js",
     "./hashHandlers.js",
     "./hashNameStrings.js",

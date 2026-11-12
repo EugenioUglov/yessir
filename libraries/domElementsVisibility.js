@@ -1,52 +1,48 @@
 class DomElementsVisibility {
-    #showedElements = [];
+    #showedElements = new Set();
     #instance = null;
 
-
     constructor() {
-        if (this.#instance) {
-            return this.#instance;
-        }
-
+        if (this.#instance) return this.#instance;
         this.#instance = this;
     }
 
-    showElement(elementCssSelector) {
-        $(elementCssSelector).show();
-        this.#showedElements.push(elementCssSelector);
+    #resolveElements(target) {
+        if (typeof target === 'string') {
+            return document.querySelectorAll(target);
+        }
+        if (target instanceof Element) {
+            return [target];
+        }
+        if (target instanceof NodeList || Array.isArray(target)) {
+            return target;
+        }
+        return [];
     }
 
-    hideElement(elementCssSelector) {
-        const index = this.#showedElements.indexOf(elementCssSelector);
-        
-        if (index !== -1) {
-            this.#showedElements.splice(index, 1);
-        }
+    showElement(target) {
+        const elements = this.#resolveElements(target);
+        elements.forEach(el => {
+            el.style.display = '';
+        });
+        this.#showedElements.add(target);
+    }
 
-        $(elementCssSelector).hide();
+    hideElement(target) {
+        const elements = this.#resolveElements(target);
+        elements.forEach(el => {
+            el.style.display = 'none';
+        });
+        this.#showedElements.delete(target);
     }
 
     hideShowedElements() {
-        for (const elementCssSelector of this.#showedElements) {
-            $(elementCssSelector).hide();
+        for (const target of this.#showedElements) {
+            const elements = this.#resolveElements(target);
+            elements.forEach(el => {
+                el.style.display = 'none';
+            });
         }
+        this.#showedElements.clear();
     }
 }
-
-// class DomElementsVisibility {
-//     #displayedElements = [];
-
-//     showElement(element) {
-//         element.show();
-//         this.#displayedElements.push(element);
-//     }
-
-//     hideShowedElements() {
-//         // console.log('hide elements', this.#showed_elements);
-//         this.#displayedElements.forEach(element => element.hide());
-//         this.#displayedElements = [];
-//     }
-// }
-
-
-
