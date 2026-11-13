@@ -1344,10 +1344,7 @@ class ActionBlockController {
     // Delete previous default Action-Blocks.
     for (const actionBlockToDelete of actionBlocksToCreate) {
       // Update site.
-      this.model.deleteActionBlockByTitle(
-        actionBlockToDelete.title,
-        isShowAlertOnError
-      );
+      this.model.deleteActionBlockById(actionBlockToDelete.id);
     }
 
     // Create default Action-Blocks.
@@ -1374,9 +1371,9 @@ class ActionBlockController {
   deleteActionBlock(title) {
     this.view.closeSettings();
 
-    // this.model.deleteActionBlockByTitle(title);
-    this.model.deleteActionBlockById(this.model.actionBlockIdCurrent);
-    this.model.actionBlockIdCurrent = null;
+    this.model.deleteActionBlockByTitle(title);
+    // this.model.deleteActionBlockById(this.model.actionBlockIdCurrent);
+    // this.model.actionBlockIdCurrent = null;
 
 
     this.#onActionBlocksStorageUpdated();
@@ -1434,6 +1431,7 @@ class ActionBlockController {
     yesSir.hashHandlers.openSettingsActionBlockPage(id);
     this.model.actionBlockTitleBeforeUpdate = actionBlock.title;
     this.model.actionBlockIdCurrent = id;
+
     this.onPageContentChange();
     const elementsToShow =
       this.view.showElementsToEditActionBlock(actionBlock);
@@ -1473,6 +1471,7 @@ class ActionBlockController {
   #onClickBtnShowSettingsActionBlock = (actionBlockId) => {
     this.#scrollPositionOnExecuteBlock =
       this.scrollController.getScrollXY()[1];
+
 
     yesSir.hashHandlers.setHashSettingsActionBlock({ isExecutehash: false, actionBlockId });
   };

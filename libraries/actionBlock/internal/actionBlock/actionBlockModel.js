@@ -1,5 +1,6 @@
 class ActionBlockModel {
     constructor(textManager, dataStorageService, mapDataStructure, fileManager) {
+        console.log('ActionBlockModel constructor');    
         this.actionBlockTitleBeforeUpdate = '';
         this.actionBlockIdCurrent = null;
         this.dataStorageService = dataStorageService;
@@ -568,7 +569,10 @@ class ActionBlockModel {
             addTitleToTags();
         }
 
-        const isDeleted = this.deleteActionBlockByTitle(originalTitle);
+        // const isDeleted = this.deleteActionBlockByTitle(originalTitle);
+        const isDeleted = this.deleteActionBlockById(this.actionBlockIdCurrent);
+        this.actionBlockIdCurrent = null;
+
 
         if ( ! isDeleted) {
             alert('ERROR! Action-Block hasn\'t been deleted');
@@ -620,7 +624,11 @@ class ActionBlockModel {
             addTitleToTags();
         }
 
-        const isDeleted = this.deleteActionBlockByTitle(oldTitle);
+        console.log('no test');
+
+        // const isDeleted = this.deleteActionBlockByTitle(oldTitle);
+        const isDeleted = this.deleteActionBlockById(this.actionBlockIdCurrent.id);
+        this.actionBlockIdCurrent = null;
 
         if ( ! isDeleted) {
             alert('ERROR! Action-Block hasn\'t been deleted');
@@ -683,6 +691,7 @@ class ActionBlockModel {
      * @returns {boolean} - Returns true if successfully deleted, false otherwise.
      */
     deleteActionBlockById(id) {
+        console.log('Deleting Action-Block with ID:', id);
         const actionBlock = this.getActionBlockById(id);
 
         if (!actionBlock) {

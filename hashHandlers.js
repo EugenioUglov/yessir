@@ -115,6 +115,8 @@ class HashHandlers {
     }
 
     openByRequest = (queryParams) => {
+        this.#search.show();
+
         const hashParamsInLowerCase = yesSir.hashObserver.getHashParamsInLowerCase();
 
         let request = "";
