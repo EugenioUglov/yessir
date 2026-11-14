@@ -1,17 +1,18 @@
 export const scripts = [
     // Внешние библиотеки (CDN)
+    "https://cdn.jsdelivr.net/npm/project-asset-loader/dist/project-asset-loader.umd.js",
     "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js",
     "./libraries/opensource/jquery-3.6.0.min.js",
     "https://code.jquery.com/jquery-3.6.0.js",
     "https://code.jquery.com/ui/1.13.0/jquery-ui.js",
     "./libraries/opensource/observable.js",
     "./libraries/opensource/md5.min.js",
+    // "./libraries/projectAssetLoader.js",
 
     "./views/buttonActivityView.js",
 
     "./libraries/utils/urlValidator.js",
     "./libraries/utils/moduleLoader.js",
-    "./libraries/projectAssetLoader.js",
     "./libraries/components/bottomInfoPanel/index.js",
 
     // Основные компоненты

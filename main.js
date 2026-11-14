@@ -2,7 +2,12 @@ class YesSir {
   constructor({ onEnd }) {
     (async () => {
       console.time("Execution Time");
-      const projectAssetLoader = new ProjectAssetLoader({});
+
+      // const loader = new ProjectAssetLoader({ enableDebug: true });
+      // loader.loadJavaScript({ path: '/test.js' });
+
+      const projectAssetLoader = new ProjectAssetLoader({enableDebug: true});
+
 
       const inputDeviceManager = new InputDeviceManager();
 
@@ -27,18 +32,16 @@ class YesSir {
       this.dialogWindow = new DialogWindow();
       this.observable = new Observable();
 
-      const FEATURE_BASE_PATH = document.currentScript ? document.currentScript.src.substring(0, document.currentScript.src.lastIndexOf('/') + 1) : '';
 
       const fixedSearchAssetLoader = new ProjectAssetLoader({});
-      fixedSearchAssetLoader.setBasePath({ path: FEATURE_BASE_PATH });
 
-      await fixedSearchAssetLoader.loadJavaScript("libraries/fixedSearch/index.js");
+      await fixedSearchAssetLoader.loadJavaScript({ path: "/libraries/fixedSearch/index.js" });
 
       this.search = await new FixedSearch({ projectAssetLoader, textManager: this.textManager, targetId: 'searchContainer' });
 
 
       this.modalBoxController = await ModalBoxBootstrapper.create({
-        projectAssetLoader: projectAssetLoader,
+        projectAssetLoader,
         targetId: 'modalBoxContainer',
         data: {}
       });
@@ -49,16 +52,16 @@ class YesSir {
 
       this.dataStorageService = new DataStorageService(this.dialogWindow);
 
-      this.scrollController = await new ScrollBootstrapper({ projectAssetLoader: projectAssetLoader, targetId: 'scrollContainer' });
+      this.scrollController = await new ScrollBootstrapper({ projectAssetLoader, targetId: 'scrollContainer' });
 
-      this.logsController = await LogsBootstrapper.create({ projectAssetLoader: projectAssetLoader, fileManager: this.fileManager, dateManager: this.dateManager });
+      this.logsController = await LogsBootstrapper.create({ projectAssetLoader, fileManager: this.fileManager, dateManager: this.dateManager });
 
 
       this.voiceRecognitionService = new VoiceRecognitionService();
 
       this.loaderController = await MultiColorCircleLoaderBootstrapper.create(
         {
-          projectAssetLoader: projectAssetLoader,
+          projectAssetLoader,
           targetId: 'multiColorCircleLoaderContainer',
           data: {}
         }
@@ -66,14 +69,14 @@ class YesSir {
 
       this.noteController = await NoteBootstrapper.create(
         {
-          projectAssetLoader: projectAssetLoader,
+          projectAssetLoader,
           noteSpeakerService: this.noteSpeakerService
         }
       );
 
       this.bottomInfoPanel = await BottomInfoPanelBootstrapper.create(
         {
-          projectAssetLoader: projectAssetLoader,
+          projectAssetLoader,
           targetId: 'bottomInfoPanelContainer'
         }
       );
@@ -195,7 +198,6 @@ let yesSir;
     );
 
     // new ActionBlockEventBinder({ actionBlockController, buttonActivityView, loaderController });
-    // const projectAssetLoader = new ProjectAssetLoader({});
 
 
     

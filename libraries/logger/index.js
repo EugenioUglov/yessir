@@ -5,10 +5,10 @@
         static async create({ projectAssetLoader, fileManager, dateManager, container }) {
             projectAssetLoader.setBasePath({ path: FEATURE_BASE_PATH });
 
-            const viewPromise = projectAssetLoader.loadJavaScript("view.js");
-            const modelPromise = projectAssetLoader.loadJavaScript("model.js");
+            const viewPromise = projectAssetLoader.loadJavaScript({ path: "view.js" });
+            const modelPromise = projectAssetLoader.loadJavaScript({ path: "model.js" });
             
-            const controllerPromise = projectAssetLoader.loadJavaScript("controller.js");
+            const controllerPromise = projectAssetLoader.loadJavaScript({ path: "controller.js" });
 
             await Promise.all([viewPromise, modelPromise, controllerPromise]);
             const view = new LogsView({ container });

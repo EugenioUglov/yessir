@@ -5,8 +5,8 @@
         static async create({ projectAssetLoader, onSelect }) {
             projectAssetLoader.setBasePath({ path: FEATURE_BASE_PATH });
 
-            const modelPromise = projectAssetLoader.loadJavaScript("model.js");
-            const controllerPromise = projectAssetLoader.loadJavaScript("controller.js");
+            const modelPromise = projectAssetLoader.loadJavaScript({ path: "model.js" });
+            const controllerPromise = projectAssetLoader.loadJavaScript({ path: "controller.js" });
 
             await Promise.all([modelPromise, controllerPromise]);
 

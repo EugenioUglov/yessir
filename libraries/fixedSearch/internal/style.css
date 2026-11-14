@@ -9,7 +9,7 @@
   border-radius: 24px;
   z-index: 100;
 
-    
+
   #searchBar {
     display: flex;
     height: 49px;
@@ -50,7 +50,7 @@
 
   div#btnClear {
       /* background-color: #6c6c6c87;  */
-    /* background-color: #9e9a9a2b;
+      /* background-color: #9e9a9a2b;
       background-color: #ffffff; */
       display: flex;
       border-radius: 50px;

@@ -5,13 +5,13 @@
         static async create({ projectAssetLoader, targetId }) {
             projectAssetLoader.setBasePath({ path: FEATURE_BASE_PATH });
 
-            const cssPromise = projectAssetLoader.loadStyle('style.css');
+            const cssPromise = projectAssetLoader.loadStyle({ path: 'style.css' });
 
             const htmlPromise = projectAssetLoader.loadMustacheHtmlToDomElementById({ targetId, pathHtml: 'index.mustache' });
 
-            const viewPromise = projectAssetLoader.loadJavaScript("view.js");
+            const viewPromise = projectAssetLoader.loadJavaScript({ path: "view.js" });
             
-            const controllerPromise = projectAssetLoader.loadJavaScript("controller.js");
+            const controllerPromise = projectAssetLoader.loadJavaScript({ path: "controller.js" });
 
             await Promise.all([cssPromise, htmlPromise, viewPromise, controllerPromise]);
 

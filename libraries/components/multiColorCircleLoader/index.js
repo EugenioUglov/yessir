@@ -13,16 +13,15 @@
          * @returns 
          */
         static async create({ projectAssetLoader, targetId, data }) {
-            // const projectAssetLoader = new projectAssetLoader(FEATURE_BASE_PATH);
-            projectAssetLoader.setBasePath({path: FEATURE_BASE_PATH});
+            projectAssetLoader.setBasePath({ path: FEATURE_BASE_PATH });
 
-            // const mustachePromise = await projectAssetLoader.loadJavaScript('https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js');
+            // const mustachePromise = await projectAssetLoader.loadJavaScript({ path: 'https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js' });
 
-            const cssPromise = projectAssetLoader.loadStyle('multiColorCircleLoader.css');
+            const cssPromise = projectAssetLoader.loadStyle({ path: 'multiColorCircleLoader.css'});
             const htmlPromise = projectAssetLoader.loadMustacheHtmlToDomElementById({ targetId, pathHtml: 'index.mustache', data });
 
-            const loaderViewPromise = projectAssetLoader.loadJavaScript("loaderView.js");
-            const loaderControllerPromise = projectAssetLoader.loadJavaScript("loaderController.js");
+            const loaderViewPromise = projectAssetLoader.loadJavaScript({ path: "loaderView.js" });
+            const loaderControllerPromise = projectAssetLoader.loadJavaScript({ path: "loaderController.js"});
 
             await Promise.all([cssPromise, htmlPromise, loaderViewPromise, loaderControllerPromise]);
 

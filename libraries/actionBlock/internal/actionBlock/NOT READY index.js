@@ -5,9 +5,9 @@
         static async create({ projectAssetLoader, onSelect }) {
             projectAssetLoader.setBasePath({ path: FEATURE_BASE_PATH });
 
-            const modelPromise = projectAssetLoader.loadJavaScript("actionBlockModel.js");
-            const controllerPromise = projectAssetLoader.loadJavaScript("actionBlockController.js");
-            const viewPromise = projectAssetLoader.loadJavaScript("actionBlockView.js");
+            const modelPromise = projectAssetLoader.loadJavaScript({ path: "actionBlockModel.js" });
+            const controllerPromise = projectAssetLoader.loadJavaScript({ path: "actionBlockController.js" });
+            const viewPromise = projectAssetLoader.loadJavaScript({ path: "actionBlockView.js" });
 
             await Promise.all([modelPromise, viewPromise, controllerPromise]);
 

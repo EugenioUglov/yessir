@@ -1,6 +1,5 @@
 class FixedSearchEventBinder {
     constructor({ searchController }) {
-         
         searchController.bindClickBtnClear (() => {
             yesSir.hashHandlers.setHashMain();
         });

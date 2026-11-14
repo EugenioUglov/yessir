@@ -5,8 +5,8 @@
         static async create({ projectAssetLoader, noteSpeakerService }) {
             projectAssetLoader.setBasePath({ path: FEATURE_BASE_PATH });
 
-            const viewPromise = projectAssetLoader.loadJavaScript("view.js");
-            const controllerPromise = projectAssetLoader.loadJavaScript("controller.js");
+            const viewPromise = projectAssetLoader.loadJavaScript({ path: "view.js" });
+            const controllerPromise = projectAssetLoader.loadJavaScript({ path: "controller.js" });
 
             await Promise.all([viewPromise, controllerPromise]);
             const view = new NoteView();

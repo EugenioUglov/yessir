@@ -2,19 +2,19 @@
     const FEATURE_BASE_PATH = document.currentScript ? document.currentScript.src.substring(0, document.currentScript.src.lastIndexOf('/') + 1) : '';
 
     class FixedSearchBootstrapper {
-        constructor({ projectAssetLoader, textManager, targetId, data }) {
+        constructor({ projectAssetLoader, textManager, targetId }) {
             // Return promise.
-            return this.init({ projectAssetLoader, textManager, targetId, data });
+            return this.init({ projectAssetLoader, textManager, targetId });
         }
         
-        async init({ projectAssetLoader, textManager, targetId, data }) {
-            projectAssetLoader.setBasePath({path: FEATURE_BASE_PATH});
+        async init({ projectAssetLoader, textManager, targetId }) {
+            projectAssetLoader.setBasePath({ path: FEATURE_BASE_PATH });
 
-            const cssPromise = projectAssetLoader.loadStyle('style.css');
-            const htmlPromise = projectAssetLoader.loadMustacheHtmlToDomElementById({ targetId, pathHtml: 'index.mustache', data });
+            const cssPromise = projectAssetLoader.loadStyle({ path: 'style.css' });
+            const htmlPromise = projectAssetLoader.loadMustacheHtmlToDomElementById({ targetId, pathHtml: 'index.mustache' });
 
-            const sarchControllerPromise = projectAssetLoader.loadJavaScript("fixedSearchController.js");
-            const sarchViewPromise = projectAssetLoader.loadJavaScript("fixedSearchView.js");
+            const sarchControllerPromise = projectAssetLoader.loadJavaScript({ path: "fixedSearchController.js" });
+            const sarchViewPromise = projectAssetLoader.loadJavaScript({ path: "fixedSearchView.js" });
 
             await Promise.all([cssPromise, htmlPromise, sarchControllerPromise, sarchViewPromise]);
 

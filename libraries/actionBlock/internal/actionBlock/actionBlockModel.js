@@ -624,8 +624,6 @@ class ActionBlockModel {
             addTitleToTags();
         }
 
-        console.log('no test');
-
         // const isDeleted = this.deleteActionBlockByTitle(oldTitle);
         const isDeleted = this.deleteActionBlockById(this.actionBlockIdCurrent.id);
         this.actionBlockIdCurrent = null;

@@ -14,16 +14,16 @@
          */
         static async create({ projectAssetLoader, targetId, data }) {
             // const projectAssetLoader = new projectAssetLoader(FEATURE_BASE_PATH);
-            projectAssetLoader.setBasePath({path: FEATURE_BASE_PATH});
+            projectAssetLoader.setBasePath({ path: FEATURE_BASE_PATH });
 
-            // const mustachePromise = await projectAssetLoader.loadJavaScript('https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js');
+            // const mustachePromise = await projectAssetLoader.loadJavaScript({ path: 'https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.min.js' });
 
-            const cssPromise = projectAssetLoader.loadStyle('modalBox.css');
+            const cssPromise = projectAssetLoader.loadStyle({ path: 'modalBox.css' });
             
             const htmlPromise = projectAssetLoader.loadMustacheHtmlToDomElementById({ targetId, pathHtml: 'index.mustache', data });
             
-            const modalBoxViewPromise = projectAssetLoader.loadJavaScript("modalBoxView.js");
-            const modalBoxControllerPromise = projectAssetLoader.loadJavaScript("modalBoxController.js");
+            const modalBoxViewPromise = projectAssetLoader.loadJavaScript({ path: "modalBoxView.js" });
+            const modalBoxControllerPromise = projectAssetLoader.loadJavaScript({ path: "modalBoxController.js" });
 
             await Promise.all([cssPromise, htmlPromise, modalBoxViewPromise, modalBoxControllerPromise]);
             

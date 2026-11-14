@@ -13,16 +13,16 @@
          * @returns 
          */
         async init({ projectAssetLoader, targetId, data }) {
-            projectAssetLoader.setBasePath({path: FEATURE_BASE_PATH});
+            projectAssetLoader.setBasePath({ path: FEATURE_BASE_PATH });
 
-            const cssPromise = projectAssetLoader.loadStyle('style.css');            
+            const cssPromise = projectAssetLoader.loadStyle({ path: 'style.css' });            
             const htmlPromise = projectAssetLoader.loadMustacheHtmlToDomElementById({ targetId, pathHtml: 'index.mustache', data });
 
             await Promise.all([cssPromise, htmlPromise]);
             
-            const scrollControllerPromise = projectAssetLoader.loadJavaScript("scrollController.js");
-            const scrollModelPromise = projectAssetLoader.loadJavaScript("scrollModel.js");
-            const scrollViewPromise = projectAssetLoader.loadJavaScript("scrollView.js");
+            const scrollControllerPromise = projectAssetLoader.loadJavaScript({ path: "scrollController.js" });
+            const scrollModelPromise = projectAssetLoader.loadJavaScript({ path: "scrollModel.js" });
+            const scrollViewPromise = projectAssetLoader.loadJavaScript({ path: "scrollView.js" });
 
             await Promise.all([scrollModelPromise, scrollViewPromise, scrollControllerPromise]);
             

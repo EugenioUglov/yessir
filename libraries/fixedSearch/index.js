@@ -8,35 +8,25 @@
         }
         
         async init({ projectAssetLoader, textManager, targetId, data }) {
-            projectAssetLoader.setBasePath({path: FEATURE_BASE_PATH});
+            projectAssetLoader.setBasePath({ path: FEATURE_BASE_PATH });
 
-            await projectAssetLoader.loadJavaScript("fixedSearchWrapper.js");
-            await projectAssetLoader.loadJavaScript("internal/index.js");
-            await projectAssetLoader.loadJavaScript("fixedSearchEventBinder.js");
+            await projectAssetLoader.loadJavaScript({ path: "fixedSearchWrapper.js" });
+            await projectAssetLoader.loadJavaScript({ path: "internal/index.js" });
+            await projectAssetLoader.loadJavaScript({ path: "fixedSearchEventBinder.js" });
 
-            const fixedSearchWrapper = new FixedSearchWrapper();
-
-            const controller = await fixedSearchWrapper.init(
-              {
-                projectAssetLoader,
-                textManager,
-                targetId
-              }
+            const fixedSearchWrapper = await new FixedSearchWrapper(              
+                {
+                    projectAssetLoader,
+                    textManager,
+                    targetId
+                }
             );
 
-            // const controller = await new FixedSearchBootstrapper(
-            //     {
-            //         projectAssetLoader,
-            //         textManager,
-            //         targetId
-            //     }
-            // );
-
             new FixedSearchEventBinder({
-                searchController: controller
+                searchController: fixedSearchWrapper
             });
 
-            return controller;
+            return fixedSearchWrapper;
         }
     }
 
