@@ -2,12 +2,12 @@
     const FEATURE_BASE_PATH = document.currentScript ? document.currentScript.src.substring(0, document.currentScript.src.lastIndexOf('/') + 1) : '';
 
     class FixedSearch {
-        constructor({ projectAssetLoader, textManager, targetId, data }) {
+        constructor({ projectAssetLoader, targetId }) {
             // Return promise.
-            return this.init({ projectAssetLoader, textManager, targetId, data });
+            return this.init({ projectAssetLoader, targetId });
         }
         
-        async init({ projectAssetLoader, textManager, targetId, data }) {
+        async init({ projectAssetLoader, targetId }) {
             projectAssetLoader.setBasePath({ path: FEATURE_BASE_PATH });
 
             await projectAssetLoader.loadJavaScript({ path: "fixedSearchWrapper.js" });
@@ -17,7 +17,6 @@
             const fixedSearchWrapper = await new FixedSearchWrapper(              
                 {
                     projectAssetLoader,
-                    textManager,
                     targetId
                 }
             );

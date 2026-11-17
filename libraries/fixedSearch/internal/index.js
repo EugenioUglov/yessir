@@ -2,12 +2,12 @@
     const FEATURE_BASE_PATH = document.currentScript ? document.currentScript.src.substring(0, document.currentScript.src.lastIndexOf('/') + 1) : '';
 
     class FixedSearchBootstrapper {
-        constructor({ projectAssetLoader, textManager, targetId }) {
+        constructor({ projectAssetLoader, targetId }) {
             // Return promise.
-            return this.init({ projectAssetLoader, textManager, targetId });
+            return this.init({ projectAssetLoader, targetId });
         }
         
-        async init({ projectAssetLoader, textManager, targetId }) {
+        async init({ projectAssetLoader, targetId }) {
             projectAssetLoader.setBasePath({ path: FEATURE_BASE_PATH });
 
             const cssPromise = projectAssetLoader.loadStyle({ path: 'style.css' });
@@ -21,7 +21,7 @@
             const domContainer = document.getElementById(targetId);
 
             const view = new FixedSearchView({ domContainer });
-            const controller = new FixedSearchController({ view, textManager });
+            const controller = new FixedSearchController({ view });
 
             return controller;
         }

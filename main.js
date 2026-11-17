@@ -37,7 +37,7 @@ class YesSir {
 
       await fixedSearchAssetLoader.loadJavaScript({ path: "/libraries/fixedSearch/index.js" });
 
-      this.search = await new FixedSearch({ projectAssetLoader, textManager: this.textManager, targetId: 'searchContainer' });
+      this.search = await new FixedSearch({ projectAssetLoader, targetId: 'searchContainer' });
 
 
       this.modalBoxController = await ModalBoxBootstrapper.create({

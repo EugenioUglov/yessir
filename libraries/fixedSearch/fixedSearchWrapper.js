@@ -1,11 +1,11 @@
 class FixedSearchWrapper {
-	constructor({ projectAssetLoader, textManager, targetId }) {
+	constructor({ projectAssetLoader, targetId }) {
 		// Return promise.
-		return this.init({ projectAssetLoader, textManager, targetId });
+		return this.init({ projectAssetLoader, targetId });
 	}
 
-	async init({ projectAssetLoader, textManager, targetId }) {
-		this.coreController = await new FixedSearchBootstrapper({ projectAssetLoader, textManager, targetId });
+	async init({ projectAssetLoader, targetId }) {
+		this.coreController = await new FixedSearchBootstrapper({ projectAssetLoader, targetId });
 
 		// Bringing back Proxy for automatic method delegation
 		return new Proxy(this, {

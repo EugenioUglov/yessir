@@ -1,7 +1,5 @@
 class FixedSearchController {
-    constructor({ view, textManager }) {
-        this.textManager = textManager;
-
+    constructor({ view }) {
         this.view = view;
 
         this.#setEventListeners();
