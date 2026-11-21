@@ -541,7 +541,6 @@ class DefaultActionBlocks {
                             yesSir.actionBlockController.setActionBlocks(finalArray);
                             yesSir.scrollController.setPositionTop();
                             yesSir.actionBlockController.showActionBlocks();
-                            yesSir.searchController.clear();
                             yesSir.modalLoadingController.hide();
 
                             // Reload page so Action-Blocks are fully refreshed.

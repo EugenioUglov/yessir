@@ -10,22 +10,20 @@
         async init({ projectAssetLoader, targetId }) {
             projectAssetLoader.setBasePath({ path: FEATURE_BASE_PATH });
 
-            await projectAssetLoader.loadJavaScript({ path: "fixedSearchWrapper.js" });
-            await projectAssetLoader.loadJavaScript({ path: "internal/index.js" });
+
+            await projectAssetLoader.loadJavaScript({ path: "https://cdn.jsdelivr.net/npm/fixed-search@1.0.0/dist/fixed-search.umd.js" });
+
             await projectAssetLoader.loadJavaScript({ path: "fixedSearchEventBinder.js" });
-
-            const fixedSearchWrapper = await new FixedSearchWrapper(              
-                {
-                    projectAssetLoader,
-                    targetId
-                }
-            );
-
-            new FixedSearchEventBinder({
-                searchController: fixedSearchWrapper
+            
+            const searchController = await new FixedSearchBootstrapper({
+                targetId: 'searchContainer'
             });
 
-            return fixedSearchWrapper;
+            new FixedSearchEventBinder({
+                searchController
+            });
+
+            return searchController;
         }
     }
 

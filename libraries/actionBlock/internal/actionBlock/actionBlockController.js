@@ -1,7 +1,6 @@
 class ActionBlockController {
   constructor(
     dialogWindow,
-    searchController,
     noteController,
     fileManager,
     textManager,
@@ -16,7 +15,6 @@ class ActionBlockController {
     modalBoxController
   ) {
     this.dialogWindow = dialogWindow;
-    this.searchService = searchController;
     this.noteController = noteController;
     this.fileManager = fileManager;
     this.textManager = textManager;
@@ -269,7 +267,7 @@ class ActionBlockController {
     //
 
     const automationInProgressText =
-      'Automation in progress. It can take a while.\n\nYou can click "Cancel" button to skip automation works.';
+    'Automation in progress. It can take a while.\n\nYou can click "Cancel" button to skip automation works.';
 
     showLoadingElmenets();
 
@@ -557,8 +555,6 @@ class ActionBlockController {
     this.view.closeSettings();
     this.view.clearAllSettingsFields();
     yesSir.hashHandlers.openPreviousPage();
-    
-    this.searchService.clear();
 
     this.#onActionBlocksStorageUpdated();
     if (onEnd != undefined) onEnd(true);
@@ -1025,8 +1021,6 @@ class ActionBlockController {
     ) {
       //console.log('open folder from actionblock');
       this.openFolder(i_actionBlock);
-
-      this.searchService.setText(content);
     } else {
       /*
         else if (action_name_of_actionBlock === this.model.getActionNameEnum().showFileManager) {
@@ -1086,16 +1080,6 @@ class ActionBlockController {
     );
 
     this.#onEndActionBlockOperationHandler?.();
-  }
-
-  updatePage() {
-    this.searchService.clear();
-
-    // Refresh Action-Blocks on page.
-    this.showActionBlocks();
-
-    // Scroll top.
-    // this.scrollController.scrollTo();
   }
 
   saveActionBlocksToDatabaseAsync({
@@ -1225,7 +1209,6 @@ class ActionBlockController {
     this.model.setActionBlocks(actionBlocksFromFile);
     this.scrollController.setPositionTop();
     this.showActionBlocks();
-    this.searchService.clear();
     this.modalLoadingController.hide();
   };
 
@@ -1326,7 +1309,6 @@ class ActionBlockController {
     yesSir.hashHandlers.setHashMain();
     this.view.closeSettings();
     this.view.setDefaultValuesForSettingsElementsActionBlock();
-    this.searchService.clear();
     // Refresh Action-Blocks on page.
     this.scrollController.setPositionTop();
     this.showActionBlocks();

@@ -8,7 +8,6 @@ class YesSir {
 
       const projectAssetLoader = new ProjectAssetLoader({enableDebug: true});
 
-
       const inputDeviceManager = new InputDeviceManager();
 
       this.commandInputField = new CommandInputField();
@@ -33,12 +32,20 @@ class YesSir {
       this.observable = new Observable();
 
 
+      // OLD FIXED SEARCH TO DELETE
+      // const fixedSearchAssetLoader = new ProjectAssetLoader({});
+
+      // await fixedSearchAssetLoader.loadJavaScript({ path: "/libraries/fixedSearch/index.js" });
+
+      // this.search = await new FixedSearch({ projectAssetLoader, targetId: 'searchContainer' });
+      //
+
+      
       const fixedSearchAssetLoader = new ProjectAssetLoader({});
 
-      await fixedSearchAssetLoader.loadJavaScript({ path: "/libraries/fixedSearch/index.js" });
+      await fixedSearchAssetLoader.loadJavaScript({ path: "/features/fixedSearch/index.js" });
 
-      this.search = await new FixedSearch({ projectAssetLoader, targetId: 'searchContainer' });
-
+      this.search = await new FixedSearch({projectAssetLoader: fixedSearchAssetLoader, targetId: 'searchContainer' });
 
       this.modalBoxController = await ModalBoxBootstrapper.create({
         projectAssetLoader,
@@ -83,7 +90,6 @@ class YesSir {
 
       this.actionBlockController = new ActionBlockController(
         this.dialogWindow,
-        this.search,
         this.noteController,
         this.fileManager,
         this.textManager,
@@ -97,8 +103,6 @@ class YesSir {
         this.loginPanelController,
         this.modalBoxController
       );
-
-
       
       this.actionBlockWrapper = new ActionBlockWrapper({ actionBlockController: this.actionBlockController, loginPanelController: this.loginPanelController, modalBoxController: this.modalBoxController, mapDataStructure: this.mapDataStructure, logsController: this.logsController, dialogWindow: this.dialogWindow, dateManager: this.dateManager, modalLoadingController: this.modalLoadingController });
 
