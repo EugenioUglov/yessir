@@ -1,5 +1,6 @@
 class ActionBlockController {
   constructor(
+    tagsNormalizer,
     dialogWindow,
     noteController,
     fileManager,
@@ -26,6 +27,7 @@ class ActionBlockController {
     this.#modalBoxController = modalBoxController;
 
     this.model = new ActionBlockModel(
+      tagsNormalizer,
       textManager,
       dataStorageService,
       mapDataStructure,

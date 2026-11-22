@@ -3,6 +3,13 @@ class YesSir {
     (async () => {
       console.time("Execution Time");
 
+      
+       const { default: TagsNormalizer }  = await import(
+          "https://cdn.jsdelivr.net/npm/tags-normalizer@1.0.1/dist/tags-normalizer.mjs"
+      );
+          
+      const tagsNormalizer = new TagsNormalizer();
+      
       const projectAssetLoader = new ProjectAssetLoader();
       
       const projectAssetLoaderFromMain = new ProjectAssetLoader();
@@ -18,6 +25,7 @@ class YesSir {
       const { StringManipulator } = await import(
           "https://cdn.jsdelivr.net/npm/@eugeniouglov/string-manipulator/+esm"
       );
+
 
       this.textManager = new StringManipulator();
 
@@ -81,6 +89,7 @@ class YesSir {
       );
 
       this.actionBlockController = new ActionBlockController(
+        tagsNormalizer,
         this.dialogWindow,
         this.noteController,
         this.fileManager,

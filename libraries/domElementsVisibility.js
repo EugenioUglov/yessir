@@ -7,19 +7,6 @@ class DomElementsVisibility {
         this.#instance = this;
     }
 
-    #resolveElements(target) {
-        if (typeof target === 'string') {
-            return document.querySelectorAll(target);
-        }
-        if (target instanceof Element) {
-            return [target];
-        }
-        if (target instanceof NodeList || Array.isArray(target)) {
-            return target;
-        }
-        return [];
-    }
-
     showElement(target) {
         const elements = this.#resolveElements(target);
         elements.forEach(el => {
@@ -44,5 +31,19 @@ class DomElementsVisibility {
             });
         }
         this.#showedElements.clear();
+    }
+
+    
+    #resolveElements(target) {
+        if (typeof target === 'string') {
+            return document.querySelectorAll(target);
+        }
+        if (target instanceof Element) {
+            return [target];
+        }
+        if (target instanceof NodeList || Array.isArray(target)) {
+            return target;
+        }
+        return [];
     }
 }

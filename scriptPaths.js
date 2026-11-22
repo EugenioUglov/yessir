@@ -33,7 +33,6 @@ export const scripts = [
     "./libraries/textToSpeechSynthesizer.js",
     "./libraries/actionBlock/defaultActionBlocks.js",
     "./libraries/nounNumber.js",
-    "./libraries/tagsNormalizer.js",
     "./libraries/hashPassword.js",
     "./libraries/idGenerator.js",
 

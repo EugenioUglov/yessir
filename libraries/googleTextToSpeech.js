@@ -11,10 +11,10 @@ class GoogleTextToSpeech {
         const speechSynthesis = new SpeechSynthesisUtterance();
         speechSynthesis.lang = language;
         speechSynthesis.text = text_to_speak;
-        const speak_bot = speechSynthesis;
+        const speakBot = speechSynthesis;
         this.#isSpeaking = true;
 
-        speak_bot.onend = () => {
+        speakBot.onend = () => {
             that.#isSpeaking = false;
             if (onEndSpeak) onEndSpeak();
         }

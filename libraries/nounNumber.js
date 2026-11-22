@@ -2,7 +2,6 @@ class NounNumber {
   constructor() {}
 
   async getSingularizedWord(wordToSingularize, onDone, onCatch) {
-    console.log("word_to_singularize", wordToSingularize);
     fetch(
       `https://yessirapi.onrender.com/singular?request=` + wordToSingularize
     )

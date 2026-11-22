@@ -1,5 +1,5 @@
 class ActionBlockModel {
-    constructor(textManager, dataStorageService, mapDataStructure, fileManager) {  
+    constructor(tagsNormalizer, textManager, dataStorageService, mapDataStructure, fileManager) {  
         this.actionBlockTitleBeforeUpdate = '';
         this.actionBlockIdCurrent = null;
         this.dataStorageService = dataStorageService;
@@ -15,6 +15,7 @@ class ActionBlockModel {
             showHTML: 'Show info in HTML mode'
         };
 
+        this.#tagsNormalizer = tagsNormalizer;
         this.#textManager = textManager;
         this.#actionBlockById = new Map();
         this.#actionBlockIdByTitle = new Map();
@@ -22,6 +23,7 @@ class ActionBlockModel {
         this.#actionBlockTitleById = {};
     }
     
+    #tagsNormalizer;
     #textManager;
     #actionBlockById;
     #actionBlockIdByTitle;
@@ -411,15 +413,18 @@ class ActionBlockModel {
 
     add(actionBlockToAdd, isShowAlertOnError = true) {
         const that = this;
-        const tagsNormalizer = new TagsNormalizer();
-
+        
+        const synonymGroups = JSON.parse(localStorage.getItem('synonymTags')) || []; // [[s1, s2], [s3, s4]]
+        const childrenGroups = JSON.parse(localStorage.getItem('childrenTags')) || []; // [{parent, children: []}]  
         
         actionBlockToAdd.id = IdGenerator.getCryptoUniqueIdForMap(this.#actionBlockById);
         actionBlockToAdd.title = getNormalizedTitle(actionBlockToAdd.title);
 
         if (isTitleValid(actionBlockToAdd.title) === false) return false;
 
-        actionBlockToAdd.tags = tagsNormalizer.getHandledTags(actionBlockToAdd.tags);
+        actionBlockToAdd.tags = this.#tagsNormalizer.getHandledTags(actionBlockToAdd.tags);
+
+        actionBlockToAdd.tags = getTagsWithSynonymsAndChildrens({ tags: actionBlockToAdd.tags, synonymGroups, childrenGroups });
 
         this.#actionBlockIdByTitle.set(actionBlockToAdd.title.toUpperCase(), actionBlockToAdd.id);
         this.#actionBlockById.set(actionBlockToAdd.id, actionBlockToAdd);
@@ -455,6 +460,78 @@ class ActionBlockModel {
     
                 return false;
             }
+        }
+
+        
+        function getTagsWithSynonymsAndChildrens({ tags, synonymGroups, childrenGroups }) {
+            // Helper function for normalizing and splitting a string by commas and spaces
+            function parseTagString(str) {
+                if (!str) return [];
+                return str.split(/[,]+/) // First, split by commas
+                    .flatMap(part => part.split(/\s+/)) // Then, split by spaces
+                    .map(t => t.trim().toLowerCase())
+                    .filter(t => t !== '');
+            }
+
+            // Create an expanded set of all unique tokens/tags from tags
+            let flatHandledTags = [];
+            tags.forEach(t => {
+                flatHandledTags.push(...parseTagString(t));
+                if (!flatHandledTags.includes(t.toLowerCase())) {
+                    flatHandledTags.push(t.toLowerCase());
+                }
+            });
+
+            // 1. Expand tags with synonyms
+            synonymGroups.forEach(group => {
+                const groupNormalized = group.map(s => s.toLowerCase());
+                const hasMatch = groupNormalized.some(synonym => 
+                    flatHandledTags.includes(synonym)
+                );
+                
+                if (hasMatch) {
+                    group.forEach(synonym => {
+                        if (!tags.includes(synonym)) {
+                            tags.push(synonym);
+                        }
+                    });
+                }
+            });
+
+            // Update the flat list after adding synonyms
+            flatHandledTags = [];
+            tags.forEach(t => {
+                flatHandledTags.push(...parseTagString(t));
+                if (!flatHandledTags.includes(t.toLowerCase())) {
+                    flatHandledTags.push(t.toLowerCase());
+                }
+            });
+
+            // 2. Check matching with child groups
+            const tagsToProcess = [...tags];
+            
+            tagsToProcess.forEach(tag => {
+                const foundChildGroup = childrenGroups.find(cGroup => {
+                    // Split the parent group's tags by commas and spaces
+                    const parentsList = parseTagString(cGroup.parent);
+                    
+                    // Also split the currently processed tag in case there are multiple words separated by spaces
+                    const currentTagParts = parseTagString(tag);
+
+                    // Check if there is an intersection in at least one word/tag
+                    return currentTagParts.some(part => parentsList.includes(part));
+                });
+
+                if (foundChildGroup) {
+                    foundChildGroup.children.forEach(child => {
+                        if (!tags.includes(child)) {
+                            tags.push(child);
+                        }
+                    });
+                }
+            });
+
+            return tags;
         }
     
         return true;
