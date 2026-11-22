@@ -32,8 +32,6 @@ export const scripts = [
     "./libraries/inputDeviceManger.js",
     "./libraries/textToSpeechSynthesizer.js",
     "./libraries/actionBlock/defaultActionBlocks.js",
-    "./libraries/googleSpeechRecognition.js",
-    "./libraries/googleTextToSpeech.js",
     "./libraries/nounNumber.js",
     "./libraries/tagsNormalizer.js",
     "./libraries/hashPassword.js",

@@ -6,7 +6,7 @@ export function loadScriptsSequence(scripts, onComplete) {
             script.async = false; // Сохраняем порядок выполнения
             script.onload = () => loadNext(index + 1);
             script.onerror = () => {
-                console.error(`Ошибка загрузки скрипта: ${scripts[index]}`);
+                console.error(`Script loading Error: ${scripts[index]}`);
                 loadNext(index + 1);
             };
             document.body.appendChild(script);
@@ -35,7 +35,7 @@ export function loadScriptsAsModulesSequence(scripts, onComplete) {
             
             script.onload = () => loadNext(index + 1);
             script.onerror = () => {
-                console.error(`Ошибка загрузки скрипта: ${scripts[index]}`);
+                console.error(`Script loading Error: ${scripts[index]}`);
                 loadNext(index + 1);
             };
             document.body.appendChild(script);

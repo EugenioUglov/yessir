@@ -3,10 +3,9 @@ class YesSir {
     (async () => {
       console.time("Execution Time");
 
-      // const loader = new ProjectAssetLoader({ enableDebug: true });
-      // loader.loadJavaScript({ path: '/test.js' });
-
       const projectAssetLoader = new ProjectAssetLoader({enableDebug: true});
+      
+      const projectAssetLoaderFromMain = new ProjectAssetLoader({});
 
       const inputDeviceManager = new InputDeviceManager();
 
@@ -15,11 +14,14 @@ class YesSir {
       this.loginPanelController = await LoginBootstrapper.create({ projectAssetLoader, targetId: 'loginContainer' });
 
       this.centeredAlertController = await CenteredAlertBootstrapper.create({ projectAssetLoader, targetId: 'alertCenterContainer' });
+      
+      const { StringManipulator } = await import(
+          "https://cdn.jsdelivr.net/npm/@eugeniouglov/string-manipulator/+esm"
+      );
 
-      this.googleSpeechRecognition = new GoogleSpeechRecognition();
-      this.googleTextToSpeech = new GoogleTextToSpeech();
-      this.textManager = new TextManager();
-      this.fileManager = new FileManager(this.textManager);
+      this.textManager = new StringManipulator();
+
+      this.fileManager = new FileManager();
       this.dateManager = new DateManager();
       this.speakerManager = new TextToSpeechSynthesizer();
       this.dropdownManager = new DropdownManager();
@@ -29,23 +31,11 @@ class YesSir {
 
       this.keyCodeByKeyName = inputDeviceManager.getKeyCodeByKeyName();
       this.dialogWindow = new DialogWindow();
-      this.observable = new Observable();
+      this.observable = new Observable();      
 
+      await projectAssetLoaderFromMain.loadJavaScript({ path: "/features/fixedSearch/index.js" });
 
-      // OLD FIXED SEARCH TO DELETE
-      // const fixedSearchAssetLoader = new ProjectAssetLoader({});
-
-      // await fixedSearchAssetLoader.loadJavaScript({ path: "/libraries/fixedSearch/index.js" });
-
-      // this.search = await new FixedSearch({ projectAssetLoader, targetId: 'searchContainer' });
-      //
-
-      
-      const fixedSearchAssetLoader = new ProjectAssetLoader({});
-
-      await fixedSearchAssetLoader.loadJavaScript({ path: "/features/fixedSearch/index.js" });
-
-      this.search = await new FixedSearch({projectAssetLoader: fixedSearchAssetLoader, targetId: 'searchContainer' });
+      this.search = await FixedSearchFeatureBootstrapper.create({ targetId: 'searchContainer' });
 
       this.modalBoxController = await ModalBoxBootstrapper.create({
         projectAssetLoader,
@@ -167,7 +157,6 @@ let yesSir;
     const actionBlockController = yesSir.actionBlockController;
     const textManager = yesSir.textManager;
 
-
     yesSir.noteController.actionBlockController = actionBlockController;
 
     yesSir.noteController.setCommandInputFieldWithCommandObjects();
@@ -248,8 +237,6 @@ let yesSir;
 
     yesSir.noteController.closeHandler = function () {
       $('.inputFieldWithSuggestions').hide();
-      voiceRecognitionService.stopRecognizing();
-      this.noteSpeakerService.removeFromPage();
 
       if (window.location.hash.toUpperCase().includes('#editActionBlock'.toUpperCase())) {
         actionBlockController.setDefaultValuesForSettingsElementsActionBlock();

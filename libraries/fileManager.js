@@ -1,8 +1,4 @@
 class FileManager {
-    constructor(textManager) {
-        this.textManager = textManager;
-    }
-
     downloadFile = function(content, file_name, extension = '.txt') {
         // Encode spec symbols.
         const encoded_content = encodeURIComponent(content);
@@ -18,9 +14,13 @@ class FileManager {
         document.body.removeChild(element);
     }
 
-    uploadFile = function(onFileLoadedCallback) {
-        const that = this;
-        
+    async uploadFile(onFileLoadedCallback) {
+        const { StringManipulator } = await import(
+            "https://cdn.jsdelivr.net/npm/@eugeniouglov/string-manipulator/+esm"
+        );
+
+        const textManager = new StringManipulator();
+
         const reader = new FileReader();
         reader.onload = handleFileLoad;
         reader.readAsText(event.target.files[0]);
@@ -30,12 +30,12 @@ class FileManager {
             const textFromFile = event.target.result;
             let fromSymbol = '%';
             let toSymbol = '<percentage>';
-            const textFromFileWithEncodedPercentage = that.textManager.replaceSymbols(textFromFile, fromSymbol, toSymbol);
+            const textFromFileWithEncodedPercentage = textManager.replaceSymbols(textFromFile, fromSymbol, toSymbol);
             let decodedTextFromFile = decodeURIComponent(textFromFileWithEncodedPercentage);
             
             fromSymbol = '<percentage>';
             toSymbol = '%';
-            decodedTextFromFile = that.textManager.replaceSymbols(decodedTextFromFile, fromSymbol, toSymbol);
+            decodedTextFromFile = textManager.replaceSymbols(decodedTextFromFile, fromSymbol, toSymbol);
     
             onFileLoadedCallback(decodedTextFromFile);
         }

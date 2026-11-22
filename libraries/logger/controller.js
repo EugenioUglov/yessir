@@ -26,8 +26,7 @@ class LogsController {
 
   downloadLogs() {
     if (this.#fileManager === undefined) {
-      this.#textManager = new TextManager();
-      this.#fileManager = new FileManager(this.#textManager);
+      this.#fileManager = new FileManager();
     }
 
     const dataForFile = this.#model.getDataForFile();

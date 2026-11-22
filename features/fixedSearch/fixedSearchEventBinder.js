@@ -1,17 +1,17 @@
 class FixedSearchEventBinder {
-    constructor({ searchController }) {
-        searchController.bindClickBtnClear (() => {
+    constructor({ controller }) {
+        controller.bindClickBtnClear (() => {
             yesSir.hashHandlers.setHashMain();
         });
 
-        searchController.bindInput((request) => {
+        controller.bindInput((request) => {
             yesSir.hashHandlers.setHashRequest({
                 requestValue: request, 
                 isExecuteActionBlockByTitle: false
             });
         });
 
-        searchController.bindKeyUp((request, clickedKeyCode) => {
+        controller.bindKeyUp((request, clickedKeyCode) => {
             const isExecuteActionBlockByTitle = clickedKeyCode === yesSir.keyCodeByKeyName.enter ? true : false;
 
             yesSir.hashHandlers.setHashRequest({
