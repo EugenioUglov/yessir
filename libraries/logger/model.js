@@ -1,8 +1,5 @@
 class LogsModel {
-    #dateManager;
-
-    constructor(dateManager) {
-        this.#dateManager = dateManager;
+    constructor() {
         this.logs = [];
     }
 
@@ -14,10 +11,14 @@ class LogsModel {
         return this.logs;
     }
     
-    getDataForFile() {
+    async getDataForFile() {
+        const { getDateNow, getTimeNow } = await import(
+            "https://cdn.jsdelivr.net/npm/@eugeniouglov/date-time-now/+esm"
+        );
+        
         const logs = this.getLogs();
 
-        const dateAndTime = this.#dateManager.getDateNow() + '-' + this.#dateManager.getTimeNow();
+        const dateAndTime = getDateNow() + '-' + getTimeNow();
     
         // Set variable for name of the saving file with date and time. 
         const fileName = 'Logs_yesSir ' + dateAndTime;

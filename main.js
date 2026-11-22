@@ -3,9 +3,9 @@ class YesSir {
     (async () => {
       console.time("Execution Time");
 
-      const projectAssetLoader = new ProjectAssetLoader({enableDebug: true});
+      const projectAssetLoader = new ProjectAssetLoader();
       
-      const projectAssetLoaderFromMain = new ProjectAssetLoader({});
+      const projectAssetLoaderFromMain = new ProjectAssetLoader();
 
       const inputDeviceManager = new InputDeviceManager();
 
@@ -22,7 +22,9 @@ class YesSir {
       this.textManager = new StringManipulator();
 
       this.fileManager = new FileManager();
+
       this.dateManager = new DateManager();
+
       this.speakerManager = new TextToSpeechSynthesizer();
       this.dropdownManager = new DropdownManager();
       this.mapDataStructure = new MapDataStructure();
@@ -51,7 +53,7 @@ class YesSir {
 
       this.scrollController = await new ScrollBootstrapper({ projectAssetLoader, targetId: 'scrollContainer' });
 
-      this.logsController = await LogsBootstrapper.create({ projectAssetLoader, fileManager: this.fileManager, dateManager: this.dateManager });
+      this.logsController = await LogsBootstrapper.create({ projectAssetLoader, fileManager: this.fileManager });
 
 
       this.voiceRecognitionService = new VoiceRecognitionService();
@@ -87,14 +89,13 @@ class YesSir {
         this.dataStorageService,
         this.mapDataStructure,
         this.scrollController,
-        this.dateManager,
         this.modalLoadingController,
         this.bottomInfoPanel,
         this.loginPanelController,
         this.modalBoxController
       );
       
-      this.actionBlockWrapper = new ActionBlockWrapper({ actionBlockController: this.actionBlockController, loginPanelController: this.loginPanelController, modalBoxController: this.modalBoxController, mapDataStructure: this.mapDataStructure, logsController: this.logsController, dialogWindow: this.dialogWindow, dateManager: this.dateManager, modalLoadingController: this.modalLoadingController });
+      this.actionBlockWrapper = new ActionBlockWrapper({ actionBlockController: this.actionBlockController, loginPanelController: this.loginPanelController, modalBoxController: this.modalBoxController, mapDataStructure: this.mapDataStructure, logsController: this.logsController, dialogWindow: this.dialogWindow, modalLoadingController: this.modalLoadingController });
 
       this.hashHandlers = new HashHandlers(
         HASH_NAME_ENUM,

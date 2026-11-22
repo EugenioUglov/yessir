@@ -2,7 +2,7 @@
     const FEATURE_BASE_PATH = document.currentScript ? document.currentScript.src.substring(0, document.currentScript.src.lastIndexOf('/') + 1) : '';
 
     class LogsBootstrapper {
-        static async create({ projectAssetLoader, fileManager, dateManager, container }) {
+        static async create({ projectAssetLoader, fileManager, container }) {
             projectAssetLoader.setBasePath({ path: FEATURE_BASE_PATH });
 
             const viewPromise = projectAssetLoader.loadJavaScript({ path: "view.js" });
@@ -12,7 +12,7 @@
 
             await Promise.all([viewPromise, modelPromise, controllerPromise]);
             const view = new LogsView({ container });
-            const model = new LogsModel(dateManager);
+            const model = new LogsModel();
 
             const controller = new LogsController({ model, view, fileManager });
             

@@ -1,6 +1,5 @@
 class ActionBlockModel {
-    constructor(textManager, dataStorageService, mapDataStructure, fileManager) {
-        console.log('ActionBlockModel constructor');    
+    constructor(textManager, dataStorageService, mapDataStructure, fileManager) {  
         this.actionBlockTitleBeforeUpdate = '';
         this.actionBlockIdCurrent = null;
         this.dataStorageService = dataStorageService;
@@ -380,7 +379,7 @@ class ActionBlockModel {
         return this.#actionBlockById;
     }
 
-    setActionBlocksFromUserStorageAssync(callbackSetActionBlocks, callbackUserStorageDifferentFromLocal) {
+    setActionBlocksFromUserStorage(callbackSetActionBlocks, callbackUserStorageDifferentFromLocal) {
         const that = this;
 
         this.getActionBlocksFromLocalStorageAsync(onGetActionBlocks);

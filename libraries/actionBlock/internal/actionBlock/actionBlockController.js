@@ -8,7 +8,6 @@ class ActionBlockController {
     dataStorageService,
     mapDataStructure,
     scrollController,
-    dateManager,
     modalLoadingController,
     bottomInfoPanel,
     loginPanelController,
@@ -25,8 +24,6 @@ class ActionBlockController {
     this.#bottomInfoPanel = bottomInfoPanel;
     this.#loginPanelController = loginPanelController;
     this.#modalBoxController = modalBoxController;
-
-    this.#dateManager = dateManager;
 
     this.model = new ActionBlockModel(
       textManager,
@@ -50,7 +47,6 @@ class ActionBlockController {
   #bottomInfoPanel;
   #loginPanelController;
   #modalBoxController;
-  #dateManager;
   #indexLastShowedActionBlock = 0;
   #scrollPositionOnExecuteBlock = 0;
   #loadingHandler;
@@ -724,7 +720,7 @@ class ActionBlockController {
   showActionBlocksFromStorage = () => {
     const that = this;
     
-    this.model.setActionBlocksFromUserStorageAssync(
+    this.model.setActionBlocksFromUserStorage(
       onSetActionBlocks,
       onUserStorageDifferentFromLocal
     );
@@ -736,8 +732,7 @@ class ActionBlockController {
     function onUserStorageDifferentFromLocal() {
       that.downloadFileWithActionBlocks(
         that.model.getActionBlocksFromLocalStorageAsync()
-      );
-      yesSir.hashObserver.init();
+      ).then(() => { yesSir.hashObserver.init(); });
     }
   };
 
@@ -1146,43 +1141,6 @@ class ActionBlockController {
     
     this.#onActionBlocksStorageUpdated();
   }
-
-  // downloadFileWithActionBlocks = (actionBlocks) => {
-  //   if (!actionBlocks) actionBlocks = this.model.getActionBlocks();
-  //   const content = this.mapDataStructure.getStringified(actionBlocks);
-  //   const dateNow = this.#dateManager.getDateNow();
-  //   const timeNow = this.#dateManager.getTimeNow();
-
-  //   const dateText = dateNow + "-" + timeNow;
-
-  //   // Set variable for name of the saving file with date and time.
-  //   const fileName = "Action-Blocks " + dateText;
-  //   const extension = ".json";
-
-  //   download(content, fileName, extension);
-
-  //   // Function to download data to a file
-  //   function download(data, filename, type) {
-  //     var file = new Blob([data], {type: type});
-  //     if (window.navigator.msSaveOrOpenBlob) // IE10+
-  //         window.navigator.msSaveOrOpenBlob(file, filename);
-  //     else { // Others
-  //         var a = document.createElement("a"),
-  //                 url = URL.createObjectURL(file);
-  //         a.href = url;
-  //         a.download = filename;
-  //         document.body.appendChild(a);
-  //         a.click();
-  //         setTimeout(function() {
-  //             document.body.removeChild(a);
-  //             window.URL.revokeObjectURL(url);
-  //         }, 0);
-  //     }
-  //   }
-  
-  //   // !!!
-  //   // this.fileManager.downloadFile(content, file_name, extension);
-  // };
 
   uploadFileWithActionBlocks = (contentOfFile) => {
     if (contentOfFile === undefined) {

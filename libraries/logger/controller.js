@@ -24,12 +24,12 @@ class LogsController {
     return this.#model.getLogs();
   }
 
-  downloadLogs() {
+  async downloadLogs() {
     if (this.#fileManager === undefined) {
       this.#fileManager = new FileManager();
     }
 
-    const dataForFile = this.#model.getDataForFile();
+    const dataForFile = await this.#model.getDataForFile();
     
     this.#fileManager.downloadFile(
       dataForFile.content,

@@ -1,12 +1,11 @@
 class ActionBlockWrapper {
-    constructor({actionBlockController, loginPanelController, modalBoxController, mapDataStructure, logsController, dialogWindow, dateManager, modalLoadingController}) {
+    constructor({actionBlockController, loginPanelController, modalBoxController, mapDataStructure, logsController, dialogWindow, modalLoadingController}) {
         this.#actionBlockController = actionBlockController;
         this.#loginPanelController = loginPanelController;
         this.#modalBoxController = modalBoxController;
         this.#mapDataStructure = mapDataStructure;
         this.#logsController = logsController;
         this.#dialogWindow = dialogWindow;
-        this.#dateManager = dateManager;
         this.#modalLoadingController = modalLoadingController;
 
         this.#actionBlockController.bindOnActionBlockShowedHandler((actionBlocks) => {
@@ -22,7 +21,6 @@ class ActionBlockWrapper {
     #mapDataStructure;
     #logsController;
     #dialogWindow;
-    #dateManager;
     #modalLoadingController;
 
     saveActionBlocksToDatabase(actionBlocksMapString) {
@@ -148,11 +146,16 @@ class ActionBlockWrapper {
 
     }
 
-    downloadFileWithActionBlocks = (actionBlocks) => {
+    async downloadFileWithActionBlocks(actionBlocks) {
         if (!actionBlocks) actionBlocks = this.#actionBlockController.getActionBlocks();
         const content = this.#mapDataStructure.getStringified(actionBlocks);
-        const dateNow = this.#dateManager.getDateNow();
-        const timeNow = this.#dateManager.getTimeNow();
+
+        const { getDateNow, getTimeNow } = await import(
+            "https://cdn.jsdelivr.net/npm/@eugeniouglov/date-time-now/+esm"
+        );
+
+        const dateNow = getDateNow();
+        const timeNow = getTimeNow();
 
         const dateText = dateNow + "-" + timeNow;
 

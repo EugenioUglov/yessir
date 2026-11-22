@@ -1,21 +1,19 @@
 class DateManager {
-    #date;
-
-    constructor() {
-        this.#date = new Date();
-    }
-
-    // Get in format y_m_d.
+    // Get date in format y_m_d.
     getDateNow(separator = '_') {
-        return this.#date.getFullYear() + separator + 
-            (((this.#date.getMonth()+1) < 10)?'0':'') + (this.#date.getMonth()+1) + separator +
-            ((this.#date.getDate() < 10)?'0':'') + this.#date.getDate();
+        const date = new Date();
+
+        return date.getFullYear() + separator + 
+            (((date.getMonth()+1) < 10)?'0':'') + (date.getMonth()+1) + separator +
+            ((date.getDate() < 10)?'0':'') + date.getDate();
     }
 
-    // Get in format h_m_s.
+    // Get time in format h_m_s.
     getTimeNow(separator = '_') {
-        return ((this.#date.getHours() < 10)?'0':'') + this.#date.getHours() + separator + 
-            ((this.#date.getMinutes() < 10)?'0':'') + this.#date.getMinutes() + separator + 
-            ((this.#date.getSeconds() < 10)?'0':'') + this.#date.getSeconds();
+        const date = new Date();
+
+        return ((date.getHours() < 10)?'0':'') + date.getHours() + separator + 
+            ((date.getMinutes() < 10)?'0':'') + date.getMinutes() + separator + 
+            ((date.getSeconds() < 10)?'0':'') + date.getSeconds();
     }
 }
